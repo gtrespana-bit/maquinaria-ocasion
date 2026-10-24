@@ -5,11 +5,11 @@ import ContactForm from './ContactForm'
 
 export const metadata: Metadata = {
   title: 'Contacto',
-  description: 'Contacta con MaquinariaOcasión: soporte para comprar, vender o publicar tu camper y autocaravana en España.',
+  description: 'Contacta con MaquinariaOcasión: soporte para comprar, vender o publicar tu maquinaria y herramienta en España.',
   alternates: alternatesSeo('/contacto'),
   openGraph: {
     title: 'Contacto — MaquinariaOcasión',
-    description: 'Contacta con MaquinariaOcasión: soporte para comprar, vender o publicar tu camper y autocaravana en España.',
+    description: 'Contacta con MaquinariaOcasión: soporte para comprar, vender o publicar tu maquinaria y herramienta en España.',
     url: 'https://maquinariaocasion.online/contacto',
     siteName: 'MaquinariaOcasión',
     type: 'website',
@@ -33,7 +33,7 @@ export default function ContactPage() {
         '@type': 'ContactPage',
         '@id': SITIO + '/contacto#contact',
         name: 'Contacto — MaquinariaOcasión',
-        description: 'Contacta con MaquinariaOcasión: soporte para comprar, vender o publicar tu camper y autocaravana en España.',
+        description: 'Contacta con MaquinariaOcasión: soporte para comprar, vender o publicar tu maquinaria y herramienta en España.',
         url: SITIO + '/contacto',
         isPartOf: { '@id': SITIO + '/#website' },
       },

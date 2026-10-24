@@ -25,7 +25,7 @@ export async function POST(req: NextRequest) {
     .maybeSingle()
   if (!esProfesional(perfil?.tipo_vendedor)) {
     return NextResponse.json(
-      { error: 'Los cupones de pack son para cuentas profesionales o de camperizador. Cambia tu tipo en el panel.' },
+      { error: 'Los cupones de pack son para cuentas profesionales o de taller. Cambia tu tipo en el panel.' },
       { status: 400 },
     )
   }

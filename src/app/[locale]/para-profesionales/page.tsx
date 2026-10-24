@@ -20,7 +20,7 @@ import { PLANES_PRO } from '@/lib/planes-anuncios'
 import PlanesClient from './PlanesClient'
 
 export const metadata: Metadata = {
-  title: 'Planes para profesionales y camperizadores',
+  title: 'Planes para profesionales y talleres',
   description:
     'Publica todo tu stock sin comisión por venta. 19 €/mes, o 190 €/año con 2 meses gratis. 15 anuncios, escaparate, estadísticas y destacados.',
   alternates: {
@@ -28,13 +28,13 @@ export const metadata: Metadata = {
     languages: { 'es-ES': 'https://maquinariaocasion.online/para-profesionales', 'x-default': 'https://maquinariaocasion.online/para-profesionales' },
   },
   openGraph: {
-    title: 'Planes para profesionales y camperizadores',
+    title: 'Planes para profesionales y talleres',
     description: 'Un solo plan: 19 €/mes o 190 €/año. 15 anuncios, escaparate y estadísticas. Sin comisión por venta ni permanencia.',
     url: 'https://maquinariaocasion.online/para-profesionales',
     siteName: 'MaquinariaOcasión',
     type: 'website',
     locale: 'es_ES',
-    images: [{ url: 'https://maquinariaocasion.online/api/og/catalog?categoria=camper', width: 1200, height: 630, alt: 'Planes para profesionales' }],
+    images: [{ url: 'https://maquinariaocasion.online/api/og/catalog?categoria=agricola', width: 1200, height: 630, alt: 'Planes para profesionales' }],
   },
 }
 
@@ -94,11 +94,11 @@ const filasComparativa: {
 const faqs = [
   {
     q: '¿Contratar un pack me convierte en profesional?',
-    a: 'Sí, y es gratis. Tu «tipo de vendedor» (particular, camperizador o profesional) define cómo apareces y qué puedes hacer. El pack solo define cuánto stock puedes tener publicado. Si contratas un pack siendo particular, pasas automáticamente a profesional para que no pagues un cupo que no puedes usar.',
+    a: 'Sí, y es gratis. Tu «tipo de vendedor» (particular, taller o profesional) define cómo apareces y qué puedes hacer. El pack solo define cuánto stock puedes tener publicado. Si contratas un pack siendo particular, pasas automáticamente a profesional para que no pagues un cupo que no puedes usar.',
   },
   {
     q: '¿Es una comisión por venta?',
-    a: 'No. MaquinariaOcasión cobra una cuota fija por publicar, no un porcentaje de la venta. Puedes vender una furgoneta o diez y la cuota es la misma.',
+    a: 'No. MaquinariaOcasión cobra una cuota fija por publicar, no un porcentaje de la venta. Puedes vender una máquina o diez y la cuota es la misma.',
   },
   {
     q: '¿Puedo cancelar cuando quiera?',
@@ -144,7 +144,7 @@ export default async function ParaProfesionalesPage({ params }: { params: Promis
       {
         '@type': 'Product',
         '@id': SITIO + '/para-profesionales#plans',
-        name: 'Planes para profesionales y camperizadores',
+        name: 'Planes para profesionales y talleres',
         description: 'Un solo plan: 19 €/mes o 190 €/año. 15 anuncios, escaparate y estadísticas. Sin comisión por venta ni permanencia.',
         brand: { '@type': 'Brand', name: 'MaquinariaOcasión' },
         offers: PLANES_PRO.map(p => ({
@@ -174,14 +174,14 @@ export default async function ParaProfesionalesPage({ params }: { params: Promis
       <div className="bg-gradient-to-b from-slate-50 to-white border-b border-slate-100">
         <div className="max-w-6xl mx-auto px-4 pt-12 pb-10">
           <p className="text-sm font-semibold text-brand-accent uppercase tracking-wide mb-2">
-            Talleres, camperizadores y compraventas
+            Talleres, reparadores y compraventas
           </p>
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 mb-4 max-w-3xl">
             Publica todo tu stock. Sin comisión por venta.
           </h1>
           <p className="text-lg text-slate-600 max-w-2xl">
             Un solo plan: Profesional, 19 €/mes, mensual o anual y sin permanencia. 15 anuncios,
-            escaparate, estadísticas y destacados. Si solo vendes tu camper, el plan gratuito es
+            escaparate, estadísticas y destacados. Si solo vendes tu maquinaria, el plan gratuito es
             todo lo que necesitas.
           </p>
           <div className="mt-6 flex flex-wrap gap-2 text-xs font-semibold text-slate-700">
@@ -215,7 +215,7 @@ export default async function ParaProfesionalesPage({ params }: { params: Promis
               </div>
               <p className="text-xs font-semibold text-emerald-700 mt-1">Gratis, siempre</p>
               <p className="text-sm text-slate-600 mt-2">
-                Particular, camperizador o profesional. Define tu sello y los filtros del catálogo.
+                Particular, taller o profesional. Define tu sello y los filtros del catálogo.
                 Se cambia en tu perfil y no cuesta nada.
               </p>
             </div>
@@ -321,9 +321,9 @@ export default async function ParaProfesionalesPage({ params }: { params: Promis
           </div>
           <div className="rounded-2xl border border-slate-200 bg-white p-5">
             <Users size={22} className="text-brand-accent mb-2" aria-hidden="true" />
-            <h3 className="font-bold text-slate-900">Hecho para el sector camper</h3>
+            <h3 className="font-bold text-slate-900">Hecho para el sector de la maquinaria</h3>
             <p className="text-sm text-slate-600 mt-1">
-              Compradores que buscan camper, no coches. Filtros técnicos de verdad: MMA, plazas, autonomía, homologación.
+              Compradores que buscan maquinaria, no coches de segunda mano. Filtros técnicos de verdad: horas de uso, potencia, peso y documentación.
             </p>
           </div>
         </section>
@@ -349,7 +349,7 @@ export default async function ParaProfesionalesPage({ params }: { params: Promis
         <section className="mt-14 rounded-2xl bg-brand-primary p-6 sm:p-8 text-white">
           <h2 className="text-2xl font-black">Empieza gratis. Hazte Profesional cuando vendas de forma habitual.</h2>
           <p className="text-slate-300 mt-2 max-w-2xl">
-            Publica tu primera camper sin pagar nada. Si eres taller o compraventa, 19 €/mes te dan
+            Publica tu primer anuncio sin pagar nada. Si eres taller o compraventa, 19 €/mes te dan
             capacidad, escaparate y estadísticas sin comisiones por venta.
           </p>
           <div className="mt-5 flex flex-wrap gap-3">

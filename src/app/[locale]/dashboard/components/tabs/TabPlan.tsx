@@ -56,7 +56,7 @@ type Estado = {
 
 const NOMBRE_TIPO: Record<string, string> = {
   particular: 'Particular',
-  camperizador: 'Camperizador',
+  camperizador: 'Taller',
   profesional: 'Profesional',
 }
 

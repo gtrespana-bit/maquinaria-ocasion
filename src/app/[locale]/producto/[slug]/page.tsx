@@ -318,7 +318,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   // Año y kilometraje del JSONB (claves canónicas o históricas):
   // enriquecen el título para CTR en SERP. El usuario busca
-  // "Ducato camper 2019 95.000 km", no solo "Ducato camper".
+  // "CAT 320 2019 9.800 horas", no solo "CAT 320".
   const specs = (producto.especificaciones || {}) as Record<string, unknown>
   const anioTexto = String(
     specs['Año de matriculación'] || specs['Año'] || specs['Ano de matriculación'] || '',
@@ -575,7 +575,7 @@ export default async function ProductoPage({ params }: Props) {
                 href={`/${ciudadSEO.slug}`}
                 className="text-brand-primary font-semibold hover:underline"
               >
-                Ver más furgonetas camper y autocaravanas de ocasión en {ciudadSEO.nombre}
+                Ver más maquinaria de ocasión en {ciudadSEO.nombre}
               </LocalLink>
             </li>
           )}

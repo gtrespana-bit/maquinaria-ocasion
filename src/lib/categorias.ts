@@ -63,7 +63,7 @@ export interface CatConfig {
 // `productos.categoria_id`, auto-creando la fila si falta). La navegación de
 // la UI es familias → tipos (subcategorías) → marca/modelo.
 
-export interface FamiliaCamper {
+export interface Familia {
   /** Clave estable para i18n y keys de React (y clave de `categoriasData`). */
   key: string
   /** Etiqueta por defecto (es-ES); la UI puede traducirla vía `familias.<key>.label`. */
@@ -73,7 +73,7 @@ export interface FamiliaCamper {
   subs: SubSlug[]
 }
 
-export const FAMILIAS: FamiliaCamper[] = [
+export const FAMILIAS: Familia[] = [
   {
     key: 'agricola',
     label: 'Maquinaria agrícola',
@@ -95,7 +95,7 @@ export const FAMILIAS: FamiliaCamper[] = [
 ]
 
 /** Familia a la que pertenece un tipo (slug de subcategoría). */
-export function familiaDeSub(slug: string): FamiliaCamper | undefined {
+export function familiaDeSub(slug: string): Familia | undefined {
   return FAMILIAS.find(f => f.subs.includes(slug as SubSlug))
 }
 
@@ -121,7 +121,7 @@ export const OPCIONES_COMBUSTIBLE = [
 
 export const OPCIONES_SI_NO = ['Sí', 'No'] as const
 
-/** Documentación: sustituye al sello de homologación camper. */
+/** Documentación: sustituye al antiguo sello de homologación. */
 export const OPCIONES_DOCUMENTACION = [
   'Factura y libro de instrucciones',
   'Declaración CE / ficha técnica',
@@ -443,7 +443,7 @@ export function resolverCampos(sub: CatSub | undefined): CatField[] {
 
 /**
  * Bloques de la ficha técnica de la página de producto. Cuatro bloques:
- * técnica, estado, documentación y logística. Las claves camper legadas
+ * técnica, estado, documentación y logística. Las claves legadas
  * siguen listadas para que los anuncios demo antiguos mantengan su ficha
  * agrupada (la demo se elimina en la Fase 4).
  */
@@ -475,7 +475,7 @@ export const GRUPOS_FICHA_TECNICA: { titulo: string; icon: string; campos: strin
       'Altura máx. trabajo (m)',
       'Largo de espada (cm)',
       'Número de puestos',
-      // Claves legadas de anuncios camper antiguos (demo)
+      // Claves legadas de anuncios antiguos (demo)
       'Kilómetros',
       'Kilometraje (km)',
       'Año de matriculación',

@@ -181,7 +181,7 @@ export default function BuscarClient({ searchParams: searchParamsPromise }: { se
   // cosa que venga en la URL se ignora para no romper la búsqueda.
   const vendedor = tipoVendedorFiltro(searchParams?.[FILTRO_VENDEDOR_PARAM]) || ''
 
-  // Filtros técnicos camper (los mismos del catálogo): opciones + rangos.
+  // Filtros técnicos del catálogo (mismo registro): opciones + rangos.
   // Se memoizan por la referencia de `searchParams`: `use()` devuelve la misma
   // referencia mientras no cambie la query string, así que el efecto no se
   // reejecuta en bucle por identidades nuevas.
@@ -309,7 +309,7 @@ export default function BuscarClient({ searchParams: searchParamsPromise }: { se
         }
 
         // Filtros compartidos con el catálogo (subcategoría, marca, q,
-        // ubicación, precio, condición, ficha técnica camper y rangos).
+        // ubicación, precio, condición, ficha técnica y rangos).
         const filtros: Record<string, unknown> = {
           subcategoria,
           marca,
@@ -376,8 +376,8 @@ export default function BuscarClient({ searchParams: searchParamsPromise }: { se
               Resultados de búsqueda para &ldquo;{query}&rdquo; en España
             </h1>
             <p className="text-gray-600">
-              Furgonetas camper y autocaravanas de ocasión relacionadas con &ldquo;{query}&rdquo; en maquinariaocasion.online.
-              Anuncios de particulares, camperizadores y profesionales de toda España.
+              Maquinaria y herramienta de ocasión relacionada con &ldquo;{query}&rdquo; en maquinariaocasion.online.
+              Anuncios de particulares, talleres y profesionales de toda España.
             </p>
           </>
         ) : categoria ? (
@@ -393,21 +393,21 @@ export default function BuscarClient({ searchParams: searchParamsPromise }: { se
         ) : ubicacionCiudad || ubicacionEstado ? (
           <>
             <h1 className="text-2xl font-bold text-gray-900 mb-2">
-              Campers y autocaravanas de ocasión en {ubicacionCiudad || ubicacionEstado}, España
+              Maquinaria de ocasión en {ubicacionCiudad || ubicacionEstado}, España
             </h1>
             <p className="text-gray-600">
-              Compra y vende furgonetas camper y autocaravanas en {ubicacionCiudad || ubicacionEstado}.
+              Compra y vende maquinaria y herramienta en {ubicacionCiudad || ubicacionEstado}.
               Anuncios con ficha técnica, contacto directo con el vendedor y publicación gratuita.
             </p>
           </>
         ) : (
           <>
             <h1 className="text-2xl font-bold text-gray-900 mb-2">
-              Buscar furgonetas camper y autocaravanas de ocasión
+              Buscar maquinaria y herramienta de ocasión
             </h1>
             <p className="text-gray-600">
-              Busca por marca, tipo o provincia entre las furgonetas camper y autocaravanas de ocasión
-              publicadas en España. El marketplace especializado en el mundo camper.
+              Busca por marca, tipo o provincia entre la maquinaria y herramienta de ocasión
+              publicadas en España. El marketplace especializado en la maquinaria.
             </p>
           </>
         )}
@@ -433,8 +433,8 @@ export default function BuscarClient({ searchParams: searchParamsPromise }: { se
             </div>
 
             <div className="space-y-4">
-              {/* Tipo de vehículo: 7 tipos agrupados por familia (Campers /
-                  Autocaravanas / Overland). El buscador es 100% camper, así
+              {/* Tipo: familias y subcategorías de la vertical (agrícola / obra /
+                  herramientas). El buscador usa el mismo registro que el catálogo, así
                   que no hay selector de categoría. */}
               <div>
                 <label className="block text-sm font-bold text-gray-900 mb-1.5">{tc('typeLabel')}</label>
@@ -523,7 +523,7 @@ export default function BuscarClient({ searchParams: searchParamsPromise }: { se
                 </div>
               </div>
 
-              {/* ¿Quién vende? (Fase 3): particulares, camperizadores o pros. */}
+              {/* ¿Quién vende? (Fase 3): particulares, talleres o profesionales. */}
               <div className="mt-4 pt-4 border-t">
                 <label className="block text-sm font-bold text-gray-900 mb-1.5">{tc('whoSells')}</label>
                 <div className="flex flex-wrap gap-1.5">
@@ -548,7 +548,7 @@ export default function BuscarClient({ searchParams: searchParamsPromise }: { se
                 </div>
               </div>
 
-              {/* Ficha técnica camper: el mismo panel que usa /catalogo, con las
+              {/* Ficha técnica: el mismo panel que usa /catalogo, con las
                   mismas opciones del formulario de publicación. */}
               <div className="mt-4 pt-4 border-t">
                 <FiltrosTecnicosPanel

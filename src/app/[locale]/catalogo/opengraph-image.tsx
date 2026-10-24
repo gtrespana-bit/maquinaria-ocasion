@@ -1,5 +1,5 @@
 import { ImageResponse } from 'next/og'
-import { TODAS_LAS_SUBS } from '@/lib/categorias'
+import { TODAS_LAS_SUBS, familiaDeSub } from '@/lib/categorias'
 import { formatPrecio } from '@/lib/precio'
 
 export const runtime = 'edge'
@@ -19,35 +19,33 @@ export const contentType = 'image/png'
  */
 const SUBS = TODAS_LAS_SUBS
 
-// Paleta por familia camper: verde para furgonetas, naranja para autocaravanas,
-// grafito para overland. Se elige por el slug de la subcategoría.
-const COLORES: Record<string, string> = {
-  'gran-volumen': '#166534',
-  'camper-mediana': '#15803D',
-  minicamper: '#16A34A',
-  perfilada: '#C2410C',
-  capuchina: '#EA580C',
-  integral: '#9A3412',
-  overland: '#1E293B',
+// Paleta por familia: verde para agrícola, grafito para obra, ámbar para
+// herramienta. Se elige por la familia de la subcategoría (slug).
+const FAMILIA_COLOR: Record<string, string> = {
+  agricola: '#166534',
+  obra: '#1E293B',
+  herramientas: '#B45309',
 }
-
-const POR_DEFECTO = { name: 'Furgonetas camper y autocaravanas', icon: '🚐', color: '#0F172A' }
+const COLOR_POR_DEFECTO = '#0F172A'
+const ICONO_POR_DEFECTO = '🚜'
+const POR_DEFECTO = { name: 'Maquinaria y herramienta', icon: ICONO_POR_DEFECTO, color: COLOR_POR_DEFECTO }
 
 function resolverCategoria(param?: string) {
   if (!param) return POR_DEFECTO
   const sub = SUBS.find((s) => s.slug === param || s.label.toLowerCase() === param.toLowerCase())
   if (!sub) return POR_DEFECTO
+  const familia = familiaDeSub(sub.slug)
   return {
     name: sub.label,
-    icon: sub.icon || '🚐',
-    color: COLORES[sub.slug] || POR_DEFECTO.color,
+    icon: sub.icon || ICONO_POR_DEFECTO,
+    color: FAMILIA_COLOR[familia?.key ?? ''] || COLOR_POR_DEFECTO,
   }
 }
 
 export default async function Image({ searchParams }: { searchParams?: { [key: string]: string | string[] | undefined } }) {
   const param = typeof searchParams?.subcategoria === 'string' ? searchParams.subcategoria : undefined
   const cat = resolverCategoria(param)
-  const rangoPrecio = `De ${formatPrecio(20000)} a ${formatPrecio(80000)}`
+  const rangoPrecio = `De ${formatPrecio(12000)} a ${formatPrecio(250000)}+`
 
   return new ImageResponse(
     (

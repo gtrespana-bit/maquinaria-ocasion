@@ -16,18 +16,18 @@ import {
 const SITIO = 'https://maquinariaocasion.online'
 
 export const metadata: Metadata = {
-  title: 'Marcas de campers y autocaravanas',
+  title: 'Marcas de maquinaria y herramienta',
   description:
-    'Marcas y modelos de furgonetas camper y autocaravanas: Fiat, Volkswagen, Mercedes, Benimar, Hymer y Adria. Encuentra tu camper de ocasión.',
+    'Marcas y modelos de maquinaria: John Deere, Kubota, CAT, Komatsu, Stihl, Makita y más. Encuentra tu máquina de ocasión.',
   keywords: [
-    'marcas de campers',
-    'marcas de autocaravanas',
-    'modelos furgonetas camper',
-    'Fiat Ducato camper',
-    'Volkswagen California',
-    'Benimar autocaravana',
-    'Hymer autocaravana',
-    'marcas caravanas',
+    'marcas de maquinaria',
+    'marcas de excavadoras',
+    'modelos de tractores',
+    'John Deere tractor',
+    'CAT excavadora',
+    'Kubota maquinaria',
+    'Stihl herramienta',
+    'maquinaria de ocasión',
   ],
   alternates: {
     canonical: `${SITIO}/marcas`,
@@ -37,9 +37,9 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: 'Marcas y modelos de campers y autocaravanas',
+    title: 'Marcas y modelos de maquinaria',
     description:
-      'Catálogo completo de fabricantes y modelos camper organizado por marca y tipo de vehículo: gran volumen, camper mediana, minicamper, perfiladas, capuchinas, integrales y 4x4.',
+      'Catálogo completo de fabricantes y modelos de maquinaria organizado por marca y subcategoría: tractores, cosechadoras, excavadoras, cargadores, plataformas y herramienta profesional.',
     url: `${SITIO}/marcas`,
     siteName: 'MaquinariaOcasión',
     locale: 'es_ES',
@@ -99,8 +99,8 @@ export default async function MarcasPage({ params }: { params: Promise<{ locale:
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
     '@id': SITIO + '/marcas#collection',
-    name: 'Marcas y modelos de campers y autocaravanas',
-    description: 'Catálogo de fabricantes y modelos aptos para camperizar, autocaravanas y 4x4 overland.',
+    name: 'Marcas y modelos de maquinaria',
+    description: 'Catálogo de fabricantes y modelos de maquinaria agrícola, de obra y herramienta profesional.',
     url: SITIO + '/marcas',
     isPartOf: { '@id': SITIO + '/#website' },
     breadcrumb: { '@id': SITIO + '/marcas#breadcrumb' },
@@ -109,8 +109,8 @@ export default async function MarcasPage({ params }: { params: Promise<{ locale:
     '@context': 'https://schema.org',
     '@type': 'ItemList',
     '@id': SITIO + '/marcas#itemlist',
-    name: 'Marcas y modelos de campers y autocaravanas',
-    description: 'Catálogo de fabricantes y modelos aptos para camperizar, autocaravanas y 4x4 overland.',
+    name: 'Marcas y modelos de maquinaria',
+    description: 'Catálogo de fabricantes y modelos de maquinaria agrícola, de obra y herramienta profesional.',
     numberOfItems: MARCAS_MODELOS.length,
     itemListElement: MARCAS_MODELOS.slice(0, 30).map((m, i) => ({
       '@type': 'ListItem',
@@ -123,20 +123,20 @@ export default async function MarcasPage({ params }: { params: Promise<{ locale:
   // que Google muestra en "La gente también pregunta".
   const faqs = [
     {
-      pregunta: '¿Qué marcas de furgonetas camper hay en España?',
-      respuesta: 'Las bases camper más habituales son Fiat Ducato, Citroën Jumper, Peugeot Boxer, Renault Master, Volkswagen Crafter, Mercedes-Benz Sprinter, Ford Transit, MAN TGE y Opel Movano (gran volumen); Volkswagen Transporter/California, Mercedes Vito y Marco Polo, Ford Transit Custom, Renault Trafic y Opel Vivaro (camper mediana); y Citroën Berlingo, Peugeot Rifter, VW Caddy y Fiat Doblò (minicamper). En autocaravanas, los carroceros habituales son Adria, Hymer, Challenger, Laika, Swift, Roller Team, Benimar, PIK y Autocamper.',
+      pregunta: '¿Qué marcas de maquinaria hay en España?',
+      respuesta: 'Depende de la familia: en agrícola destacan John Deere, New Holland, Kubota, Case IH, Massey Ferguson, Fendt y Claas (cosechadoras, Krone y Ponsse en forraje); en obra, Caterpillar, Komatsu, Volvo, Hitachi y JCB (excavadoras), Bobcat, Manitou y Merlo (cargadores y manipuladores), Bomag y Hamm (compactación) y Genie y Haulotte (plataformas); en herramienta, Makita, Bosch, DeWalt, Milwaukee, Stihl, Husqvarna, Bahco y Knipex, con Himoinsa, Honda y Cummins en generadores.',
     },
     {
-      pregunta: '¿Qué marca de camper es más fiable?',
-      respuesta: 'No hay una marca universalmente mejor: la fiabilidad depende del motor y chasis concretos (año, kilómetros, mantenimiento), no del logotipo. Como regla general, los diésel 2.0/2.2 MultiJet (Ducato, Boxer, Jumper), EcoBlue (Transit) y OM651 (Sprinter) tienen red de talleres amplia y recambios accesibles. Antes de comprar, revisa el historial de mantenimiento y el estado de la camperización, no solo la marca.',
+      pregunta: '¿Qué marca de maquinaria es más fiable?',
+      respuesta: 'No hay una marca universalmente mejor: la fiabilidad depende de la máquina concreta (horas de uso, mantenimiento, estado del sistema hidráulico), no del logotipo. Como regla general, las marcas con red de talleres y recambios amplia en España —John Deere, Kubota, CAT, Komatsu o Stihl— facilitan la reparación y sostienen la reventa. Antes de comprar, revisa el historial de mantenimiento y las horas certificadas, no solo la marca.',
     },
     {
-      pregunta: '¿Hay marcas de autocaravanas españolas?',
-      respuesta: 'Sí: Benimar, PIK y Autocamper son carroceros españoles con larga trayectoria, y varias marcas internacionales (Adria, Hymer, Challenger, Laika, Swift, Roller Team) tienen amplia red de distribución y servicio en España. En el catálogo puedes filtrar por marca y ver los precios reales de cada modelo en su página de mercado.',
+      pregunta: '¿Marcas europeas o asiáticas: qué conviene?',
+      respuesta: 'Ambas tienen mercado en España. Las europeas (John Deere, Fendt, Claas, CAT, Volvo) suelen tener más red de servicio y mejor reventa; las asiáticas (Kubota, Hitachi, Doosan, Sany, Hyundai) ofrecen buen equipamiento por precio. En herramienta eléctrica, japonesas (Makita, HiKoki) y alemanas (Bosch, Metabo) conviven con americanas (DeWalt, Milwaukee). Filtra por marca en el catálogo y compara siempre modelos de la misma subcategoría.',
     },
     {
-      pregunta: '¿VW California o Ducato camperizado?',
-      respuesta: 'Son segmentos distintos: la VW California es una camper mediana de fábrica (calidad de construcción y reventa altas, precio superior, espacio limitado), mientras que un Ducato camperizado es gran volumen (más espacio, baño y cama fija a mejor precio por metro, pero más grande para ciudad). Para parejas y uso urbano, California; para familias y viajes largos, Ducato/Boxer/Jumper camperizados.',
+      pregunta: '¿Excavadora de oruga o de rueda?',
+      respuesta: 'Son perfiles distintos: la de oruga trabaja mejor en terreno blando y obras grandes, con más tracción y estabilidad; la de rueda se desplaza rápido por vía pública sin dañar el firme y es la habitual en urbano y servidumbres. Fíjate en las horas de uso, el estado de cadenas o neumáticos y el sistema hidráulico, y elige según el terreno donde vayas a trabajarla.',
     },
     {
       pregunta: '¿Todas estas marcas se venden de segunda mano en MaquinariaOcasión?',
@@ -144,7 +144,7 @@ export default async function MarcasPage({ params }: { params: Promise<{ locale:
     },
     {
       pregunta: '¿Dónde veo el precio real de un modelo concreto?',
-      respuesta: 'En la página de cada modelo (/modelo/[modelo]): mostramos el precio mediano, el rango P25–P75 y el precio por tramo de antigüedad, calculados con los anuncios activos de MaquinariaOcasión. Es la referencia más útil antes de negociar una compra o de publicar tu propia camper.',
+      respuesta: 'En la página de cada modelo (/modelo/[modelo]): mostramos el precio mediano, el rango P25–P75 y el precio por tramo de antigüedad, calculados con los anuncios activos de MaquinariaOcasión. Es la referencia más útil antes de negociar una compra o de publicar tu propia maquinaria.',
     },
   ]
   const faqJsonLd = {

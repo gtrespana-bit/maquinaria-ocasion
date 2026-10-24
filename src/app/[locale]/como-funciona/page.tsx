@@ -6,8 +6,8 @@ import LocalLink from '@/components/LocalLink'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 
 export const metadata: Metadata = {
-  title: 'Cómo funciona el marketplace camper',
-  description: 'Publica gratis tu camper en cuatro pasos y contacta directamente con compradores y vendedores en toda España, sin comisiones por venta.',
+  title: 'Cómo funciona el marketplace de maquinaria',
+  description: 'Publica gratis tu maquinaria en cuatro pasos y contacta directamente con compradores y vendedores en toda España, sin comisiones por venta.',
   alternates: alternatesSeo('/como-funciona'),
 }
 
@@ -76,7 +76,7 @@ export default async function ComoFuncionaPage({ params }: { params: Promise<{ l
     { pregunta: t('faq6q'), respuesta: t('faq6a') },
   ]
 
-  const camperItems = ['razon1','razon2','razon3','razon4','razon5'] as const
+  const razonItems = ['razon1','razon2','razon3','razon4','razon5'] as const
   const othersItems = ['others1','others2','others3','others4','others5'] as const
 
   return (
@@ -113,7 +113,7 @@ export default async function ComoFuncionaPage({ params }: { params: Promise<{ l
               <div className="bg-green-50 border border-green-200 rounded-xl p-6">
                 <h3 className="font-bold text-green-800 text-lg mb-3">✅ {t('razonTitle')}</h3>
                 <ul className="space-y-2 text-sm text-green-700">
-                  {camperItems.map(k => (
+                  {razonItems.map(k => (
                     <li key={k} className="flex items-center gap-2"><CheckCircle size={14} /> {t(k)}</li>
                   ))}
                 </ul>

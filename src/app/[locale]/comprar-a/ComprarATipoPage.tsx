@@ -58,13 +58,13 @@ export async function metadataParaTipo(locale: string, slug: SlugTipo): Promise<
       url: canonical,
       type: 'website',
       siteName: 'MaquinariaOcasión',
-      images: [{ url: BASE_URL + '/api/og/catalog?categoria=camper', width: 1200, height: 630, alt: t(`${tipoKey}.metaTitle`) }],
+      images: [{ url: BASE_URL + '/api/og/catalog?categoria=agricola', width: 1200, height: 630, alt: t(`${tipoKey}.metaTitle`) }],
     },
     twitter: {
       card: 'summary_large_image',
       title: t(`${tipoKey}.metaTitle`),
       description,
-      images: [BASE_URL + '/api/og/catalog?categoria=camper'],
+      images: [BASE_URL + '/api/og/catalog?categoria=agricola'],
     },
   }
 }

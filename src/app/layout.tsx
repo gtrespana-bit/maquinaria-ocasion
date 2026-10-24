@@ -185,7 +185,7 @@ export default async function RootLayout({
                   url: 'https://maquinariaocasion.online/',
                   inLanguage: 'es-ES',
                   description:
-                    'Marketplace especializado en furgonetas camper y autocaravanas de ocasión en España.',
+                    'Marketplace especializado en maquinaria y herramienta de ocasión en España.',
                   publisher: { '@id': 'https://maquinariaocasion.online/#organization' },
                   potentialAction: {
                     '@type': 'SearchAction',

@@ -53,8 +53,8 @@ function getPosts(): Post[] {
 }
 
 export const metadata: Metadata = {
-  title: 'Guías para comprar camper y autocaravana',
-  description: 'Guías para comprar camper y autocaravana de ocasión: precios, camperización, homologación y consejos para elegir en España.',
+  title: 'Guías de compra y venta de maquinaria',
+  description: 'Guías para comprar y vender maquinaria de ocasión: precios, horas de uso, documentación y consejos para elegir en España.',
   alternates: {
     canonical: 'https://maquinariaocasion.online/blog',
     languages: {
@@ -66,8 +66,8 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: 'Guías para comprar camper y autocaravana',
-    description: 'Guías de compra de campers y autocaravanas: precios, homologación y consejos para elegir.',
+    title: 'Guías de compra y venta de maquinaria',
+    description: 'Guías de compra de maquinaria: precios, documentación y consejos para elegir.',
     url: 'https://maquinariaocasion.online/blog',
     siteName: 'MaquinariaOcasión',
     type: 'website',

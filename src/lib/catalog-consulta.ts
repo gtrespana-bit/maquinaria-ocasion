@@ -24,7 +24,7 @@ import {
 } from './filtros-tecnicos'
 
 /**
- * Filtro "¿Quién vende?" (Fase 3): particulares, camperizadores o pros.
+ * Filtro "¿Quién vende?" (Fase 3): particulares, talleres o pros.
  * El valor viaja en la URL (`?vendedor=particular`) y se valida aquí para que
  * un valor inventado no rompa la query ni filtre de más.
  */
@@ -91,7 +91,7 @@ export function aplicarFiltrosBase<T extends QueryCatalogo>(
 
   if (filters.condicion) q = q.eq('estado', filters.condicion)
 
-  // Ficha técnica camper: contención JSONB + verificación + rangos numéricos.
+  // Ficha técnica: contención JSONB + verificación + rangos numéricos.
   q = aplicarFiltrosCatalogo(q, filters)
   return q as T
 }

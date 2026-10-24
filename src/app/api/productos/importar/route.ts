@@ -24,6 +24,7 @@ import { verificarContenido } from '@/lib/moderacion'
 import { revalidarListadosPublicos } from '@/lib/revalidar'
 import { cupoDeUsuario, estadoPlanUsuario, sbAdmin } from '@/lib/planes-servidor'
 import { parseCsv, validarImportacion, MAX_FILAS } from '@/lib/importar-csv'
+import { categoriaDeSubcategoria } from '@/lib/categorias'
 
 export const dynamic = 'force-dynamic'
 export const maxDuration = 60
@@ -83,7 +84,7 @@ export async function POST(req: NextRequest) {
         ok: false,
         codigo: 'PLAN',
         error:
-          'La importación desde CSV está incluida en el plan Profesional. En el plan gratuito puedes publicar tu camper desde el formulario.',
+          'La importación desde CSV está incluida en el plan Profesional. En el plan gratuito puedes publicar tu maquinaria desde el formulario.',
       },
       { status: 403 },
     )
@@ -160,7 +161,14 @@ export async function POST(req: NextRequest) {
   }
 
   const sb = sbAdmin()
-  const categoriaId = await resolverCategoriaId(sb, 'camper')
+  // Fase 4: la categoría se deriva de la subcategoría (columna Tipo) del CSV
+  // con la taxonomía de familias; lo que no encaje cae en la categoría
+  // histórica 'camper' (compatibilidad con CSV antiguos).
+  const idLegacyCamper = await resolverCategoriaId(sb, 'camper')
+  const idsPorFamilia: Record<string, number | null> = {}
+  for (const nombreFamilia of ['agricola', 'obra', 'herramientas']) {
+    idsPorFamilia[nombreFamilia] = await resolverCategoriaId(sb, nombreFamilia)
+  }
 
   const errores: { linea: number; error: string }[] = []
   const insertados: { id: string; slug: string; titulo: string }[] = []
@@ -188,7 +196,9 @@ export async function POST(req: NextRequest) {
           imagenes: f.imagenes,
           imagen_url: f.imagenes[0] || null,
           especificaciones: f.especificaciones,
-          categoria_id: categoriaId,
+          categoria_id:
+            idsPorFamilia[categoriaDeSubcategoria(f.subcategoria ?? '') ?? ''] ??
+            idLegacyCamper,
           metodos_contacto: {},
           activo: true,
           destacado: false,

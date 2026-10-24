@@ -1,7 +1,7 @@
 /**
  * Planes profesionales, cupos y ventajas.
  *
- * Particular: 1 anuncio activo (una camper). Quien tiene stock se identifica
+ * Particular: 1 anuncio activo (una máquina). Quien tiene stock se identifica
  * como profesional y paga un pack, o usa el mes de prueba si el admin lo tiene
  * encendido.
  */
@@ -21,8 +21,8 @@ export const PLANES_PRO = [
     cupo: 15 as number | null,
     fotos: 20,
     destacadosMes: 5,
-    eslogan: 'Para quien vende campers de forma habitual',
-    paraQuien: 'Compraventas, camperizadores y talleres',
+    eslogan: 'Para quien vende maquinaria de forma habitual',
+    paraQuien: 'Compraventas, talleres y profesionales',
     destacado: true,
     incluido: [
       '15 anuncios activos a la vez',
@@ -59,8 +59,8 @@ export const PLAN_GRATIS = {
   cupo: 1 as number | null,
   fotos: 10,
   destacadosMes: 0,
-  eslogan: 'Publica tu camper',
-  paraQuien: 'Una camper, sin comisiones por venta',
+  eslogan: 'Publica tu maquinaria',
+  paraQuien: 'Una máquina, sin comisiones por venta',
   incluido: [
     '1 anuncio activo',
     '10 fotos por anuncio',
@@ -363,7 +363,7 @@ export function resumenCupo(opts: {
 
 export function mensajeCupoLleno(resumen: ReturnType<typeof resumenCupo>): string {
   if (resumen.tipo === 'particular') {
-    return 'Como particular solo puedes tener 1 anuncio activo (una camper). Márcalo como vendido o páusalo para publicar otra. Si tienes stock, contrata un pack: al confirmarse el pago tu cuenta pasa a profesional automáticamente.'
+    return 'Como particular solo puedes tener 1 anuncio activo (una máquina). Márcalo como vendido o páusalo para publicar otra. Si tienes stock, contrata un pack: al confirmarse el pago tu cuenta pasa a profesional automáticamente.'
   }
   if (resumen.plan === 'gratis' && !resumen.trial) {
     return 'Sin plan Profesional el cupo es de 1 anuncio activo, igual que un particular. Contrata el plan Profesional o canjea un cupón.'

@@ -197,7 +197,7 @@ export default function CatalogoClient({ initialProducts = [], initialCount = 0 
   // Se memoiza con el string de la query (primitivo) y no con el objeto de
   // `useSearchParams`: si su identidad cambiase entre renders, los efectos que
   // dependen de los filtros se reejecutarían en bucle.
-  // Filtro "¿Quién vende?" (Fase 3): particular, camperizador o profesional.
+  // Filtro "¿Quién vende?" (Fase 3): particular, taller o profesional.
   const vendedor = searchParams.get(FILTRO_VENDEDOR_PARAM) || ''
 
   const queryString = searchParams.toString()

@@ -360,7 +360,7 @@ export default function AdminAudiencia({ notify }: { notify: (msg: string) => vo
           icon={UserPlus}
           accent="bg-amber-50 text-amber-600"
           trend={data ? { value: `${(data.variacion.registros ?? 0) >= 0 ? '+' : ''}${data.variacion.registros ?? 0}%`, positive: (data.variacion.registros ?? 0) >= 0 } : undefined}
-          helper={`${formatNumber(actividad.nuevosProfesionales)} profesionales o camperizadores`}
+          helper={`${formatNumber(actividad.nuevosProfesionales)} profesionales o talleres`}
         />
         <StatCard
           label="Anuncios publicados"

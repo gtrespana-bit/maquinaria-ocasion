@@ -1,5 +1,5 @@
 /**
- * Reglas de la tienda de profesionales y camperizadores.
+ * Reglas de la tienda de profesionales y talleres.
  *
  * Fuente única: la usan el formulario del panel, la página pública
  * `/tienda/[slug]`, el listado `/tiendas` y el sitemap. Si esto diverge,
@@ -69,7 +69,7 @@ export interface DatosTienda {
 }
 
 /**
- * Normaliza la web que escribe el vendedor. Acepta "furgocamper.es" y devuelve
+ * Normaliza la web que escribe el vendedor. Acepta "maquinarialevante.es" y devuelve
  * una URL absoluta; rechaza `javascript:` y demás esquemas peligrosos, porque
  * este valor acaba en un `href` de una página pública.
  */

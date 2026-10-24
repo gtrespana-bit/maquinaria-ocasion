@@ -8,7 +8,7 @@ import {
 import { LIMITES_TIENDA, slugify, validarTienda, puedeTenerTienda } from '@/lib/tiendas'
 
 /**
- * Pestaña «Mi tienda»: el escaparate del camperizador o profesional.
+ * Pestaña «Mi tienda»: el escaparate del taller o profesional.
  *
  * El objetivo de negocio es que el vendedor recurrente tenga una URL propia
  * que pueda pegar en su web y en su Instagram. Por eso la dirección se enseña
@@ -131,7 +131,7 @@ export default function TabTienda() {
         <Store size={36} className="mx-auto text-gray-300 mb-3" />
         <h3 className="font-bold text-gray-900 mb-1">La tienda es para vendedores profesionales</h3>
         <p className="text-sm text-gray-600 max-w-md mx-auto mb-4">
-          Si eres camperizador o vendes vehículos de forma profesional, cambia tu tipo de vendedor
+          Si eres taller o vendes maquinaria de forma profesional, cambia tu tipo de vendedor
           en tu perfil y podrás abrir una página propia con todo tu stock.
         </p>
         <LocalLink
@@ -248,7 +248,7 @@ export default function TabTienda() {
             onChange={e => set('nombre', e.target.value)}
             maxLength={120}
             className="w-full px-3 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-brand-accent/40"
-            placeholder="Furgocamper Valencia"
+            placeholder="Maquinaria Levante"
           />
         </Campo>
 
@@ -283,7 +283,7 @@ export default function TabTienda() {
             maxLength={LIMITES_TIENDA.descripcion}
             rows={5}
             className="w-full px-3 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-brand-accent/40"
-            placeholder="Camperizamos furgonetas desde 2011 en Valencia. Homologación incluida y 2 años de garantía en la instalación eléctrica."
+            placeholder="Reparamos y revendemos maquinaria en Valencia desde 2011. Revisión completa incluida y 12 meses de garantía en la reparación."
           />
         </Campo>
 
@@ -296,7 +296,7 @@ export default function TabTienda() {
                 value={form.web}
                 onChange={e => set('web', e.target.value)}
                 className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-brand-accent/40"
-                placeholder="furgocamper.es"
+                placeholder="maquinarialevante.es"
               />
             </div>
           </Campo>

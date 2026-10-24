@@ -122,7 +122,7 @@ export default function TiendaClient({
               </div>
 
               <p className="text-sm text-gray-500 mb-3">
-                {esCamperizador ? 'Taller de camperización' : 'Vendedor profesional'}
+                {esCamperizador ? 'Taller de maquinaria' : 'Vendedor profesional'}
                 {anoAlta ? ` · En MaquinariaOcasión desde ${anoAlta}` : ''}
               </p>
 

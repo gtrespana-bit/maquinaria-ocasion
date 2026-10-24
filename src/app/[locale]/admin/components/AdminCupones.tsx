@@ -212,7 +212,7 @@ export default function AdminCupones({ notify }: { notify: (msg: string) => void
       <Card>
         <h3 className="font-bold text-gray-900 mb-1">Prueba gratuita (nuevas altas)</h3>
         <p className="text-sm text-gray-500 mb-4">
-          Si está activo, cada profesional/camperizador nuevo tiene {diasGratis} días con el plan Profesional
+          Si está activo, cada profesional o taller nuevo tiene {diasGratis} días con el plan Profesional
           desde el alta (o desde que un particular se pasa a profesional). Apagarlo deja de conceder
           pruebas nuevas, pero <strong>no corta</strong> las que ya están en curso: sus fechas están
           guardadas en el perfil. Al terminar hay 7 días de gracia.
@@ -338,7 +338,7 @@ export default function AdminCupones({ notify }: { notify: (msg: string) => void
                       {p.diasRestantes != null ? `${p.diasRestantes} días` : '—'}
                     </td>
                     <td className="text-xs text-gray-500">
-                      {p.tipoVendedor === 'camperizador' ? 'Camperizador' : p.tipoVendedor === 'profesional' ? 'Profesional' : 'Particular'}
+                      {p.tipoVendedor === 'camperizador' ? 'Taller' : p.tipoVendedor === 'profesional' ? 'Profesional' : 'Particular'}
                     </td>
                     <td className="text-right">
                       <Button

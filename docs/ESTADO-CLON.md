@@ -92,16 +92,20 @@ marcas asignadas por subcategoría vía `MarcaModelo.aptoPara`.
       filtros-tecnicos, catalog-consulta, productos-editar, importar-csv,
       seo-landings, categorias-seo
 
-## Fase 4 — Marca, textos y SEO (PENDIENTE)
+## Fase 4 — Marca, textos y SEO (HECHA — PR #3)
 
-- [ ] Logo e iconos definitivos (sustituir los placeholder)
-- [ ] `og-image.webp`, `pwa-tagline.webp` e imágenes de home
-- [ ] Diccionarios `src/i18n/dictionaries/{es,en}.json`
-- [ ] `textos-legales.ts`: revisión legal de la actividad
-- [ ] `categorias-seo.ts` y `ubicaciones-seo.ts`: copy de la nueva vertical
-- [ ] Search Console + sitemaps del dominio nuevo
-- [ ] **No reutilizar copy de camperocasion** (contenido duplicado entre
-      dominios propios penaliza a los dos)
+- [x] Logo e iconos definitivos (kit de marca en `tools/clon-vertical/plantillas/`
+      sincronizado con `public/`: logo, favicon, icon-192/512, apple-touch)
+- [x] `og-image.webp`, `pwa-tagline.webp` (nuevo) e imágenes de home
+      (`hero.jpg`, `placeholder-product.webp`)
+- [x] Diccionarios `src/i18n/dictionaries/{es,en}.json` completos y sincronizados
+- [x] `textos-legales.ts`: revisión legal de la actividad (reserva con señal y
+      verificación documental; fuera inspecciones/gestoría de la fase 2)
+- [x] `categorias-seo.ts` y `ubicaciones-seo.ts`: copy de la nueva vertical
+- [x] Copy visible de portada y de todas las páginas (camper → maquinaria, es/en),
+      con la regla «adecuar, no borrar»: valores de DB (`camperizador`) intactos
+- [x] **No reutilizar copy de camperocasion** (copy original de maquinaria)
+- [ ] Search Console + sitemaps del dominio nuevo → **lado del usuario**
 
 ## Fase 5 — Contenido y lanzamiento (PENDIENTE)
 

@@ -588,7 +588,7 @@ export default function PlanesClient() {
           <LocalLink href="/register" className="font-semibold underline">
             Créala gratis
           </LocalLink>{' '}
-          y publica tu primera camper sin pagar nada.
+          y publica tu primer anuncio sin pagar nada.
         </p>
       )}
 

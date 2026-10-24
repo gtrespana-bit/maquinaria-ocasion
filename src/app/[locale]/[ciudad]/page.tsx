@@ -14,19 +14,6 @@ type Props = {
   params: Promise<{ ciudad: string; locale: string }>
 }
 
-function slugToCategoriaParam(slug: string): string {
-  const map: Record<string,string> = {
-    'gran-volumen': 'Gran Volumen',
-    'camper-mediana': 'Camper Mediana / Compacta',
-    'minicamper': 'Minicamper',
-    'perfilada': 'Autocaravana Perfilada',
-    'capuchina': 'Autocaravana Capuchina',
-    'integral': 'Autocaravana Integral',
-    'overland': '4x4 Overland',
-  }
-  return map[slug] || 'camper'
-}
-
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { ciudad, locale } = await params
   const ciudadSEO = getCiudadBySlug(ciudad)
@@ -44,7 +31,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   // OG dinámica por ciudad (usa endpoint existente con param categoria simulando ciudad)
   // Para provincia usamos el OG genérico pero con URL canónica correcta para CTR en WhatsApp
-  const ogImage = `https://maquinariaocasion.online/api/og/catalog?categoria=camper`
+  const ogImage = `https://maquinariaocasion.online/api/og/catalog?categoria=agricola`
 
   return {
     title: tituloSeo(title),
@@ -151,7 +138,7 @@ export default async function CiudadPage({ params }: Props) {
     description: ciudadSEO.descripcion,
     url: cityUrl,
     // Coordenadas de la capital provincial: señalan la zona a
-    // Google para búsquedas locales ("camper cerca de mí").
+    // Google para búsquedas locales ("maquinaria cerca de mí").
     geo: {
       '@type': 'GeoCoordinates',
       latitude: ciudadSEO.lat,

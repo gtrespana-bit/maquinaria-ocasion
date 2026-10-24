@@ -24,7 +24,7 @@ export function codigoValido(codigo: string): boolean {
   return /^[A-Z0-9][A-Z0-9_-]{2,31}$/.test(normalizarCodigo(codigo))
 }
 
-export function generarCodigo(prefijo = 'CAMPER'): string {
+export function generarCodigo(prefijo = 'MAQ'): string {
   const alphabet = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'
   let tail = ''
   for (let i = 0; i < 6; i++) tail += alphabet[Math.floor(Math.random() * alphabet.length)]

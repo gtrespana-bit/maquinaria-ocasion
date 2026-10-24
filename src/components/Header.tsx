@@ -26,7 +26,7 @@ export function Header() {
   const isEn = pathname === '/en' || pathname.startsWith('/en/')
   const altLocaleHref = enlaceCambioIdioma(pathname)
 
-  // Subcategorías camper (mercado vertical 100% camper)
+  // Subcategorías de la vertical (mercado de maquinaria)
   // Navegación del vertical de maquinaria: familias (Agrícola / Obra /
   // Herramientas) con sus tipos dentro.
   const familiasNav = FAMILIAS.map(f => ({

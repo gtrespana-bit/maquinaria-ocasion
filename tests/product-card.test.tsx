@@ -93,13 +93,13 @@ describe('ProductCard', () => {
 
   it('muestra chip de tipo de vendedor cuando el anuncio trae vendedor_tipo', () => {
     render(<ProductCard p={{ ...mockProduct, vendedor_tipo: 'camperizador' }} />);
-    expect(screen.getByText('Camperizador')).toBeInTheDocument();
+    expect(screen.getByText('Taller')).toBeInTheDocument();
   });
 
   it('no muestra chip de tipo de vendedor sin vendedor_tipo', () => {
     render(<ProductCard p={mockProduct} />);
     expect(screen.queryByText('Particular')).not.toBeInTheDocument();
-    expect(screen.queryByText('Camperizador')).not.toBeInTheDocument();
+    expect(screen.queryByText('Taller')).not.toBeInTheDocument();
     expect(screen.queryByText('Pro')).not.toBeInTheDocument();
   });
 });
