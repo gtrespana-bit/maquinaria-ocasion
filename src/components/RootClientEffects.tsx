@@ -1,0 +1,102 @@
+'use client'
+
+import dynamic from 'next/dynamic'
+import { useEffect, useState } from 'react'
+import {
+  alCambiarConsentimiento,
+  leerConsentimiento,
+  type Consentimiento,
+} from '@/lib/cookie-consent'
+
+const Analytics = dynamic(
+  () => import('@vercel/analytics/react').then((m) => m.Analytics),
+  { ssr: false }
+)
+const SpeedInsights = dynamic(
+  () => import('@vercel/speed-insights/next').then((m) => m.SpeedInsights),
+  { ssr: false }
+)
+const ServiceWorkerRegistration = dynamic(
+  () => import('@/components/ServiceWorkerRegistration').then((m) => m.ServiceWorkerRegistration),
+  { ssr: false }
+)
+// Medición propia de audiencia: es la que alimenta la pestaña «Audiencia» del
+// panel. Solo se monta con consentimiento, igual que Vercel Analytics.
+const AnaliticaVisitas = dynamic(() => import('@/components/AnaliticaVisitas'), { ssr: false })
+const WebVitalsReporter = dynamic(() => import('@/components/WebVitalsReporter'), { ssr: false })
+
+function onIdleAfterLoad(callback: () => void) {
+  let cancelled = false
+  let timeoutId: ReturnType<typeof setTimeout> | null = null
+  let idleId: number | null = null
+
+  const run = () => {
+    if (cancelled) return
+    const requestIdle = window.requestIdleCallback || ((cb: IdleRequestCallback) => {
+      timeoutId = setTimeout(() => cb({ didTimeout: true, timeRemaining: () => 0 } as IdleDeadline), 1500)
+      return Number(timeoutId)
+    })
+
+    idleId = requestIdle(() => {
+      if (!cancelled) callback()
+    }, { timeout: 5000 })
+  }
+
+  if (document.readyState === 'complete') {
+    timeoutId = setTimeout(run, 1500)
+  } else {
+    window.addEventListener('load', run, { once: true })
+  }
+
+  return () => {
+    cancelled = true
+    window.removeEventListener('load', run)
+    if (timeoutId) clearTimeout(timeoutId)
+    if (idleId !== null && window.cancelIdleCallback) window.cancelIdleCallback(idleId)
+  }
+}
+
+/**
+ * Efectos globales que no son necesarios para pintar ni hidratar la página.
+ * Se activan después de load + idle para que analytics, Speed Insights y el
+ * Service Worker no compitan con Lighthouse ni con el usuario en el arranque.
+ *
+ * Vercel Analytics, Speed Insights y la medición propia solo se cargan si el
+ * usuario ha aceptado en el banner de cookies. Google Analytics se inicializa
+ * por separado desde el <head>, también con consentimiento, pero sin esta
+ * espera adicional. El Service Worker no depende del consentimiento —es lo
+ * que da el modo offline y las notificaciones push— y se registra igual.
+ */
+export default function RootClientEffects() {
+  const [enabled, setEnabled] = useState(false)
+  const [consentimiento, setConsentimiento] = useState<Consentimiento | null>(null)
+
+  useEffect(() => {
+    // Keep the audit path free of non-critical effects during the initial
+    // render, but do not unregister the application's push/offline worker.
+    // The worker itself only handles public navigations and push events.
+    return onIdleAfterLoad(() => setEnabled(true))
+  }, [])
+
+  useEffect(() => {
+    setConsentimiento(leerConsentimiento())
+    // Si el usuario acepta después (sin recargar), la medición se activa sola.
+    return alCambiarConsentimiento(setConsentimiento)
+  }, [])
+
+  if (!enabled) return null
+
+  return (
+    <>
+      {consentimiento === 'accepted' && (
+        <>
+          <Analytics />
+          <SpeedInsights />
+          <AnaliticaVisitas />
+        </>
+      )}
+      <WebVitalsReporter />
+      <ServiceWorkerRegistration />
+    </>
+  )
+}
