@@ -21,7 +21,6 @@ export const PLANES_PRO = [
     cupo: 15 as number | null,
     fotos: 20,
     destacadosMes: 5,
-    prioridadHomologacion: 1,
     eslogan: 'Para quien vende campers de forma habitual',
     paraQuien: 'Compraventas, camperizadores y talleres',
     destacado: true,
@@ -32,7 +31,6 @@ export const PLANES_PRO = [
       'Escaparate /tienda/tu-taller',
       'Estadísticas completas y comparativa de mercado',
       'Importar stock desde CSV',
-      'Prioridad alta en homologación',
       'Soporte por email',
     ],
   },
@@ -278,12 +276,6 @@ export function fotosMaximas(plan: PlanAnuncios, tipo?: string | null): number {
 export function destacadosIncluidosMes(plan: PlanAnuncios, tipo?: string | null): number {
   if (!esProfesional(tipo)) return 0
   return getPlanDef(plan)?.destacadosMes ?? 0
-}
-
-export function prioridadHomologacion(plan: PlanAnuncios, tipo?: string | null): number {
-  if (!esProfesional(tipo)) return 9
-  if (plan === 'gratis') return 5
-  return getPlanDef(plan)?.prioridadHomologacion ?? 5
 }
 
 export function puedePublicarMas(usados: number, max: number | null): boolean {

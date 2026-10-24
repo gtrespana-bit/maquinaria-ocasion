@@ -312,8 +312,7 @@ export default function BotonReservar({
 
             <p className="text-[11px] text-gray-500 mt-3 flex items-start gap-1.5">
               <Info size={12} className="mt-0.5 flex-shrink-0" aria-hidden="true" />
-              Al solicitar la reserva aceptas las condiciones de la señal. Este servicio no es una custodia de fondos:{' '}
-              <LocalLink href="/compra-segura-camper" className="underline hover:text-brand-primary">cómo comprar de forma segura</LocalLink>.
+              Al solicitar la reserva aceptas las condiciones de la señal. Este servicio no es una custodia de fondos.
             </p>
           </div>
         </div>

@@ -5,7 +5,6 @@ import {
   Camera,
   Check,
   CreditCard,
-  FileCheck2,
   FileSpreadsheet,
   Minus,
   ShieldCheck,
@@ -56,11 +55,6 @@ const extras = [
     desc: '3, 5 o 15 destacados al mes sin gastar créditos. Los que más rotación tienen, arriba.',
   },
   {
-    icon: FileCheck2,
-    title: 'Prioridad en homologación',
-    desc: 'Tu expediente se revisa antes. El sello de homologación verificada tarda menos.',
-  },
-  {
     icon: FileSpreadsheet,
     title: 'Importa todo tu stock de una vez',
     desc: 'Sube el CSV de tu Excel o del DMS y publica hasta 100 anuncios con vista previa, sin formulario a formulario.',
@@ -93,7 +87,6 @@ const filasComparativa: {
   { label: 'Escaparate /tienda/tu-taller', gratis: '—', profesional: 'Sí' },
   { label: 'Estadísticas del vendedor', gratis: 'Totales', profesional: 'Completas' },
   { label: 'Importar stock desde CSV', gratis: '—', profesional: 'Hasta 100 filas' },
-  { label: 'Prioridad en homologación', gratis: 'Normal', profesional: 'Alta' },
   { label: 'Créditos extra', gratis: 'Se compran', profesional: 'Se compran' },
   { label: 'Comisión por venta', gratis: '0 %', profesional: '0 %' },
 ]

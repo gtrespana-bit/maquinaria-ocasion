@@ -8,7 +8,7 @@ import {
   type FiltrosTecnicos,
 } from '@/lib/filtros-tecnicos'
 import { hayFiltrosRango } from '@/lib/filtros-tecnicos'
-import { FILTRO_VERIFICADA_PARAM, FILTRO_VENDEDOR_PARAM } from '@/lib/catalog-consulta';
+import { FILTRO_VENDEDOR_PARAM } from '@/lib/catalog-consulta';
 import { TIPOS_VENDEDOR } from '@/components/BadgeTipoVendedor';
 import { FiltrosTecnicosPanel } from './FiltrosTecnicosPanel';
 import { SelectorMarca } from './SelectorMarca';
@@ -28,8 +28,6 @@ interface CatalogFiltersProps {
   filtrosTecnicos: FiltrosTecnicos;
   /** Rangos numéricos activos tal como están en la URL (param → "150000"). */
   rangos: Record<string, string>;
-  /** '1' cuando solo se muestran anuncios con homologación verificada. */
-  verificada: string;
   /** Tipo de vendedor activo ('particular' | 'camperizador' | 'profesional'). */
   vendedor: string;
   t: (key: string, vars?: Record<string, string | number>) => string;
@@ -48,7 +46,6 @@ export const CatalogFilters = ({
   ubicacionCiudad,
   filtrosTecnicos,
   rangos,
-  verificada,
   vendedor,
   t,
 }: CatalogFiltersProps) => {
@@ -73,7 +70,7 @@ export const CatalogFilters = ({
 
   const hasActiveFilters = !!(
     subcategoria || marca || precioMin || precioMax ||
-    ubicacionEstado || ubicacionCiudad || verificada || vendedor ||
+    ubicacionEstado || ubicacionCiudad || vendedor ||
     GRUPOS_FILTROS_TECNICOS.some(g => g.filtros.some(f => filtrosTecnicos[f.param])) ||
     hayFiltrosRango(rangos)
   );
@@ -163,22 +160,6 @@ export const CatalogFilters = ({
           />
         </div>
       </div>
-
-      {/* Filtro de confianza: solo anuncios con el expediente del vehículo ya
-          revisado. Es el único que no vive en el JSONB `especificaciones`. */}
-      <label
-        htmlFor="filter-verificada"
-        className="flex items-center gap-2 mb-5 text-sm font-medium text-gray-800 cursor-pointer"
-      >
-        <input
-          id="filter-verificada"
-          type="checkbox"
-          checked={!!verificada}
-          onChange={e => setParam(FILTRO_VERIFICADA_PARAM, e.target.checked ? '1' : '')}
-          className="h-4 w-4 rounded border-gray-300 text-brand-accent focus:ring-brand-accent"
-        />
-        {t('catalog.filters.verified')}
-      </label>
 
       {/* ¿Quién vende? (Fase 3): particulares, camperizadores o pros. */}
       <div className="mb-5">

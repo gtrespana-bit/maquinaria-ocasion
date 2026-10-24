@@ -44,7 +44,7 @@ Un camperizador certificado cobra por proyecto, no por lista de la compra:
 - **Media** (con baño químico o ducha, calefacción, placa solar, más acabados): 18.000 – 28.000 €.
 - **Alta** (baño completo con ducha, calefacción + ACS, litio, gran autonomía, diseño a medida): 28.000 – 45.000 €.
 
-En MaquinariaOcasión puedes filtrar por [vendedor tipo camperizador profesional](/comprar-a-camperizadores) y comparar con precios de particulares.
+En MaquinariaOcasión puedes filtrar por [vendedor tipo camperizador profesional](/catalogo?vendedor=camperizador) y comparar con precios de particulares.
 
 ## El coste que casi todos olvidan: la homologación
 

@@ -23,7 +23,7 @@ Consulta la [guía de marcas y modelos](/marcas) y compara precios medios por mo
 ## Dónde mirar: particulares vs. profesionales
 
 - **Particulares**: precios más bajos (un 15–30 % menos de media), pero sin garantía y con más riesgo de camperización casera sin homologar. Filtra por [vendedor particular](/comprar-a-particulares).
-- **Camperizadores profesionales**: más caros, pero incluyen proyecto, homologación 2448 y garantía de obra. Ver [camperizadores](/comprar-a-camperizadores).
+- **Camperizadores profesionales**: más caros, pero incluyen proyecto, homologación 2448 y garantía de obra. Ver [camperizadores](/catalogo?vendedor=camperizador).
 - **Profesionales de ocasión**: flotas y liquidaciones; buen punto medio. Ver [profesionales](/comprar-a-profesionales).
 
 En MaquinariaOcasión el [catálogo](/catalogo) deja filtrar por tipo de vendedor, rango de precio y [homologación verificada](/catalogo?verificada=1) — usa esos filtros antes de desplazarte a ver un vehículo.

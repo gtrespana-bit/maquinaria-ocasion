@@ -32,12 +32,6 @@ jest.mock('@/app/[locale]/admin/components/AdminDashboard', () => function MockD
 jest.mock('@/app/[locale]/admin/components/AdminAjustes', () => function MockAjustes() {
   return <div data-testid="tab-ajustes">Ajustes content</div>
 })
-jest.mock('@/app/[locale]/admin/AdminInspecciones', () => function MockInspecciones() {
-  return <div data-testid="tab-inspecciones">Inspecciones content</div>
-})
-jest.mock('@/app/[locale]/admin/AdminGestoria', () => function MockGestoria() {
-  return <div data-testid="tab-gestoria">Gestoria content</div>
-})
 
 describe('AdminClient sidebar scroll y navegación', () => {
   const fetchOriginal = (global as any).fetch
@@ -88,11 +82,5 @@ describe('AdminClient sidebar scroll y navegación', () => {
     await waitFor(() => expect(screen.getByTestId('tab-ajustes')).toBeInTheDocument())
     expect(btnAjustes).toHaveAttribute('aria-current', 'page')
     expect(scrollIntoViewMock).toHaveBeenCalledWith({ block: 'nearest' })
-
-    fireEvent.click(screen.getByRole('button', { name: /Inspecciones/i }))
-    await waitFor(() => expect(screen.getByTestId('tab-inspecciones')).toBeInTheDocument())
-
-    fireEvent.click(screen.getByRole('button', { name: /Gestoría/i }))
-    await waitFor(() => expect(screen.getByTestId('tab-gestoria')).toBeInTheDocument())
   })
 })

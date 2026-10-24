@@ -15,7 +15,6 @@ import UbicacionSelector from '@/components/UbicacionSelector'
 import { Pagination } from '@/components/Pagination'
 import { OptimizedProductGrid } from '@/components/OptimizedProductGrid'
 import { CatalogFilters } from '@/components/CatalogFilters'
-import BadgeHomologacion from '@/components/BadgeHomologacion'
 import BadgeTipoVendedor from '@/components/BadgeTipoVendedor'
 import { useProductPagination } from '@/hooks/useProductPagination'
 import { useProductLoader } from '@/hooks/useProductLoader'
@@ -28,7 +27,7 @@ import {
   leerFiltrosTecnicos,
   leerFiltrosRango,
 } from '@/lib/filtros-tecnicos'
-import { FILTRO_VERIFICADA_PARAM, FILTRO_VENDEDOR_PARAM } from '@/lib/catalog-consulta'
+import { FILTRO_VENDEDOR_PARAM } from '@/lib/catalog-consulta'
 import { LoadingIndicator } from '@/components/LoadingIndicator'
 import { usePrefetch } from '@/hooks/usePrefetch'
 import { productUrl } from '@/lib/product-url'
@@ -50,7 +49,6 @@ type Producto = {
   destacado_hasta: string | null
   vendedor_verificado: boolean | null
   vendedor_tipo?: string | null
-  verificacion_homologacion?: string | null
   reservado?: boolean | null
 }
 
@@ -138,11 +136,6 @@ const ProductCard = memo(({ p, priority = false, t }: { p: Producto; priority?: 
             </span>
           </div>
         )}
-        {p.verificacion_homologacion === 'verificada' && (
-          <div className="mt-1">
-            <BadgeHomologacion estado={p.verificacion_homologacion} size="sm" />
-          </div>
-        )}
         {p.vendedor_tipo && (
           <div className="mt-1">
             <BadgeTipoVendedor tipo={p.vendedor_tipo} />
@@ -196,18 +189,14 @@ export default function CatalogoClient({ initialProducts = [], initialCount = 0 
   const ubicacionEstado = searchParams.get('estado') || ''
   const ubicacionCiudad = searchParams.get('ciudad') || ''
 
-  // Filtros técnicos (ficha técnica camper): DGT, homologación, plazas, baño,
-  // autonomía, medidas… Todos se leen de una vez desde el registro
+  // Filtros técnicos (ficha técnica): plazas, baño, autonomía, medidas…
+  // Todos se leen de una vez desde el registro
   // @/lib/filtros-tecnicos, que también decide las opciones que ofrece la barra
   // lateral.
   //
   // Se memoiza con el string de la query (primitivo) y no con el objeto de
   // `useSearchParams`: si su identidad cambiase entre renders, los efectos que
   // dependen de los filtros se reejecutarían en bucle.
-  // Filtro "solo homologación verificada": no forma parte del registro JSONB
-  // (es una columna de `productos`), así que se lee aparte.
-  const verificada = searchParams.get(FILTRO_VERIFICADA_PARAM) || ''
-
   // Filtro "¿Quién vende?" (Fase 3): particular, camperizador o profesional.
   const vendedor = searchParams.get(FILTRO_VENDEDOR_PARAM) || ''
 
@@ -232,7 +221,7 @@ export default function CatalogoClient({ initialProducts = [], initialCount = 0 
 
   const hasActiveFilters = !!(
     categoria || subcategoria || marca || q || precioMin || precioMax ||
-    ubicacionEstado || ubicacionCiudad || verificada || vendedor || hayFiltrosTecnicos(filtrosTecnicos) ||
+    ubicacionEstado || ubicacionCiudad || vendedor || hayFiltrosTecnicos(filtrosTecnicos) ||
     hayFiltrosRango(filtrosRango)
   )
 
@@ -255,7 +244,7 @@ export default function CatalogoClient({ initialProducts = [], initialCount = 0 
   const totalPages = Math.max(1, Math.ceil(totalCountToUse / itemsPerPage))
 
   // Firma de filtros para detectar cambios y resetear la página.
-  const filterSig = [categoria, subcategoria, marca, q, precioMin, precioMax, ubicacionEstado, ubicacionCiudad, firmaTecnica, firmaRango, verificada, vendedor].join('|')
+  const filterSig = [categoria, subcategoria, marca, q, precioMin, precioMax, ubicacionEstado, ubicacionCiudad, firmaTecnica, firmaRango, vendedor].join('|')
   const prevFilterSig = useRef(filterSig)
 
   const setParam = (key: string, value: string) => {
@@ -293,13 +282,12 @@ export default function CatalogoClient({ initialProducts = [], initialCount = 0 
         precioMax,
         ubicacionEstado,
         ubicacionCiudad,
-        [FILTRO_VERIFICADA_PARAM]: verificada || undefined,
         [FILTRO_VENDEDOR_PARAM]: vendedor || undefined,
         ...filtrosTecnicos,
         ...filtrosRango
       }
     });
-  }, [filterSig, currentPage, itemsPerPage, hasActiveFilters, useServerData, goToPage, loadPage, categoria, subcategoria, marca, q, precioMin, precioMax, ubicacionEstado, ubicacionCiudad, filtrosTecnicos, filtrosRango, verificada, vendedor]);
+  }, [filterSig, currentPage, itemsPerPage, hasActiveFilters, useServerData, goToPage, loadPage, categoria, subcategoria, marca, q, precioMin, precioMax, ubicacionEstado, ubicacionCiudad, filtrosTecnicos, filtrosRango, vendedor]);
 
   // Precargar la siguiente página cuando sea apropiado
   useEffect(() => {
@@ -318,8 +306,7 @@ export default function CatalogoClient({ initialProducts = [], initialCount = 0 
             precioMax,
             ubicacionEstado,
             ubicacionCiudad,
-            [FILTRO_VERIFICADA_PARAM]: verificada || undefined,
-            [FILTRO_VENDEDOR_PARAM]: vendedor || undefined,
+                [FILTRO_VENDEDOR_PARAM]: vendedor || undefined,
             ...filtrosTecnicos,
             ...filtrosRango
           }
@@ -328,7 +315,7 @@ export default function CatalogoClient({ initialProducts = [], initialCount = 0 
 
       return () => clearTimeout(prefetchTimer);
     }
-  }, [currentPage, totalPages, loading, productosToShow.length, categoria, subcategoria, marca, q, precioMin, precioMax, ubicacionEstado, ubicacionCiudad, filtrosTecnicos, filtrosRango, verificada, vendedor, itemsPerPage, prefetchPage]);
+  }, [currentPage, totalPages, loading, productosToShow.length, categoria, subcategoria, marca, q, precioMin, precioMax, ubicacionEstado, ubicacionCiudad, filtrosTecnicos, filtrosRango, vendedor, itemsPerPage, prefetchPage]);
 
   const subActiva = categoriasData.camper.subs.find(s => s.label === subcategoria)
   const subLabel = subcategoria
@@ -419,7 +406,6 @@ export default function CatalogoClient({ initialProducts = [], initialCount = 0 
             ubicacionCiudad={ubicacionCiudad}
             filtrosTecnicos={filtrosTecnicos}
             rangos={rangosEnBruto}
-            verificada={verificada}
             vendedor={vendedor}
             t={t}
           />
@@ -469,7 +455,7 @@ export default function CatalogoClient({ initialProducts = [], initialCount = 0 
                     : error}
                 </p>
                 <button
-                  onClick={() => loadPage({ page: currentPage, pageSize: itemsPerPage, filters: { categoria, subcategoria, marca, q, precioMin, precioMax, ubicacionEstado, ubicacionCiudad, [FILTRO_VERIFICADA_PARAM]: verificada || undefined, [FILTRO_VENDEDOR_PARAM]: vendedor || undefined, ...filtrosTecnicos, ...filtrosRango } })}
+                  onClick={() => loadPage({ page: currentPage, pageSize: itemsPerPage, filters: { categoria, subcategoria, marca, q, precioMin, precioMax, ubicacionEstado, ubicacionCiudad, [FILTRO_VENDEDOR_PARAM]: vendedor || undefined, ...filtrosTecnicos, ...filtrosRango } })}
                   className="mt-3 text-sm font-semibold text-red-700 underline hover:text-red-900"
                 >
                   {t('catalog.retry')}

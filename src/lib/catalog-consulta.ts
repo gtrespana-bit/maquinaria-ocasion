@@ -23,18 +23,6 @@ import {
 } from './filtros-tecnicos'
 
 /**
- * Filtro del catálogo "solo anuncios con homologación verificada". Es el único
- * filtro que no vive en `especificaciones` (es una columna de `productos`), así
- * que se aplica aparte, pero desde aquí para que los tres sitios que consultan
- * el catálogo lo hagan igual.
- */
-export const FILTRO_VERIFICADA_PARAM = 'verificada'
-
-export function filtroVerificadaActivo(valor: unknown): boolean {
-  return valor === '1' || valor === true || valor === 'si' || valor === 'sí'
-}
-
-/**
  * Filtro "¿Quién vende?" (Fase 3): particulares, camperizadores o pros.
  * El valor viaja en la URL (`?vendedor=particular`) y se valida aquí para que
  * un valor inventado no rompa la query ni filtre de más.
@@ -76,7 +64,7 @@ export type FiltrosCatalogo = {
  * Aplica a una query los filtros comunes a catálogo y buscador:
  * categoría, subcategoría, marca, búsqueda de texto, ubicación, precio,
  * condición y el bloque de filtros técnicos propios del catálogo
- * (contención JSONB + homologación verificada + rangos numéricos).
+ * (contención JSONB + rangos numéricos).
  *
  * Existía duplicado en `useProductLoader`, `usePrefetch` y `BuscarClient`,
  * derivando en el mismo bug tres veces. Ahora vive aquí, una sola vez.
@@ -113,9 +101,8 @@ export function tieneRangosNumericos(filtros?: Record<string, unknown> | null): 
 }
 
 /**
- * Aplica los filtros técnicos (JSONB + verificación + rangos) a la consulta:
+ * Aplica los filtros técnicos (JSONB + rangos) a la consulta:
  *  - filtros técnicos → una condición de contención sobre el JSONB (índice GIN);
- *  - "solo verificados" → igualdad sobre la columna de estado del expediente;
  *  - rangos numéricos → `aplicarRangosNumericos` (abajo).
  */
 export function aplicarFiltrosCatalogo<T extends QueryCatalogo>(
@@ -125,10 +112,6 @@ export function aplicarFiltrosCatalogo<T extends QueryCatalogo>(
   let q: any = query
   const specs = especificacionesDeFiltros(filtros)
   if (Object.keys(specs).length > 0) q = q.contains('especificaciones', specs)
-  if (filtroVerificadaActivo(filtros?.[FILTRO_VERIFICADA_PARAM])) {
-    // `eq` (no `contains`): es una columna de texto, no el JSONB.
-    q = q.eq('verificacion_homologacion', 'verificada')
-  }
   const tipoVendedor = tipoVendedorFiltro(filtros?.[FILTRO_VENDEDOR_PARAM])
   if (tipoVendedor) q = q.eq('vendedor_tipo', tipoVendedor)
   return aplicarRangosNumericos(q as T, filtros)
@@ -205,7 +188,7 @@ export function esErrorColumnasRango(err: unknown): boolean {
  * canónica del producto se construye con él (`productUrl`).
  */
 export const CATALOG_PRODUCT_COLUMNS =
-  'id, slug, titulo, precio_usd, estado, imagen_url, ubicacion_ciudad, ubicacion_estado, creado_en, subcategoria, boosteado_en, destacado, destacado_hasta, vendedor_verificado, vendedor_tipo, verificacion_homologacion, reservado, es_demo'
+  'id, slug, titulo, precio_usd, estado, imagen_url, ubicacion_ciudad, ubicacion_estado, creado_en, subcategoria, boosteado_en, destacado, destacado_hasta, vendedor_verificado, vendedor_tipo, reservado, es_demo'
 
 /**
  * Visibilidad pública: aprobados, pendientes de moderación (aún no revisados)
@@ -231,8 +214,6 @@ export interface ProductoCatalogo {
   vendedor_verificado: boolean | null
   /** Tipo del vendedor: particular, camperizador o profesional (Fase 2). */
   vendedor_tipo?: string | null
-  /** Estado del expediente de homologación (Fase 0.2). */
-  verificacion_homologacion?: string | null
   /** Reserva con señal vigente (Fase 1.2): el anuncio está comprometido. */
   reservado?: boolean | null
   /** Anuncio de demostración: se etiqueta como ejemplo y no expone contacto. */

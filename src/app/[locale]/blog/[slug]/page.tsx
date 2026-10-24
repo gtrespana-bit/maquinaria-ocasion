@@ -408,14 +408,11 @@ export default async function BlogPost(props: { params: Promise<{ locale: string
                 if (/overland|4x4|pick|celul|c[eé]lula|defender|hilux/.test(tag)) {
                   return sub('Célula y 4x4 Overland', '🌍')
                 }
-                if (/homologaci[oó]n|2448|3148|legal|itv|veh[ií]culo vivienda|ficha t[eé]cnica/.test(tag)) {
-                  return { label: `🛡️ ${t('catSafeBuy')}`, href: '/compra-segura-camper' }
+                if (/itv|ficha t[eé]cnica|legal/.test(tag)) {
+                  return { label: `📋 ${t('catSafeBuy')}`, href: '/catalogo' }
                 }
-                if (/itp|impuesto|tasa|matriculaci[oó]n|precio|coste|presupuesto/.test(tag)) {
-                  return { label: `🧮 ${t('catItp')}`, href: '/calcular-itp' }
-                }
-                if (/compra|checklist|segunda mano|consejo|ocasi[oó]n|usado|revisi[oó]n/.test(tag)) {
-                  return { label: `📋 ${t('catSafeBuy')}`, href: '/compra-segura-camper' }
+                if (/compra|checklist|segunda mano|consejo|ocasi[oó]n|usado|revisi[oó]n|itp|impuesto|tasa|matriculaci[oó]n|precio|coste|presupuesto/.test(tag)) {
+                  return { label: `🏷️ ${t('catItp')}`, href: '/catalogo' }
                 }
                 return null
               })

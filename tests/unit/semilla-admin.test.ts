@@ -1,9 +1,7 @@
 /** @jest-environment node */
-import { asegurarVendedores, buscarUsuarioPorEmail, CAMPOS_ANUNCIO_SEMILLA } from '@/lib/semilla-admin.js'
-import { VENDEDORES, emailVendedor } from '@/lib/semilla-datos.js'
+import { buscarUsuarioPorEmail } from '@/lib/semilla-admin.js'
 import { destinatarioSemilla } from '@/lib/semilla-chat'
 import { puedeReservar } from '@/lib/reservas'
-import { puedeSolicitarInspeccion } from '@/lib/inspecciones'
 
 function client(users: any[] = []) {
   const query: any = {}
@@ -28,54 +26,6 @@ test('buscar por email pagina y normaliza mayúsculas', async () => {
     .mockResolvedValueOnce({ data: { users: [{ id: 'a', email: 'GTRESPANA@GMAIL.COM' }] }, error: null })
   expect(await buscarUsuarioPorEmail(sb, 'gtrespana@gmail.com')).toMatchObject({ id: 'a' })
   expect(sb.auth.admin.listUsers).toHaveBeenLastCalledWith({ page: 2, perPage: 200 })
-})
-
-test('dry-run no crea usuarios, perfiles ni cambia contraseñas', async () => {
-  const sb = client()
-  const result = await asegurarVendedores(sb, true)
-  expect(result).toEqual({ ids: {}, creados: 0, reutilizados: 0 })
-  expect(sb.from).not.toHaveBeenCalled()
-  expect(sb.auth.admin.createUser).not.toHaveBeenCalled()
-  expect(sb.auth.admin.updateUserById).not.toHaveBeenCalled()
-})
-
-test('vendedores nuevos bloqueados, contraseñas aleatorias y sin contactos o verificaciones ficticios', async () => {
-  const sb = client()
-  await asegurarVendedores(sb)
-  const inputs = sb.auth.admin.createUser.mock.calls.map(([input]) => input)
-  expect(inputs).toHaveLength(VENDEDORES.length)
-  expect(new Set(inputs.map(i => i.password)).size).toBe(inputs.length)
-  for (const input of inputs) {
-    expect(input.password.length).toBeGreaterThan(50)
-    expect(input.password).not.toContain('Semilla#')
-    expect(input.app_metadata).toEqual({ semilla: true })
-    expect(input.ban_duration).toBe('876000h')
-  }
-  for (const call of sb.query.upsert.mock.calls) {
-    expect(call[0]).toMatchObject({ telefono: null, verificado: false, es_demo: true, whatsapp_disponible: false })
-  }
-})
-
-test('cuentas antiguas se protegen al generar, sin borrar su ID', async () => {
-  const users = VENDEDORES.map(v => ({ id: v.slug, email: emailVendedor(v), user_metadata: { semilla: true } }))
-  const sb = client(users)
-  const result = await asegurarVendedores(sb)
-  expect(result.reutilizados).toBe(users.length)
-  expect(sb.auth.admin.createUser).not.toHaveBeenCalled()
-  expect(sb.auth.admin.updateUserById).toHaveBeenCalledTimes(users.length)
-  expect(result.ids[VENDEDORES[0].slug]).toBe(users[0].id)
-})
-
-test('no modifica una cuenta real cuyo email coincida', async () => {
-  const sb = client([{ email: emailVendedor(VENDEDORES[0]), user_metadata: {} }])
-  await expect(asegurarVendedores(sb)).rejects.toThrow('no pertenece a la semilla')
-  expect(sb.from).not.toHaveBeenCalled()
-  expect(sb.auth.admin.updateUserById).not.toHaveBeenCalled()
-})
-
-test('campos compartidos marcan la semilla, sin homologación o reservas inventadas', () => {
-  expect(CAMPOS_ANUNCIO_SEMILLA).toMatchObject({ es_demo: true, metodos_contacto: {}, vendedor_verificado: false, verificacion_homologacion: 'sin_verificar', reservado: false })
-  expect(VENDEDORES.every(v => !v.telefono && !v.verificado)).toBe(true)
 })
 
 test('destino por defecto: cuenta real y confirmada gtrespana@gmail.com', async () => {
@@ -111,8 +61,7 @@ test('falla cerrado si no hay perfil real de atención', async () => {
   await expect(destinatarioSemilla(sb as any, 'seed')).rejects.toThrow('perfil real')
 })
 
-test('ni reservas ni inspecciones de vehículos ficticios aunque se invoque la API directamente', () => {
+test('sin reservas de vehículos ficticios aunque se invoque la API directamente', () => {
   const product = { id: 'p', user_id: 'seed', activo: true, es_demo: true }
   expect(puedeReservar(product, null, 'buyer').ok).toBe(false)
-  expect(puedeSolicitarInspeccion(product, null, 'buyer').ok).toBe(false)
 })

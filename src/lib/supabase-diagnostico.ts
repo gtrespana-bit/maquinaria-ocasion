@@ -425,7 +425,7 @@ export function redactarDiagnostico(params: {
     )
   } else if (rechazada(pruebaPrivada)) {
     lineas.push(
-      'La clave privada (service_role/secret) es rechazada: todo /api/admin/*, reservas, homologación y /api/anuncios/active fallarán.',
+      'La clave privada (service_role/secret) es rechazada: todo /api/admin/*, reservas y /api/anuncios/active fallarán.',
     )
   } else if (pruebaPublica || pruebaPrivada) {
     lineas.push('Ambas claves responden OK: el problema de esta pantalla no es de credenciales.')

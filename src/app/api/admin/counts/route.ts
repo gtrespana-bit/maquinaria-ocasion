@@ -18,18 +18,11 @@ export async function GET(request: NextRequest) {
       { auth: { persistSession: false, autoRefreshToken: false } },
     )
 
-    const [tx, pubs, verif, denies, homol, insp, gest] = await Promise.all([
+    const [tx, pubs, verif, denies] = await Promise.all([
       sb.from('transacciones_creditos').select('id', { count: 'exact', head: true }).eq('estado', 'pendiente').eq('tipo', 'compra'),
       sb.from('productos').select('id', { count: 'exact', head: true }).eq('estado_moderacion', 'pendiente'),
       sb.from('solicitudes_verificacion').select('id', { count: 'exact', head: true }).eq('estado', 'pendiente'),
       sb.from('denuncias').select('id', { count: 'exact', head: true }).eq('estado', 'activa'),
-      // Expedientes de homologación esperando revisión (Fase 0.2). Si la
-      // migración aún no está aplicada, el contador queda en 0 sin romper el panel.
-      sb.from('productos').select('id', { count: 'exact', head: true }).eq('verificacion_homologacion', 'pendiente'),
-      // Inspecciones por coordinar y leads de gestoría sin contactar (plan §4).
-      // Misma tolerancia: sin la migración, contador a 0.
-      sb.from('solicitudes_inspeccion').select('id', { count: 'exact', head: true }).eq('estado', 'solicitada'),
-      sb.from('solicitudes_gestoria').select('id', { count: 'exact', head: true }).eq('estado', 'nueva'),
     ])
 
     const err = [tx, pubs, verif, denies].map((r) => r.error).filter(Boolean)[0]
@@ -44,7 +37,6 @@ export async function GET(request: NextRequest) {
         publicaciones: pubs.count || 0,
         denuncias: denies.count || 0,
         verificacion: verif.count || 0,
-        homologacion: homol.error ? 0 : homol.count || 0,
       },
     })
   } catch (err: any) {

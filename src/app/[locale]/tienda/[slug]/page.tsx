@@ -54,7 +54,7 @@ async function getTienda(slug: string) {
     .select(
       `id, slug, titulo, ${COLUMNAS_PRECIO}, imagen_url, categoria_id, subcategoria, ` +
         'ubicacion_ciudad, ubicacion_estado, estado, boosteado_en, destacado, destacado_hasta, ' +
-        'vendedor_verificado, vendedor_tipo, verificacion_homologacion, reservado, es_demo'
+        'vendedor_verificado, vendedor_tipo, reservado, es_demo'
     )
     .eq('user_id', perfil.id)
     .eq('activo', true)

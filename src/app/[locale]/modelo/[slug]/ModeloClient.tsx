@@ -6,7 +6,7 @@ import ProductCard, { type ProductCardData } from '@/components/ProductCard'
 import { formatPrecio, getPrecioEur } from '@/lib/precio'
 import type { Estadisticas, EstadisticasTramo } from '@/lib/precios-mercado'
 import type { MarcaModelo } from '@/lib/marcas'
-import { TrendingUp, Info, Gauge, Calendar, Search, Car, Calculator } from 'lucide-react'
+import { TrendingUp, Info, Gauge, Calendar, Search, Car } from 'lucide-react'
 
 const ANIO = new Date().getFullYear()
 
@@ -152,23 +152,6 @@ export default function ModeloClient({
             </section>
           )}
 
-          {/* Utilidad: ITP */}
-          <div className="bg-gradient-to-br from-brand-primary to-brand-dark text-white rounded-2xl p-6 mb-12 flex flex-col sm:flex-row sm:items-center gap-4">
-            <Calculator size={32} className="shrink-0 opacity-90" />
-            <div className="flex-1">
-              <h3 className="font-bold text-lg">¿Cuánto pagarás de impuestos?</h3>
-              <p className="opacity-90 text-sm">
-                Al comprar de particular pagas el ITP, y cambia mucho según tu comunidad.
-                Calcúlalo con el precio mediano de esta {modelo.valor}.
-              </p>
-            </div>
-            <LocalLink
-              href={`/calcular-itp?precio=${est.mediana}`}
-              className="bg-white text-brand-primary px-5 py-2.5 rounded-xl font-bold hover:bg-gray-100 transition whitespace-nowrap text-center"
-            >
-              Calcular ITP
-            </LocalLink>
-          </div>
         </>
       ) : (
         <div className="bg-amber-50 border border-amber-200 rounded-2xl p-6 mb-10 flex gap-3">
@@ -277,12 +260,6 @@ export default function ModeloClient({
             : 'Publica gratis y llega a compradores que buscan justo este modelo.'}
         </p>
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
-          <LocalLink
-            href="/cuanto-vale-mi-camper"
-            className="inline-block bg-brand-accent text-white px-6 py-3 rounded-xl font-bold hover:brightness-95 transition"
-          >
-            Calcular cuánto vale la mía
-          </LocalLink>
           <LocalLink
             href="/publicar"
             className="inline-block border border-gray-200 bg-white text-gray-700 px-6 py-3 rounded-xl font-semibold hover:bg-gray-50 transition"

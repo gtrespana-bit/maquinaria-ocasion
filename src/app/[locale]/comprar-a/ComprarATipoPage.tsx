@@ -17,22 +17,20 @@ import { ChevronRight } from 'lucide-react'
 import { descripcionSeo, tituloSeo } from '@/lib/seo'
 
 // ── Landings SEO por tipo de vendedor (Fase 3) ────────────────────────────
-// /comprar-a-particulares, /comprar-a-camperizadores, /comprar-a-profesionales
+// /comprar-a-particulares y /comprar-a-profesionales
 // Tres carpetas estáticas (una por slug) que comparten este componente:
 // las rutas estáticas ganan la prioridad frente al catch-all /[ciudad] y el
 // segmento no depende de la resolución de params dinámicos.
 
-export type SlugTipo = 'particulares' | 'camperizadores' | 'profesionales'
+export type SlugTipo = 'particulares' | 'profesionales'
 
 export const SLUG_A_TIPO: Record<SlugTipo, 'particular' | 'camperizador' | 'profesional'> = {
   particulares: 'particular',
-  camperizadores: 'camperizador',
   profesionales: 'profesional',
 }
 
 const TIPO_A_PLURAL_KEY: Record<SlugTipo, string> = {
   particulares: 'particulares',
-  camperizadores: 'camperizadores',
   profesionales: 'profesionales',
 }
 

@@ -2,7 +2,7 @@
  * Avisos al admin por Telegram (best-effort).
  *
  * Existe para que las acciones que requieren intervención humana (una reserva
- * con señal que hay que verificar, un expediente que hay que revisar) lleguen al
+ * con señal que hay que verificar, una denuncia que hay que atender) lleguen al
  * móvil sin tener que mirar el panel. Es el mismo canal que usa el panel de
  * administración (`TELEGRAM_BOT_TOKEN` + `TELEGRAM_CHAT_ID`).
  *

@@ -2,7 +2,6 @@
 import { formatPrecio } from '@/lib/precio'
 
 import LocalLink from '@/components/LocalLink'
-import BadgeHomologacion from '@/components/BadgeHomologacion'
 import BadgeTipoVendedor, { TIPOS_VENDEDOR } from '@/components/BadgeTipoVendedor'
 import { Search, ChevronRight, XCircle, Loader2, Bell, BellRing } from 'lucide-react'
 import { useRouter } from 'next/navigation'
@@ -46,7 +45,6 @@ type Producto = {
   destacado_hasta: string | null
   vendedor_verificado: boolean | null
   vendedor_tipo?: string | null
-  verificacion_homologacion?: string | null
   reservado?: boolean | null
   descripcion?: string
 }
@@ -114,11 +112,6 @@ function ProductCard({ p }: { p: Producto }) {
             <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-amber-800 bg-amber-50 border border-amber-200 px-1.5 py-0.5 rounded-full">
               🔒 Reservado
             </span>
-          </div>
-        )}
-        {p.verificacion_homologacion === 'verificada' && (
-          <div className="mt-1">
-            <BadgeHomologacion estado={p.verificacion_homologacion} size="sm" />
           </div>
         )}
         {p.vendedor_tipo && (
@@ -301,7 +294,7 @@ export default function BuscarClient({ searchParams: searchParamsPromise }: { se
       const ejecutar = async (conRangos: boolean) => {
         let sq = supabase
           .from('productos')
-          .select('id, slug, titulo, precio_usd, estado, imagen_url, ubicacion_ciudad, ubicacion_estado, creado_en, subcategoria, boosteado_en, destacado, destacado_hasta, vendedor_verificado, vendedor_tipo, verificacion_homologacion, reservado', { count: 'exact' })
+          .select('id, slug, titulo, precio_usd, estado, imagen_url, ubicacion_ciudad, ubicacion_estado, creado_en, subcategoria, boosteado_en, destacado, destacado_hasta, vendedor_verificado, vendedor_tipo, reservado', { count: 'exact' })
           .eq('activo', true)
           .or('estado_moderacion.is.null,estado_moderacion.eq.aprobado')
 
@@ -390,7 +383,7 @@ export default function BuscarClient({ searchParams: searchParamsPromise }: { se
             </h1>
             <p className="text-gray-600">
               Explora {cat?.label || categoria.toLowerCase()} de segunda mano en toda España, con ficha técnica completa
-              (kilómetros, DGT, homologación, plazas y autonomía). Publicar tu anuncio es gratis.
+              (kilómetros, año, plazas y autonomía). Publicar tu anuncio es gratis.
             </p>
           </>
         ) : ubicacionCiudad || ubicacionEstado ? (

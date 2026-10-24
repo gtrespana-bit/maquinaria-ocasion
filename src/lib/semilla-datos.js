@@ -2,8 +2,8 @@
 // DATOS DE LA SEMILLA — módulo compartido (sin dependencias de Node)
 // ─────────────────────────────────────────────────────────────────────────────
 // Única fuente de verdad de los 20 anuncios de demostración. Lo consumen:
-//   · scripts/semilla-anuncios.js      → siembra desde local (npm run semilla)
-//   · src/app/api/admin/semilla/route  → siembra desde el navegador (admin)
+//   · scripts de siembra locales       → siembra desde local
+//   · rutas admin de siembra locales   → siembra desde el navegador
 // ES CommonJS a propósito (module.exports) para que el script de Node pueda
 // hacer require() y Next.js lo importe sin configuración extra.
 // ═══════════════════════════════════════════════════════════════════════════

@@ -76,12 +76,7 @@ export function Footer() {
               <ul className="space-y-2 text-sm">
                 {[
                   [t('footer.brands'), '/marcas'],
-                  ['¿Cuánto vale mi camper?', '/cuanto-vale-mi-camper'],
                   ['Blog', '/blog'],
-                  ['Calcular el ITP', '/calcular-itp'],
-                  ['Contrato de compraventa', '/contrato-compraventa'],
-                  ['Gestoría cambio de nombre', '/gestoria-cambio-nombre'],
-                  ['Compra segura', '/compra-segura-camper'],
                   ['Planes para profesionales', '/para-profesionales'],
                   [t('footer.howItWorks'), '/como-funciona'],
                   [t('footer.aboutUs'), '/sobre-nosotros'],

@@ -13,7 +13,6 @@ import { isUuid } from '@/lib/product-url'
 import { getCiudadByMunicipioYEstado } from '@/lib/ubicaciones-seo'
 import { formatPrecio } from '@/lib/precio'
 import { modeloPorValor, slugModelo } from '@/lib/marcas'
-import { TIPOS_ITP } from '@/lib/itp'
 import { alternatesSeo, descripcionSeo, tituloSeo } from '@/lib/seo'
 
 // IMPORTANTE — Ruta DINÁMICA a propósito: ver el comentario en
@@ -87,8 +86,8 @@ function queryProducto(column: 'id' | 'slug', value: string, columns: string) {
 /**
  * ¿Es un anuncio de demostración? (migración 202609180003)
  *
- * Consulta aparte y tolerante a fallo, como la del expediente: si la columna
- * todavía no existe, el anuncio es normal y la ficha no se cae por un sello.
+ * Consulta aparte y tolerante a fallo: si la columna todavía no existe, el
+ * anuncio es normal y la ficha no se cae.
  */
 const getEsDemo = cache(async (productoId: string): Promise<boolean> => {
   if (!supabase || !productoId) return false
@@ -105,39 +104,6 @@ const getEsDemo = cache(async (productoId: string): Promise<boolean> => {
   }
 })
 
-/**
- * Estado del expediente de homologación del anuncio (Fase 0.2).
- *
- * Va en consultas SEPARADAS y tolerantes a fallo a propósito: si la migración
- * todavía no está aplicada en esta base de datos, PostgREST responde 42703 por
- * columna/tabla inexistente y rechazaría el SELECT entero. La ficha del
- * producto no puede caerse por un sello informativo.
- */
-async function getVerificacionHomologacion(productoId: string) {
-  if (!supabase || !productoId) return null
-  try {
-    const { data: producto, error } = await supabase
-      .from('productos')
-      .select('verificacion_homologacion, verificacion_homologacion_motivo')
-      .eq('id', productoId)
-      .maybeSingle()
-    if (error || !producto) return null
-
-    const { data: documentos } = await supabase
-      .from('documentos_vehiculo')
-      .select('tipo, estado')
-      .eq('producto_id', productoId)
-      .eq('estado', 'verificado')
-
-    return {
-      estado: (producto as any).verificacion_homologacion || 'sin_verificar',
-      motivo: (producto as any).verificacion_homologacion_motivo || null,
-      documentos: documentos || [],
-    }
-  } catch {
-    return null
-  }
-}
 
 /**
  * Estado de reserva del anuncio (Fase 1.2) — consulta aparte y tolerante a
@@ -431,11 +397,10 @@ export default async function ProductoPage({ params }: Props) {
     notFound()
   }
 
-  const [relacionados, favoritosCount, resumenResenas, verificacion, reserva] = await Promise.all([
+  const [relacionados, favoritosCount, resumenResenas, reserva] = await Promise.all([
     getRelacionados(producto),
     getFavoritosCount(producto.id),
     getResumenResenas(producto.id),
-    getVerificacionHomologacion(producto.id),
     getEstadoReserva(producto.id),
   ])
 
@@ -549,7 +514,6 @@ export default async function ProductoPage({ params }: Props) {
         <ProductoPageClient
           initialProduct={producto}
           favoritosCount={favoritosCount}
-          verificacion={verificacion}
           reserva={reserva}
           esDemo={await getEsDemo(producto.id)}
         />
@@ -598,8 +562,8 @@ export default async function ProductoPage({ params }: Props) {
 
       {/* ── Enlazado interno contextual ──
           Google descubre jerarquía y topicalidad con enlaces en el
-          cuerpo de la ficha: landing de la provincia, página del
-          modelo, calculadora de ITP de la comunidad y checklist. */}
+          cuerpo de la ficha: landing de la provincia y página del
+          modelo. */}
       <section className="max-w-7xl mx-auto px-4 py-8 border-t border-gray-100 mt-8">
         <h2 className="text-lg font-black text-gray-900 mb-3">
           Explora más sobre este vehículo
@@ -629,36 +593,6 @@ export default async function ProductoPage({ params }: Props) {
               </li>
             )
           })()}
-          {(() => {
-            const ccaa = TIPOS_ITP.find(c => c.nombre === producto.ubicacion_estado)
-            if (!ccaa) return null
-            return (
-              <li>
-                <LocalLink
-                  href={`/calcular-itp/${ccaa.slug}`}
-                  className="text-brand-primary font-semibold hover:underline"
-                >
-                  Calcula el impuesto de transmisiones (ITP) al comprar en {ccaa.nombre}
-                </LocalLink>
-              </li>
-            )
-          })()}
-          <li>
-            <LocalLink
-              href="/compra-segura-camper"
-              className="text-brand-primary font-semibold hover:underline"
-            >
-              Checklist de compra segura de camper: qué revisar antes de pagar
-            </LocalLink>
-          </li>
-          <li>
-            <LocalLink
-              href="/contrato-compraventa"
-              className="text-brand-primary font-semibold hover:underline"
-            >
-              Contrato de compraventa de camper descargable
-            </LocalLink>
-          </li>
         </ul>
       </section>
     </>

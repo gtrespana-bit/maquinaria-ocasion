@@ -11,7 +11,6 @@ import { Camera, X, ArrowLeft, Save, AlertCircle, Trash2 } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import Image from 'next/image'
 import { compressImages } from '@/lib/compress-image'
-import ExpedienteVehiculo from '@/components/ExpedienteVehiculo'
 
 const estadosProducto = ['Nuevo', 'Como nuevo', 'Bueno', 'Usado']
 
@@ -585,10 +584,6 @@ export default function EditarPage() {
             <span className="text-sm font-medium">Publicación {activo ? 'activa' : 'pausada'}</span>
           </label>
         </div>
-
-        {/* Verificación de homologación (100% opcional): permite subir la
-            documentación del vehículo para conseguir el sello de confianza. */}
-        <ExpedienteVehiculo productoId={productoId} especificaciones={specs} />
 
         {/* Actions */}
         <div className="flex items-center gap-3 pt-4 border-t">

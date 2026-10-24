@@ -3,18 +3,15 @@ import { NextRequest, NextResponse } from 'next/server'
 import { POST as crear } from '@/app/api/crear-conversacion/route'
 import { POST as enviar } from '@/app/api/enviar-mensaje/route'
 import { GET as reservas } from '@/app/api/reservas/route'
-import { POST as semilla } from '@/app/api/admin/semilla/route'
-import { requireUser, requireAdmin } from '@/lib/require-auth'
+import { requireUser } from '@/lib/require-auth'
 import { destinatarioSemilla } from '@/lib/semilla-chat'
-import { asegurarVendedores } from '@/lib/semilla-admin.js'
 import { createClient } from '@supabase/supabase-js'
 import { notifyUser } from '@/lib/push-notify'
 
 jest.mock('@supabase/supabase-js', () => ({ createClient: jest.fn() }))
-jest.mock('@/lib/require-auth', () => ({ requireUser: jest.fn(), requireAdmin: jest.fn() }))
+jest.mock('@/lib/require-auth', () => ({ requireUser: jest.fn() }))
 jest.mock('@/lib/rate-limit', () => ({ checkRateLimit: jest.fn(async () => ({ ok: true })), getClientIp: () => '127.0.0.1' }))
 jest.mock('@/lib/semilla-chat', () => ({ destinatarioSemilla: jest.fn() }))
-jest.mock('@/lib/semilla-admin.js', () => ({ asegurarVendedores: jest.fn(), CAMPOS_ANUNCIO_SEMILLA: {} }))
 jest.mock('@/lib/push-notify', () => ({ notifyUser: jest.fn(async () => {}) }))
 jest.mock('@/lib/telegram-admin', () => ({ notificarAdminTelegram: jest.fn() }))
 
@@ -33,7 +30,6 @@ function req(body: any) {
 beforeEach(() => {
   jest.clearAllMocks()
   ;(requireUser as jest.Mock).mockResolvedValue({ user: { id: BUYER } })
-  ;(requireAdmin as jest.Mock).mockResolvedValue({ user: { id: ADMIN } })
   ;(destinatarioSemilla as jest.Mock).mockResolvedValue(ADMIN)
   results = {
     productos: [{ data: { user_id: SELLER, activo: true, estado_moderacion: 'aprobado', es_demo: true } }],
@@ -151,10 +147,3 @@ test('reservas por producto filtran comprador/vendedor incluso usando service_ro
   expect(tables.reservas.or).toHaveBeenCalledWith(`comprador_id.eq.${BUYER},vendedor_id.eq.${BUYER}`)
 })
 
-test('estado semilla API usa solo lectura y no crea categoría ni actualiza productos', async () => {
-  ;(asegurarVendedores as jest.Mock).mockResolvedValue({ ids: {}, creados: 0, reutilizados: 0 })
-  const response = await semilla(new NextRequest('https://site.test/api/admin/semilla?dry=1', { method: 'POST' }))
-  expect(response.status).toBe(200)
-  expect(asegurarVendedores).toHaveBeenCalledWith(expect.anything(), true)
-  expect(tables).toEqual({})
-})

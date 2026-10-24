@@ -6,7 +6,6 @@ import fs from 'fs'
 import path from 'path'
 import { CIUDADES_SEO, CATEGORIAS_POPULARES } from '@/lib/ubicaciones-seo'
 import { CATEGORIAS_SEO_LIST, SUBCATEGORIAS_SEO } from '@/lib/categorias-seo'
-import { TIPOS_ITP } from '@/lib/itp'
 import { limpiarComillas } from '@/lib/seo'
 
 const BASE_URL = 'https://maquinariaocasion.online'
@@ -164,21 +163,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { path: '/blog', changeFrequency: 'weekly', priority: 0.8 },
     { path: '/publicar', changeFrequency: 'weekly', priority: 0.8 },
     { path: '/creditos', changeFrequency: 'weekly', priority: 0.7 },
-    { path: '/calcular-itp', changeFrequency: 'monthly', priority: 0.9 },
-    { path: '/compra-segura-camper', changeFrequency: 'monthly', priority: 0.7 },
-    { path: '/contrato-compraventa', changeFrequency: 'monthly', priority: 0.7 },
     { path: '/politica-de-privacidad', changeFrequency: 'yearly', priority: 0.3 },
     { path: '/politica-de-cookies', changeFrequency: 'yearly', priority: 0.3 },
     { path: '/terminos-y-condiciones', changeFrequency: 'yearly', priority: 0.3 },
     ...(hayDatosTitular()
       ? [{ path: '/aviso-legal', changeFrequency: 'yearly' as const, priority: 0.3 }]
       : []),
-    { path: '/gestoria-cambio-nombre', changeFrequency: 'monthly', priority: 0.7 },
     { path: '/marcas', changeFrequency: 'weekly', priority: 0.8 },
     { path: '/tiendas', changeFrequency: 'daily', priority: 0.8 },
-    { path: '/cuanto-vale-mi-camper', changeFrequency: 'monthly', priority: 0.9 },
     { path: '/comprar-a-particulares', changeFrequency: 'daily', priority: 0.8 },
-    { path: '/comprar-a-camperizadores', changeFrequency: 'daily', priority: 0.8 },
     { path: '/comprar-a-profesionales', changeFrequency: 'daily', priority: 0.8 },
     { path: '/como-funciona', changeFrequency: 'monthly', priority: 0.6 },
     { path: '/para-profesionales', changeFrequency: 'weekly', priority: 0.8 },
@@ -222,12 +215,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       })
     }
   }
-
-  const itpUrls: MetadataRoute.Sitemap = TIPOS_ITP.map((community) => ({
-    url: `${BASE_URL}/calcular-itp/${community.slug}`,
-    changeFrequency: 'monthly',
-    priority: 0.8,
-  }))
 
   const blogUrls: MetadataRoute.Sitemap = getBlogSlugs().map((post) => ({
     url: `${BASE_URL}/blog/${post.slug}`,
@@ -306,7 +293,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...categoryUrls,
     ...cityUrls,
     ...cityCategoryUrls,
-    ...itpUrls,
     ...blogUrls,
     ...dynamicUrls,
   ]

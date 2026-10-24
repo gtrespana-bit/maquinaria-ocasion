@@ -5,16 +5,12 @@ import LocalLink from '@/components/LocalLink'
 import Image from 'next/image'
 import { supabase } from '@/lib/supabase'
 import { useAuth } from '@/components/AuthProvider'
-import { MapPin, Tag, MessageCircle, Phone, Mail, ChevronRight, Shield, Clock, Heart, Share2, CheckCircle2, FileCheck2, Calculator, CalendarClock } from 'lucide-react'
+import { MapPin, Tag, MessageCircle, Phone, Mail, ChevronRight, Shield, Clock, Heart, Share2, CheckCircle2, CalendarClock } from 'lucide-react'
 import Avatar from '@/components/Avatar'
 import ReportarButton from '@/components/ReportarButton'
 import BadgeVerificado from '@/components/BadgeVerificado'
 import BadgeTipoVendedor from '@/components/BadgeTipoVendedor'
-import BadgeHomologacion from '@/components/BadgeHomologacion'
 import BotonReservar, { AvisoReservado } from '@/components/ReservaProducto'
-import BotonInspeccion from '@/components/BotonInspeccion'
-import { FileText } from 'lucide-react'
-import { esHomologacionVivienda, resumenExpediente } from '@/lib/verificacion-homologacion'
 import ImageGallery from '@/components/ImageGallery'
 import SellerReputation from '@/components/SellerReputation'
 import { resolveContactMethods } from '@/lib/contact-methods'
@@ -42,12 +38,6 @@ class ProductErrorBoundary extends Component<{children: React.ReactNode}, {hasEr
   }
 }
 
-export interface VerificacionHomologacion {
-  estado: string
-  motivo?: string | null
-  documentos: { tipo: string; estado?: string | null }[]
-}
-
 export interface EstadoReserva {
   reservado: boolean
   reservado_hasta?: string | null
@@ -57,13 +47,12 @@ export interface EstadoReserva {
 interface ProductoPageClientProps {
   initialProduct: any
   favoritosCount?: number
-  verificacion?: VerificacionHomologacion | null
   reserva?: EstadoReserva | null
   /**
    * Anuncio sembrado por la plataforma (columna `es_demo`). No se marca en la
    * interfaz —la ficha debe leerse como cualquier otra— pero mantiene dos
    * límites que no dependen del aspecto: no se ofrecen contactos inventados y
-   * no se habilitan pagos (señal de reserva o inspección) sobre un vehículo
+   * no se habilita el pago con señal sobre un vehículo
    * que no existe. Las consultas de estos anuncios llegan al equipo.
    */
   esDemo?: boolean
@@ -72,7 +61,6 @@ interface ProductoPageClientProps {
 function ProductoPageClientInner({
   initialProduct,
   favoritosCount = 0,
-  verificacion = null,
   reserva = null,
   esDemo = false,
 }: ProductoPageClientProps) {
@@ -269,14 +257,6 @@ function ProductoPageClientInner({
               <h3 className="font-bold text-green-800 text-lg">{t('successTitle')}</h3>
               <p className="text-green-700 text-sm mt-1">{t('successDesc')}</p>
               <p className="text-green-600 text-xs mt-2 font-bold">{t('successFree')}</p>
-              {/* Siguiente paso natural tras publicar: subir la documentación
-                  del vehículo y conseguir el sello de homologación verificada. */}
-              <LocalLink
-                href={`/producto/editar/${producto.id}#expediente`}
-                className="inline-flex items-center gap-2 mt-3 bg-brand-primary text-white text-xs font-bold px-3 py-2 rounded-lg hover:bg-brand-dark transition"
-              >
-                {t('expedienteCta')}
-              </LocalLink>
               {/* Pico de dopamina del vendedor: compartir = tráfico gratis de SU red */}
               <div className="flex flex-wrap gap-2 mt-3">
                 <button
@@ -344,9 +324,6 @@ function ProductoPageClientInner({
               <span className="badge-trust">{producto.estado}</span>
               {producto.marca && <span className="bg-gray-100 text-gray-600 px-3 py-1 rounded-full text-sm">{producto.marca}</span>}
               {producto.subcategoria && <span className="bg-gray-100 text-gray-600 px-3 py-1 rounded-full text-sm capitalize">{producto.subcategoria}</span>}
-              {!esDemo && verificacion && verificacion.estado === 'verificada' && (
-                <BadgeHomologacion estado={verificacion.estado} size="md" />
-              )}
               {(reserva?.reservado || reservaEstado === 'activa') && (
                 <span className="inline-flex items-center gap-1.5 bg-amber-50 text-amber-800 border border-amber-200 px-3 py-1 rounded-full text-sm font-semibold">
                   <CalendarClock size={14} aria-hidden="true" /> {t('reservadoBadge')}
@@ -444,39 +421,6 @@ function ProductoPageClientInner({
               </div>
             )}
 
-            {/* Expediente del vehículo: qué documentación ha revisado el
-                equipo. Solo se muestra cuando hay algo que contar (verificada
-                o en revisión); un anuncio sin expediente no se castiga. */}
-            {!esDemo && verificacion && verificacion.estado !== 'sin_verificar' && verificacion.estado !== 'rechazada' && (
-              <div className="bg-white rounded-xl border border-gray-200 p-4 mb-5">
-                <h3 className="font-bold text-gray-900 mb-2 flex items-center gap-2">
-                  <FileCheck2 size={18} className="text-brand-accent" aria-hidden="true" />
-                  {t('expedienteTitle')}
-                </h3>
-                <BadgeHomologacion estado={verificacion.estado} size="md" />
-                <p className="text-sm text-gray-600 mt-2">
-                  {verificacion.estado === 'verificada' ? t('expedienteIntroVerificada') : t('expedienteIntroPendiente')}
-                </p>
-                {verificacion.estado === 'verificada' && verificacion.documentos.length > 0 && (
-                  <ul className="mt-3 space-y-1">
-                    {resumenExpediente(producto.especificaciones, verificacion.documentos)
-                      .items.filter(item => item.presente)
-                      .map(item => (
-                        <li key={item.tipo} className="flex items-center gap-2 text-sm text-gray-700">
-                          <CheckCircle2 size={15} className="text-brand-accent flex-shrink-0" aria-hidden="true" />
-                          {item.label}
-                        </li>
-                      ))}
-                  </ul>
-                )}
-                {verificacion.estado === 'pendiente' && esHomologacionVivienda(producto.especificaciones) && (
-                  <p className="mt-2 text-xs text-amber-800 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2">
-                    {t('expedienteAvisoVivienda')}
-                  </p>
-                )}
-                <p className="mt-2 text-xs text-gray-500">{t('expedienteNotaComprador')}</p>
-              </div>
-            )}
 
             {/* Reserva con señal: el comprador solicita, el vendedor confirma la
                 señal al recibirla y entonces el anuncio queda reservado. No se
@@ -492,55 +436,8 @@ function ProductoPageClientInner({
               />
             )}
 
-            {/* Inspección precompra (§4.1): va justo debajo de la reserva (no
-                son excluyentes) y tampoco en anuncios sembrados, donde no hay
-                un coche que inspeccionar. */}
-            {!producto.vendido && !esDemo && (
-              <BotonInspeccion
-                producto={producto}
-                userId={user?.id || null}
-                reservado={!!reserva?.reservado || reservaEstado === 'confirmada'}
-              />
-            )}
 
-            {/* Utilidad de compra: el ITP es el coste que más sorprende, y
-                depende de la comunidad del comprador. Va con el precio puesto. */}
-            {!producto.vendido && Number(producto.precio_usd) > 0 && (
-              <LocalLink
-                href={`/calcular-itp?precio=${Math.round(Number(producto.precio_usd))}`}
-                className="flex items-center gap-3 bg-white border border-gray-200 rounded-xl p-3.5 mb-5 hover:border-brand-accent transition group"
-              >
-                <span className="w-9 h-9 rounded-full bg-brand-accent/10 text-brand-accent-dark flex items-center justify-center flex-shrink-0">
-                  <Calculator size={17} aria-hidden="true" />
-                </span>
-                <span className="min-w-0">
-                  <span className="block text-sm font-bold text-gray-900 group-hover:text-brand-primary">
-                    {t('itpCtaTitulo')}
-                  </span>
-                  <span className="block text-xs text-gray-500">{t('itpCtaDesc')}</span>
-                </span>
-                <ChevronRight size={16} className="ml-auto text-gray-400 flex-shrink-0" aria-hidden="true" />
-              </LocalLink>
-            )}
 
-            {/* Contrato de compraventa: utilidad pública (también tras venderse),
-                precargada con los datos del anuncio. El siguiente paso natural
-                de cualquier operación cerrada desde la ficha. */}
-            <LocalLink
-              href={`/contrato-compraventa?producto=${slug}`}
-              className="flex items-center gap-3 bg-white border border-gray-200 rounded-xl p-3.5 mb-5 hover:border-brand-primary transition group"
-            >
-              <span className="w-9 h-9 rounded-full bg-brand-primary/10 text-brand-primary flex items-center justify-center flex-shrink-0">
-                <FileText size={17} aria-hidden="true" />
-              </span>
-              <span className="min-w-0">
-                <span className="block text-sm font-bold text-gray-900 group-hover:text-brand-primary">
-                  {t('contratoCtaTitulo')}
-                </span>
-                <span className="block text-xs text-gray-500">{t('contratoCtaDesc')}</span>
-              </span>
-              <ChevronRight size={16} className="ml-auto text-gray-400 flex-shrink-0" aria-hidden="true" />
-            </LocalLink>
 
             {vendedor && (
               <div className="bg-gray-50 rounded-xl p-4 mb-5">

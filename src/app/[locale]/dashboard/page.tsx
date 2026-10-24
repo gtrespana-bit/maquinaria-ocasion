@@ -105,7 +105,6 @@ export default function DashboardPage() {
   const [activeTab, setActiveTab] = useState<DashboardTab>('resumen')
   const [cambiarPw, setCambiarPw] = useState(false)
   const [abrirEdicion, setAbrirEdicion] = useState(0)
-  const [tratoInicial, setTratoInicial] = useState<'reservas' | 'inspecciones'>('reservas')
   const [guardandoPerfil, setGuardandoPerfil] = useState(false)
   const [boostTarget, setBoostTarget] = useState<{ productId: string; titulo: string } | null>(null)
   const [destacadoTarget, setDestacadoTarget] = useState<{ productId: string; titulo: string } | null>(null)
@@ -114,7 +113,6 @@ export default function DashboardPage() {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
     const tab = params.get('tab')
-    if (tab === 'reservas' || tab === 'inspecciones') setTratoInicial(tab)
     if (tab) setActiveTab(normalizarTab(tab))
   }, [])
 
@@ -362,7 +360,7 @@ export default function DashboardPage() {
           )}
           {activeTab === 'tratos' && (
             <Suspense fallback={<div className="bg-white rounded-xl border border-gray-100 p-8 text-center text-gray-500">Cargando…</div>}>
-              <TabTratos userId={user!.id} inicial={tratoInicial} />
+              <TabTratos userId={user!.id} />
             </Suspense>
           )}
           {activeTab === 'tienda' && (

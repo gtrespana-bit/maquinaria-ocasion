@@ -9,13 +9,11 @@
 import {
   CATALOG_FILTRO_MODERACION,
   CATALOG_PRODUCT_COLUMNS,
-  FILTRO_VERIFICADA_PARAM,
   FILTRO_VENDEDOR_PARAM,
   aplicarFiltrosCatalogo,
   aplicarRangosNumericos,
   quitarRangos,
   tieneRangosNumericos,
-  filtroVerificadaActivo,
   tipoVendedorFiltro,
   marcarDestacados,
   ordenarProductosCatalogo,
@@ -30,7 +28,6 @@ describe('columnas y filtro de moderación', () => {
     expect(columnas).toContain('slug')
     expect(columnas).toContain('vendedor_verificado')
     expect(columnas).toContain('vendedor_tipo')
-    expect(columnas).toContain('verificacion_homologacion')
   })
 
   test('el filtro de moderación deja fuera lo rechazado', () => {
@@ -70,20 +67,13 @@ describe('aplicarFiltrosCatalogo', () => {
     ])
   })
 
-  test('el filtro de homologación verificada usa la columna, no el JSONB', () => {
+  test('combina contención JSONB y rangos cuando están activos', () => {
     const query = crearQuery()
-    aplicarFiltrosCatalogo(query, { [FILTRO_VERIFICADA_PARAM]: '1' })
-
-    expect(query.llamadas).toEqual([['eq', 'verificacion_homologacion', 'verificada']])
-  })
-
-  test('combina los dos tipos de filtro cuando están activos', () => {
-    const query = crearQuery()
-    aplicarFiltrosCatalogo(query, { [FILTRO_VERIFICADA_PARAM]: '1', mma: 'Hasta 3.500 kg (carnet B)' })
+    aplicarFiltrosCatalogo(query, { mma: 'Hasta 3.500 kg (carnet B)', kmMax: '150000' })
 
     expect(query.llamadas).toEqual([
       ['contains', 'especificaciones', { 'MMA / Peso máximo autorizado': 'Hasta 3.500 kg (carnet B)' }],
-      ['eq', 'verificacion_homologacion', 'verificada'],
+      ['lte', 'espec_km', 150000],
     ])
   })
 
@@ -138,14 +128,6 @@ describe('aplicarFiltrosCatalogo', () => {
     expect(quitarRangos(null)).toEqual({})
   })
 
-  test('solo se considera activo con valores afirmativos', () => {
-    expect(filtroVerificadaActivo('1')).toBe(true)
-    expect(filtroVerificadaActivo(true)).toBe(true)
-    expect(filtroVerificadaActivo('si')).toBe(true)
-    expect(filtroVerificadaActivo('')).toBe(false)
-    expect(filtroVerificadaActivo(undefined)).toBe(false)
-    expect(filtroVerificadaActivo('0')).toBe(false)
-  })
 })
 
 describe('orden del catálogo', () => {
@@ -163,7 +145,6 @@ describe('orden del catálogo', () => {
     destacado: false,
     destacado_hasta: null,
     vendedor_verificado: false,
-    verificacion_homologacion: 'sin_verificar',
     ...over,
   }) as any
 

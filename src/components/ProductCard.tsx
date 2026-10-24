@@ -3,7 +3,6 @@ import { formatPrecio } from '@/lib/precio'
 import { boostVigente } from '@/lib/catalog-consulta'
 
 import LocalLink from '@/components/LocalLink'
-import BadgeHomologacion from '@/components/BadgeHomologacion'
 import BadgeTipoVendedor from '@/components/BadgeTipoVendedor'
 import Image from 'next/image'
 import { useTranslations } from 'next-intl'
@@ -23,7 +22,6 @@ export interface ProductCardData {
   destacado_hasta: string | null
   vendedor_verificado: boolean | null
   vendedor_tipo?: string | null
-  verificacion_homologacion?: string | null
   reservado?: boolean | null
   /**
    * Anuncio sembrado por la plataforma. La tarjeta NO lo etiqueta: se muestra
@@ -102,11 +100,6 @@ export default function ProductCard({ p, isPromoted, isFeatured, priority }: { p
               </svg>
               {t('productCard.reserved')}
             </span>
-          </div>
-        )}
-        {p.verificacion_homologacion === 'verificada' && (
-          <div className="mt-1">
-            <BadgeHomologacion estado={p.verificacion_homologacion} size="sm" />
           </div>
         )}
         {p.vendedor_tipo && (

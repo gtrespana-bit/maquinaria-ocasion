@@ -81,7 +81,7 @@ function faqsDeCiudad(
       respuesta:
         precioTexto && rangoTexto
           ? `El precio medio de una camper en ${nombre} es de ${formatPrecio(stats.precioMedio)}, con anuncios que van ${rangoTexto} según tipo, año, kilometraje y equipamiento. El catálogo permite filtrar por rango de precio para ajustar la búsqueda a tu presupuesto.`
-          : `Los precios en ${nombre} varían según el tipo de vehículo, año y equipamiento. Usa los filtros de precio del catálogo para ver campers dentro de tu presupuesto y calcula el impuesto de transmisiones patrimoniales (ITP) con nuestra calculadora antes de comprar.`,
+          : `Los precios en ${nombre} varían según el tipo de vehículo, año y equipamiento. Usa los filtros de precio del catálogo para ver campers dentro de tu presupuesto y comprueba siempre el precio de matriculación (ITP) de tu comunidad antes de comprar.`,
     },
     ...(topSub
       ? [{
@@ -91,7 +91,7 @@ function faqsDeCiudad(
       : []),
     {
       pregunta: `¿Cómo comprar una camper en ${nombre} con seguridad?`,
-      respuesta: `Antes de pagar, revisa nuestro checklist de compra segura de camper: verifica la homologación del vehículo (ficha técnica, ITV y, si es vehículo vivienda, el proyecto de homologación), prueba el equipamiento eléctrico y de agua, y firma el contrato de compraventa. Además, calcula el ITP que te toca en ${estado} con nuestra calculadora y, si lo necesitas, usa nuestro servicio de gestoría para el cambio de nombre.`,
+      respuesta: `Antes de pagar, revisa la ficha técnica (homologación 2448/3148 si es vehículo vivienda, ITV al día), el estado del chasis y la corrosión, y prueba el equipamiento eléctrico y de agua. Además, infórmate del ITP que te toca en ${estado} y, para el cambio de nombre, consulta la documentación exigida por la DGT.`,
     },
     {
       pregunta: `¿Puedo publicar mi camper en ${nombre} gratis?`,
@@ -230,7 +230,7 @@ export default async function LandingCiudad({ slug, nombre, municipio, estado, d
             {nombre} es una de las provincias con más demanda de furgonetas camper y autocaravanas de segunda mano de {estado}: su orografía, su costa y su red de áreas de autocaravana hacen que campers y autocaravanas de ocasión se muevan todo el año. En MaquinariaOcasión filtramos cada anuncio por provincia real, así que los vehículos que ves aquí están en {nombre} o en municipios cercanos de la misma zona.
           </p>
           <p>
-            Nuestro catálogo de {nombre} cubre todas las familias camper: gran volumen (L3H2, L4H2) para viajar en familia, camper medianas y compactas para día a día, minicamper para parejas y autocaravanas perfiladas, capuchinas e integrales. Cada ficha incluye ficha técnica (año, kilómetros, MMA, plazas), equipamiento de autonomía (calefacción, agua caliente, batería auxiliar, placa solar, inversor) y el sello de homologación verificada cuando el expediente está revisado.
+            Nuestro catálogo de {nombre} cubre todas las familias camper: gran volumen (L3H2, L4H2) para viajar en familia, camper medianas y compactas para día a día, minicamper para parejas y autocaravanas perfiladas, capuchinas e integrales. Cada ficha incluye ficha técnica (año, kilómetros, MMA, plazas), equipamiento de autonomía (calefacción, agua caliente, batería auxiliar, placa solar, inversor) y la homologación declarada en la ficha técnica.
           </p>
         </div>
       </section>
@@ -326,17 +326,14 @@ export default async function LandingCiudad({ slug, nombre, municipio, estado, d
           Compra tu camper en {nombre} con confianza
         </h2>
         <p className="text-gray-100 text-sm md:text-base mb-5 max-w-2xl">
-          Revisa los {stats.total > 0 ? stats.total : 'nuestros'} anuncios de {nombre}{precioMedioTexto} y consulta antes de comprar: checklist de compra segura, calculadora de ITP para {estado} y contrato de compraventa descargable.
+          Revisa los {stats.total > 0 ? stats.total : 'nuestros'} anuncios de {nombre}{precioMedioTexto} y, antes de pagar, comprueba la ficha técnica, la ITV y el historial del vehículo.
         </p>
         <div className="flex flex-wrap gap-3">
-          <LocalLink href="/compra-segura-camper" className="bg-white text-brand-dark font-bold px-5 py-2.5 rounded-lg text-sm hover:bg-gray-100 transition">
-            Checklist de compra segura
+          <LocalLink href="/catalogo" className="bg-white text-brand-dark font-bold px-5 py-2.5 rounded-lg text-sm hover:bg-gray-100 transition">
+            Ver todo el catálogo
           </LocalLink>
-          <LocalLink href="/calcular-itp" className="bg-white/15 hover:bg-white/25 border border-white/30 font-bold px-5 py-2.5 rounded-lg text-sm transition">
-            Calcular el ITP en {estado}
-          </LocalLink>
-          <LocalLink href="/contrato-compraventa" className="bg-white/15 hover:bg-white/25 border border-white/30 font-bold px-5 py-2.5 rounded-lg text-sm transition">
-            Contrato de compraventa
+          <LocalLink href="/como-funciona" className="bg-white/15 hover:bg-white/25 border border-white/30 font-bold px-5 py-2.5 rounded-lg text-sm transition">
+            Cómo funciona
           </LocalLink>
         </div>
       </section>

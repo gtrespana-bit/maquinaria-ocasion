@@ -59,7 +59,7 @@ async function getDatosModelo(slug: string) {
     .select(
       `id, slug, titulo, ${COLUMNAS_PRECIO}, imagen_url, subcategoria, ` +
         'ubicacion_ciudad, ubicacion_estado, estado, boosteado_en, destacado, destacado_hasta, ' +
-        'vendedor_verificado, vendedor_tipo, verificacion_homologacion, reservado, es_demo, ' +
+        'vendedor_verificado, vendedor_tipo, reservado, es_demo, ' +
         'espec_km, espec_anio'
     )
     .eq('marca', modelo.valor)
@@ -157,12 +157,12 @@ export default async function ModeloPage({ params }: Props) {
   faqs.push({
     pregunta: `¿Cuántos ${nombre} hay en venta ahora mismo?`,
     respuesta: anuncios.length > 0
-      ? `Hay ${anuncios.length} anuncios activos de ${nombre} en MaquinariaOcasión, de toda España. Puedes filtrarlos por precio, kilómetros, año y homologación verificada en el catálogo filtrado por ${nombre}.`
+      ? `Hay ${anuncios.length} anuncios activos de ${nombre} en MaquinariaOcasión, de toda España. Puedes filtrarlos por precio, kilómetros y año en el catálogo filtrado por ${nombre}.`
       : `Ahora mismo no hay anuncios activos de ${nombre}, pero puedes publicar el tuyo gratis o filtrar el catálogo por la marca ${modelo.fabricante} para ver modelos cercanos.`,
   })
   faqs.push({
     pregunta: `¿Qué debo revisar en un ${nombre} camper de segunda mano?`,
-    respuesta: `Antes de pagar: la ficha técnica (homologación 2448/3148 si promete vida a bordo), la ITV al día, el estado del chasis y la corrosión, el motor y la caja de cambios, y el equipamiento de autonomía (batería auxiliar, placa solar, calefacción, agua y fugas). Tenemos el checklist completo en nuestra guía de compra segura de camper.`,
+    respuesta: `Antes de pagar: la ficha técnica (homologación 2448/3148 si promete vida a bordo), la ITV al día, el estado del chasis y la corrosión, el motor y la caja de cambios, y el equipamiento de autonomía (batería auxiliar, placa solar, calefacción, agua y fugas). Conviene revisarlo todo antes de pagar y llevar la factura y la transferencia en regla.`,
   })
   faqs.push({
     pregunta: `¿Se puede conducir un ${nombre} con el permiso B?`,
@@ -295,11 +295,7 @@ export default async function ModeloPage({ params }: Props) {
           <LocalLink href="/publicar" className="text-brand-primary font-semibold hover:underline">
             Publica gratis tu {nombre}
           </LocalLink>{' '}
-          o consulta el{' '}
-          <LocalLink href="/cuanto-vale-mi-camper" className="text-brand-primary font-semibold hover:underline">
-            valorador de campers
-          </LocalLink>{' '}
-          para saber cuánto vale tu vehículo.
+          y llega a compradores de toda España.
         </p>
       </section>
     </>

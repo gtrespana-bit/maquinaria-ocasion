@@ -15,21 +15,40 @@
 - [x] Logo e iconos placeholder (sustituir en Fase 4)
 - [x] Fuera: fotos semilla de campers, hero camper, assetlinks de la TWA
 
-## Fase 2 — Limpieza del dominio camper (PENDIENTE)
+## Fase 2 — Limpieza del dominio camper (HECHA ✔)
 
 Borrar código que solo tiene sentido en camper. **Hacerlo en un solo PR y
 compilando al final**, porque header, footer, home y sitemap enlazan a estas
 rutas:
 
-- [ ] Páginas: `calcular-itp`, `compra-segura-camper`, `cuanto-vale-mi-camper`,
+- [x] Páginas: `calcular-itp`, `compra-segura-camper`, `cuanto-vale-mi-camper`,
       `gestoria-cambio-nombre`, `contrato-compraventa`, `comprar-a-camperizadores`
-- [ ] Librerías: `itp.ts`, `contrato.ts`, `gestoria.ts`, `inspecciones.ts`,
-      `verificacion-homologacion.ts`, `valoracion.ts`, `precios-mercado.ts`
-- [ ] API: `documentos-vehiculo`, `gestoria`, `inspecciones`
-- [ ] Panel admin: pestañas *Homologación*, *Gestoría*, *Inspecciones*
-- [ ] Seeder de anuncios (`scripts/semilla-*`, `api/admin/semilla`)
-- [ ] Buscar y eliminar los restos de vocabulario camper:
-      `grep -rniE "camper|autocaravana|homologaci|dgt"` (adecuar, no borrar a ciegas)
+- [x] Librerías: `itp.ts`, `contrato.ts`, `gestoria.ts`, `inspecciones.ts`,
+      `verificacion-homologacion.ts`, `valoracion.ts`
+      — **excepción**: `precios-mercado.ts` **se conserva** (estadísticas de
+      precio por modelo; la usan `modelo/[slug]` y su test; no es vocabulario
+      camper)
+- [x] API: `documentos-vehiculo` (pública + admin + firmar), `gestoria` (2),
+      `inspecciones` (2 + cancelar), `valorar`, `admin/semilla` = 10 rutas
+- [x] Panel admin: pestañas *Homologación*, *Gestoría*, *Inspecciones* (y
+      contadores `homologacion`/`inspecciones`/`gestoria` de `counts` y
+      `dashboard`, badge de homologación, expediente y botón de inspección en
+      la ficha, filtro "solo homologación verificada" del catálogo)
+- [x] Seeder de anuncios (`scripts/semilla-*`, `api/admin/semilla`,
+      `package.json: semilla/semilla:reset`) — se conservan
+      `semilla-chat.ts` (lo usa `crear-conversacion`), `semilla-admin.js`
+      (`buscarUsuarioPorEmail`) y `semilla-datos.js`; quedan huérfanos los
+      exports `asegurarVendedores` y `CAMPOS_ANUNCIO_SEMILLA` de
+      `semilla-admin.js` (podar sin prisa)
+- [x] Buscar y eliminar los restos de vocabulario camper:
+      `grep -rniE "camper|autocaravana|homologaci|dgt"` (adecuar, no borrar a
+      ciegas) — **solo en ficheros tocados por la limpieza**; el resto
+      (copy, taxonomía, ciudades, dictionaries, `textos-legales`,
+      `categorias-seo`, `filtros-tecnicos`) es Fase 3–5.
+      `SlugTipo` perdió la entrada `camperizadores`; `?tab=homologacion` y
+      `?tab=inspecciones` caen al fallback del panel automáticamente.
+      Validación: `tsc --noEmit` + `eslint` + 657/657 tests + `next build`
+      sin ninguna de las rutas borradas.
 
 ## Fase 3 — Taxonomía y filtros (PENDIENTE — el núcleo)
 
