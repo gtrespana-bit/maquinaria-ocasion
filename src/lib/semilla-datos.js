@@ -1,11 +1,24 @@
 // ═══════════════════════════════════════════════════════════════════════════
 // DATOS DE LA SEMILLA — módulo compartido (sin dependencias de Node)
-// ─────────────────────────────────────────────────────────────────────────────
-// Única fuente de verdad de los 20 anuncios de demostración. Lo consumen:
-//   · scripts de siembra locales       → siembra desde local
-//   · rutas admin de siembra locales   → siembra desde el navegador
+// ───────────────────────────────────────────────────────────────────────────
+// Única fuente de verdad de los 36 anuncios de demostración de maquinaria.
+// Lo consumen:
+//   · scripts/generar-sql-semilla.js  → genera la migración SQL idempotente
+//                                        (supabase/migrations/*_seed_*.sql)
+//   · rutas admin de siembra locales  → siembra desde el navegador
 // ES CommonJS a propósito (module.exports) para que el script de Node pueda
 // hacer require() y Next.js lo importe sin configuración extra.
+//
+// Reglas de la semilla (Fase 5):
+//   · Todo se marca `es_demo`: no se indexa, no expone contacto y nunca
+//     muestra sello de verificado.
+//   · Sin teléfonos inventados (pertenecerían a personas reales).
+//   · Claves de `especificaciones` = etiquetas EXACTAS del formulario
+//     (src/lib/categorias.ts → camposTransversales + campos por familia),
+//     que son las que leen los filtros del catálogo y las columnas
+//     generadas `espec_anio` / `espec_horas`.
+//   · `marca` = valor canónico de MARCAS_MODELOS (src/lib/marcas.ts).
+//   · `subcategoria` = label de la sub (así lo guarda /publicar).
 // ═══════════════════════════════════════════════════════════════════════════
 
 // ── Utilidades ──────────────────────────────────────────────────────────────
@@ -24,594 +37,465 @@ function dentroDias(d) {
 /**
  * Construye el bloque `especificaciones` EXACTAMENTE con las claves que usan
  * el formulario de publicación y los filtros del catálogo
- * (src/lib/filtros-tecnicos.ts y src/lib/categorias.ts).
+ * (src/lib/categorias.ts y src/lib/filtros-tecnicos.ts).
+ *
+ * Transversales (siempre): Año, Horas de uso, Combustible, Potencia (CV),
+ * Peso (kg), ¿Incluye transporte?, Documentación.
+ * Específicos según `familia`: agricola / obra / herramientas.
  */
 function specs(s) {
   const out = {
-    'Año de matriculación': String(s.anio),
-    'Kilómetros': String(s.km),
+    'Año': String(s.anio),
+    'Horas de uso': String(s.horas),
     Combustible: s.combustible || 'Diésel',
-    Transmisión: s.transmision || 'Manual',
     'Potencia (CV)': String(s.cv),
-    Tracción: s.traccion || '4x2',
-    'MMA / Peso máximo autorizado': s.mma,
-    'Longitud exterior': s.longitud,
-    'Altura exterior': s.altura,
-    'Distintivo Ambiental DGT': s.dgt,
-    Homologación: s.homologacion,
-    'Plazas homologadas para viajar': s.plazasViaje,
-    'Plazas para dormir': s.plazasDormir,
-    'Calefacción estacionaria': s.calefaccion,
-    'Agua caliente': s.aguaCaliente,
-    'Baño / Ducha': s.bano,
-    'Depósito agua limpia (litros)': String(s.deposito),
-    'Batería auxiliar': s.bateria,
-    'Placa solar': s.solar ? 'Sí' : 'No',
-    'Inversor 220V': s.inversor ? 'Sí' : 'No',
-    Nevera: s.nevera,
+    'Peso (kg)': String(s.peso),
+    '¿Incluye transporte?': s.transporte || 'No',
+    Documentación: s.docs || 'Factura y libro de instrucciones',
   }
-  if (s.tamanoChasis) out['Tamaño chasis'] = s.tamanoChasis
-  if (s.solar) out['Placa solar (watios)'] = String(s.solar)
-  if (s.inversor) out['Inversor 220V (watios)'] = String(s.inversor)
-  // Limpieza: fuera claves sin valor (como hace el formulario de /publicar).
-  return Object.fromEntries(
-    Object.entries(out).filter(([, v]) => v !== undefined && v !== null && v !== '' && v !== 'undefined')
-  )
+  if (s.familia === 'agricola') {
+    out['Tracción'] = s.traccion || '4x2'
+    out['Enganche'] = s.enganche || 'Tres puntos'
+    out['Toma de fuerza (PTO)'] = s.pto || '540 rpm'
+    out['Transmisión'] = s.transmision || 'Manual'
+  } else if (s.familia === 'obra') {
+    out['Tracción'] = s.traccion || 'Ruedas 4x4'
+    out['Medidas de transporte'] = s.medidas || 'Más de 4 m'
+  } else if (s.familia === 'herramientas') {
+    out['Potencia (W)'] = s.potenciaW || '1.000 – 2.500 W'
+    out['Tensión'] = s.tension || '230 V'
+    out['Batería incluida'] = s.bateria || 'No'
+  }
+  return out
 }
 
-// Alias cortos para las opciones oficiales (tienen que coincidir al carácter
-// con src/lib/categorias.ts para que los filtros del catálogo funcionen).
-const MMA_B = 'Hasta 3.500 kg (carnet B)'
-const L_CORTA = 'Hasta 5,5 m'
-const L_MEDIA = '5,5 - 6,5 m'
-const L_LARGA = 'Más de 6,5 m'
-const A_BAJA = 'Hasta 2,5 m'
-const A_MEDIA = '2,5 - 3,0 m'
-const DGT_C = 'C (Verde)'
-const DGT_B = 'B (Amarillo)'
-const VIVIENDA = 'Vehículo Vivienda (2448 / 3148)'
-const MIXTO = 'Vehículo Mixto Adaptable (3100)'
-const TURISMO = 'Turismo (1000)'
-const CALEF_D = 'Sí - Diésel'
-const CALEF_G = 'Sí - Gas'
-const CALEF_NO = 'No tiene'
-const BANO_INT = 'Ducha interior con agua caliente + WC fijo'
-const BANO_EXT = 'Ducha exterior + poti portátil'
-const BANO_CAB = 'Cabina de baño completa'
-const BANO_NO = 'Sin baño'
-const LITIO = 'Litio LiFePO4'
-const NEVERA_COMP = 'Compresor 12V'
-const NEVERA_TRI = 'Trivalente gas/12V/220V'
-const NEVERA_PORT = 'Portátil'
-
-// ── Vendedores de demostración (12 perfiles repartidos por España) ──────────
-// El email siempre es @maquinariaocasion.online para no suplantar a nadie real;
-// se crean confirmados, con acceso bloqueado y sin teléfono público.
+// ── Vendedores (10) ────────────────────────────────────────────────────────
+// Tipo: `particular` (dueño de la máquina), `camperizador` = etiqueta
+// «Taller» en la UI (reparación/venta de maquinaria), `profesional` =
+// concesionario o distribuidor. Sin teléfono: la semilla nunca expone
+// contactos (migración 202609180003).
 const VENDEDORES = [
-  { slug: 'ana-martin', nombre: 'Ana Martín Soler', estado: 'Madrid', ciudad: 'Madrid', telefono: null, verificado: false, tipo: 'particular' },
-  { slug: 'jose-luis-ortega', nombre: 'José Luis Ortega Ramos', estado: 'Madrid', ciudad: 'Madrid', telefono: null, verificado: false, tipo: 'particular' },
-  { slug: 'carmen-ruiz', nombre: 'Carmen Ruiz Peña', estado: 'Comunitat Valenciana', ciudad: 'Alicante', telefono: null, verificado: false, tipo: 'camperizador' },
-  { slug: 'iker-mendizabal', nombre: 'Iker Mendizabal Urrutia', estado: 'País Vasco', ciudad: 'Vizcaya', telefono: null, verificado: false, tipo: 'camperizador' },
-  { slug: 'montse-vidal', nombre: 'Montse Vidal Ferrer', estado: 'Cataluña', ciudad: 'Girona', telefono: null, verificado: false, tipo: 'profesional' },
-  { slug: 'pablo-sanz', nombre: 'Pablo Sanz Velasco', estado: 'Aragón', ciudad: 'Zaragoza', telefono: null, verificado: false, tipo: 'particular' },
-  { slug: 'lucia-herrero', nombre: 'Lucía Herrero Pazos', estado: 'Galicia', ciudad: 'A Coruña', telefono: null, verificado: false, tipo: 'particular' },
-  { slug: 'andres-molina', nombre: 'Andrés Molina Guerrero', estado: 'Andalucía', ciudad: 'Sevilla', telefono: null, verificado: false, tipo: 'particular' },
-  { slug: 'javi-fernandez', nombre: 'Javi Fernández Castro', estado: 'Andalucía', ciudad: 'Málaga', telefono: null, verificado: false, tipo: 'camperizador' },
-  { slug: 'elena-pons', nombre: 'Elena Pons Roig', estado: 'Comunitat Valenciana', ciudad: 'Valencia', telefono: null, verificado: false, tipo: 'particular' },
-  { slug: 'marc-girbau', nombre: 'Marc Girbau Font', estado: 'Cataluña', ciudad: 'Barcelona', telefono: null, verificado: false, tipo: 'profesional' },
-  { slug: 'rafa-quesada', nombre: 'Rafa Quesada Serrano', estado: 'Andalucía', ciudad: 'Granada', telefono: null, verificado: false, tipo: 'particular' },
-  { slug: 'teresa-alarcon', nombre: 'Teresa Alarcón Domingo', estado: 'Castilla y León', ciudad: 'Valladolid', telefono: null, verificado: false, tipo: 'particular' },
-  { slug: 'luis-crespi', nombre: 'Lluís Crespí Marquès', estado: 'Baleares', ciudad: 'Baleares', telefono: null, verificado: false, tipo: 'particular' },
+  { slug: 'agrodeal-castilla', nombre: 'AgroDeal Castilla', estado: 'Castilla y León', ciudad: 'Valladolid', telefono: null, verificado: false, tipo: 'profesional' },
+  { slug: 'taller-el-palmar', nombre: 'Talleres El Palmar', estado: 'Andalucía', ciudad: 'Sevilla', telefono: null, verificado: false, tipo: 'camperizador' },
+  { slug: 'grupo-ibermaq', nombre: 'Grupo Ibermaq', estado: 'Cataluña', ciudad: 'Barcelona', telefono: null, verificado: false, tipo: 'profesional' },
+  { slug: 'campo-verde-servicios', nombre: 'Campo Verde Servicios', estado: 'Murcia', ciudad: 'Murcia', telefono: null, verificado: false, tipo: 'camperizador' },
+  { slug: 'excava-norte', nombre: 'Excava Norte', estado: 'País Vasco', ciudad: 'Vizcaya', telefono: null, verificado: false, tipo: 'camperizador' },
+  { slug: 'levante-obra', nombre: 'Levante Obra y Maquinaria', estado: 'Comunitat Valenciana', ciudad: 'Alicante', telefono: null, verificado: false, tipo: 'profesional' },
+  { slug: 'taller-maquinaria-albacete', nombre: 'Taller Maquinaria Albacete', estado: 'Castilla-La Mancha', ciudad: 'Albacete', telefono: null, verificado: false, tipo: 'camperizador' },
+  { slug: 'eolo-generadores', nombre: 'Eolo Generadores y Motores', estado: 'Aragón', ciudad: 'Zaragoza', telefono: null, verificado: false, tipo: 'camperizador' },
+  { slug: 'maria-laura-benitez', nombre: 'María Laura Benítez', estado: 'Comunitat Valenciana', ciudad: 'Valencia', telefono: null, verificado: false, tipo: 'particular' },
+  { slug: 'juan-ramon-estevez', nombre: 'Juan Ramón Estévez', estado: 'Galicia', ciudad: 'Lugo', telefono: null, verificado: false, tipo: 'particular' },
 ]
 const emailVendedor = v => `semilla+${v.slug}@maquinariaocasion.online`
 
-// ── Los 20 anuncios ─────────────────────────────────────────────────────────
-// fotos: rutas relativas a scripts/semilla/fotos (la PRIMERA es la portada).
+// ── Los 36 anuncios ────────────────────────────────────────────────────────
+// fotos: rutas relativas a /public (la PRIMERA es la portada).
 // creado: horas hacia atrás desde ahora mismo.
+// cat: clave de familia/categoría (agricola | obra | herramientas) → categoria_id.
+// sub: label EXACTA de la subcategoría (columna productos.subcategoria).
+
 const ANUNCIOS = [
-  // ──────────────────────── GRAN VOLUMEN ────────────────────────
+  // ──────────────────────── AGRÍCOLA · Tractores ────────────────────────
   {
-    vendedor: 'ana-martin',
-    sub: 'Gran Volumen',
-    marca: 'Fiat Ducato', modelo: 'L2H2 2.3 Multijet 140',
-    titulo: 'Fiat Ducato L2H2 camperizada 2020 · 140 CV · Vivienda homologada',
-    precio: 37500, estado: 'Bueno', creado: 26 * 24, visitas: 437,
+    vendedor: 'agrodeal-castilla',
+    cat: 'agricola', sub: 'Tractores',
+    marca: 'John Deere 6M', modelo: '6M',
+    titulo: 'John Deere 6M 120 CV · 4.180 horas · 2019',
+    precio: 52900, estado: 'Bueno', creado: 26 * 24, visitas: 512,
     verificacion: 'verificada',
-    fotos: ['gran-volumen/ducato-menta-1.jpg', 'gran-volumen/ducato-menta-2.jpg', 'gran-volumen/int-cama.jpg', 'gran-volumen/int-verde.jpg'],
-    ficha: specs({
-      anio: 2020, km: 74500, cv: 140, tamanoChasis: 'L2H2', mma: MMA_B,
-      longitud: L_CORTA, altura: A_MEDIA, dgt: DGT_C, homologacion: VIVIENDA,
-      plazasViaje: '4', plazasDormir: '3', calefaccion: CALEF_D,
-      aguaCaliente: 'Sí', bano: BANO_EXT, deposito: 100, bateria: LITIO,
-      solar: 200, inversor: 2000, nevera: NEVERA_COMP,
-    }),
-    descripcion: `Vendo mi Fiat Ducato L2H2 de 2020 después de tres temporadas disfrutándola por toda la península. La campericé en 2021 con un profesional de Getafe y está homologada como vehículo vivienda (tarjeta ITV 2448), así que cero problemas en las ITV.
-
-Mecánicamente está perfecta: 2.3 Multijet de 140 CV, 74.500 km reales (certificados con las facturas), distribución por cadena, cambio manual de 6 velocidades y consumo medio de 7,8 l. Mantenimiento al día en servicio oficial, el último (aceite, filtros y frenos nuevos) este mismo año. ITV pasada en marzo a la primera.
-
-Equipamiento camper: cama transversal de 185x140 + cama infantil delantera, calefacción estacionaria diésel Autoterm, agua caliente, batería de litio de 100 Ah, placa solar de 200 W, inversor de 2.000 W, nevera compresor de 95 l, ducha exterior y poti. Depósito de 100 l de limpias y 80 de grises. Con esa configuración somos autónomos 3-4 días sin tocar camping.
-
-Tiene alguna marca de uso lógica en la carrocería (se aprecia en las fotos, nada de chapa) pero el interior está impecable. Todos los papeles en regla, dos llaves y factura de la camperización. Se enseña sin compromiso en Madrid capital (zona de Carabanchel) y se puede probar con cita. Precio ligeramente negociable si la cosa se pone seria; no cambio por coche.`,
+    fotos: ['/images/anuncios/tractor-1.webp', '/images/anuncios/tractor-2.webp'],
+    ficha: specs({ familia: 'agricola', anio: 2019, horas: 4180, cv: 120, peso: 4900, transporte: 'Sí', docs: 'Factura y libro de instrucciones', traccion: '4x4', enganche: 'Tres puntos', pto: '540/1000 rpm', transmision: 'CVT / variable' }),
+    descripcion: 'Tractor John Deere 6M de 120 CV con 4.180 horas de uso en explotación de cereal. Único dueño, mantenimiento por libro en concesionario oficial con todas las facturas: último cambio de aceite y filtros a las 4.000 h.\n\nCabina climatizada con aire y calefacción, suspensión delantera, doble salida hidráulica, enganche de tres puntos y PTO 540/1000. Neumáticos traseros al 75% y delanteros recién estrenados. ITP en vigor hasta 2027 y documentación completa (factura original, libro sellado y marcado CE).\n\nSe puede ver y probar en Valladolid con cita previa. Transferencia y transporte a península incluidos en el precio si se cierra esta semana.',
   },
   {
-    vendedor: 'andres-molina',
-    sub: 'Gran Volumen',
-    marca: 'Citroën Jumper', modelo: 'L2H2 2.0 BlueHDi 130',
-    titulo: 'Citroën Jumper L2H2 camper 2018 · ideal primera camper',
-    precio: 26900, estado: 'Bueno', creado: 61 * 24 + 7, visitas: 612,
-    fotos: ['gran-volumen/jumper-blanco-1.jpg', 'gran-volumen/int-madera.jpg', 'gran-volumen/bano-completo.jpg'],
-    ficha: specs({
-      anio: 2018, km: 118000, cv: 130, tamanoChasis: 'L2H2', mma: MMA_B,
-      longitud: L_CORTA, altura: A_MEDIA, dgt: DGT_C, homologacion: VIVIENDA,
-      plazasViaje: '2', plazasDormir: '2', calefaccion: CALEF_NO,
-      aguaCaliente: 'No', bano: BANO_NO, deposito: 90, bateria: 'AGM',
-      solar: 150, inversor: null, nevera: NEVERA_TRI,
-    }),
-    descripcion: `Se vende Citroën Jumper L2H2 de 2018 con 118.000 km, camperizada como vehículo vivienda. Es la camper con la que empecé: perfecta para iniciarse en el mundo sin dejarse un dineral.
-
-Motor 2.0 BlueHDi de 130 CV, caja manual, muy fiable y con consumos de 7-7,5 litros. Siempre en garaje desde que la tengo (2020). ITV en vigor hasta el año que viene. Le he hecho yo todos los mantenimientos: aceite cada 15.000 km, correa auxiliar nueva y neumáticos traseros con 5.000 km.
-
-La camperización es sencilla pero funcional: cama doble lateral convertible en sofá, mueble de cocina en madera con fregadero y cocina de gas de dos fuegos, nevera trivalente, instalación eléctrica completa a 12 V con batería AGM de 95 Ah y placa solar de 150 W. Depósito de 90 l bajo chasis con llenado exterior. No tiene baño (yo usaba ducha exterior portátil) y no tiene calefacción: para mí nunca fue problema viajando por Andalucía, pero que lo sepas.
-
-Entrego además el equipamiento completo: toldo F35, kit de nivelación, calzos, alargadera 220 V y oscurecedores térmicos de cabina hechos a medida. Se puede ver y probar en Sevilla (Cerro-Amate). Atiendo mejor por la tarde. Escucho ofertas razonables.`,
-  },
-  {
-    vendedor: 'marc-girbau',
-    sub: 'Gran Volumen',
-    marca: 'Fiat Ducato', modelo: 'L3H2 2.2 Multijet 140',
-    titulo: 'Fiat Ducato L3H2 2021 estilo off-road · litio · como nueva',
-    precio: 44900, estado: 'Como nuevo', creado: 9 * 24 + 3, visitas: 784,
-    boosteado: true,
-    fotos: ['gran-volumen/ducato-offroad-1.jpg', 'gran-volumen/int-verde.jpg', 'gran-volumen/bano-ducha.jpg'],
-    ficha: specs({
-      anio: 2021, km: 52300, cv: 140, tamanoChasis: 'L3H2', mma: MMA_B,
-      longitud: L_MEDIA, altura: A_MEDIA, dgt: DGT_C, homologacion: VIVIENDA,
-      plazasViaje: '4', plazasDormir: '4', calefaccion: CALEF_D,
-      aguaCaliente: 'Sí', bano: BANO_CAB, deposito: 110, bateria: LITIO,
-      solar: 240, inversor: 2000, nevera: NEVERA_COMP,
-    }),
-    descripcion: `Por cambio a una autocaravana integral vendo esta Ducato L3H2 de septiembre de 2021 con solo 52.300 km. Es una unidad preparada con estética off-road (vinilo, llantas con neumáticos BF Goodrich All-Terrain, defensa y placa en el techo) pero sin locuras: se conduce como cualquier Ducato y entra en cualquier parking por debajo de los 2,60 m.
-
-Interior distribuido en cuatro zonas: salón delantero con doble asiento giratorio y mesa extensible, cocina central con encimera de madera maciza, cama doble trasera de 190x150 y cabina de baño con ducha y WC Thetford. En el techo: claraboya Midi Heki y ventilador Maxxfan con termostato.
-
-Autonomía seria para viajar sin campings: dos baterías de litio de 100 Ah (200 Ah en total) con shunt Victron, placa de 240 W, inversor de onda pura de 2.000 W, calefacción diésel y termo de agua caliente. Depósito de 110 l de limpias. Con el aire acondicionado de cabina y la calefacción hemos estado cómodos de -4 ºC a 38 ºC.
-
-Matriculada y homologada como vehículo vivienda a mi nombre, distintivo C, ITV recién pasada (agosto) y un solo propietario. Se entrega con el juego completo de documentación de la camperización (proyecto técnico y certificado de taller). En Barcelona (Sants-Montjuïc). Precio firme: es una furgoneta que me ha costado 58.000 € entre todo.`,
-  },
-  {
-    vendedor: 'elena-pons',
-    sub: 'Gran Volumen',
-    marca: 'Peugeot Boxer', modelo: 'L2H2 2.2 BlueHDi 140',
-    titulo: 'Peugeot Boxer L2H2 2020 camper madera · 88.400 km',
-    precio: 31900, estado: 'Bueno', creado: 33 * 24 + 11, visitas: 523,
-    verificacion: 'verificada',
-    fotos: ['gran-volumen/boxer-madera-1.jpg', 'gran-volumen/boxer-madera-2.jpg', 'gran-volumen/int-cama.jpg', 'gran-volumen/boxer-lifestyle-1.jpg'],
-    ficha: specs({
-      anio: 2020, km: 88400, cv: 140, tamanoChasis: 'L2H2', mma: MMA_B,
-      longitud: L_CORTA, altura: A_MEDIA, dgt: DGT_C, homologacion: VIVIENDA,
-      plazasViaje: '4', plazasDormir: '3', calefaccion: CALEF_D,
-      aguaCaliente: 'Sí', bano: BANO_EXT, deposito: 90, bateria: 'AGM',
-      solar: 170, inversor: 1000, nevera: NEVERA_COMP,
-    }),
-    descripcion: `Hola! Vendo nuestra Boxer camperizada porque entre el trabajo y los niños ya no le damos el uso que merece. Es de abril de 2020, motor 2.2 BlueHDi de 140 CV con 88.400 km, y la camperización está hecha por nosotros con ayuda de un carpintero amigo: todo el mobiliario es de madera de pino macizo, no de conglomerado, y se nota en el acabado (en las fotos se ve bien).
-
-Tiene lo esencial y bien hecho: cama fija trasera de 185x135 con garaje enorme debajo (caben dos bicis sin desmontar ruedas), zona de cocina con fregadero, cocina de dos fuegos, nevera compresor, mesa interior plegable, calefacción diésel y agua caliente por termo. Electricidad: dos baterías AGM de 95 Ah, placa solar de 170 W, inversor de 1.000 W y cargador de red cuando estás en camping. Luces LED regulables por zonas y tomas USB junto a la cama.
-
-De mecánica, cero sustos: mantenimientos en Peugeot hasta los 80.000 km (tengo las facturas selladas) y el último este año con cambio de pastillas. Cuatro plazas homologadas para viajar (dos en banca trasera con cinturones) y tres para dormir contando la cama supletoria del salón.
-
-La vendo con ropa de cama, menaje y hasta el café si hace falta 😄. Estamos en Valencia (Patraix), se puede ver casi cualquier día. Solo venta, no me interesan cambios.`,
-  },
-  {
-    vendedor: 'pablo-sanz',
-    sub: 'Gran Volumen',
-    marca: 'Renault Master', modelo: 'L3H2 Energy dCi 145',
-    titulo: 'Renault Master L3H2 2019 camperizada · Vivienda 2448',
-    precio: 29500, estado: 'Bueno', creado: 47 * 24 + 5, visitas: 306,
-    verificacion: 'verificada',
-    fotos: ['gran-volumen/master-amarilla-1.jpg', 'gran-volumen/master-amarilla-2.jpg', 'gran-volumen/master-amarilla-3.jpg'],
-    ficha: specs({
-      anio: 2019, km: 96200, cv: 145, tamanoChasis: 'L3H2', mma: MMA_B,
-      longitud: L_MEDIA, altura: A_MEDIA, dgt: DGT_C, homologacion: VIVIENDA,
-      plazasViaje: '2', plazasDormir: '2', calefaccion: CALEF_NO,
-      aguaCaliente: 'No', bano: BANO_EXT, deposito: 85, bateria: 'AGM',
-      solar: 160, inversor: 1000, nevera: NEVERA_TRI,
-    }),
-    descripcion: `Renault Master L3H2 de 2019 con 96.200 km, homologada vehículo vivienda (consta en la ficha técnica). Es la amarilla de las fotos; vistosa donde la pongas.
-
-Motor Energy dCi de 145 CV, el más fiable de la gama, con cadena de distribución (no hay que cambiar correa). Caja manual de 6 velocidades, control de crucero, aire acondicionado de cabina y sensor de aparcamiento trasero. Neumáticos Michelin CrossClimate cambiados a principios de año.
-
-El interior (ver fotos) está en blanco con detalles: bancada con dosel de armarios en altillo, cama trasera desmontable con somier de láminas de 190x130, armario ropero, mueble de cocina con dos fuegos y fregadero redondo, nevera trivalente, mesa de pared abatible y todo el aislamiento en Kaiflex de 20 mm (nada de sudoración de chapa en invierno). Instalación eléctrica con batería AGM, placa de 160 W en el techo e inversor de 1.000 W con tomas 220 V.
-
-No tiene calefacción ni agua caliente: así la compré y con un buen edredón y el calefactor portátil de gas (que incluyo) hemos dormido en Sierra Nevada en febrero sin pasar frío.
-
-ITV al día, papeles de la homologación en regla, dos llaves. Se vende por compra de furgón más grande para la familia. Está en Zaragoza, barrio del Actur. Precio negociable algo, mejor verla y hablamos.`,
-  },
-  {
-    vendedor: 'iker-mendizabal',
-    sub: 'Gran Volumen',
-    marca: 'Mercedes-Benz Sprinter', modelo: '316 CDI L3H2',
-    titulo: 'Mercedes Sprinter 316 CDI camper 2020 · 163 CV · premium',
-    precio: 46500, estado: 'Como nuevo', creado: 16 * 24 + 9, visitas: 598,
-    fotos: ['gran-volumen/sprinter-negra-1.jpg', 'gran-volumen/int-madera.jpg', 'gran-volumen/bano-completo.jpg'],
-    ficha: specs({
-      anio: 2020, km: 79800, cv: 163, tamanoChasis: 'L3H2', mma: MMA_B,
-      longitud: L_MEDIA, altura: A_MEDIA, dgt: DGT_C, homologacion: VIVIENDA,
-      plazasViaje: '4', plazasDormir: '3', calefaccion: CALEF_D,
-      aguaCaliente: 'Sí', bano: BANO_CAB, deposito: 100, bateria: LITIO,
-      solar: 215, inversor: 2000, nevera: NEVERA_COMP,
-    }),
-    descripcion: `Vendo Sprinter 316 CDI de 2020, L3H2, con 79.800 km y camperización premium hecha en taller especializado de Donostia (factura de 14.200 € solo la transformación).
-
-La furgo es la de las fotos: negra, llantas de aleación negras, techo elevable Reimo con cama superior, baca con placa solar flexible y toldo lateral. Por dentro, carpintería en madera clara: banca trasera convertible, cama abatible, mueble de cocina con tapa de cristal, armarios en altillo con iluminación y baño completo con ducha y retrete. Techo elevable con ventanas mosquitera, dormir arriba en verano es una pasada.
-
-Mecánica Mercedes 163 CV con el consumo más bajo del segmento (8,2 l reales haciendo monte), cambio manual, suspensión reforzada, enganche de remolque homologado y portabicicletas Thule para 3 bicis incluido. Tracción trasera, va cargada estupendamente.
-
-Autonomía: litio 100 Ah, placa 215 W, inversor 2.000 W, caldera Webasto de diésel con control desde el móvil, termo Elgena y nevera compresor. 100 l de aguas limpias. Todo con documentación y certificados.
-
-La he usado para fines de semana y tres viajes a los Alpes, jamás para vivir a tiempo completo, por eso el estado. Pegas: dos roces pequeños en el paragolpes trasero (fotografiados). ITV hace un mes. En Bilbao (Deusto). No acepto cambios ni peculiaridades, solo venta a persona seria.`,
-  },
-
-  // ──────────────────── CAMPER MEDIANA / COMPACTA ────────────────────
-  {
-    vendedor: 'lucia-herrero',
-    sub: 'Camper Mediana / Compacta',
-    marca: 'Volkswagen California', modelo: 'Ocean T6.1 2.0 TDI 150 DSG',
-    titulo: 'VW California Ocean T6.1 2021 · 150 CV DSG · libro VW',
-    precio: 56900, estado: 'Como nuevo', creado: 6 * 24 + 2, visitas: 617,
-    destacado: true,
-    fotos: ['mediana/cali-ocean-1.jpg', 'mediana/int-techo.jpg', 'gran-volumen/int-cama.jpg'],
-    ficha: specs({
-      anio: 2021, km: 61000, cv: 150, transmision: 'Automática', mma: MMA_B,
-      longitud: L_CORTA, altura: A_BAJA, dgt: DGT_C, homologacion: VIVIENDA,
-      plazasViaje: '4', plazasDormir: '4', calefaccion: CALEF_D,
-      aguaCaliente: 'Sí', bano: BANO_EXT, deposito: 30, bateria: 'AGM',
-      solar: null, inversor: null, nevera: NEVERA_COMP,
-    }),
-    descripcion: `Volkswagen California Ocean T6.1 de junio de 2021 en venta. 150 CV con cambio automático DSG, 61.000 km y libro de mantenimiento completo en la red oficial Volkswagen (última revisión esta primavera en el concesionario de A Coruña).
-
-Es la moto camper de siempre y no necesita presentación: techo elevable electrohidráulico, cama superior de 120x200, banca trasera convertible en cama doble, cocina completa con dos fuegos y fregadero, nevera de 42 l, armario, mesa interior escamoteable, dos sillas plegables de exterior escondidas en el portón, mesa de camping en la corredera y toldo. Calefacción estacionaria programable, claraboya delantera y tomas 230 V en cocina y cabina.
-
-Unidad blanca candy, asientos Alcantara Dots, llantas 17", faros LED, control de crucero ACC, sensores delanteros y traseros con cámara, portón eléctrico y climatizador Climatronic. Todas las alfombrillas originales y los dos juegos de llaves.
-
-Está impecable, siempre en garaje, nunca ha dormido fuera a la intemperie más de dos noches seguidas. Hace la ITV en 2027. La vendemos porque hemos comprado una Grand California para viajar con el perro grande.
-
-Puedo enviar vídeo completo por el chat. Se ve en A Coruña ciudad (zona Elviña). El precio ya es muy ajustado para el mercado, pero algo se puede hablar. Solo venta a particulares, gracias.`,
-  },
-  {
-    vendedor: 'montse-vidal',
-    sub: 'Camper Mediana / Compacta',
-    marca: 'Volkswagen California', modelo: 'T6 2.0 TDI 102 (Mercus)',
-    titulo: 'VW T6 California 2019 Mercus · compresión total 4 plazas',
-    precio: 41500, estado: 'Bueno', creado: 18 * 24 + 6, visitas: 404,
-    fotos: ['mediana/cali-mercus-1.jpg', 'mediana/cali-mercus-2.jpg', 'mediana/cali-mercus-3.jpg', 'mediana/cali-mercus-4.jpg'],
-    ficha: specs({
-      anio: 2019, km: 84300, cv: 102, mma: MMA_B,
-      longitud: L_CORTA, altura: A_BAJA, dgt: DGT_C, homologacion: VIVIENDA,
-      plazasViaje: '4', plazasDormir: '4', calefaccion: CALEF_NO,
-      aguaCaliente: 'No', bano: BANO_NO, deposito: 25, bateria: 'AGM',
-      solar: null, inversor: null, nevera: NEVERA_COMP,
-    }),
-    descripcion: `Camper sobre Volkswagen T6 de 2019, conversión California del taller Mercus. 2.0 TDI de 102 CV con 84.300 km, mecánica revisada y con todas las facturas. Es del color blanco de las fotos, con franja antracita y techo elevable con cama.
-
-Distribución California clásica: asiento delantero copiloto giratorio, banca posterior abatible en cama de 195x115, armario con cocina de dos fuegos y fregadero integrados en el lateral, nevera de compresor de 40 l y numerosos cajones. El techo elevable da altura interior de pie y esconde la segunda cama para dos personas. Cuatro plazas para viajar y cuatro para dormir: la solución perfecta para una pareja con niños.
-
-La vendo cargada de extras: portabicicletas de portón para 3 bicis, oscurecedores térmicos integrales, batería auxiliar con relé separador, toma 220 V exterior, mesa de camping y dos taburetes. ITV pasada este año a la primera. Dos propietarios, siempre mantenida en taller VW.
-
-Muy cuidada de chapa y pintura, siempre en parking subterráneo. Por kilómetros y estado no encontrarás otra a este precio este trimestre: me urge un poco vender porque ya me han entregado la Multivan nueva.
-
-Vehículo visible en Girona (zona Fontajau). Puedo moverme por la provincia para enseñarla si hay interés serio. Escucho ofertas, mejor en persona viendo la furgo.`,
-  },
-  {
-    vendedor: 'carmen-ruiz',
-    sub: 'Camper Mediana / Compacta',
-    marca: 'Ford Transit Custom', modelo: 'Nugget Plus 2.0 EcoBlue 130',
-    titulo: 'Ford Transit Custom Nugget Plus 2020 · techo elevable',
-    precio: 43900, estado: 'Bueno', creado: 12 * 24 + 8, visitas: 359,
-    fotos: ['mediana/nugget-1.jpg', 'mediana/nugget-2.jpg', 'mediana/nugget-3.jpg'],
-    ficha: specs({
-      anio: 2020, km: 70500, cv: 130, tamanoChasis: 'L2H2', mma: MMA_B,
-      longitud: L_CORTA, altura: A_BAJA, dgt: DGT_C, homologacion: VIVIENDA,
-      plazasViaje: '4', plazasDormir: '4', calefaccion: CALEF_D,
-      aguaCaliente: 'Sí', bano: BANO_NO, deposito: 40, bateria: 'AGM',
-      solar: null, inversor: 1500, nevera: NEVERA_COMP,
-    }),
-    descripcion: `Vendo Ford Nugget Plus (la versión batalla larga del Transit Custom) de 2020 con 70.500 km. Conversión oficial Westfalia, no una camperización casera: materiales, encajados y seguridad de serie de fábrica alemana.
-
-Motor 2.0 EcoBlue de 130 CV, caja manual, 7,1 l/100 km de media. Configuración de 4 plazas para viajar (asientos traseros con rieles, se desplazan según necesites) y 4 para dormir: cama en el techo elevable de 2,10x1,30 y banqueta abatible en doble cama abajo. Cocina en L a popa con dos fuegos, fregadero, nevera compresor grande y cajón despensa; mesa de interior plegable y otra de exterior con las sillas Westfalia originales. Agua: 40 l limpias y grises respectivamente, con toma exterior. Calefacción estacionaria y termo.
-
-Extras de esta unidad: toldo Thule 3,25 m, portabicicletas de portón, inversor de 1.500 W, oscurecedores en todas las lunas, elevalunas eléctricos, pantalla con CarPlay y cámara trasera. Color gris magnético de las fotos.
-
-Estado muy bueno general; tiene un bollo en el lateral izquierdo por un parking estrecho (sale en la última foto, pintura intacta, fácil de reparar). Libro de mantenimiento Ford al día e ITV en vigor. La vendo solo por pasar a propiedad y no poder quedármela de segunda residencia.
-
-La enseño en Alicante (zona de San Juan). Atiendo el chat por las tardes. Precio cerrado al interesado serio.`,
-  },
-
-  // ────────────────────────── MINICAMPER ──────────────────────────
-  {
-    vendedor: 'javi-fernandez',
-    sub: 'Minicamper',
-    marca: 'Volkswagen Caddy', modelo: 'Maxi 2.0 TDI 102',
-    titulo: 'VW Caddy Maxi camper 2019 · camperización a estrenar',
-    precio: 18900, estado: 'Bueno', creado: 55 * 24 + 4, visitas: 731,
-    reservado: true,
-    fotos: ['mini/caddy-maxi-1.jpg', 'mini/caddy-maxi-2.jpg', 'mini/caddy-maxi-3.jpg'],
-    ficha: specs({
-      anio: 2019, km: 92000, cv: 102, tamanoChasis: 'L2', mma: MMA_B,
-      longitud: L_CORTA, altura: A_BAJA, dgt: DGT_C, homologacion: VIVIENDA,
-      plazasViaje: '2', plazasDormir: '2', calefaccion: CALEF_NO,
-      aguaCaliente: 'No', bano: BANO_NO, deposito: 30, bateria: 'AGM',
-      solar: null, inversor: null, nevera: NEVERA_PORT,
-    }),
-    descripcion: `RESERVADA provisionalmente hasta el viernes; si falla, sigo por orden de contacto.
-
-Volkswagen Caddy Maxi de 2019, 2.0 TDI 102 CV, 92.000 km. La compré hace dos años con 60.000 y la he camperizado este verano con mueble nuevo hecho a medida por carpintero de Alhaurín: bancada-cama de 190x110 con colchón de espuma de 10 cm (nuevo, con fundas lavables), cocina deslizante trasera con fuego portátil y fregadero plegable, arcon nevera de 24 l que funciona a 12 y 220 V, y cajonera completa bajo la cama.
-
-Es la furgo blanca de las fotos con la cocina trasera sacada (así se cocina a la sombra del portón, lo mejor en verano). Le he puesto también: claraboya de ventilación sobre la cama, iluminación interior LED, cortinas en las cinco ventanas y batería auxiliar de 75 Ah con cargador automático.
-
-Mecánica al día: distribución por correa cambiada a los 85.000 km con bomba de agua (factura de 780 €), ITV pasada en primavera, cuatro neumáticos con 8.000 km y frenos nuevos delante. Aire acondicionado frío perfecto.
-
-Ideal como primera camper: entra en cualquier parking (1,80 m de alto), gasta 6 litros y duermes donde quieras sin llamar la atención. La vendo porque me paso a una Crosscamp para viajar en invierno con calefacción.
-
-La enseño en Málaga (Teatinos). Regalo caja portable de gas y más recambios que tengo. Escucho ofertas pero sin locuras que ya está apretada de precio.`,
-  },
-  {
-    vendedor: 'ana-martin',
-    sub: 'Minicamper',
-    marca: 'Volkswagen Caddy', modelo: '2.0 TDI 102 Camperbox',
-    titulo: 'VW Caddy 2021 con módulo camper extraíble · 45.000 km',
-    precio: 22500, estado: 'Como nuevo', creado: 21 * 24 + 10, visitas: 288,
-    fotos: ['mini/caddy-negra-1.jpg', 'mini/caddy-negra-2.jpg', 'mini/caddy-negra-3.jpg', 'mini/caddy-negra-4.jpg'],
-    ficha: specs({
-      anio: 2021, km: 45000, cv: 102, tamanoChasis: 'L2', mma: MMA_B,
-      longitud: L_CORTA, altura: A_BAJA, dgt: DGT_C, homologacion: TURISMO,
-      plazasViaje: '2', plazasDormir: '2', calefaccion: CALEF_NO,
-      aguaCaliente: 'No', bano: BANO_NO, deposito: 20, bateria: 'Sin batería auxiliar',
-      solar: null, inversor: null, nevera: NEVERA_PORT,
-    }),
-    descripcion: `Vendo esta Caddy de febrero de 2021 con solo 45.000 km equipada con un módulo camper extraíble de fabricación alemana (Camperbox), el negro de las fotos. Es la solución más práctica que existe: durante la semana es un turismo normal con el maletero libre, y el fin de semana montas la cama en 5 minutos sin herramientas.
-
-El módulo incluye: estructura de cama plegable de 187x105 con colchón de tres piezas, mesa central regulable en altura, fresquera-compresor de 20 l integrada con apertura trasera, organizadores textiles en las puertas y cubiertas de ventanas a medida. Limpio y como nuevo (se ha usado 11 noches).
-
-La Caddy en sí: motor 2.0 TDI de 102 CV (el más equilibrado de la gama), cambio manual, climatizador, pantalla Composition Color con App-Connect, sensores traseros, control de velocidad, faros antiniebla y portón trasero con luneta. Distintivo C. ITV hasta 2027. Único propietario, factura de compra y todo el mantenimiento oficial.
-
-Matriculada como turismo (la cama va como carga), con lo que pagas menos seguro y pasas ITV de turismo. Si quieres camper de diario sin el sobrepeso de una camperización fija, esta es tu furgoneta.
-
-Se ve y se prueba en Madrid (Vallecas). Se entrega con el módulo por supuesto montado y enseñado. También vendo la furgo sin el módulo por 1.500 € menos si a alguien le interesa, aunque preferiría venderlo junto.`,
-  },
-
-  // ─────────────────── AUTOCARAVANA PERFILADA ───────────────────
-  {
-    vendedor: 'teresa-alarcon',
-    sub: 'Autocaravana Perfilada',
-    marca: 'Fiat Ducato Autocaravana', modelo: 'Benimar Tessoro 440',
-    titulo: 'Benimar Tessoro 440 (2021) · 38.600 km · como nueva',
-    precio: 51900, estado: 'Como nuevo', creado: 4 * 24 + 1, visitas: 1218,
-    destacado: true,
-    verificacion: 'verificada',
-    fotos: ['perfilada/tessoro-440-1.jpg', 'perfilada/tessoro-440-2.jpg', 'perfilada/tessoro-440-3.jpg', 'perfilada/tessoro-440-4.jpg'],
-    ficha: specs({
-      anio: 2021, km: 38600, cv: 140, mma: MMA_B,
-      longitud: L_MEDIA, altura: A_MEDIA, dgt: DGT_C, homologacion: VIVIENDA,
-      plazasViaje: '4', plazasDormir: '4', calefaccion: CALEF_G,
-      aguaCaliente: 'Sí', bano: BANO_CAB, deposito: 120, bateria: 'AGM',
-      solar: 100, inversor: null, nevera: NEVERA_TRI,
-    }),
-    descripcion: `Autocaravana perfilada Benimar Tessoro 440 del año 2021 sobre Fiat Ducato 2.3 de 140 CV, con solo 38.600 km. Revisiones en la red oficial Fiat con libro sellado e ITV recién pasada.
-
-Distintiva distribución del 440: cama transversal trasera sobre garaje amplio, salón delantero con doble mesa extractible y asientos piloto giratorios de cuero sintético, cocina central con tres fuegos y campana, y baño completo con cabina de ducha separada. Cuatro plazas para viajar y cuatro para dormir (la cama del salón es basculante eléctrica, baja sin deshacer la mesa).
-
-Equipamiento de esta unidad: calefacción Truma de gas, termo Mixta, claraboya panorámica delantera, aire acondicionado de cabina, portón eléctrico de garaje, toldo de 4 m, soporte para TV y TV de 22" que no he usado casi, mosquitera en puerta, portaesquíes y scala posterior. Placa solar de 100 W con regulador y batería de célula AGM de 95 Ah renovada el año pasado. Depósitos: 120 l limpias, 100 l grises. Gas con sistema DuoControl para dos bombonas.
-
-Estado realmente de exposición: se ha usado para escapadas de fin de semana y el puente de diciembre, jamás alquilada ni vivida dentro. Cabina con volante multifunción, control de crucero y pantalla Pioneer nueva con cámara trasera.
-
-La vendo por motivos de salud (ya no puedo conducir). Es una pena porque está en su mejor momento. Señores serios y con intención real, por favor. Está en Valladolid, bien guardada y a punto para salir de viaje mañana mismo.`,
-  },
-  {
-    vendedor: 'luis-crespi',
-    sub: 'Autocaravana Perfilada',
-    marca: 'Ford Transit Autocaravana', modelo: 'Benimar Tessoro 495 UP',
-    titulo: 'Benimar Tessoro 495 UP 2022 · Ford 170 CV automática',
-    precio: 58500, estado: 'Como nuevo', creado: 15 * 24 + 12, visitas: 413,
-    fotos: ['perfilada/tessoro-ford-1.jpg', 'perfilada/int-ac-salon.jpg', 'perfilada/int-ac-dinette.jpg'],
-    ficha: specs({
-      anio: 2022, km: 24900, cv: 170, transmision: 'Automática', mma: MMA_B,
-      longitud: L_LARGA, altura: A_MEDIA, dgt: DGT_C, homologacion: VIVIENDA,
-      plazasViaje: '4', plazasDormir: '4', calefaccion: CALEF_G,
-      aguaCaliente: 'Sí', bano: BANO_CAB, deposito: 130, bateria: LITIO,
-      solar: 200, inversor: 1500, nevera: NEVERA_TRI,
-    }),
-    descripcion: `Perfilada Benimar Tessoro 495 UP del año 2022 sobre la nueva base Ford Transit: motor 2.0 EcoBlue de 170 CV con cambio automático que es una gozada en puerto y en autopista. 24.900 km, un solo propietario, matriculada en Mallorca.
-
-La 495 es la "tumbonas" de la gama: zona trasera con camas gemelas convertibles en cama gigante, debajo un garaje con acceso a ambos lados, salón L delante con la mesa abatible y cocina central con campana extractora. Baño completo con ducha aislada. Cama basculante eléctrica en salón para cuando viajan los nietos.
-
-Esta unidad va muy equipada porque la encargué así: litio de 100 Ah, placa de 200 W, inversor de 1.500 W, aire acondicionado de cabina y de célula (Dometic FreshJet), agua caliente Alde en algunas versiones, la mía con caldera Truma Combi de gas, claraboya de garaje, alfombrilla de cabina y toldo eléctrico. Interior tapizado gris topo, cortinas plisset en todas las ventanas y mosquiteras. También portabicicletas de dos raíles y cámara trasera.
-
-Con el Oasis, la piscina y la playa a veinte minutos la he usado menos de lo pensado; por eso la vendo. Está en Palma de Mallorca, podría entregarse en Barcelona o Valencia añadiendo el ferry si el comprador es de la península (lo hablo sin problema).
-
-Precio de traspaso de un chollo frente a los 72.000 € que cuesta nueva como esta. No dudes en preguntar cualquier detalle por el chat.`,
-  },
-
-  // ─────────────────── AUTOCARAVANA CAPUCHINA ───────────────────
-  {
-    vendedor: 'carmen-ruiz',
-    sub: 'Autocaravana Capuchina',
-    marca: 'Fiat Ducato Capuchina', modelo: 'Benimar Sport 323',
-    titulo: 'Benimar Sport 323 capuchina 2018 · 6 plazas · ideal familia',
-    precio: 39900, estado: 'Bueno', creado: 28 * 24 + 6, visitas: 381,
-    fotos: ['capuchina/benimar-323-1.jpg', 'capuchina/benimar-323-2.jpg', 'capuchina/cap-int-a.jpg', 'capuchina/kronos-int-2.jpg'],
-    ficha: specs({
-      anio: 2018, km: 67800, cv: 130, mma: MMA_B,
-      longitud: L_LARGA, altura: A_MEDIA, dgt: DGT_C, homologacion: VIVIENDA,
-      plazasViaje: '6', plazasDormir: '5+', calefaccion: CALEF_G,
-      aguaCaliente: 'Sí', bano: BANO_CAB, deposito: 120, bateria: 'AGM',
-      solar: 120, inversor: null, nevera: NEVERA_TRI,
-    }),
-    descripcion: `Capuchina Benimar Sport 323 de 2018 sobre Fiat Ducato 2.3 Multijet de 130 CV. 67.800 km. La autocaravana familiar por excelencia: 6 plazas para viajar con cinturón y 6 para dormir (litera capuchina gigante de 2x1,40, literas traseras y cama del salón), así que cabemos todos sin tener que elegir quién se queda.
-
-Está muy cuidada y es de color blanco-clásico como en las fotos. Interior impecable: tapizados sin manchas ni desgastes, cocina de tres fuegos con campana, nevera trivalente grande con congelador, baño completo con ducha, calefacción por gas en toda la célula y termo. El agua caliente llega al baño y a la cocina.
-
-Extras: placa solar de 120 W, batería auxiliar nueva, portabicicletas de tres raíles (nosotros llevábamos 4 bicis), toldo grande con luces, reversa con cámara, mosquitera de puerta, oscurecedores plisset en cabina y claraboya en el capuchón (dormir viendo estrellas). Depósitos: 120 l limpias y 100 l grises.
-
-Mecánica sin un solo fallo en 7 años: mantenimiento en Fiat cada 20.000 km (facturas), embrague original, ITV pasada este mes sin problemas. Neumáticos con más del 60%.
-
-El motivo de la venta es que los hijos ya no quieren venir y nos hemos comprado una perfilada más pequeña. Si es tu primera capuchina te enseño todo el manejo el día de la entrega.
-
-Está en Alicante, la enseño cuando quieras. Y puedo quedarme el portabicicletas y bajar algo el precio si no lo necesitas.`,
-  },
-  {
-    vendedor: 'andres-molina',
-    sub: 'Autocaravana Capuchina',
-    marca: 'Ford Transit Capuchina', modelo: 'Benimar Sport 363',
-    titulo: 'Benimar Sport 363 capuchina 2017 sobre Ford · 155 CV',
-    precio: 36500, estado: 'Bueno', creado: 40 * 24 + 9, visitas: 303,
-    fotos: ['capuchina/benimar-363-1.jpg', 'capuchina/cap-int-b.jpg', 'capuchina/kronos-int-3.jpg'],
-    ficha: specs({
-      anio: 2017, km: 84100, cv: 155, mma: MMA_B,
-      longitud: L_LARGA, altura: A_MEDIA, dgt: DGT_C, homologacion: VIVIENDA,
-      plazasViaje: '6', plazasDormir: '5+', calefaccion: CALEF_G,
-      aguaCaliente: 'Sí', bano: BANO_CAB, deposito: 110, bateria: 'Gel',
-      solar: 100, inversor: null, nevera: NEVERA_TRI,
-    }),
-    descripcion: `Se vende capuchina Benimar Sport 363 del 2017 montada sobre Ford Transit 2.2 TDCi de 155 CV (el motor fuerte, sube los puertos cargada sin despeinarse). 84.100 km.
-
-Somos el segundo propietario y la tenemos desde 2019. Distribución muy aprovechada para 6 viajeros: capuchón con cama de matrimonio y claraboya, litera trasera para dos, y el salón convertible. Cocina con tres fuegos, fregadero inox, campana y nevera trivalente. Baño completo con ducha propia. La calefacción de gas calienta el conjunto en minutos (probada fin de año en Ronda a 2 grados, dentro en manga corta).
-
-En estos años se le ha hecho: batería de gel de la célula nueva (2023), placa de 100 W para mantenerla, 4 amortiguadores, kit de embrague (a los 79.000 km, por mantenimiento preventivo, factura disponible), ITV siempre pasada y única reparación destacable el termostato en 2022.
-
-Exteriormente correcta con algún arañazo de ramas de los de siempre en los laterales (son de gel coat, fáciles de pulir si te preocupa). Toldo, portabicicletas de 4, mosquitera, oscurecedores de cabina, niveladores y cuña de gas incluidos.
-
-Vendo porque he heredado una autocaravana integral y no puedo quedarme con dos. Un capricho familiar listo para este verano, a un precio muy razonable para lo que cuestan las nuevas.
-
-En Sevilla (Dos Hermanas). Solo atiendo por chat de la plataforma; si encajamos, quedamos y la ves.`,
-  },
-  {
-    vendedor: 'pablo-sanz',
-    sub: 'Autocaravana Capuchina',
-    marca: 'Fiat Ducato Capuchina', modelo: 'Roller Team Kronos 284 M',
-    titulo: 'Roller Team Kronos 284 M (2020) · 6 plazas · libros al día',
-    precio: 46900, estado: 'Como nuevo', creado: 8 * 24 + 4, visitas: 847,
+    vendedor: 'agrodeal-castilla',
+    cat: 'agricola', sub: 'Tractores',
+    marca: 'Kubota M7', modelo: 'M7',
+    titulo: 'Kubota M7-152 · 3.050 horas · como nuevo',
+    precio: 74500, estado: 'Como nuevo', creado: 9 * 24 + 4, visitas: 641,
     boosteado: true, verificacion: 'verificada',
-    fotos: ['capuchina/kronos-ext-1.jpg', 'capuchina/kronos-int-1.jpg', 'capuchina/kronos-int-2.jpg', 'capuchina/kronos-int-3.jpg'],
-    ficha: specs({
-      anio: 2020, km: 55200, cv: 140, mma: MMA_B,
-      longitud: L_LARGA, altura: A_MEDIA, dgt: DGT_C, homologacion: VIVIENDA,
-      plazasViaje: '6', plazasDormir: '5+', calefaccion: CALEF_G,
-      aguaCaliente: 'Sí', bano: BANO_CAB, deposito: 120, bateria: 'AGM',
-      solar: 150, inversor: 1500, nevera: NEVERA_TRI,
-    }),
-    descripcion: `Roller Team Kronos 284 M del año 2020 sobre Fiat Ducato 2.3 Multijet de 140 CV con 55.200 km certificados. La compramos nueva en 2020 y somos los únicos propietarios; desde el primer día ha dormido bajo cubierta.
-
-Distribución 284: litera capuchina delantera, camas traseras en litera más el salón transformable — en total 6 plazas de viaje y 6 para dormir. La cocina está enfrente del salón con dosel de armarios XL, cocina de tres fuegos, campana, horno grill (raro en este segmento) y nevera trivalente de 140 l con congelador independiente. Baño completo con ducha separada por mampara.
-
-Todo el mantenimiento en taller oficial de la marca con las facturas y los sellos del libro; cambios de aceite cada 20.000 km y la correa de accesorios nueva el año pasado. Los dos juegos de llaves y los manuales originales.
-
-Equipamiento: Truma de gas con rejillas por toda la célula, termo Mixta, placa solar de 150 W, inversor de 1.500 W, aire acondicionado de cabina, toldo exterior, cámara trasera, mosquitera, oscurecedores plisset, portabicicletas (4 bicis), claraboya Midi Heki salón y claraboya en el capuchón. Incluyo en el precio el kit de camping completo (mesa, 4 sillas, cuña y todo el menaje, a estrenar).
-
-La vendemos con mucha pena (motivos familiares, ya la conocéis si sois del grupo). Está en Zaragoza capital. Los fines de semana puedo enseñarla. NO acepto cambios. Precio algo negociable.`,
-  },
-
-  // ─────────────────── AUTOCARAVANA INTEGRAL ───────────────────
-  {
-    vendedor: 'jose-luis-ortega',
-    sub: 'Autocaravana Integral',
-    marca: 'Hymer', modelo: 'B 544',
-    titulo: 'Hymer B 544 integral 2009 · 2.3 130 CV · clásica cuidada',
-    precio: 42900, estado: 'Usado', creado: 36 * 24 + 7, visitas: 447,
-    fotos: ['integral/hymer-ext.jpg', 'integral/hymer-b544-1.jpg', 'integral/hymer-b544-2.jpg'],
-    ficha: specs({
-      anio: 2009, km: 134000, cv: 130, mma: MMA_B,
-      longitud: L_MEDIA, altura: A_MEDIA, dgt: DGT_B, homologacion: VIVIENDA,
-      plazasViaje: '4', plazasDormir: '3', calefaccion: CALEF_G,
-      aguaCaliente: 'Sí', bano: BANO_CAB, deposito: 100, bateria: 'AGM',
-      solar: null, inversor: null, nevera: NEVERA_TRI,
-    }),
-    descripcion: `Vendo mi Hymer B 544 integral de 2009 sobre Fiat Ducato 2.3 JTD de 130 CV y 134.000 km. Ya sé que tiene años, pero las Hymer de esta época están construidas como tanques y esta está mecánicamente perfecta y mimada desde nueva por un solo propietario antes que yo.
-
-La integral da esa sensación de salón enorme que ninguna perfilada da: parabrisas panorámico, asientos piloto giratorios de serie, mesa plegable de madera y, sobre ella, la cama basculante que baja del techo sin tocar nada. Tapicería original Hymer en excelente estado, sin quemaduras ni mascotas nunca. Muebles en tono cerezo, techo con altillos en todos los lados, cocina de tres fuegos con horno, nevera trivalente funcionando a la perfección a gas, 12 V y 220 V. Baño con ducha separada y WC. Cama francesa trasera traslarera.
-
-En los últimos 2 años (tengo facturas de todo): embrague nuevo, batería de motor y la de célula, revisión de frenos completa, fuelles, agua y termosellos de claraboyas, y el mantenimiento anual de estanqueidad sellada correspondiente (todo en taller Hymer de Majadahonda). ITV válida.
-
-Cosas a mejorar siendo honesto: distintivo B (los centros de las grandes ciudades tienen restricciones), no tiene placa solar y el toldo tiene un pequeño descosido en un borde. Lo demás, todo funciona.
-
-La vendo porque a mis 68 años me paso a una furgo más manejable. Está en Madrid (Aluche). Persona mayor seria y ordenada: me gustan las cosas claras. Precio prácticamente firme.`,
+    fotos: ['/images/anuncios/tractor-2.webp', '/images/anuncios/tractor-1.webp'],
+    ficha: specs({ familia: 'agricola', anio: 2021, horas: 3050, cv: 152, peso: 6800, transporte: 'Sí', docs: 'Factura y libro de instrucciones', traccion: '4x4', enganche: 'Tres puntos', pto: '540/1000 rpm', transmision: 'CVT / variable' }),
+    descripcion: 'Kubota M7-152 del 2021 con solo 3.050 horas: la gama alta de Kubota con transmisión hidrostática de gama completa, palanca demando en el reposabrazos y cabina de serie con climatización.\n\nRevisión general de 300 h hecha hace 80 horas: aceite, filtros de aceite, combustible y hidráulico, más pastillas de freno delanteras nuevas. Carrocería sin golpes, pintura original en bastidor y caja de enganche sin desgaste.\n\nProcede de demonstración de concesionario, de ahí las pocas horas. Factura, libro y CE a disposición del comprador. Precio negociable en entrega inmediata.',
   },
   {
-    vendedor: 'lucia-herrero',
-    sub: 'Autocaravana Integral',
-    marca: 'Hymer', modelo: 'Eriba Jet 686 R',
-    titulo: 'Hymer Eriba Jet 686 R integral 2020 · 160 CV',
-    precio: 62500, estado: 'Como nuevo', creado: 11 * 24 + 5, visitas: 514,
-    fotos: ['integral/eriba-1.jpg', 'integral/eriba-2.jpg', 'perfilada/int-ac-dinette.jpg'],
-    ficha: specs({
-      anio: 2020, km: 43700, cv: 160, mma: MMA_B,
-      longitud: L_LARGA, altura: A_MEDIA, dgt: DGT_C, homologacion: VIVIENDA,
-      plazasViaje: '4', plazasDormir: '4', calefaccion: CALEF_G,
-      aguaCaliente: 'Sí', bano: BANO_CAB, deposito: 110, bateria: LITIO,
-      solar: 120, inversor: null, nevera: NEVERA_TRI,
-    }),
-    descripcion: `Hymer Eriba Jet 686 R del año 2020 sobre Fiat Ducato 2.3 de 160 CV, 43.700 km, un solo dueño. Integral de gama alta con ese frontal tan característico y una luminosidad que no tienen las demás.
-
-El salón, con el techo panorámico Skyroof, es impresionante: claraboya integral sobre la cabina, asientos giratorios con reposacabezas, banco lateral y mesa plegable. Cama basculante sobre el salón para dos, y detrás camas gemelas convertibles en una cama de 2 metros. Cocina completa con tres fuegos, campana, horno y la nevera SlimTower de 140 l con congelador. Baño con ducha independiente.
-
-Equipamiento destacado: calefacción Alde de gas (la mejor, con suelo radiante en el baño), placa solar de 120 W, batería de litio, portabicicletas, toldo, cámara de visión trasera, pantalla Alpine con navegador, mosquitera, oscurecedores plisset y alfombrilla de cabina extraible — la no tengo puesta para el viaje, que se lava en casa.
-
-ITV al día, mantenimiento hecho en Fiat y documentado. Por supuesto revisión de estanqueidad anual con informe favorable (la última en febrero). Sin golpes de ningún tipo.
-
-Escribirme solo si realmente os encaja el presupuesto; un Jet así nuevo pasa hoy de 90.000 € de tarifa. La veis en A Coruña. Entrego con todos los accesorios de camping.`,
+    vendedor: 'campo-verde-servicios',
+    cat: 'agricola', sub: 'Tractores',
+    marca: 'New Holland T6', modelo: 'T6',
+    titulo: 'New Holland T6.180 Electro Command · 6.420 horas',
+    precio: 43900, estado: 'Bueno', creado: 61 * 24 + 7, visitas: 387,
+    fotos: ['/images/anuncios/tractor-1.webp'],
+    ficha: specs({ familia: 'agricola', anio: 2017, horas: 6420, cv: 175, peso: 7100, transporte: 'Sí', docs: 'Parcial', traccion: '4x4', enganche: 'Barra de tracción', pto: '540/1000 rpm', transmision: 'Manual' }),
+    descripcion: 'New Holland T6.180 con 6.420 horas, multipropósito de 175 CV para labores de transporte y campo. Cambio Electro Command de 6 adelantos y 3 retrasos funcionando con total normalidad.\n\nMotor Tier 4 sin averías de FAP ni EGR, arranca en frío sin humo y no pierde potencia en cuesta. Exterior con marcas de uso lógicas (se aprecian en las fotos), sin oxidación estructural. Enganche de barra de tracción con toma hidráulica doble.\n\nLibro de mantenimiento a medias: faltan las facturas de los dos últimos servicios, por eso se vende sin documentación completa. ITP en vigor. Se entrega con manuales y dos juegos de llaves.',
   },
   {
-    vendedor: 'marc-girbau',
-    sub: 'Autocaravana Integral',
-    marca: 'Laika', modelo: 'Ecovip 709',
-    titulo: 'Laika Ecovip 709 integral 2019 · 140 CV · pocos km',
-    precio: 59900, estado: 'Bueno', creado: 19 * 24 + 13, visitas: 636,
+    vendedor: 'maria-laura-benitez',
+    cat: 'agricola', sub: 'Tractores',
+    marca: 'Kubota M5', modelo: 'M5',
+    titulo: 'Kubota M5-111 · 5.870 horas · parcelera mediana',
+    precio: 28750, estado: 'Bueno', creado: 140, visitas: 208,
+    fotos: ['/images/anuncios/tractor-2.webp'],
+    ficha: specs({ familia: 'agricola', anio: 2016, horas: 5870, cv: 110, peso: 4300, transporte: 'Sí', docs: 'Factura y libro de instrucciones', traccion: '4x4', enganche: 'Tres puntos', pto: '540 rpm', transmision: 'Manual' }),
+    descripcion: 'Mi Kubota M5-111 de 2016, el tractor de la finca de cítricos de la familia. 5.870 horas trabajando entre Valencia y Castellón: cargador frontal, arado de discos y remolque de riego.\n\nSiempre en garaje y con mantenimiento hecho en el taller del pueblo (tengo todas las facturas desde 2019). Aceite y filtros cambiados hace 120 horas. Neumáticos con más del 60% de vida.\n\nVendo por cambio de explotación. No tiene aire acondicionado en cabina — es la única cosa que le falta. ITP al día, libro sellado y factura original de compra. Escucho ofertas razonables de quien la vaya a trabajar de verdad.',
+  },
+  {
+    vendedor: 'taller-el-palmar',
+    cat: 'agricola', sub: 'Tractores',
+    marca: 'Case IH Farmall', modelo: 'Farmall',
+    titulo: 'Case IH Farmall 75C · 7.240 horas · listo para trabajar',
+    precio: 21900, estado: 'Usado', creado: 300, visitas: 344,
+    fotos: ['/images/anuncios/tractor-1.webp'],
+    ficha: specs({ familia: 'agricola', anio: 2014, horas: 7240, cv: 75, peso: 3600, transporte: 'Sí', docs: 'Parcial', traccion: '4x4', enganche: 'Tres puntos', pto: '540 rpm', transmision: 'Manual' }),
+    descripcion: 'Case IH Farmall 75C, tractor compacto de 75 CV ideal para ganadería, huerta y trabajos de comunidad. 7.240 horas con uso honesto: se le nota la jornada pero el motor está fuerte.\n\nRevisión de motor y embrague hecha en nuestro taller hace 400 horas (facturas incluidas): junta de culata, embrague nuevo y bomba de agua. La cabina es sencilla con calefacción, sin aire acondicionado.\n\nCarrocería con pintura retocada en guardabarros (fotos reales, sin sorpresas). Ideal como segunda máquina o primera para quien empieza. ITP en vigor; documentación parcial (falta factura original de compra).',
+  },
+  {
+    vendedor: 'juan-ramon-estevez',
+    cat: 'agricola', sub: 'Tractores',
+    marca: 'Belarus 800.1', modelo: '800.1',
+    titulo: 'Belarus 800.1 · 4.600 horas · simple y fiable',
+    precio: 14800, estado: 'Bueno', creado: 480, visitas: 176,
+    fotos: ['/images/anuncios/tractor-2.webp'],
+    ficha: specs({ familia: 'agricola', anio: 2015, horas: 4600, cv: 81, peso: 3400, transporte: 'Sí', docs: 'Declaración CE / ficha técnica', traccion: '4x2', enganche: 'Tres puntos', pto: '540 rpm', transmision: 'Manual' }),
+    descripcion: 'Belarus 800.1 de 2015, tractor ruso de los que no piden electricista: 81 CV, caja de 5 velocidades reductora y toma de fuerza trasera. 4.600 horas trabajando en prados de Lugo.\n\nMecánicamente impecable: sin fugas de aceite ni de refrigerante, arranca a la primera en invierno. Neumáticos traseros nuevos del año pasado. Exterior sencillo, pintura original en el capó y algo de óxido en el estribo (foto).\n\nSe vende porque hemos pasado a un tractor con cabina. Ideal para henificar, segar y transporte corto. CE y ficha técnica en regla, sin factura original. Entrega en Lugo; si estás lejos, lo subimos a tu transportista.',
+  },
+
+  // ──────────────────────── AGRÍCOLA · Cosechadoras ────────────────────────
+  {
+    vendedor: 'agrodeal-castilla',
+    cat: 'agricola', sub: 'Cosechadoras',
+    marca: 'Claas Lexion', modelo: 'Lexion',
+    titulo: 'Claas Lexion 530 · 1.890 horas de motor · 2019',
+    precio: 132000, estado: 'Bueno', creado: 40 * 24, visitas: 702,
+    boosteado: true, verificacion: 'verificada',
+    fotos: ['/images/anuncios/cosechadora-1.webp', '/images/anuncios/cosechadora-2.webp'],
+    ficha: specs({ familia: 'agricola', anio: 2019, horas: 1890, cv: 330, peso: 12800, transporte: 'Sí', docs: 'Factura y libro de instrucciones', comb: 'Diésel', traccion: '4x2', enganche: 'Sin enganche', pto: 'Sin PTO', transmision: 'Hidrostática' }),
+    descripcion: 'Claas Lexion 530 con 1.890 horas de rotor, cabina Premium con pantalla CEBIS, cabezal de cereal de 6,10 m y mesa de corte hidráulica.\n\nTrabajó cuatro campañas en Castilla y León: siempre en garaje, revisión de campaña hecha antes de cada cebada (aceite de rotor, filtros y engrase general). Humógrafo, dosificación automática y ensacado en marcha sin incidencias.\n\nCepillo de limpieza y elevador de grano funcionando. Cintas de siembra en buen estado y trilladora alineada (última revisión en factura). Marcado CE y factura original disponibles; ITP en vigor.\n\nTransporte especial incluido en la península. Se enseña con demostración en campo si hay siembra pendiente en la zona.',
+  },
+  {
+    vendedor: 'campo-verde-servicios',
+    cat: 'agricola', sub: 'Cosechadoras',
+    marca: 'Case IH Axial-Flow', modelo: 'Axial-Flow',
+    titulo: 'Case IH Axial-Flow 7150 · 2.450 horas · cabezal incluido',
+    precio: 96500, estado: 'Bueno', creado: 210, visitas: 456,
+    fotos: ['/images/anuncios/cosechadora-1.webp'],
+    ficha: specs({ familia: 'agricola', anio: 2016, horas: 2450, cv: 310, peso: 11900, transporte: 'Sí', docs: 'Parcial', comb: 'Diésel', traccion: '4x2', enganche: 'Sin enganche', pto: 'Sin PTO', transmision: 'Hidrostática' }),
+    descripcion: 'Case IH Axial-Flow 7150, cosechadora de rotor de 310 CV con 2.450 horas. Cabezal de cereal de 5,40 m incluido en el precio y corte de maíz disponible por diferencia.\n\nRotor y sinfín sin holguras, motor sin humos y transmisión hidráulica silenciosa. Cabina con A/C funcionando, luz de trabajo completa. Neumáticos de tracción con el 60% restante.\n\nÚltima campaña en Murcia (trigo y cebada). Libro parcial: tenemos facturas desde 2020, no así las primeras. Marcado CE visible en la placa. Se entrega tras revisión de campaña a cargo del comprador (la hacemos en nuestro taller antes de la entrega si se prefiere).',
+  },
+
+  // ──────────────────────── AGRÍCOLA · Maquinaria agrícola ────────────────────────
+  {
+    vendedor: 'agrodeal-castilla',
+    cat: 'agricola', sub: 'Maquinaria agrícola',
+    marca: 'Amazone', modelo: 'Primera',
+    titulo: 'Sembradora Amazone Primera D9-6000 · 4 m · con dosificador',
+    precio: 24900, estado: 'Bueno', creado: 160, visitas: 231,
     verificacion: 'verificada',
-    fotos: ['integral/laika-1.jpg', 'perfilada/int-ac-salon.jpg', 'perfilada/int-ac-dinette.jpg'],
-    ficha: specs({
-      anio: 2019, km: 57900, cv: 140, mma: MMA_B,
-      longitud: L_LARGA, altura: A_MEDIA, dgt: DGT_C, homologacion: VIVIENDA,
-      plazasViaje: '4', plazasDormir: '4', calefaccion: CALEF_G,
-      aguaCaliente: 'Sí', bano: BANO_CAB, deposito: 120, bateria: 'AGM',
-      solar: 140, inversor: 1500, nevera: NEVERA_TRI,
-    }),
-    descripcion: `Laika Ecovip 709 de 2019, la integral con la cama basculante sobre la cabina que tantos buscáis, con 57.900 km. Fiat Ducato 2.3 de 140 CV, mecánica siempre mantenida en servicio oficial (Tarragona), con el libro de revisiones completo y ITV vigente.
-
-La Ecovip destaca por la finura italiana: interior claro y tapizado suave al tacto, salón UL delante con asientos giratorios y mesa que no estorba, cocina central a ambos lados con campana y grill, y detrás las camas gemelas sobre garaje que se unen en cama de matrimonio de 2,05 m si viajas en pareja. Baño con ducha separada. Cuatro plazas para viajar y cuatro para dormir.
-
-Equipamiento: calefacción por gas en toda la autocaravana, termo Mixta, placas de 140 W en total, inversor de 1.500 W, toldo de 5 m, antena de TV automática, mosquitera, oscurecedores de cabina Remis, escalon eléctrico y portabicicletas de tres raíles. Oro plata en cabina (cuero). Además cuatro tomas USB repartidas y dos tomas 220 V extra que añadí en el garaje para la bici eléctrica.
-
-Está en estado muy bueno, sin ningún flojera en la estructura: revisión de estanqueidad sellada anualmente en taller Laika (informes guardados). Nunca ha vivido nadie dentro ni se ha alquilado.
-
-Puedo mostrarla en Barcelona provincia (está guardada en Cornellà). Venta por motivos profesionales. Es mi segunda autocaravana y sé lo que se pregunta al comprar: preguntadme sin problema.`,
+    fotos: ['/images/anuncios/sembradora-1.webp'],
+    ficha: specs({ familia: 'agricola', anio: 2018, horas: 0, cv: 90, peso: 2100, transporte: 'Sí', docs: 'Factura y libro de instrucciones', traccion: 'Sin tracción', enganche: 'Tres puntos', pto: '540 rpm', transmision: 'Manual' }),
+    descripcion: 'Sembradora Amazone Primera D9-6000 de 4 m con dosificadores mecánicos, barra de rastrelo neumática y tolvas de 600 l.\n\nPara cereal en línea; rodillos del semillero y discos de siembra recién cambiados (factura de 2025). Estructura recta, sin reparaciones ni soldaduras. Enganche de tres puntos y toma de fuerza estándar.\n\nMáquina parada en Valladolid desde la última campaña: engrasada y protegida. Factura original, manuales y CE completos. Ideal para quien siembra directa o quiere renovar una vieja de 3 m.',
+  },
+  {
+    vendedor: 'campo-verde-servicios',
+    cat: 'agricola', sub: 'Maquinaria agrícola',
+    marca: 'Horsch', modelo: 'Pronto',
+    titulo: 'Cultivador Horsch Pronto 6 DC · 6 m · discos',
+    precio: 31800, estado: 'Bueno', creado: 500, visitas: 268,
+    fotos: ['/images/anuncios/cultivador-1.webp'],
+    ficha: specs({ familia: 'agricola', anio: 2017, horas: 0, cv: 180, peso: 4300, transporte: 'Sí', docs: 'Parcial', traccion: 'Sin tracción', enganche: 'Barra de tracción', pto: 'Sin PTO', transmision: 'Manual' }),
+    descripcion: 'Cultivador Horsch Pronto 6 DC de 6 metros, para trabajo de incorporación superficial a 5-8 cm. Dos filos de discos cortantes, tres hileras de cuchillas y rodillo de trasero empaquetador.\n\nDiscos al 70% de vida (se cambian por pares, no completos), rodamientos y ejes revisados este año. Estructura en muy buen estado, sin grietas en el bastidor principal.\n\nSe vende por ampliar a 8 m. Funciona igual que el primer día; los discos cortantes llevan tres campañas. Factura de compra disponible, sin manuales. Entrega y carga en Murcia.',
+  },
+  {
+    vendedor: 'taller-maquinaria-albacete',
+    cat: 'agricola', sub: 'Maquinaria agrícola',
+    marca: 'Fella', modelo: 'SM',
+    titulo: 'Trituradora de setos Fella SM 145 L · 1,45 m',
+    precio: 8900, estado: 'Bueno', creado: 700, visitas: 143,
+    fotos: ['/images/anuncios/trituradora-1.webp'],
+    ficha: specs({ familia: 'agricola', anio: 2015, horas: 620, cv: 45, peso: 780, transporte: 'Sí', docs: 'Sin documentación', traccion: 'Sin tracción', enganche: 'Tres puntos', pto: '540 rpm', transmision: 'Manual' }),
+    descripcion: 'Trituradora de setos y restos de poda Fella SM 145 L, de 1,45 m de ancho de trabajo, acoplable al tractor por tres puntos con PTO a 540 rpm.\n\nCuerpo hidráulico abatible, martillos en estado medio (unos 120 pares) y corte de material hasta 5 cm. Chasis sin fisuras y protecciones completas.\n\nMáquina de taller reacondicionada: rodamientos nuevos y repintado completo. No conservamos papeles de la primera vida, se vende como está probada. Buen complemento para comunidades de regantes y gestores de poda.',
   },
 
-  // ─────────────────── CÉLULA Y 4x4 OVERLAND ───────────────────
+  // ──────────────────────── AGRÍCOLA · Ganadería ────────────────────────
   {
-    vendedor: 'rafa-quesada',
-    sub: 'Célula y 4x4 Overland',
-    marca: 'Toyota Hilux Overland', modelo: '2.4 D-4D + célula desmontable',
-    titulo: 'Toyota Hilux 4x4 (2016) + célula vivienda desmontable',
-    precio: 34500, estado: 'Bueno', creado: 7 * 24 + 6, visitas: 982,
-    destacado: true,
-    fotos: ['overland/hilux-1.jpg', 'overland/hilux-2.jpg', 'overland/hilux-3.jpg', 'overland/hilux-4.jpg'],
-    ficha: specs({
-      anio: 2016, km: 148000, cv: 150, traccion: '4x4', mma: MMA_B,
-      longitud: L_CORTA, altura: A_MEDIA, dgt: DGT_C, homologacion: MIXTO,
-      plazasViaje: '5', plazasDormir: '4', calefaccion: CALEF_NO,
-      aguaCaliente: 'No', bano: BANO_NO, deposito: 60, bateria: 'AGM',
-      solar: 150, inversor: 1000, nevera: NEVERA_COMP,
-    }),
-    descripcion: `Vendo el conjunto completo: Toyota Hilux doble cabina 2.4 D-4D de 2016 con 148.000 km, 4x4 de verdad con reductora y bloqueo trasero, más la célula vivienda desmontable hecha a medida (estructura autoportante con patas desmontables, se separa de la pick-up en 15 minutos).
+    vendedor: 'campo-verde-servicios',
+    cat: 'agricola', sub: 'Ganadería',
+    marca: 'DeLaval', modelo: 'VMS',
+    titulo: 'Sala de ordeño DeLaval VMS 500 · 2 puestos',
+    precio: 18400, estado: 'Bueno', creado: 340, visitas: 197,
+    verificacion: 'verificada',
+    fotos: ['/images/anuncios/ordeño-1.webp'],
+    ficha: specs({ familia: 'agricola', anio: 2013, horas: 3100, cv: 15, peso: 1900, transporte: 'Sí', docs: 'Declaración CE / ficha técnica', comb: 'Eléctrico', traccion: 'Sin tracción', enganche: 'Sin enganche', pto: 'Sin PTO', transmision: 'Hidrostática' }),
+    descripcion: 'Sala de ordeño DeLaval VMS de 500 litros con dos puestos en paralelo, cinta de recogida de 220 l y pulsador automático de desenganche.\n\nDesmontada de una explotación lechera de Murcia con 80 vacas. Bomba de vacío, regulador y sensor de flujo revisados; los vasos y pezoneras están al 80%. Cuerpo de lechería sin corrosión estructural.\n\nSe entrega desmontada con esquema eléctrico y manual de instalación. CE de fabricación a la vista. Buena opción para quien monta o renueva sala pequeña; el transporte lo organizamos a península.',
+  },
+  {
+    vendedor: 'juan-ramon-estevez',
+    cat: 'agricola', sub: 'Ganadería',
+    marca: 'Kerbl', modelo: 'Retro',
+    titulo: 'Remolque de pienso Kerbl Retro 2200 · 2,2 m³',
+    precio: 6400, estado: 'Bueno', creado: 620, visitas: 121,
+    fotos: ['/images/anuncios/remolque-pienso-1.webp'],
+    ficha: specs({ familia: 'agricola', anio: 2019, horas: 0, cv: 55, peso: 1650, transporte: 'Sí', docs: 'Factura y libro de instrucciones', traccion: 'Sin tracción', enganche: 'Barra de tracción', pto: '540 rpm', transmision: 'Manual' }),
+    descripcion: 'Remolque de reparto de piensos Kerbl Retro 2200, tolva de 2,2 m³ con cinta de descarga lateral y pala dosificadora.\n\nUso en explotación vacuna de Lugo, principalmente avena y paja picada. Sin fugas en el hidráulico, cinta con goma en buen estado y frenos recién ajustados.\n\nPintura original con marcas de uso, chasis recto. Factura y CE incluidas. Remolque ligero que mueve un tractor de 50 CV sin problemas; queda en la finca, se puede ver cualquier día.',
+  },
 
-La Hilux está preparada para pista: suspensión OME +5 cm, neumáticos BFGoodrich KO2 con 10.000 km, snorkel, defensa delantera con faros auxiliares LED, placas de protección de bajos y cubrecarter completo. Todo homologado en ficha técnica.
+  // ──────────────────────── OBRA · Excavadoras ────────────────────────
+  {
+    vendedor: 'excava-norte',
+    cat: 'obra', sub: 'Excavadoras',
+    marca: 'Caterpillar 320', modelo: '320',
+    titulo: 'Caterpillar 320 Next Gen · 9.800 horas · oruga',
+    precio: 89500, estado: 'Bueno', creado: 20 * 24, visitas: 810,
+    boosteado: true, verificacion: 'verificada',
+    fotos: ['/images/anuncios/excavadora-1.webp', '/images/anuncios/excavadora-2.webp'],
+    ficha: specs({ familia: 'obra', anio: 2019, horas: 9800, cv: 174, peso: 23200, transporte: 'Sí', docs: 'Factura y libro de instrucciones', traccion: 'Oruga', medidas: 'Más de 4 m' }),
+    descripcion: 'CAT 320 Next Gen con 9.800 horas: la excavadora de 20 toneladas más vendida del mercado, con pantalla de conectividad y cámara trasera de serie.\n\nMotor sin pérdidas de potencia, bomba principal revisada hace 1.200 h (factura) y caudal hidráulico correcto en las dos vías. Juego en articulaciones dentro de tolerancia; varillas de cilindros sin goteo.\n\nTren de rodaje al 70%: ruedas guía y excentricas recién cambiadas, cadenas con uso equilibrado. Arco ROPS, calefacción y A/C funcionando, silla giratoria con apoyabrazos.\n\nDocumentación completa (factura original, libro de mantenimiento sellado, CE y ITP). Se prueba en nuestra nave de Vizcaya; transporte especial a península incluido si se cierra en el precio publicado.',
+  },
+  {
+    vendedor: 'levante-obra',
+    cat: 'obra', sub: 'Excavadoras',
+    marca: 'Hitachi ZX200', modelo: 'ZX200',
+    titulo: 'Hitachi ZX200-6 · 12.400 horas · mantenimiento al día',
+    precio: 61500, estado: 'Bueno', creado: 70 * 24, visitas: 597,
+    fotos: ['/images/anuncios/excavadora-2.webp'],
+    ficha: specs({ familia: 'obra', anio: 2017, horas: 12400, cv: 151, peso: 20300, transporte: 'Sí', docs: 'Parcial', traccion: 'Oruga', medidas: 'Más de 4 m' }),
+    descripcion: 'Hitachi ZX200-6 de 2017 con 12.400 horas, excavadora sobre oruga de 20 t para obra civil y saneamientos. Conocida por su fiabilidad hidráulica y consumo contenido.\n\nÚltimo servicio de 1.000 h hace 300 horas: aceite de motor y transmisión, filtros y pruebas de presión sin incidencias. Fuga menor en la manguera de balancín (se ve en foto, reparación de 150 € aproximadamente).\n\nOrugas con excentricas nuevas, ruedas guía con la primera rectificada hecha. Cabina íntegra, A/C y calefacción operativos. Pintura original en la torreta con retoques en el brazo (uso normal).\n\nITP y CE en regla, facturas de mantenimiento desde 2021. Se entrega tras revisión de renta horaria y pruebas de función en nuestra nave de Alicante.',
+  },
+  {
+    vendedor: 'grupo-ibermaq',
+    cat: 'obra', sub: 'Excavadoras',
+    marca: 'Doosan DX140', modelo: 'DX140',
+    titulo: 'Doosan DX140LC · 7.650 horas · recién revisada',
+    precio: 54900, estado: 'Como nuevo', creado: 34 * 24, visitas: 486,
+    verificacion: 'verificada',
+    fotos: ['/images/anuncios/excavadora-1.webp'],
+    ficha: specs({ familia: 'obra', anio: 2020, horas: 7650, cv: 115, peso: 14600, transporte: 'Sí', docs: 'Factura y libro de instrucciones', traccion: 'Oruga', medidas: 'Más de 4 m' }),
+    descripcion: 'Doosan DX140LC del 2020, 14 toneladas de uso en demoliciones ligeras y movimientos de tierra. 7.650 horas con revisión general de bombas y motores hidráulicos facturada en enero.\n\nCuerpo sin golpes estructurales, pintura original de fábrica salvo retoques en contrapeso. Tren de rodaje al 80%, cadenas y ruedas de rodadura recién rectificadas por par.\n\nCabina con pantalla de cámaras, A/C y radio. Sistema de detección de parada automática (pig) operativo. Marcado CE, factura y libro completo; ITP hasta 2028.\n\nDemostración posible en Barcelona con cita. Precio con IVA no incluido para empresas (se factura conforme); para particular, todo incluido.',
+  },
+  {
+    vendedor: 'excava-norte',
+    cat: 'obra', sub: 'Excavadoras',
+    marca: 'JCB JS145', modelo: 'JS145',
+    titulo: 'JCB JS145 · 10.200 horas · zona media',
+    precio: 42900, estado: 'Usado', creado: 420, visitas: 372,
+    fotos: ['/images/anuncios/excavadora-2.webp'],
+    ficha: specs({ familia: 'obra', anio: 2015, horas: 10200, cv: 145, peso: 15400, transporte: 'Sí', docs: 'Sin documentación', traccion: 'Oruga', medidas: 'Más de 4 m' }),
+    descripcion: 'JCB JS145 de 14,5 t con 10.200 horas, excavadora de tamaño medio muy polivalente para empresas de urbanización y zanjas medianas.\n\nMotor 4,4 l en régimen, sin humos ni pérdidas de compresión. Hidráulica con caudal correcto pero con reparación antigua en el cilindro de balancín (soldadura hecha en 2022, factura en taller local).\n\nTren de rodaje al 55%: prever rectificación o cambio de ruedas de rodadura en los próximos 2.000 h. Exterior con marcas de trabajo, sin accidentes graves.\n\nSe vende SIN papeles (factura original extraviada): por eso el precio. Comprador responsable debe aportar documentación de compra ante notario si lo necesita; nosotros dejamos contrato y copia de la ficha técnica de la máquina. Prueba de función en Vizcaya.',
+  },
+  {
+    vendedor: 'grupo-ibermaq',
+    cat: 'obra', sub: 'Excavadoras',
+    marca: 'Hyundai R215', modelo: 'R215',
+    titulo: 'Hyundai R215-9 · 6.900 horas · garantía de taller 6 meses',
+    precio: 67800, estado: 'Bueno', creado: 110, visitas: 418,
+    verificacion: 'verificada',
+    fotos: ['/images/anuncios/excavadora-1.webp'],
+    ficha: specs({ familia: 'obra', anio: 2019, horas: 6900, cv: 174, peso: 21400, transporte: 'Sí', docs: 'Factura y libro de instrucciones', traccion: 'Oruga', medidas: 'Más de 4 m' }),
+    descripcion: 'Hyundai R215-9 de 2019 con 6.900 horas, una de las 20 t con mejor relación prestaciones-precio del mercado europeo. Vehiculo de flota propia, con historial completo.\n\nRevisión de 1.000 h realizada en nuestro taller: filtros, aceites, pruebas de presión y rectificación de ruedas de rodadura incluidas. Se entrega con GARANTÍA de taller de 6 meses en bombas y motores hidráulicos.\n\nCámara trasera, A/C, bloque de calentador y silla con suspensión. Tren al 75% y pintura original en cuerpo principal.\n\nFactura, libro sellado, CE y ITP en vigor. Financiación disponible a través de nuestra entidad (sujeta a aprobación). Uno de los anuncios más completos de nuestro catálogo.',
+  },
 
-La célula (la de las fotos, con toldo lateral y escalera de acceso): cama sobre la cabina de 2x1,40 más sofá convertible para dos niños, mueble de cocina con fuego, fregadero y arcon compresor de 40 l, mesa interior, claraboya y tres ventanas con mosquitera. Electricidad independiente: batería AGM de 100 Ah, placa solar de 150 W e inversor de 1.000 W. Depósito de 60 l de limpias. Cuando se retira la célula, la pickup queda 100% disponible para el trabajo.
+  // ──────────────────────── OBRA · Cargadoras ────────────────────────
+  {
+    vendedor: 'levante-obra',
+    cat: 'obra', sub: 'Cargadoras',
+    marca: 'Caterpillar 950', modelo: '950',
+    titulo: 'Caterpillar 950M · 6.300 horas · ruedas',
+    precio: 78900, estado: 'Bueno', creado: 55 * 24, visitas: 523,
+    fotos: ['/images/anuncios/cargadora-1.webp'],
+    ficha: specs({ familia: 'obra', anio: 2018, horas: 6300, cv: 220, peso: 17800, transporte: 'Sí', docs: 'Factura y libro de instrucciones', traccion: 'Ruedas 4x4', medidas: 'Más de 4 m' }),
+    descripcion: 'Cargadora frontal CAT 950M con 6.300 horas, pala de 3,2 m³ con cantos de acero nuevos y sistema de descarga alta.\n\nTransmisión Powershift revisada, embragues dentro de tolerancia y ejes con aceites analizados (informe incluido). Neumáticos al 65% — 20.5 R25 con banda original.\n\nCabina con A/C, cámara trasera y visibilidad 360°. Estructura sin reparaciones, contrapeso original.\n\nFactura, libro mantenimiento y CE completos. Se prueba en Alicante; entrega en obra de la península posible con camión de plataforma.',
+  },
+  {
+    vendedor: 'grupo-ibermaq',
+    cat: 'obra', sub: 'Cargadoras',
+    marca: 'JCB 411', modelo: '411',
+    titulo: 'JCB 411 ZX · retroexcavadora · 8.100 horas',
+    precio: 34500, estado: 'Bueno', creado: 85, visitas: 441,
+    fotos: ['/images/anuncios/retro-1.webp'],
+    ficha: specs({ familia: 'obra', anio: 2016, horas: 8100, cv: 109, peso: 8400, transporte: 'Sí', docs: 'Parcial', traccion: 'Ruedas 4x4', medidas: 'Más de 4 m' }),
+    descripcion: 'JCB 411 ZX, retroexcavadora de 4 ruedas con pala delantera y brazo trasero: la máquina polivalente de obra pequeña, instalaciones y mantenimiento municipal.\n\n8.100 horas; motor 4,4 l sin fugas ni humos, frenos nuevos hace 600 h. Juego en la articulación central dentro de límites (se mide en prueba). Brazo trasero sin soldaduras de reparación.\n\nPala frontal con filos nuevos, martillo hidráulico opcional disponible por diferencia. Neumáticos traseros al 70%.\n\nDocumentación parcial (falta factura de compra original, sí libro y ITP). Máquina de nuestro taller con garantía de 3 meses en lo mecánico. Precio negociable a pago inmediato.',
+  },
+  {
+    vendedor: 'taller-maquinaria-albacete',
+    cat: 'obra', sub: 'Cargadoras',
+    marca: 'Caterpillar 906', modelo: '906',
+    titulo: 'Caterpillar 906 Compact · 4.450 horas · compacta',
+    precio: 41200, estado: 'Como nuevo', creado: 140, visitas: 358,
+    verificacion: 'verificada',
+    fotos: ['/images/anuncios/cargadora-1.webp'],
+    ficha: specs({ familia: 'obra', anio: 2021, horas: 4450, cv: 55, peso:5900, transporte: 'Sí', docs: 'Factura y libro de instrucciones', traccion: 'Ruedas 4x4', medidas: '2,5 – 4 m' }),
+    descripcion: 'CAT 906 Compact de 2021, cargadora de neumático de tamaño compacto para constructora, urbanismo y trabajos en interior de nave. 4.450 horas.\n\nEstrecha (1,89 m) y maniobrable, con pala de 1,0 m³, acoplamiento rápido hidráulico y salida de tercer circuito. Motor Stage V con filtro de partículas sin historial de averías.\n\nCabinada con A/C y radio, cámara de reverso, alarmas acústicas y luces LED de trabajo. Pintura original salvo microarañazos de uso normal.\n\nFactura, manual, CE y ITP al día. Una de las unidades mejor conservadas que hemos tenido: se ve y se prueba en Albacete.',
+  },
 
-Mecánicamente impecable: es la Hilux indestructible de siempre, mantenimiento escrupuloso en Toyota Granada con todas las facturas, embrague y discos nuevos en 2024. ITV en vigor. No es nada inusual que estas Hílix lleguen a los 400.000 km.
+  // ──────────────────────── OBRA · Compactación ────────────────────────
+  {
+    vendedor: 'levante-obra',
+    cat: 'obra', sub: 'Compactación',
+    marca: 'Bomag BW120', modelo: 'BW120',
+    titulo: 'Apisonador Bomag BW120 AD-5 · 3.100 horas',
+    precio: 26800, estado: 'Bueno', creado: 260, visitas: 244,
+    fotos: ['/images/anuncios/apisonador-1.webp'],
+    ficha: specs({ familia: 'obra', anio: 2018, horas: 3100, cv: 98, peso: 10800, transporte: 'Sí', docs: 'Parcial', traccion: 'Ruedas 4x4', medidas: '2,5 – 4 m' }),
+    descripcion: 'Apisonador de doble tambor Bomag BW120 AD-5 con 3.100 horas, de 120 kN de fuerza centrípeta, ideal para compactación de firmes, rellenos y zanjas.\n\nMotores de vibración sin fugas, amplitudes verificadas con analizador (informe del taller). Tambor con bordes sin fisuras y rodillos de rasillón en buen estado.\n\nMotor diesel sin humos, arranque eléctrico y deslizadores frontales recién puestos. Cabina abierta con parabrisas y toldo.\n\nLibro y mantenimiento parcial, sin factura de compra original. ITP en vigor. Se entrega con repuestos de filtros del próximo servicio.',
+  },
+  {
+    vendedor: 'grupo-ibermaq',
+    cat: 'obra', sub: 'Compactación',
+    marca: 'Hamm HD 14', modelo: 'HD 14',
+    titulo: 'Rodillo Hamm HD 14 · tandem · 2.750 horas',
+    precio: 22400, estado: 'Bueno', creado: 480, visitas: 189,
+    fotos: ['/images/anuncios/apisonador-1.webp'],
+    ficha: specs({ familia: 'obra', anio: 2016, horas: 2750, cv: 100, peso: 7500, transporte: 'Sí', docs: 'Factura y libro de instrucciones', traccion: 'Ruedas 4x4', medidas: '2,5 – 4 m' }),
+    descripcion: 'Rodillo tandem Hamm HD 14 de 1,4 m, con vibración de doble amplitud y sistema de raspado de tambor.\n\n2.750 horas en obra vial catalana. Sistema de agua con bomba y boquillas funcionando (imprescindible para asfalto), depósito de 700 l.\n\nRodamientos de tambor revisados, sin fugas de aceite hidráulico. Carrocería con uso de obra, sin golpes en voladizos.\n\nFactura y CE disponibles, libro parcial. Apta para empresas de asfaltado que busquen máquina de apoyo sin invertir en nueva.',
+  },
 
-Conjunto listo para África o para perderse por España sin tocar un camping. Lo separo solo si hay compradores para ambas cosas: Hilux sola 27.000 €, célula 8.500 €.
+  // ──────────────────────── OBRA · Plataformas elevadoras ────────────────────────
+  {
+    vendedor: 'grupo-ibermaq',
+    cat: 'obra', sub: 'Plataformas elevadoras',
+    marca: 'Genie GS-2630', modelo: 'GS-2630',
+    titulo: 'Plataforma de tijera Genie GS-2630 · eléctrica',
+    precio: 9800, estado: 'Bueno', creado: 96, visitas: 267,
+    fotos: ['/images/anuncios/plataforma-1.webp'],
+    ficha: specs({ familia: 'obra', anio: 2019, horas: 640, cv: 3, peso: 2350, transporte: 'Sí', docs: 'Factura y libro de instrucciones', comb: 'Batería', traccion: 'Ruedas 4x2', medidas: 'Hasta 2,5 m', potenciaW: '1.000 – 2.500 W', tension: 'Batería', bateria: 'Sí' }),
+    descripcion: 'Plataforma elevadora de tijera Genie GS-2630: 7,80 m de altura de trabajo, 2,30 m de ancho de plataforma y capacidad de 320 kg. Eléctrica, apta para interior.\n\nBaterías de tracción agotadas al 80% de su vida (informe de carga incluido), cargador externo de 24 V operativo. Sistema hidráulico sin fugas, válvulas de emergencia probadas.\n\nBarandillas extensibles, cuña antivuelco y alarmas de inclinación verificadas en última revisión anual.\n\nFactura, manual y certificado de conformidad CE. La ideal para fontanería, electricidad y mantenimiento de naves; se puede alquilar antes de comprarla (consultar condiciones).',
+  },
+  {
+    vendedor: 'taller-el-palmar',
+    cat: 'obra', sub: 'Plataformas elevadoras',
+    marca: 'Genie S-65', modelo: 'S-65',
+    titulo: 'Tijera articulada Genie S-65 · 19,8 m · diésel',
+    precio: 26900, estado: 'Bueno', creado: 300, visitas: 311,
+    fotos: ['/images/anuncios/plataforma-2.webp'],
+    ficha: specs({ familia: 'obra', anio: 2017, horas: 1150, cv: 45, peso: 7900, transporte: 'Sí', docs: 'Declaración CE / ficha técnica', comb: 'Diésel', traccion: 'Ruedas 4x4', medidas: 'Más de 4 m', potenciaW: 'Más de 2.500 W', tension: '400 V', bateria: 'No' }),
+    descripcion: 'Plataforma articulada Genie S-65 de 19,80 m de altura de trabajo con brazo extensible y giro de plataforma de 360°.\n\nMotor diésel Stage IIIA con 1.150 horas, batería de arranque nueva y neumáticos de campo al 70%. Sistema de seguridad redundante (interruptor de cuerpo, antivuelco y alarmas) certificado en última revisión.\n\nPlataforma con mando de girador y extensión hidráulica. Estructura sin reparaciones; pintura de fábrica con marcas de uso.\n\nConformidad CE con declaración del fabricante y manual. Revisión anual al día (certificado). Máquina para trabajos en altura serios: fachadas, industria y electricidad aérea.',
+  },
+  {
+    vendedor: 'taller-maquinaria-albacete',
+    cat: 'obra', sub: 'Plataformas elevadoras',
+    marca: 'Haulotte HA20 LT', modelo: 'HA20 LT',
+    titulo: 'Haulotte HA20 LT · 20 m · baterías nuevas',
+    precio: 14500, estado: 'Como nuevo', creado: 48, visitas: 295,
+    fotos: ['/images/anuncios/plataforma-1.webp'],
+    ficha: specs({ familia: 'obra', anio: 2020, horas: 410, cv: 3, peso: 6600, transporte: 'Sí', docs: 'Factura y libro de instrucciones', comb: 'Batería', traccion: 'Ruedas 4x4', medidas: 'Más de 4 m', potenciaW: 'Más de 2.500 W', tension: 'Batería', bateria: 'Sí' }),
+    descripcion: 'Haulotte HA20 LT, plataforma articulada de 20 m montada sobre oruga de goma — trabaja en interior y en terreno irregular sin dañar el firmed.\n\nBaterías de tracción REEMPLAZADAS hace 3 meses (factura de las celdas incluida), autonomía completa de jornada. Control en plataforma y en base funcionando, alarmas y paradas de emergencia probadas.\n\n410 horas reales: casi toda en mantenimiento de fachadas. Orugas de goma al 85%.\n\nFactura, manual y CE en regla. Se entrega tras revisión completa en nuestro taller, con 3 meses de garantía mecánica. Un gustazo de máquina para comunidades y empresas de limpieza.',
+  },
 
-Está en Granada (Albolote). Yo mismo os enseño cómo se monta y desmonta la célula. No envío, venta en mano.`,
+  // ──────────────────── HERRAMIENTAS · Herramienta eléctrica ────────────────────
+  {
+    vendedor: 'taller-el-palmar',
+    cat: 'herramientas', sub: 'Herramienta eléctrica',
+    marca: 'Bosch', modelo: 'GBH 5-40 DCE',
+    titulo: 'Rotomartillo Bosch GBH 5-40 DCE · profesional',
+    precio: 420, estado: 'Bueno', creado: 72, visitas: 189,
+    fotos: ['/images/anuncios/herramientas-1.webp'],
+    ficha: specs({ familia: 'herramientas', anio: 2021, horas: 0, cv: 1.7, peso: 5.4, transporte: 'No', docs: 'Factura y libro de instrucciones', comb: 'Eléctrico', potenciaW: '1.000 – 2.500 W', tension: '230 V', bateria: 'No' }),
+    descripcion: 'Rotomartillo Bosch GBH 5-40 DCE de 1.200 W con mandril SDS-Max, para taladrado y demolición de hasta 40 mm en hormigón.\n\nUso de taller, dos años de servicio. Carbones al 70%, rodamiento suave y cable de alimentación sin reparaciones. Disponible con caja de transporte y punta escalopada original.\n\nFactura y garantía del distribuidor (si queda) transferibles. Se prueba antes de llevar. Ideal para instaladores y reformistas que necesitan herramienta de fábrica sin precio de nueva.',
+  },
+  {
+    vendedor: 'taller-el-palmar',
+    cat: 'herramientas', sub: 'Herramienta eléctrica',
+    marca: 'DeWalt', modelo: 'DCS575',
+    titulo: 'Sierra circular DeWalt DCS575 · batería 54V',
+    precio: 285, estado: 'Como nuevo', creado: 30, visitas: 224,
+    fotos: ['/images/anuncios/herramientas-2.webp'],
+    ficha: specs({ familia: 'herramientas', anio: 2023, horas: 0, cv: 1.9, peso: 3.1, transporte: 'No', docs: 'Factura y libro de instrucciones', comb: 'Batería', potenciaW: '500 – 1.000 W', tension: 'Batería', bateria: 'Sí' }),
+    descripcion: 'Siura circular inalámbrica DeWalt FlexVolt DCS575 de 54 V, disco de 184 mm, con dos baterías de 6,0 Ah y cargador rápido.\n\nPoco uso: comprada para una obra concreta de tres meses. Sin golpes, disco original con pocos cortes, seguro de disco y base de corte rectas.\n\nFactura, caja del sistema TSTAK y todos los accesorios de fábrica. Las baterías cargan al 100% y aguantan jornada completa de carpintería.',
+  },
+  {
+    vendedor: 'eolo-generadores',
+    cat: 'herramientas', sub: 'Herramienta eléctrica',
+    marca: 'Hilti', modelo: 'TE 60-ATC',
+    titulo: 'Demolidor Hilti TE 60-ATC/AVR · con maletín',
+    precio: 980, estado: 'Bueno', creado: 200, visitas: 267,
+    fotos: ['/images/anuncios/herramientas-1.webp'],
+    ficha: specs({ familia: 'herramientas', anio: 2020, horas: 0, cv: 2.1, peso: 7.3, transporte: 'No', docs: 'Parcial', comb: 'Eléctrico', potenciaW: '1.000 – 2.500 W', tension: '230 V', bateria: 'No' }),
+    descripcion: 'Demolidor Hilti TE 60-ATC con activación de control de retroceso (ATC) y reducción activa de vibración: la herramienta de referencia para trabajos pesados de instalación.\n\nRevisado en servicio oficial hace 500 horas: carbones, rodamientos y cable nuevo. Maletín Hilti con dos picos pico rompedor y una cincel punta.\n\nSin factura (parcial): tenemos el libro de servicio y los registros de taller de Hilti. Garantía de nuestro taller de 2 meses en electromecánica.',
+  },
+  {
+    vendedor: 'eolo-generadores',
+    cat: 'herramientas', sub: 'Herramienta eléctrica',
+    marca: 'Festool', modelo: 'TS 55 F',
+    titulo: 'Sierra de inglete Festool TS 55 F + guía FS 1400',
+    precio: 540, estado: 'Como nuevo', creado: 14, visitas: 178,
+    fotos: ['/images/anuncios/herramientas-2.webp'],
+    ficha: specs({ familia: 'herramientas', anio: 2024, horas: 0, cv: 1.6, peso: 4.5, transporte: 'No', docs: 'Factura y libro de instrucciones', comb: 'Eléctrico', potenciaW: '500 – 1.000 W', tension: '230 V', bateria: 'No' }),
+    descripcion: 'Sierra de canto Festool TS 55 F con riel guía FS 1400, freno de motor y aspiración de polvo: el estándar de carpintería e instalación de cocina.\n\nAdquirida hace un año para un único proyecto; prácticamente nueva, sin golpes y con disco de dientes de carburo original con menos del 10% de uso.\n\nFactura con garantía de fabricante restante (registrable), maletín Systainer 3 y guía completa. Se puede probar en nuestra sede de Zaragoza.',
+  },
+
+  // ──────────────────── HERRAMIENTAS · Motores y generadores ────────────────────
+  {
+    vendedor: 'eolo-generadores',
+    cat: 'herramientas', sub: 'Motores y generadores',
+    marca: 'Kipor', modelo: 'KDE 20',
+    titulo: 'Grupo electrógeno Kipor KDE 20 · 20 kVA · trifásico',
+    precio: 6850, estado: 'Bueno', creado: 60, visitas: 302,
+    fotos: ['/images/anuncios/generador-1.webp'],
+    ficha: specs({ familia: 'herramientas', anio: 2019, horas: 1240, cv: 40, peso: 620, transporte: 'Sí', docs: 'Factura y libro de instrucciones', comb: 'Diésel', potenciaW: 'Más de 2.500 W', tension: '400 V', bateria: 'No' }),
+    descripcion: 'Grupo electrógeno Kipor KDE 20 de 20 kVA trifásico, con motor diésel de 1.240 horas en apagones y eventos.\n\nTablero con protección magneto-térmica y arranque eléctrico, ATS opcional disponible por diferencia. Sonorización de 68 dB(A) a 7 m, apto para obra urbana con horario.\n\nMantenimiento al día (aceite, filtros y válvulas facturados a las 1.000 h). Alternador sin historial de averías.\n\nFactura, manual y CE de fábrica. Se entrega con batería nueva y probado bajo carga de 15 kW antes de la entrega.',
+  },
+  {
+    vendedor: 'eolo-generadores',
+    cat: 'herramientas', sub: 'Motores y generadores',
+    marca: 'Himoinsa', modelo: 'HFW-60',
+    titulo: 'Himoinsa HFW-60 · 50 kVA · silencioso',
+    precio: 11900, estado: 'Bueno', creado: 360, visitas: 341,
+    fotos: ['/images/anuncios/generador-2.webp'],
+    ficha: specs({ familia: 'herramientas', anio: 2020, horas: 890, cv: 65, peso: 1150, transporte: 'Sí', docs: 'Declaración CE / ficha técnica', comb: 'Diésel', potenciaW: 'Más de 2.500 W', tension: '400 V', bateria: 'No' }),
+    descripcion: 'Grupo silencioso Himoinsa HFW-60 de 50 kVA, de los que van en obras y eventos donde el ruido importa (72 dB(A) a 7 m).\n\n890 horas, motor Mitsubishi con mantenimiento por libro y panel de control automático con arranque remoto. Chasis con enganche de mano para moverlo en patio.\n\nCarrocería sin óxido estructural, cerraduras y bisagras completas. Aceite y filtros recién cambiados.\n\nCE y declaración de conformidad; factura original no conservada (parcial). Prueba bajo carga certificada antes de la entrega. Precio a contraentrega en Zaragoza.',
+  },
+  {
+    vendedor: 'taller-maquinaria-albacete',
+    cat: 'herramientas', sub: 'Motores y generadores',
+    marca: 'Honda', modelo: 'EU70is',
+    titulo: 'Honda EU70is · 7 kVA inverter · prácticamente nuevo',
+    precio: 1690, estado: 'Como nuevo', creado: 24, visitas: 209,
+    fotos: ['/images/anuncios/generador-1.webp'],
+    ficha: specs({ familia: 'herramientas', anio: 2023, horas: 60, cv: 12, peso: 86, transporte: 'Sí', docs: 'Factura y libro de instrucciones', comb: 'Gasolina', potenciaW: '1.000 – 2.500 W', tension: '230 V', bateria: 'No' }),
+    descripcion: 'Honda EU70is, generador inverter de 7.000 W de onda pura: suficiente para obra pequeña, furgón de servicios y domicilios en obras de reforma.\n\nSolo 60 horas de uso de emergencia. Onda sinusoidal limpia apta para equipos electrónicos y soldadura ligera por inversor.\n\nDepósito sin corrosión, carburador limpio y batería de arranque nueva. Ruedas y asa plegables, panel con dos tomas de 230 V y una de 12 V.\n\nFactura, manual y garantía de distribuidor transferible. La mejor opción de portátil en ocasión que se puede encontrar ahora mismo.',
+  },
+
+  // ──────────────────── HERRAMIENTAS · Sierra y poda ────────────────────
+  {
+    vendedor: 'campo-verde-servicios',
+    cat: 'herramientas', sub: 'Sierra y poda',
+    marca: 'Husqvarna', modelo: '560 XP',
+    titulo: 'Motosierra Husqvarna 560 XP · profesional',
+    precio: 590, estado: 'Bueno', creado: 40, visitas: 254,
+    fotos: ['/images/anuncios/motosierra-1.webp'],
+    ficha: specs({ familia: 'herramientas', anio: 2021, horas: 480, cv: 3.8, peso: 5.9, transporte: 'No', docs: 'Parcial', comb: 'Gasolina', potenciaW: '1.000 – 2.500 W', tension: 'Batería', bateria: 'No' }),
+    descripcion: 'Motosierra Husqvarna 560 XP de 50,4 cc, gama profesional de 3,8 CV con arranque reversible y freno de cadena de inercia.\n\n480 horas de trabajo en poda urbana. Cilindro sin grietas, compresión fuerte (se prueba en frío), embrague centrifugo sin patinar. Barra de 18" con cadena nueva montada.\n\nAmortiguadores de mango en buen estado, gatillo y seguro de banda operativos. Filtro y carburador limpios esta temporada.\n\nFactura parcial (taller de reparaciones del 2023 incluida, no la compra). Cadena de repuesto y aceite de corte incluidos. Se puede probar arrancada en frío en Murcia.',
+  },
+  {
+    vendedor: 'campo-verde-servicios',
+    cat: 'herramientas', sub: 'Sierra y poda',
+    marca: 'Husqvarna', modelo: '545',
+    titulo: 'Motosierra Husqvarna 545 · 45 cc · con barra de 16"',
+    precio: 340, estado: 'Bueno', creado: 520, visitas: 167,
+    fotos: ['/images/anuncios/motosierra-1.webp'],
+    ficha: specs({ familia: 'herramientas', anio: 2019, horas: 610, cv: 2.7, peso: 4.9, transporte: 'No', docs: 'Sin documentación', comb: 'Gasolina', potenciaW: '500 – 1.000 W', tension: 'Batería', bateria: 'No' }),
+    descripcion: 'Motosierra Husqvarna 545 de 45 cc, tamaño medio perfecto para leña de casa, desramado y jardinería ligera.\n\n610 horas registradas en el odómetro de horas. Arranca con un tirón corto, acelera limpio y frena bien (probada). Carburador ajustado hace dos meses.\n\nGuardas completas, freno de cadena operativo y puntal correcto. Estética de uso: rayones normales en el carenado.\n\nSin papeles: se vende como herramienta de segunda mano con prueba de funcionamiento. Trae barra de 16" con cadena de diente cuadrado puesta.',
+  },
+
+  // ──────────────────── HERRAMIENTAS · Taller manual ────────────────────
+  {
+    vendedor: 'taller-el-palmar',
+    cat: 'herramientas', sub: 'Taller manual',
+    marca: 'Facom', modelo: 'Set 46',
+    titulo: 'Juego de llaves y útiles Facom · 46 piezas',
+    precio: 310, estado: 'Bueno', creado: 120, visitas: 141,
+    fotos: ['/images/anuncios/taller-1.webp'],
+    ficha: specs({ familia: 'herramientas', anio: 2018, horas: 0, cv: 0.5, peso: 12.5, transporte: 'No', docs: 'Factura y libro de instrucciones', comb: 'Batería', potenciaW: 'Hasta 500 W', tension: 'Bivolt', bateria: 'No' }),
+    descripcion: 'Juego de herramienta manual Facom de 46 piezas: llaves combinadas, varetas con articulación, casquillos 1/2" y tapones de impacto.\n\nProcede de nuestro taller; todas las piezas presentes (lista de contenido en foto) y con el desgaste propio del uso diario, sin piezas dobladas ni craked.\n\nCaja metálica con cerradura y bandeja interior. Factura del distribuidor del 2018.\n\nOportunidad para montar un taller desde cero con herramienta de gama alta a precio de ocasión. Entrega en mano en Sevilla o envío peninsular.',
+  },
+  {
+    vendedor: 'eolo-generadores',
+    cat: 'herramientas', sub: 'Taller manual',
+    marca: 'Facom', modelo: 'Mezclador',
+    titulo: 'Mezclador de obra eléctrico + picadora · set',
+    precio: 240, estado: 'Usado', creado: 660, visitas: 98,
+    fotos: ['/images/anuncios/taller-1.webp'],
+    ficha: specs({ familia: 'herramientas', anio: 2017, horas: 0, cv: 1.4, peso: 8.2, transporte: 'No', docs: 'Sin documentación', comb: 'Eléctrico', potenciaW: '500 – 1.000 W', tension: '230 V', bateria: 'No' }),
+    descripcion: 'Set de obra: mezclador eléctrico de 1.400 W con varilla de 120 mm y picadora manual para sacos de mortero.\n\nHerramienta de albañilería con uso real: pintura saltada y cable cambiado una vez (empalme en regla). Mezcla sin problemas en cubo de 100 l.\n\nSin papeles; se vende probado en tienda. Barata, lista para seguir dándole a la obra. Aceptamos recambio por herramienta mayor si viene al taller de Zaragoza.',
   },
 ]
 

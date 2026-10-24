@@ -160,6 +160,7 @@ export default function CatalogoClient({ initialProducts = [], initialCount = 0 
   const tp = useTranslations('product')
   const tcm = useTranslations('common')
   const tfam = useTranslations('familias')
+  const tpcard = useTranslations('productCard')
   const ttv = useTranslations('tiposVendedor')
   // Universal translator function (supports any namespace with variables)
   const t = (key: string, vars?: Record<string, string | number>) => {
@@ -171,6 +172,7 @@ export default function CatalogoClient({ initialProducts = [], initialCount = 0 
     if (ns === 'common') return tcm(rest, vars as any)
     if (ns === 'familias') return tfam(rest, vars as any)
     if (ns === 'tiposVendedor') return ttv(rest, vars as any)
+    if (ns === 'productCard') return tpcard(rest, vars as any)
     return key
   }
   const searchParams = useSearchParams()
