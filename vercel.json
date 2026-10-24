@@ -1,0 +1,40 @@
+{
+  "crons": [
+    {
+      "path": "/api/cron/clean-rate-limits",
+      "schedule": "17 3 * * *"
+    },
+    {
+      "path": "/api/cron/busquedas",
+      "schedule": "23 */6 * * *"
+    },
+    {
+      "path": "/api/cron/digest-vendedores",
+      "schedule": "5 13 * * 1"
+    },
+    {
+      "path": "/api/cron/precios-bajaron",
+      "schedule": "41 14 * * *"
+    },
+    {
+      "path": "/api/cron/expirar-prioridades",
+      "schedule": "41 3 * * *"
+    },
+    {
+      "path": "/api/cron/avisos-renovacion",
+      "schedule": "20 10 * * *"
+    },
+    {
+      "path": "/api/cron/avisos-mensajes",
+      "schedule": "*/10 * * * *"
+    },
+    {
+      "path": "/api/cron/planes",
+      "schedule": "10 9 * * *"
+    },
+    {
+      "path": "/api/cron/runtime-check",
+      "schedule": "0 8 * * *"
+    }
+  ]
+}

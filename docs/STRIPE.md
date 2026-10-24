@@ -1,0 +1,242 @@
+# Stripe — créditos y suscripción Profesional
+
+El plan Profesional se cobra como **suscripción**
+(`POST /api/planes/checkout`). En el webhook de Stripe hay que escuchar:
+
+- `checkout.session.completed`
+- `checkout.session.async_payment_succeeded`
+- `customer.subscription.updated`
+- `customer.subscription.deleted`
+- `invoice.paid` → renueva `plan_hasta` en cada periodo (sin esto el plan
+  caducaría aunque el cliente siga pagando)
+- `invoice.payment_failed` → no corta el acceso de inmediato; deja el plan
+  hasta `plan_hasta`
+
+## Suscripciones (2026-10-22)
+
+- **Mensual o anual.** El anual son 10 mensualidades (2 meses gratis):
+  **19 €/mes o 190 €/año**. Un único plan de pago.
+- El plan se muestra como «Profesional»; su id interno sigue siendo `plus`
+  para no romper las constraints y funciones SQL que ya lo conocen. Las claves
+  de Stripe son `maquinariaocasion_plus_mensual` y `maquinariaocasion_plus_anual`.
+- Los precios viven en Stripe con `lookup_key` estable
+  (`maquinariaocasion_<plan>_<mensual|anual>`, ver `src/lib/stripe-precios.ts`).
+  No se usa `price_data` en suscripciones: así el producto es siempre el mismo,
+  el portal y las facturas son coherentes y no se abren suscripciones duplicadas.
+- **Bizum no admite cobros recurrentes.** En suscripciones solo se ofrece
+  tarjeta (Apple Pay / Google Pay incluidos). Bizum sigue disponible para
+  créditos.
+- **Cambio de periodicidad**: `POST /api/planes/checkout` actualiza la
+  suscripción existente con prorrateo; el webhook
+  `customer.subscription.updated` aplica el plan y `plan_hasta`.
+- **Un cliente por vendedor**: la compra de créditos (`POST /api/stripe/checkout`)
+  reutiliza `perfiles.stripe_customer_id` igual que la suscripción, y lo guarda
+  si Stripe crea uno al vuelo. Así el portal enseña facturas de packs y de
+  créditos en la misma ficha.
+- **Portal de cliente**: `POST /api/planes/portal`. Activarlo no es suficiente:
+  hay que configurar la **configuración por defecto** en Stripe →
+  Settings → Billing → Customer portal:
+  - datos del negocio (nombre, dirección, email de soporte, condiciones y
+    privacidad) — obligatorio en la UE;
+  - activar actualización de método de pago, historial de facturas,
+    cancelación **al final del periodo**, dirección y NIF/CIF;
+  - «cambiar de plan»: si lo activas, el plan se deduce del `lookup_key` del
+    precio en el webhook, pero el prorrateo y el upsell dejan de pasar por
+    nuestro checkout. Recomendado dejarlo apagado.
+  - No hace falta crear una `configuration` propia: la API usa la de defecto.
+- **NIF/CIF**: el checkout usa `tax_id_collection`.
+- **IVA incluido**: los precios se crean con `tax_behavior: 'inclusive'`
+  (9/19/39 € son precio final). `obtenerPrecioPlan` corrige los precios
+  existentes que estuvieran en `unspecified`; si ya eran `exclusive` (Stripe
+  no deja cambiarlo), crea un precio nuevo con el mismo `lookup_key` para que
+  las altas nuevas no paguen el IVA por encima. **Los suscriptores antiguos
+  siguen en el precio viejo**: si los hubiera, hay que cambiarles el precio a
+  mano desde Stripe (Suscripción → actualizar precio). No actives Stripe Tax
+  para ventas nacionales.
+- Si un particular contrata, el webhook lo pasa a `profesional`.
+
+### Dunning y fin de periodo
+
+| Evento | Qué hace |
+|---|---|
+| `invoice.paid` | Renueva `plan_hasta` con `current_period_end`, limpia `pago_pendiente_desde` y republica los anuncios pausados por cupo. |
+| `invoice.payment_failed` | Marca `pago_pendiente_desde` (solo el primer fallo del ciclo), manda el email de tarjeta y **no corta el acceso**. El cron `/api/cron/planes` recuerda a los 3 y 7 días. |
+| `customer.subscription.deleted` | Baja a `gratis`, limpia el dunning y deja `baja:YYYY-MM-DD` en `plan_avisos` para el win-back. El cron pausa al día siguiente los anuncios que exceden el cupo (no borra). |
+| `customer.subscription.updated` | Aplica el plan del metadata o, si falta, del `lookup_key`; en `past_due` no toca el plan. |
+
+`invoice.*` se resuelve recuperando la suscripción y su `current_period_end`:
+una factura no trae el fin de periodo de forma fiable en todas las versiones
+de la API.
+
+**Quién corta el acceso**: no lo decide la web, lo decide el calendario de
+reintentos de Stripe. Configúralo en Settings → Billing → Subscriptions and
+emails → «Manage failed payments» (recomendado: 4 reintentos en 2 semanas y
+cancelar al final). Cuando Stripe marca la suscripción como `unpaid` o la
+cancela, llega `customer.subscription.updated/deleted` y el webhook baja a
+`gratis`. Nuestros emails a 1, 3 y 7 días son recordatorios, no el corte.
+
+### Checklist de prueba en modo test
+
+1. Contratar Profesional mensual → webhook → plan activo.
+2. Contratar anual → precio 190 €.
+3. Cambiar de mensual a anual → una sola suscripción, prorrateo.
+4. Abrir portal → cancelar al final del periodo → seguir activo hasta
+   `plan_hasta` → al llegar la fecha, `customer.subscription.deleted` y baja.
+5. Simular fallo de tarjeta (`4000 0000 0000 0341`) → email de dunning, plan
+   sigue activo; pagar la factura → `invoice.paid` limpia el aviso.
+5. Terminar una prueba (`trial_hasta` en el pasado) → 7 días de gracia →
+   el cron pausa los anuncios que sobran y llega el email con los títulos.
+6. `stripe listen --forward-to localhost:3000/api/stripe/webhook` para probar
+   los eventos firmados en local.
+
+# Stripe — cobro automático de créditos
+
+Implementado el 2026-09-22. Convive con el pago manual: si Stripe no está
+configurado, la web sigue exactamente como antes (Bizum/transferencia/PayPal
+con comprobante). No hay forma de que una variable ausente rompa producción.
+
+## Qué hace
+
+- **`/creditos`** muestra un bloque «Pagar ahora con tarjeta o Bizum» encima de
+  los métodos manuales. El usuario paga en Stripe y vuelve con los créditos ya
+  acreditados. Sin captura de pantalla, sin aprobación a mano.
+- **Factura automática** de Stripe por email y enlace guardado en la
+  transacción (`factura_url`).
+- **Telegram** avisa de cada cobro, igual que antes.
+
+## Piezas
+
+| Archivo | Papel |
+|---|---|
+| `src/lib/stripe.ts` | Cliente de Stripe (solo servidor) y URL del sitio |
+| `src/lib/stripe-pagos.ts` | **Reglas puras** de qué se acredita y qué no (testeadas) |
+| `src/app/api/stripe/checkout/route.ts` | Crea la Checkout Session |
+| `src/app/api/stripe/webhook/route.ts` | Único sitio donde se acreditan créditos |
+| `src/app/api/stripe/estado/route.ts` | Dice al cliente si el pago está activo |
+| `supabase/migrations/202609220001_stripe_pagos.sql` | Columnas, índice único y RPC `acreditar_pago_stripe` |
+| `tests/unit/stripe-pagos.test.ts` | 13 tests sobre el dinero |
+
+## Cómo está protegido el dinero
+
+1. **El precio lo pone el servidor.** El cliente solo manda cuántos créditos
+   quiere; el importe sale de `PAQUETES_CREDITO`. Si viniera del navegador,
+   cualquiera compraría 100 créditos por un céntimo.
+2. **La firma del webhook se verifica** con `STRIPE_WEBHOOK_SECRET` sobre el
+   cuerpo crudo. Sin firma válida no se toca la base de datos.
+3. **Idempotencia real**: índice único sobre `stripe_session_id`. Stripe
+   reintenta los webhooks; sin esto, un reintento sumaría créditos dos veces.
+4. **El importe cobrado se compara con el precio del paquete.** Si aparece una
+   sesión creada fuera de nuestro flujo (un Payment Link hecho a mano de 1 €
+   con metadata de 100 créditos), se descarta.
+5. **`payment_status === 'paid'` obligatorio.** Bizum es asíncrono: el evento
+   llega antes de que el banco confirme. Acreditar ahí sería regalar créditos.
+6. **La RPC solo la puede llamar `service_role`**, nunca un usuario logueado.
+
+## Puesta en marcha (lo que tienes que hacer tú)
+
+### 1. Aplicar la migración en Supabase
+
+SQL Editor → pegar y ejecutar:
+
+```
+supabase/migrations/202609220001_stripe_pagos.sql
+```
+
+Es idempotente. Sin ella el webhook devuelve error y Stripe reintenta, así que
+**hazlo antes de activar el webhook**.
+
+### 2. Cuenta de Stripe **propia** (no reutilizar CotizaT ni otro proyecto)
+
+El Checkout **no** coge el nombre de esta web: enseña el de la cuenta de Stripe
+cuyas claves hayas pegado. Si ves «Pagar a CotizaT», PAB u otra divisa, las
+claves de Vercel son las de **otro** negocio. Crea (o usa) una cuenta Stripe
+de MaquinariaOcasión, España, liquidación en **EUR**.
+
+Dashboard → *Settings → Public details*:
+
+- **Business name**: MaquinariaOcasión (esto es el «Pagar a …» del checkout)
+- **Statement descriptor**: MAQUINARIAOCASION
+- **Support**: soporte@maquinariaocasion.online / maquinariaocasion.online
+- **Brand**: logo y color de MaquinariaOcasión
+
+Dashboard → *Settings → Account details*: país ES, moneda predeterminada EUR.
+
+Luego *Developers → API keys* **de esa cuenta**:
+
+```
+STRIPE_SECRET_KEY = sk_live_…      (o sk_test_… para probar)
+```
+
+Marca los entornos Production y Preview. **No** hace falta ninguna variable
+pública: la clave publicable no se usa porque redirigimos a Checkout alojado.
+
+En el código el precio ya va en `eur` y Adaptive Pricing está desactivado
+para que no aparezca «Elige divisa». El nombre comercial **no** se puede
+cambiar por API: solo en el dashboard de la cuenta correcta.
+
+### 3. Crear el webhook
+
+Dashboard de Stripe → *Developers → Webhooks → Add endpoint*:
+
+- **URL**: `https://maquinariaocasion.online/api/stripe/webhook`
+- **Eventos**: `checkout.session.completed` y
+  `checkout.session.async_payment_succeeded`
+
+Copia el *Signing secret* (`whsec_…`) y añádelo en Vercel:
+
+```
+STRIPE_WEBHOOK_SECRET = whsec_…
+```
+
+Luego **redeploy** (las variables solo se aplican en un despliegue nuevo).
+
+### 4. Activar Bizum en la cuenta de Stripe
+
+Dashboard → *Settings → Payment methods → Bizum*. Requiere cuenta con entidad
+en España. Si no está activo, el checkout muestra solo tarjeta y no falla.
+
+### 5. Probar antes de cobrar de verdad
+
+Con `sk_test_…` y tarjeta `4242 4242 4242 4242` (cualquier fecha futura y CVC):
+
+1. `/creditos` → elegir paquete → «Pagar ahora».
+2. Completar el pago → vuelves a `/creditos?pago=ok`.
+3. Comprobar en Supabase que hay una fila en `transacciones_creditos` con
+   `metodo_pago = 'stripe'`, `estado = 'aprobado'` y `stripe_session_id`.
+4. Comprobar que `perfiles.credito_balance` subió **una sola vez**.
+5. En Stripe → el webhook debe figurar en verde (200).
+
+Para reintentar el webhook y verificar la idempotencia: en el dashboard del
+webhook, botón *Resend*. El saldo **no** debe cambiar y la respuesta debe traer
+`"duplicado": true`.
+
+## Verificación hecha el 22/09/2026 (local, con la app compilada)
+
+| Prueba | Resultado |
+|---|---|
+| `/api/stripe/estado` con claves | `{"disponible":true}` |
+| Webhook **sin** cabecera de firma | 400 «Falta la firma» |
+| Webhook con firma **falsa** | 400 «Firma inválida» |
+| Webhook con payload **manipulado** y firma del original | rechazado por la librería de Stripe |
+| Checkout **sin sesión** | 401 |
+| Pago **no confirmado** (Bizum pendiente) | 200, no acredita |
+| Evento irrelevante (`payment_intent.created`) | 200, ignorado |
+| **100 créditos pagando 1 €** | descartado: «Importe cobrado (1 €) no coincide con el paquete (20 €)» |
+| Paquete inventado (999) | descartado |
+| Sesión sin usuario | descartado |
+| Sin claves configuradas | 503 y `/creditos` sigue cargando (no rompe) |
+
+Contra Postgres real (`scripts/verify_stripe_sql.py`, 18/18): un reintento del
+webhook **no** duplica créditos, y ni `anon` ni `authenticated` pueden ejecutar
+la RPC de acreditación.
+
+Lo único que **no** se puede verificar desde aquí es el cobro real de extremo a
+extremo, porque requiere tus claves y el dominio en producción. Esa prueba está
+descrita en el paso 5 de arriba y son dos minutos.
+
+## Qué pasa con el pago manual
+
+Se queda. Es la red de seguridad mientras Stripe esté en pruebas y la vía para
+quien no quiera pagar con tarjeta. Cuando Stripe lleve semanas funcionando y la
+mayoría lo use, se puede retirar borrando las variables `PAGO_*`: la página
+oculta sola los métodos no configurados.

@@ -1,0 +1,675 @@
+# Pendientes de despliegue — MaquinariaOcasión
+
+> Checklist de lo que falta por hacer **fuera del código** (Supabase, Vercel y
+> GitHub). Antes vivía solo fuera del repositorio y se perdió dos veces al
+> reiniciarse el entorno, así que ahora está versionado aquí. El resumen corto
+> también está en la descripción del PR #3.
+
+## Pendientes exactos tras la auditoría de seguridad (2026-09-30)
+
+**El código ya está corregido en la rama de trabajo, pero no está desplegado ni
+se ha validado con los servicios de producción.** Para cerrar esta auditoría,
+haz estos pasos en orden:
+
+1. [ ] **Publicar el cambio en producción.** El push de esta rama no equivale a un
+   despliegue de producción. Revisa el preview de Vercel; cuando esté aprobado,
+   integra la rama en `main` por el proceso habitual y espera a que Vercel
+   termine el deployment de Production.
+2. [ ] **Configurar el secreto del webhook en Vercel.** Genera un valor nuevo en
+   una terminal segura con `openssl rand -hex 32` (64 caracteres hexadecimales).
+   Guárdalo como `TELEGRAM_WEBHOOK_SECRET` en el proyecto Vercel, al menos en
+   **Production** (y también en Preview si vas a probar allí). Comprueba además
+   que `TELEGRAM_BOT_TOKEN` y `TELEGRAM_CHAT_ID` están definidos en ese entorno.
+   No guardes el secreto en Git, no lo envíes por chat y no lo pongas en una URL.
+   Después de guardarlo, lanza un deployment nuevo para que el runtime lo reciba.
+3. [ ] **Alinear Telegram con ese secreto.** Desde un entorno seguro que tenga
+   `TELEGRAM_BOT_TOKEN` y el mismo `TELEGRAM_WEBHOOK_SECRET`, registra de nuevo
+   el webhook:
+
+   ```bash
+   curl -sS -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/setWebhook" \
+     --data-urlencode "url=https://maquinariaocasion.online/api/telegram/webhook" \
+     --data-urlencode "secret_token=${TELEGRAM_WEBHOOK_SECRET}"
+   ```
+
+   Comprueba que Telegram responde `"ok": true` y revisa `getWebhookInfo`:
+   la URL debe ser la de producción y no debe haber un error de entrega reciente.
+4. [ ] **Si las notificaciones van a un grupo**, define `TELEGRAM_ADMIN_USER_ID`
+   en Vercel con el ID numérico de la persona autorizada a aprobar/rechazar;
+   `TELEGRAM_CHAT_ID` debe ser el ID del grupo destino. Sin esta variable, los
+   botones de un grupo no quedan habilitados para un administrador individual.
+   En chat privado se puede omitir: se usa el ID de
+   `TELEGRAM_CHAT_ID`.
+5. [ ] **Verificar la protección de diagnóstico.** Confirma que `CRON_SECRET` tiene
+   valor en el entorno Production de Vercel. Si falta, `/api/diagnostico/supabase`
+   queda abierto intencionalmente para diagnosticar el despliegue incompleto.
+   Después del deploy, comprueba desde un cliente seguro que sin sesión/token
+   responde **401** y que con `Authorization: Bearer $CRON_SECRET` responde
+   correctamente. Nunca lo pruebes añadiéndolo a la URL.
+6. [ ] **Hacer una prueba funcional controlada en producción.** Comprueba que un
+   POST al webhook sin secreto devuelve **401**; que una petición de Telegram
+   llega con el secreto correcto; y que un usuario no autorizado no puede
+   aprobar/rechazar. Por último, crea una transacción de prueba y valida el
+   flujo de aprobación/rechazo solo con el administrador autorizado, verificando
+   el resultado en el panel/ledger de créditos. No marques como pagado dinero
+   que no se haya recibido.
+7. [ ] **Comprobación visual y de soporte.** Tras publicar, abre `/es`,
+   `/es/catalogo` y `/es/contacto`: deben cargar, el soporte debe mostrarse solo
+   por email y los anuncios demo/inventario deben seguir visibles sin cambios de
+   apariencia. Esta auditoría no ha cambiado la presentación visual de los
+   anuncios.
+
+**Condicional, solo si el aviso legal aún no está completo en producción:**
+rellena `NEXT_PUBLIC_TITULAR_NOMBRE`, `NEXT_PUBLIC_TITULAR_NIF` y
+`NEXT_PUBLIC_TITULAR_DOMICILIO` en Vercel y redeploya. Los buzones
+`privacidad@maquinariaocasion.online` y `legal@maquinariaocasion.online` también deben
+existir y ser atendidos. La lista detallada está en «Cumplimiento legal» más
+abajo.
+
+**No realizado por el agente:** no se han modificado variables de Vercel, no se
+ha llamado a `setWebhook`, no se ha desplegado producción ni se ha ejecutado una
+transacción real. Las validaciones locales no sustituyen esos pasos.
+
+---
+
+## ⚠️ Antes de desplegar el código del 2026-09-18
+
+1. ~~**Aplicar en Supabase** `202609180003_anuncios_demo.sql` y
+   `202609180004_boost_no_doble_cobro.sql`~~ ✅ **hecho** (confirmado por el
+   propietario el 2026-09-18). Con las dos aplicadas: los anuncios de ejemplo
+   quedan marcados, sin teléfonos inventados ni «verificado» falsos, y la RPC
+   `usar_boost` ya no cobra un segundo crédito mientras la subida sigue vigente.
+2. **Cron nuevo:** `vercel.json` añade `/api/cron/expirar-prioridades`
+   (diario 03:41 UTC). Vercel lo registra solo al desplegar; comprobar en
+   *Settings → Cron Jobs* que aparece y que devuelve 200 (necesita
+   `CRON_SECRET`, ya configurado para los otros cuatro).
+3. **Datos de pago (opcional, para vender créditos):** mientras
+   `PAGO_IBAN`, `PAGO_TITULAR`, `PAGO_BIZUM_TELEFONO` y `PAGO_PAYPAL_EMAIL` no
+   estén en Vercel, `/creditos` avisa de que los pagos aún no están abiertos en
+   lugar de mostrar un IBAN de relleno. Para recibir pagos hay que definirlas.
+4. **Contacto de soporte:** `/contacto` atiende exclusivamente por correo
+   electrónico; no se publica teléfono ni WhatsApp de soporte.
+5. **Verificación rápida después del despliegue:** abrir `/`, `/catalogo`,
+   `/contacto` (sin teléfono falso) y `/creditos` (sin IBAN falso), y comprobar
+   que el botón de WhatsApp de un anuncio abre un número **+34**.
+
+### Lo que sigue en manos del propietario (fuera del alcance del agente)
+
+- **Añadir el nuevo paso al workflow de CI** (`.github/workflows/ci.yml`, job
+  `sql`), justo detrás de «Garantías de la reserva con señal»:
+
+  ```yaml
+      - name: Promoción sin doble cobro
+        run: python3 scripts/verify_boost_sql.py
+  ```
+
+  El archivo del workflow no lo puede tocar el agente (el token de GitHub no
+  tiene el permiso `workflows`), por eso el script ya está en el repo pero el
+  paso lo tienes que pegar tú una vez.
+
+## Cumplimiento legal (2026-09-18)
+
+Las páginas legales se han reescrito para que digan **lo que el sitio hace de
+verdad** y se han completado los documentos que faltaban:
+
+| Documento | Estado |
+|---|---|
+| Política de privacidad | Reescrita: responsable, bases jurídicas, encargados reales (Supabase, Vercel, Resend, push, Telegram), transferencias internacionales, plazos de conservación, derechos y reclamación ante la AEPD |
+| Política de cookies | **Nueva** (`/politica-de-cookies`), con el inventario real (sesión de Supabase, `cookie-consent`, medición opcional) y botón para **cambiar la decisión** |
+| Términos y condiciones | Corregido: ya no dice que la plataforma no gestiona pagos (sí vende visibilidad), se declara **intermediaria** y se explica el desistimiento y la devolución de créditos no consumidos |
+| Aviso legal (LSSI art. 10) | **Nueva** página (`/aviso-legal`) con los datos del titular leídos del entorno |
+
+### Lo único que falta para publicar el aviso legal (2 minutos en Vercel)
+
+Rellenar estas variables (el pie solo enlaza la página y solo se indexa cuando
+están las tres primeras):
+
+```
+NEXT_PUBLIC_TITULAR_NOMBRE     = nombre y apellidos (autónomo) o razón social
+NEXT_PUBLIC_TITULAR_NIF        = NIF/DNI o CIF
+NEXT_PUBLIC_TITULAR_DOMICILIO  = calle, número, CP y provincia
+NEXT_PUBLIC_TITULAR_EMAIL      = (opcional; si falta, privacidad@maquinariaocasion.online)
+NEXT_PUBLIC_TITULAR_REGISTRO   = (solo sociedades: datos del Registro Mercantil)
+```
+
+La atención de MaquinariaOcasión se ofrece exclusivamente por correo electrónico;
+no se publica un teléfono de soporte/contacto.
+
+Verifica además que los buzones que anuncian las páginas existen y se leen:
+**privacidad@** y **legal@maquinariaocasion.online**. Una obligación de información
+que apunta a un correo que nadie contesta no cumple la norma.
+
+Los textos describen con exactitud el tratamiento y las condiciones del
+servicio, pero **no sustituyen una revisión profesional**: antes de empezar a
+facturar conviene el visto bueno de un abogado, sobre todo en la cláusula de
+desistimiento de los créditos.
+
+> **Estado a 2026-09-17:** todas las migraciones de MaquinariaOcasión aplicadas
+> en producción y verificadas **32/32** con `scripts/verificar_despliegue.sql`
+> (SQL ejecutado con éxito en el editor de Supabase; verificado por el usuario).
+> CI activada, en verde y —desde el 2026-09-17— con el paso
+> `Migraciones 202609* reaplicadas` (`scripts/validate_migrations_sql.py`), que
+> valida también los archivos individuales de `supabase/migrations/`.
+> **Vercel ya despliega producción.** Dominio canónico:
+> **`maquinariaocasion.online`**.
+>
+> **Cierre del cambio de dominio (2026-09-16/17):** DNS apuntado a Vercel, env
+> vars aplicadas y Supabase Auth con la URL nueva. **Verificado en producción**
+> (home, catálogo, robots/sitemap y guard de diagnóstico OK — detalle en
+> §6-bis.6). Solo quedan las comprobaciones con token, los crons en el
+> dashboard y la prueba de humo de §2.
+
+## 0. Resumen en cuatro líneas
+
+1. ~~Aplicar **dos migraciones** en Supabase~~ ✅ **hecho**: `setup-maquinariaocasion.sql`
+   completo y migraciones individuales aplicadas; verificado en producción con
+   `scripts/verificar_despliegue.sql` (**32/32 ✅** a 2026-09-17). Incluye la
+   Fase 1.2 de reservas con confirmación del vendedor
+   (`202609170004`, aplicada el 2026-09-17).
+2. Revisar las **variables de entorno** en Vercel (§1.3) — **PENDIENTE**.
+3. ~~Activar la **CI**~~ ✅ **hecho** el 2026-09-16: el workflow ya vive en
+   `.github/workflows/ci.yml`, los dos jobs pasan en `main` y desde el
+   2026-09-17 incluye la validación de los archivos individuales de migración.
+4. ~~Que Vercel tenga **un despliegue de producción**~~ ✅ **resuelto el
+   2026-09-16**: Vercel publica deployment de Production en cada push a `main`
+   (verificado vía `gh api .../deployments`).
+5. **Apuntar `maquinariaocasion.online` a Vercel** (Settings → Domains + DNS) y
+   **verificar** que producción carga anuncios con las env vars — **PENDIENTE**.
+
+---
+
+## 1. SQL en Supabase (producción) — ✅ APLICADO (32/32 el 2026-09-17)
+
+Verificación completa: `scripts/verificar_despliegue.sql` → **32/32 ✅** el
+2026-09-17 (incluye Fase 0.1, 0.2, 1.2, §4 y Rangos numéricos).
+
+### 1.1 Verificar prerrequisitos de la Fase 0.1 (filtros técnicos)
+
+La 0.1 **no trae migración propia**: depende de la 025 ya aplicada.
+
+```sql
+-- Deben devolver una fila cada una
+select column_name from information_schema.columns
+ where table_name = 'productos' and column_name = 'especificaciones';
+
+select indexname from pg_indexes where indexname = 'productos_especificaciones_idx';
+```
+
+- Si falta la **columna**: `/publicar` guarda sin especificaciones y los filtros
+  técnicos salen siempre vacíos. Aplicar `025_categorias_faltantes_y_especificaciones.sql`.
+- Si falta el **índice GIN**: nada se rompe, pero `@>` recorre la tabla
+  (seq scan). Recrearlo es barato con la tabla actual.
+
+### 1.2 Aplicar la Fase 0.2 (expediente de homologación)
+
+```bash
+# Opción A: solo esta migración
+supabase/migrations/202609150001_verificacion_homologacion.sql
+
+# Opción B: el setup completo (ya la incluye al final y es idempotente)
+setup-maquinariaocasion.sql
+```
+
+Comprobación: `scripts/verificar_despliegue.sql` de una vez (ahora 32
+comprobaciones en total),
+o al menos esta — **atención**: para funciones hay que usar `to_regprocedure()`,
+porque `to_regclass()` solo mira relaciones (tablas, índices, vistas) y devuelve
+NULL aunque la función exista:
+
+```sql
+select to_regclass('public.documentos_vehiculo'),
+       to_regprocedure('public.fn_es_dueno_del_anuncio(uuid)'),
+       (select 1 from storage.buckets where id = 'documentos-vehiculo');
+```
+
+Sin aplicarla el sitio funciona, pero: no aparece el sello de homologación, el
+expediente sale vacío en `/producto/editar/[id]`, la pestaña **Homologación** del
+panel avisa de que falta la migración y el filtro "Solo homologación verificada"
+no devuelve nada.
+
+### 1.2-bis Aplicar la Fase 1.2 (reserva con señal) — ✅ APLICADA en producción
+
+```bash
+# Opción A: solo estas dos migraciones (en orden)
+supabase/migrations/202609160001_reservas.sql
+supabase/migrations/202609170004_reservas_confirmacion_vendedor.sql
+
+# Opción B: el setup completo (ya las incluye y es idempotente)
+setup-maquinariaocasion.sql
+```
+
+**Modelo (revisado el 2026-09-17): la confirmación la hace el VENDEDOR.** Como
+la plataforma no custodia el dinero, no puede "verificar" el pago: el comprador
+**solicita** la reserva (`solicitada`, no bloquea el anuncio) y el vendedor la
+**confirma** cuando recibe la señal (`activa` — solo entonces el anuncio queda
+reservado). Se eliminaron los comprobantes, el bucket y la revisión del admin:
+era un proceso de 8 estados que no podíamos respaldar (no veíamos ese pago) y
+solo añadía fricción. Aplicada y verificada con `scripts/verificar_despliegue.sql`
+en producción el 2026-09-17.
+
+Comprobación:
+
+```sql
+select to_regclass('public.reservas'),
+       to_regprocedure('public.fn_propagar_reserva()'),
+       (select 1 from pg_indexes where indexname = 'reservas_producto_activa_key');
+```
+
+Sin aplicarla el sitio **no se rompe**: la ficha del anuncio simplemente no
+muestra el botón de reservar y las pestañas de reservas avisan de que falta la
+migración. Cuando esté aplicada aparecen solas:
+
+- Ficha del anuncio → botón "Reservar con señal" (100–1.000 €, sugerido 2 %):
+  envía la solicitud al vendedor.
+- `/dashboard` → pestaña **Reservas**: el comprador sigue su solicitud; el
+  vendedor ve las solicitudes de sus anuncios y las **confirma** (recibió la
+  señal) o **rechaza**.
+- Sello **Reservado** solo cuando hay una reserva activa (confirmada).
+- Avisos push al vendedor cuando llega una solicitud; Telegram al admin si
+  defines `TELEGRAM_BOT_TOKEN` y `TELEGRAM_CHAT_ID` (opcionales).
+
+Nota de producto: el dinero **no pasa por la plataforma**; el comprador paga la
+señal por Bizum/transferencia/en mano y el vendedor confirma. No hay Stripe ni
+custodia, así que no hace falta ninguna variable nueva de pago.
+
+### 1.2-ter Aplicar la Fase §4 (inspección + gestoría) — ✅ APLICADA en producción
+
+```bash
+# Opción A: solo esta migración
+supabase/migrations/202609170002_inspecciones_gestoria.sql
+
+# Opción B: el setup completo (ya la incluye al final y es idempotente)
+setup-maquinariaocasion.sql
+```
+
+Comprobación (dos valores no nulos; el resto sale con
+`scripts/verificar_despliegue.sql`, ahora **26** comprobaciones):
+
+```sql
+select to_regclass('public.solicitudes_inspeccion'),
+       to_regclass('public.solicitudes_gestoria');
+```
+
+Sin aplicarla el sitio funciona igual: el botón de inspección de la ficha no
+aparece, la pestaña *Inspecciones* del dashboard avisa de que falta y el
+formulario de la gestoría responde con un 503 amable. Cuando esté aplicada
+aparecen solas:
+
+- Ficha del anuncio → botón **Inspección precompra** (concierge: presupuesto
+  150–250 €, el comprador paga directo al taller) + CTA **Contrato de
+  compraventa** precargado con los datos del anuncio.
+- `/dashboard` → pestaña **Inspecciones** (seguimiento y cancelación).
+- `/admin` → pestañas **Inspecciones** (cola FIFO con presupuesto, pago,
+  curso, informe y cancelación, con push al comprador en cada paso) y
+  **Gestoría** (leads de la landing `/gestoria-cambio-nombre`).
+- El contrato se genera íntegro en el navegador (`/contrato-compraventa`):
+  no toca base de datos ni servers. Enlazado desde ficha, ITP y compra-segura.
+
+### 1.2-quater Aplicar los rangos numéricos del catálogo (202609170003) — ✅ APLICADA en producción
+
+```bash
+# Opción A: solo esta migración
+supabase/migrations/202609170003_rangos_numericos.sql
+
+# Opción B: el setup completo (ya la incluye al final y es idempotente)
+setup-maquinariaocasion.sql
+```
+
+Comprobación (la función más una columna; el resto sale con
+`scripts/verificar_despliegue.sql`, ahora **32** comprobaciones):
+
+```sql
+select to_regprocedure('public.fn_espec_numero(text)'),
+       (select 1 from information_schema.columns
+         where table_schema = 'public' and table_name = 'productos'
+           and column_name = 'espec_km');
+```
+
+Qué añade: 4 columnas **generadas** (`espec_km`, `espec_anio`, `espec_placa_w`,
+`espec_inversor_w`) que extraen el número del JSONB `especificaciones` con su
+índice funcional — la comparación numérica real de los filtros "km máximos",
+"año mínimo", "placa solar mínima" e "inversor mínimo" del catálogo y de
+`/buscar`. Si aún no está aplicada, los rangos se reintentan automáticamente sin
+ellos (plan B), así que nada se rompe: simplemente esos 4 filtros no acotan
+hasta que se aplique.
+
+### 1.3 Variables de entorno en Vercel — ✅ APLICADAS el 2026-09-16
+
+Única comprobación que queda (10 s): `/admin` → *Estado* y confirmar que
+`supabase` y el canal de correo (`emailResend`/`emailSmtp`) salen activos — sin
+canal de email el registro no envía el correo de verificación. Si necesitas
+consultar el diagnóstico por terminal y `CRON_SECRET` está definido, usa el
+header Authorization (nunca pongas el secreto en la URL):
+
+```bash
+curl -H "Authorization: Bearer $CRON_SECRET" "https://maquinariaocasion.online/api/diagnostico/supabase"
+```
+
+Reglas del dashboard: nombre **exacto** (mayúsculas, sin espacios ni comillas),
+marcar **Production + Preview**, y tras cambiar cualquier `NEXT_PUBLIC_*` hay
+que **redeployar** (se incrustan en el bundle en build time, no se leen en
+runtime). No usar el tipo *Sensitive*: hay variables leídas a nivel de módulo
+(`src/lib/server-email.ts`, `src/lib/supabase.ts`) y con Sensitive llegan vacías
+a la build.
+
+**Bloque A — sin estas el sitio no funciona (5):**
+
+| Variable | Valor | Consecuencia de no ponerla |
+|---|---|---|
+| `NEXT_PUBLIC_SUPABASE_URL` | `https://hbiywrddxrsidniwxuhe.supabase.co` | **cuidado**: el proyecto de marketplace-vzla es `jmbkqelkusxjebsdnjoc`. Con esa URL y estas claves, Supabase responde `401 Invalid API key` en todo el sitio (incluido el login). `next.config.js` (imágenes) y el `preconnect` de `layout.tsx` ya la leen de esta variable, así que basta con cambiarla aquí y redeployar. |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase → *Project Settings → Data API (legacy)* → `anon` / `publishable` | `getSupabaseServerClient()` devuelve `null` → home, catálogo y landings salen sin anuncios |
+| `SUPABASE_SERVICE_ROLE_KEY` | la `service_role` (server-side **solo**) | todo `/api/admin/*`, reservas y expediente de homologación sin funcionar |
+| `CRON_SECRET` | un string aleatorio propio (p. ej. `openssl rand -hex 32`) | **los 4 crons devuelven 401**: el guard es `if (!secret \|\| auth !== Bearer) → 401`, o sea que sin la variable ni Vercel puede llamarlos |
+| `NEXT_PUBLIC_URL` | `https://maquinariaocasion.online` | enlaces de emails/OG/sitemap apuntan al default; ponerlo igualmente |
+
+**Bloque B — emails salientes (elegir UN canal):** `RESEND_API_KEY` (+ dominio
+verificado en Resend) **o** `SMTP_HOST`/`SMTP_PORT`/`SMTP_USER`/`SMTP_PASS`.
+Orden real en `src/lib/server-email.ts`: 1º Resend API, 2º `SMTP_*`, 3º
+`ZOHO_SMTP_*` (legado). Opcional: `EMAIL_FROM` (default `"MaquinariaOcasión"
+<noreply@maquinariaocasion.online>`) y `CONTACTO_EMAIL` (default
+`soporte@maquinariaocasion.online`). Sin canal, el envío devuelve *"Sin canal de envío:
+configura RESEND_API_KEY o SMTP_USER/SMTP_PASS"* y el registro no se verifica.
+
+**Bloque C — opcionales:** `WINBACK_CUPON` (código que aparece en el email de
+win-back; si está vacío, el email no menciona ninguna oferta),
+`ADMIN_EMAILS` + `NEXT_PUBLIC_ADMIN_EMAILS` (ambas
+con el mismo valor; el fallback ya es `gtrespana@gmail.com`, así que no urge),
+`TELEGRAM_BOT_TOKEN` + `TELEGRAM_CHAT_ID` (avisos de reservas), par VAPID
+(`NEXT_PUBLIC_VAPID_PUBLIC_KEY` + `VAPID_PRIVATE_KEY`, push PWA),
+`GOOGLE_SITE_VERIFICATION` (meta tag de Search Console).
+
+**NO añadir en Vercel:** `SUPABASE_SERVICE_KEY` (alias legado que solo usan
+3 scripts locales de `scripts/`), `EMAIL_SERVER_HOST` (no la lee ningún envío:
+solo el chequeo de salud de `/api/admin/status`), `NODE_ENV` (lo pone Vercel) y
+`NEXT_OUTPUT` (rompe la build, ver §6.4).
+
+**Comprobación tras el deploy:** entrar en `/admin` → la pestaña de estado llama
+a `/api/admin/status`, que reporta `supabase`, `telegram`, `push`,
+`emailResend` y `emailSmtp` → sirve para confirmar en 10 segundos qué variables
+están realmente llegando a producción.
+
+**Si al entrar al catálogo sale «No se pudieron cargar los productos / Invalid
+API key» y en la consola hay 401 a `*.supabase.co/rest/v1/*`:** no es la base de
+datos (que puede estar vacía), es que las claves de Vercel no son las del
+proyecto. Diagnóstico y arreglo paso a paso en
+[`docs/diagnostico-supabase-401.md`](./diagnostico-supabase-401.md). Resumen:
+
+Con sesión de administrador puedes abrir `/api/diagnostico/supabase` en el
+navegador. Si no tienes sesión pero existe `CRON_SECRET`, consulta desde una
+terminal con `curl -H "Authorization: Bearer $CRON_SECRET" "https://<dominio>/api/diagnostico/supabase"`.
+El endpoint solo queda abierto cuando `CRON_SECRET` no está configurado.
+
+Dice si cada clave está definida, de qué proyecto es, si está caducada y si
+Supabase la acepta (prueba real) — sin revelar ninguna clave. Tras corregir las
+variables hay que **redeployar**: las `NEXT_PUBLIC_*` se incrustan en el bundle
+en build time. No envíes el secreto como parámetro de URL.
+
+## 2. Al aplicar el SQL, comprobar en producción
+
+- [ ] Subir un documento de prueba en un anuncio propio → aparece en el
+      expediente y se abre con el enlace firmado.
+- [ ] Reservar un anuncio propio con otra cuenta → llega una solicitud a
+      `/dashboard?tab=reservas` del vendedor. Confirmarla desde ahí (recibió la
+      señal) → la tarjeta del catálogo pasa a "Reservado". Luego cancela para
+      liberar el anuncio.
+- [ ] Comprobar que una **solicitud sin confirmar NO bloquea** el anuncio (sigue
+      disponible para todos), y que una activa **no** permite una segunda reserva.
+- [ ] **Rangos numéricos**: en `/catalogo`, filtra "Kilómetros máximos" con un
+      valor intermedio (p. ej. 150.000) y confirma que filtra por número: un
+      anuncio de 1.500.000 km no aparece y uno de 145.000 km sí (si comparara
+      texto, `'9' > '10'` y el orden saldría mal). Prueba también "Año mínimo",
+      "Placa solar mínima" e "Inversor mínimo".
+- [ ] **Rangos en `/buscar`**: confirma que los mismos 4 filtros de rango
+      aparecen y acotan junto al resto de la ficha técnica camper.
+- [ ] **Inspección + gestoría**: pide una inspección desde la ficha de un
+      anuncio y confirma que llega a `/admin?tab=inspecciones`; envía un lead
+      desde `/gestoria-cambio-nombre` y confirma que llega a
+      `/admin?tab=gestoria`.
+- [ ] **Calculadora ITP**: elige etiqueta "ECO" o "Cero Emisiones" y confirma
+      que el ITP estimado cambia (tipos reducidos) y que la comparativa por
+      comunidades se actualiza.
+
+## 2-bis. La Fase 0.3 (ITP) NO necesita SQL
+
+`TIPOS_ITP` vive en `src/lib/itp.ts` y las 19 landings se generan desde la
+configuración: no hay tabla ni migración. Lo único a recordar es revisar los
+tipos cada año (la constante `REVISADO_EN` indica de cuándo son los datos).
+
+---
+
+## 3. Decisiones de producto ya tomadas (no volver a preguntarlas)
+
+- **Comisión de reserva: 0 %** mientras no haya pasarela de pago. El importe de
+  la señal va íntegro al vendedor.
+- **La confirmación la hace el VENDEDOR** (2026-09-17): como la plataforma no
+  custodia el dinero, no "verifica" el pago. El comprador solicita; el vendedor
+  confirma al recibir la señal y solo entonces el anuncio queda reservado. Sin
+  comprobantes.
+- **Una solicitud NO bloquea el anuncio** (si no, cualquiera logueado podría
+  "reservar" sin pagar). Solo una reserva **activa** lo bloquea.
+- **Caducidad de la reserva: 7 días**, contados desde la confirmación del
+  vendedor (el comprador puede tardar en quedar para ver el vehículo).
+- **Una reserva activa por anuncio** (y una solicitud por comprador/anuncio),
+  garantizado por índices únicos parciales en la base de datos, no por la app.
+- **Señal sugerida: 2 % del precio**, redondeo a 50 €, mínimo 300 € y máximo
+  1.000 €. El límite duro es 100–1.000 €.
+- Si el **vendedor** cancela una reserva activa, queda en **"cancelada"** con el
+  motivo: es la constancia de que debe devolver la señal.
+- Las solicitudes y reservas caducadas se barren de forma **perezosa** en cada
+  POST (sin cron).
+
+---
+
+## 4. Activar la CI (GitHub) — ✅ HECHO el 2026-09-16
+
+El workflow está en `.github/workflows/ci.yml`, se ejecuta en cada push y PR
+(los dos jobs pasan en `main`). Las instrucciones para moverlo desde
+`docs/ci/ci.yml` ya no hacen falta y se borraron.
+
+⚠️ Los **26 primeros comentarios de `.github/workflows/ci.yml`** siguen
+diciendo «ESTE ARCHIVO TODAVÍA NO SE EJECUTA»: son obsoletos, la CI sí se
+ejecuta. No se pueden borrar desde Arena (GitHub rechaza el push de cualquier
+fichero en `.github/workflows/` hecho por una GitHub App sin permiso
+`workflows`). Se quitan en 20 s desde la web:
+[editar el workflow](https://github.com/gtrespana-bit/maquinariaocasion/edit/main/.github/workflows/ci.yml)
+y borrar el bloque de comentarios hasta `name: CI`.
+
+<details><summary>Historial: cómo se activó</summary>
+
+El repositorio **no tenía `.github/workflows/`** y el agente no podía crearlo:
+
+El repositorio **no tiene `.github/workflows/`** y el agente no puede crearlo:
+GitHub rechaza el push de un workflow hecho por una GitHub App sin el permiso
+`workflows` (*"refusing to allow a GitHub App to create or update workflow"*).
+El workflow está en **`docs/ci/ci.yml`**. Forma rápida (sin pegar código, vale
+desde el móvil): abrir el archivo en la web, pulsar el lápiz y **cambiar el
+nombre** a `.github/workflows/ci.yml`:
+
+https://github.com/gtrespana-bit/maquinariaocasion/edit/arena/01a0a7f4-maquinariaocasion/docs/ci/ci.yml
+
+Commit directo a la rama → el workflow queda activo y arranca solo. Alternativas:
+*Add file → Create new file* con el contenido pegado, `git mv` desde el
+ordenador, o reconectar Arena con el permiso `workflows`.
+
+Jobs: **calidad** (Node 22 → `npm ci` → `tsc --noEmit` → `eslint .` → `npm test`)
+y **sql** (Python 3.12 → `pgserver`, `psycopg2-binary`, `pglast` → valida el
+`setup-maquinariaocasion.sql` completo + RLS de documentos + garantías de reservas +
+migraciones `202609*` individuales + las 32 comprobaciones de despliegue). Los
+scripts ya pasan en local.
+
+</details>
+
+---
+
+## 5. Pendientes de producto (sin fecha, sin SQL)
+
+- ~~Rangos numéricos en los filtros (km máximos, año mínimo, watios de placa)~~ ✅
+  **hecho (2026-09-17)**: `RANGOS_NUMERICOS` en `src/lib/filtros-tecnicos.ts`,
+  columnas generadas `espec_*` en `supabase/migrations/202609170003_rangos_numericos.sql`
+  (comparación numérica indexada, no texto), panel de rangos en catálogo y `/buscar`,
+  y reintento automático sin rangos si la migración aún no está aplicada.
+- ~~Llevar los filtros técnicos también a `/buscar`, que tiene su propia barra~~ ✅
+  **hecho (2026-09-17)**: `/buscar` reutiliza el mismo panel
+  (`FiltrosTecnicosPanel`) y la misma lógica de consulta compartida
+  (`aplicarFiltrosBase` en `src/lib/catalog-consulta.ts`), igual que catálogo.
+- Normalizar las claves del JSONB a slugs (`plazas_dormir`) — necesita backfill.
+- ~~Fase 1 restante: inspección precompra, contrato de compraventa descargable
+  y gestoría del cambio de nombre~~ ✅ **hecho (2026-09-17, plan §4)**: botón
+  de inspección concierge (tabla + API + panel + dashboard), generador de
+  contrato PDF (`/contrato-compraventa`, 100% navegador) y captación de leads
+  de gestoría (`/gestoria-cambio-nombre`). Lo que queda de esa fase es el
+  **informe de 50 puntos** (columna `informe` jsonb ya espera) y el partner
+  real de gestoría — ver `docs/plan-confianza-marketplace.md` §4.
+
+---
+
+## 6. Vercel: «No Production Deployment» — ✅ RESUELTO el 2026-09-16 (noche)
+
+> **Actualización 2026-09-16 (noche):** Vercel **ya despliega**. Verificado vía
+> `gh api repos/gtrespana-bit/maquinariaocasion/deployments`: 17 deployments, con
+> Production en cada push a `main` (último sobre `8dc0728`, merge del PR #6).
+> Lo que falta ahora es **el dominio** (ver §6-bis) y las env vars (§1.3), no
+> la build.
+
+Síntoma visto el 2026-09-16 (día): proyecto creado en el dashboard, y la página
+pone **«No Production Deployment — Your Production Domain is not serving
+traffic»**, sin rastro de build ni log.
+
+## 6-bis. Cambio de dominio: `maquinariaocasion.es` → `maquinariaocasion.online`
+
+El 2026-09-16 se cambió el dominio canónico a **`maquinariaocasion.online`** (el
+`.es` quedó apuntando a un parking/hosting por defecto, `ui-r.com`, y nunca
+llegó a servir tráfico del sitio — no hay que migrar nada). En el repositorio
+se actualizaron las ~120 referencias (canonicals, hreflang, sitemap, robots,
+emails, `NEXT_PUBLIC_URL` default, plantillas Supabase) y `next.config.js`
+301-redirectea `vendet.online` y `maquinariaocasion.es` (apex + www) hacia
+`maquinariaocasion.online`.
+
+**Aplicado el 2026-09-16/17 y verificado en producción:**
+
+1. ✅ **Vercel → Domains**: `maquinariaocasion.online` y `www` añadidos; el
+   proyecto sirve el `.online` como dominio primario
+   (`maquinariaocasion.vercel.app` 301-redirectea al apex).
+2. ✅ **DNS (GoDaddy — NS `domaincontrol.com`)**: apex `A` → `216.150.1.1`
+   (anycast de Vercel) y `www` `CNAME` → apex. Sirviendo globalmente ~1 h
+   después del cambio.
+3. ✅ **Env var `NEXT_PUBLIC_URL`** aplicada en Vercel (Production + Preview).
+4. ✅ **Supabase → Authentication → URL Configuration**: Site URL y Redirect
+   URLs con el `.online` (plantillas ya actualizadas en
+   `supabase-email-templates/`).
+5. ✅ **Correo**: `soporte@maquinariaocasion.online` verificado y activo, y es el
+   único buzón de atención (formulario de contacto, FAQ, pie de todos los
+   emails transaccionales y mensajes de error). `privacidad@` y `legal@` se
+   mantienen por obligación propia; `noreply@` es solo remitente.
+6. **Verificación en producción** — ✅ hecha (2026-09-16/17): home y
+   `/catalogo` renderizan (estados vacíos, **sin** el error 401 «Invalid API
+   key»), `robots.txt` y `sitemap.xml` con el dominio nuevo, y el guard de
+   `/api/diagnostico/supabase` responde correctamente. **Queda:** abrir
+   `/admin` → *Estado* (o consulta `/api/diagnostico/supabase` con header
+   `Authorization: Bearer $CRON_SECRET`, sin poner el secreto en URL)
+   para confirmar claves y canal de email, revisar *Settings → Cron Jobs*
+   (los 4 activos) y la prueba funcional de registro/reserva (§2).
+
+### 6.1 Diagnóstico (dato duro, no intuición)
+
+```bash
+gh api repos/gtrespana-bit/maquinariaocasion/deployments --jq '.[].environment'
+# → (vacío)
+```
+
+En GitHub no hay **ningún** deployment ni check de "Vercel" en `main`. Vercel,
+cuando intenta compilar, siempre publica un deployment + un commit status,
+**aunque la build falle**. Lista vacía ⇒ Vercel **nunca llegó a lanzar una
+build**: el proyecto no está importando este repo (o no se ha disparado desde
+que se importó). No es un error de compilación, es que no hay nada compilado.
+
+Dato de descarte: `npm ci && npm run build` **pasa en local en ~35 s sin
+ninguna variable de entorno** ( Next 16 + next-intl + Supabase). El código está
+sano; lo que falta es la conexión y las env vars.
+
+### 6.2 Causas posibles, de más a menos probable
+
+1. **Proyecto creado vacío** (sin *Import Git Repository*), a veces desde la
+   pantalla de templates. No hay repo vinculado ⇒ cero deployments.
+   → *Project → Settings → Git → Linked Git Repository*. Si dice *No
+   repository connected*, hay que conectar el repo desde
+   [vercel.com/new](https://vercel.com/new) eligiendo `gtrespana-bit/maquinariaocasion`.
+2. **Se importó después del último push.** Vercel solo compila los pushes
+   *posteriores* a vincular el repo; si el repo ya estaba en su última commit,
+   no se dispara nada. → *Project → Deployments → ⋯ (menú) → Deploy…* sobre el
+   último commit de `main`, o un push vacío:
+   `git commit --allow-empty -m "chore: trigger deploy" && git push origin main`.
+3. **La app de GitHub de Vercel no tiene acceso a este repo.** Si al instalar
+   Vercel se eligió *Only select repositories* y `maquinariaocasion` no está en la
+   lista, Vercel crea el proyecto pero no puede clonar. →
+   [github.com/settings/installations](https://github.com/settings/installations)
+   → Vercel → *Repository access* → añadir el repo → *Deploy*.
+4. **Production Branch mal escrita.** En *Settings → Environments → Production
+   branch* debe poner `main` (el repo solo tiene `main`). Si apunta a `master`,
+   no hay producción.
+5. **Desplegaste con la CLI sin `--prod`.** `vercel` a secas sube una *preview*
+   con URL `*.vercel.app` de entorno; el dominio de producción sigue vacío.
+   → `vercel --prod`.
+6. **La build falló** (en este caso sí verías el despliegue en rojo en
+   *Deployments*). Pásame el log y lo arreglo.
+
+### 6.3 Antes del primer deploy: variables en Vercel
+
+Settings → Environment Variables → Production (y Preview). Sin las dos primeras
+la build pasa pero el sitio sale **vacío**, que es peor que un error porque
+parece que funciona:
+
+| Variable | Obligatoria | Nota |
+|---|---|---|
+| `NEXT_PUBLIC_SUPABASE_URL` | ✅ | Project Settings → API |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | ✅ | idem |
+| `SUPABASE_SERVICE_ROLE_KEY` | ✅ | server-side; **nunca** con prefijo `NEXT_PUBLIC_` |
+| `CRON_SECRET` | ✅ para los 4 crons | sin ella `/api/cron/*` responde 401 |
+| `NEXT_PUBLIC_URL` | ✅ | `https://maquinariaocasion.online` (emails, OG, sitemap) |
+| `ADMIN_EMAILS`, `RESEND_API_KEY`, `EMAIL_FROM` | opcional | panel y emails |
+| `TELEGRAM_BOT_TOKEN` / `TELEGRAM_CHAT_ID` | opcional | avisos y revisión de pagos manuales |
+| `TELEGRAM_WEBHOOK_SECRET` | obligatorio si se usan botones de aprobación en Telegram | autentica las llamadas entrantes de Telegram |
+
+Para habilitar los botones de aprobar/rechazar créditos, genera un secreto
+(compatible con Telegram) y guárdalo como `TELEGRAM_WEBHOOK_SECRET` en Vercel:
+
+```bash
+openssl rand -hex 32
+```
+
+Configura **el mismo valor** en Telegram al registrar el webhook (desde un
+entorno seguro donde estén definidas ambas variables):
+
+```bash
+curl -sS -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/setWebhook" \
+  --data-urlencode "url=https://maquinariaocasion.online/api/telegram/webhook" \
+  --data-urlencode "secret_token=${TELEGRAM_WEBHOOK_SECRET}"
+```
+
+Sin ese secreto la ruta rechaza las llamadas y no se pueden aprobar pagos
+(esto es deliberado: el `chat_id` del JSON no autentica quién envió la petición).
+En un chat privado se autoriza por defecto al usuario cuyo ID coincide con
+`TELEGRAM_CHAT_ID`; si las notificaciones van a un grupo, define también
+`TELEGRAM_ADMIN_USER_ID` con el ID numérico del administrador autorizado. El GET
+de diagnóstico del webhook requiere una sesión de administrador.
+
+Lista completa y comentada en **`.env.example`** (ahora sí está versionado;
+`.gitignore` lo excluye con `.env*`, se añadió la excepción `!.env.example`).
+
+### 6.4 Ya corregido en el código para que Vercel no falle
+
+- **`output: 'standalone'`** estaba fijo en `next.config.js`. Vercel no lo
+  necesita (tiene su propio builder) y con Next 16 rompe la build con
+  `ENOENT: .next/next-server.js.nft.json`. Ahora es **opt-in**:
+  `NEXT_OUTPUT=standalone npm run build` (`npm run build:standalone`) solo para
+  self-hosting/Docker. Idéntico en `next.config.optimized.js`.
+  → No definas `NEXT_OUTPUT` en Vercel.
+- Verificado: `npm run build` sigue pasando tras el cambio.
+
+### 6.5 Crons y plan
+
+`vercel.json` declara 4 crons (`17 3 * * *`, `23 */6 * * *`, `5 13 * * 1`,
+`41 14 * * *`). Rutas existentes ✅. Ojo: en el plan **Hobby** Vercel limita las
+ejecuciones diarias de cron (y cobra las que se pasan); los digests semanales y
+diarios entran sin problema, pero conviene mirar *Settings → Cron Jobs* tras el
+primer deploy para confirmar que los 4 aparecen activos.
