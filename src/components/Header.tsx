@@ -9,7 +9,7 @@ import { useAuth } from '@/components/AuthProvider'
 import BrandLogo from '@/components/BrandLogo'
 import Avatar from '@/components/Avatar'
 import { useTranslations } from 'next-intl'
-import { categoriasData, FAMILIAS } from '@/lib/categorias'
+import { TODAS_LAS_SUBS, FAMILIAS } from '@/lib/categorias'
 import { enlaceCambioIdioma } from '@/lib/locale-path'
 
 export function Header() {
@@ -27,14 +27,14 @@ export function Header() {
   const altLocaleHref = enlaceCambioIdioma(pathname)
 
   // Subcategorías camper (mercado vertical 100% camper)
-  // Navegación del vertical camper: familias (Campers / Autocaravanas /
-  // Overland) con sus tipos dentro. La categoría única `camper` no se expone.
+  // Navegación del vertical de maquinaria: familias (Agrícola / Obra /
+  // Herramientas) con sus tipos dentro.
   const familiasNav = FAMILIAS.map(f => ({
     key: f.key,
     icon: f.icon,
     nombre: t(`familias.${f.key}.label`),
     tipos: f.subs
-      .map(slug => categoriasData.camper.subs.find(s => s.slug === slug))
+      .map(slug => TODAS_LAS_SUBS.find(s => s.slug === slug))
       .filter((s): s is NonNullable<typeof s> => Boolean(s))
       .map(s => ({
         id: s.slug,

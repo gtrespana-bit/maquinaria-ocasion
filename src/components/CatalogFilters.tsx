@@ -2,9 +2,9 @@
 
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { XCircle } from 'lucide-react';
-import { categoriasData, FAMILIAS } from '@/lib/categorias';
+import { TODAS_LAS_SUBS, FAMILIAS } from '@/lib/categorias';
 import {
-  GRUPOS_FILTROS_TECNICOS,
+  FILTROS_TECNICOS,
   type FiltrosTecnicos,
 } from '@/lib/filtros-tecnicos'
 import { hayFiltrosRango } from '@/lib/filtros-tecnicos'
@@ -14,6 +14,12 @@ import { FiltrosTecnicosPanel } from './FiltrosTecnicosPanel';
 import { SelectorMarca } from './SelectorMarca';
 
 interface CatalogFiltersProps {
+  /**
+   * Familia/categoría activa (derivada de `?categoria=` o de la subcategoría
+   * elegida). Los filtros técnicos específicos de cada familia solo se
+   * muestran cuando hay contexto; sin él, solo los transversales.
+   */
+  categoria?: string;
   subcategoria: string;
   marca: string;
   precioMin: string;
@@ -26,7 +32,7 @@ interface CatalogFiltersProps {
    * define el registro `@/lib/filtros-tecnicos`.
    */
   filtrosTecnicos: FiltrosTecnicos;
-  /** Rangos numéricos activos tal como están en la URL (param → "150000"). */
+  /** Rangos numéricos activos tal como están en la URL (param → "5000"). */
   rangos: Record<string, string>;
   /** Tipo de vendedor activo ('particular' | 'camperizador' | 'profesional'). */
   vendedor: string;
@@ -38,6 +44,7 @@ const selectClass =
 const labelClass = 'block text-sm font-bold text-gray-900 mb-1.5';
 
 export const CatalogFilters = ({
+  categoria,
   subcategoria,
   marca,
   precioMin,
@@ -53,10 +60,9 @@ export const CatalogFilters = ({
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  // Marketplace 100% camper: no hay selector de categoría (solo existe
-  // `camper` y ya se aplica implícitamente). La navegación la organizan las
-  // familias → tipos → marca/modelo.
-  const subs = categoriasData.camper.subs;
+  // No hay selector de categoría: la navegación la organizan las
+  // familias → tipos → marca/modelo (los tipos de TODAS las familias).
+  const subs = TODAS_LAS_SUBS;
   // Con subcategoría elegida solo se ofrecen los modelos aptos para ella:
   // una Benimar no tiene sentido filtrando furgones de Gran Volumen.
   const subActiva = subcategoria ? subs.find(s => s.label === subcategoria) : undefined;
@@ -71,7 +77,7 @@ export const CatalogFilters = ({
   const hasActiveFilters = !!(
     subcategoria || marca || precioMin || precioMax ||
     ubicacionEstado || ubicacionCiudad || vendedor ||
-    GRUPOS_FILTROS_TECNICOS.some(g => g.filtros.some(f => filtrosTecnicos[f.param])) ||
+    FILTROS_TECNICOS.some(f => filtrosTecnicos[f.param]) ||
     hayFiltrosRango(rangos)
   );
 
@@ -186,12 +192,13 @@ export const CatalogFilters = ({
         </div>
       </div>
 
-      {/* Bloques técnicos de la ficha camper + rangos numéricos: la lista de
-          filtros, sus opciones y los rangos salen del registro único
+      {/* Filtros técnicos (transversales + específicos de la familia activa)
+          y rangos numéricos: la lista sale del registro único
           @/lib/filtros-tecnicos, el mismo dato que captura /publicar (captura
           y filtro no pueden divergir). El panel es el mismo componente que usa
           /buscar. */}
       <FiltrosTecnicosPanel
+        categoria={categoria}
         filtrosTecnicos={filtrosTecnicos}
         rangos={rangos}
         t={t}

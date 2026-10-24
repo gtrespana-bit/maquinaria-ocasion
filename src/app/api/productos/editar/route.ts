@@ -175,16 +175,18 @@ export async function PATCH(request: NextRequest) {
     ...body,
   }
 
-  // En MaquinariaOcasión todas las publicaciones pertenecen a la categoría 'camper'.
-  // Si la categoría viene vacía o con un valor heredado, se normaliza y se
-  // resuelve/asegura su ID en la base de datos sin fallar.
+  // La categoría es la familia elegida (agrícola / obra / herramientas).
+  // Si la categoría viene vacía o con un valor heredado, se normaliza a la
+  // legada 'camper' (fila histórica) y se resuelve/asegura su ID en la base
+  // de datos sin fallar.
   let categoriaId = current.categoria_id
   const resolved = await resolveCategoryId(sb, body.categoria || 'camper')
   if (resolved !== null) {
     categoriaId = resolved
   }
 
-  // Subcategoría: admite label canónico o slug y normaliza al label oficial de categoriasData.camper
+  // Subcategoría: admite label canónico o slug de cualquier familia y
+  // normaliza al label oficial (los valores legados se conservan).
   const subcategoriaNormalizada = resolveSubcategory(candidate.subcategoria)
   if (!subcategoriaNormalizada) {
     return NextResponse.json({ error: 'Subcategoría inválida para la categoría seleccionada' }, { status: 400 })

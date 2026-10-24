@@ -332,10 +332,15 @@ function ProductoPageClientInner({
             </div>
             {producto.descripcion && <p className="text-gray-600 whitespace-pre-line leading-relaxed">{producto.descripcion}</p>}
 
-            {/* Ficha técnica camper: bloques "Mecánica del Vehículo",
-                "Habitabilidad" y "Equipamiento Camper y Autonomía" */}
+            {/* Ficha técnica en cuatro bloques (técnica / estado /
+                documentación / logística); las claves legadas de los anuncios
+                demo antiguos se agrupan en "Ficha técnica". El estado viene de
+                la columna `productos.estado`, no del JSONB. */}
             {(() => {
-              const grupos = agruparFichaTecnica(producto.especificaciones)
+              const grupos = agruparFichaTecnica({
+                ...producto.especificaciones,
+                Estado: producto.estado,
+              })
               const extras = camposFichaExtras(producto.especificaciones)
               if (grupos.length === 0 && extras.length === 0) return null
               return (

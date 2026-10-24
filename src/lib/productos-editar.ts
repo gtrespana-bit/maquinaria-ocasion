@@ -1,5 +1,5 @@
 import { isValidEmail, isValidLength, isValidPrice, sanitizeObject, sanitizeString } from '@/lib/validation'
-import { categoriasData, getSubConfig } from '@/lib/categorias'
+import { categoriasData, getSubConfig, TODAS_LAS_SUBS, CATEGORIA_DEFAULT } from '@/lib/categorias'
 import { ESTADOS, getMunicipiosNombres } from '@/lib/ubicaciones'
 import { normalizeMessengerUrl } from '@/lib/contact-methods'
 
@@ -133,9 +133,16 @@ export function validateSpecifications(value: unknown): Record<string, unknown> 
 }
 
 export async function resolveCategoryId(sb: any, categoria: unknown): Promise<number | null> {
-  // MaquinariaOcasión es un vertical 100% camper. La categoría canónica es 'camper'.
-  const nombre = typeof categoria === 'string' && categoria.trim() ? categoria.trim().toLowerCase() : 'camper'
-  const key = Object.prototype.hasOwnProperty.call(categoriasData, nombre) ? nombre : 'camper'
+  // La categoría es la familia elegida (agrícola / obra / herramientas).
+  // `camper` se sigue aceptando para anuncios legados cuyo valor heredado
+  // viva en la BD, y el resto de entradas desconocidas caen en la categoría
+  // por defecto para no crear filas basura.
+  const nombre = typeof categoria === 'string' && categoria.trim() ? categoria.trim().toLowerCase() : CATEGORIA_DEFAULT
+  const key = Object.prototype.hasOwnProperty.call(categoriasData, nombre)
+    ? nombre
+    : nombre === 'camper'
+      ? 'camper'
+      : CATEGORIA_DEFAULT
 
   try {
     const { data: existente } = await sb
@@ -171,12 +178,20 @@ export function resolveSubcategory(subcategoria: unknown): string | null {
   const rawSub = String(subcategoria || '').trim()
   if (!rawSub) return null
 
-  const subConfig = getSubConfig('camper', rawSub)
-    || categoriasData.camper.subs.find(
-      (s) => s.slug === rawSub || s.label.toLowerCase() === rawSub.toLowerCase()
-    )
+  // Busca en TODAS las familias (label exacto o slug) y normaliza al label
+  // oficial. Un valor legado desconocido (subcategorías antiguas de la demo)
+  // se conserva tal cual: editar un anuncio viejo no debe perder su tipo.
+  const enTodas = TODAS_LAS_SUBS.find(
+    (s) => s.label.toLowerCase() === rawSub.toLowerCase() || s.slug === rawSub
+  )
+  if (enTodas) return enTodas.label
 
-  return subConfig ? subConfig.label : null
+  for (const catKey of Object.keys(categoriasData)) {
+    const cfg = getSubConfig(catKey, rawSub)
+    if (cfg) return cfg.label
+  }
+
+  return rawSub
 }
 
 export function validLocation(state: string, city: string, previousState: string, previousCity: string): boolean {

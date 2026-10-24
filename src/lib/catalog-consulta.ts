@@ -16,6 +16,7 @@
 
 import { CATALOG_PAGE_SIZE } from './catalog-pagination'
 import {
+  COLUMNAS_RANGO,
   PARAMETROS_RANGO,
   RANGOS_NUMERICOS,
   especificacionesDeFiltros,
@@ -57,7 +58,7 @@ export type FiltrosCatalogo = {
   ubicacionEstado?: string
   ubicacionCiudad?: string
   condicion?: string
-  /** Rangos numéricos: kmMax, anioMin, placaWatiosMin, inversorWatiosMin. */
+  /** Rangos numéricos: horasMax, anioMin. */
 } & Record<string, unknown>
 
 /**
@@ -118,22 +119,20 @@ export function aplicarFiltrosCatalogo<T extends QueryCatalogo>(
 }
 
 /**
- * Límites sugeridos para los rangos numéricos de la UI (kilómetros máximos,
- * año mínimo y watios). Acotan el input a valores sensatos; la query acepta
+ * Límites sugeridos para los rangos numéricos de la UI (horas de uso máximas
+ * y año mínimo). Acotan el input a valores sensatos; la query acepta
  * cualquier número.
  */
 export const RANGOS_SUGERIDOS: Record<string, { min: number; max: number; step: number }> = {
-  kmMax: { min: 0, max: 500000, step: 5000 },
-  anioMin: { min: 1980, max: new Date().getFullYear(), step: 1 },
-  placaWatiosMin: { min: 0, max: 2000, step: 50 },
-  inversorWatiosMin: { min: 0, max: 5000, step: 250 },
+  horasMax: { min: 0, max: 100000, step: 500 },
+  anioMin: { min: 1950, max: new Date().getFullYear(), step: 1 },
 }
 
 /**
  * Traduce los filtros de rango activos a condiciones sobre las columnas
- * generadas `espec_km` / `espec_anio` / `espec_placa_w` / `espec_inversor_w`
- * (migración 202609170003). Comparación NUMÉRICA y con índice funcional: es lo
- * opuesto a filtrar por `especificaciones->>'Kilómetros'`, que compara texto
+ * generadas `espec_horas` / `espec_anio` (migraciones 202610240001 y
+ * 202609170003). Comparación NUMÉRICA y con índice funcional: es lo opuesto a
+ * filtrar por `especificaciones->>'Horas de uso'`, que compara texto
  * alfabéticamente.
  */
 export function aplicarRangosNumericos<T extends QueryCatalogo>(
@@ -167,10 +166,11 @@ export function quitarRangos(filtros?: Record<string, unknown> | null): Record<s
 }
 
 /**
- * ¿Es el error de "la columna de rangos no existe" (migración 202609170003 sin
- * aplicar)? La comparación por nombre de columna es deliberada: cuando PostgREST
- * no conoce `espec_km`/`espec_anio`/… responde con un error que menciona la
- * columna. Si coincide, los cargadores reintentan sin rangos.
+ * ¿Es el error de "la columna de rangos no existe" (migraciones 202609170003
+ * o 202610240001 sin aplicar)? La comparación por nombre de columna es
+ * deliberada: cuando PostgREST no conoce `espec_horas`/`espec_anio`/… responde
+ * con un error que menciona la columna. Si coincide, los cargadores
+ * reintentan sin rangos.
  */
 export function esErrorColumnasRango(err: unknown): boolean {
   const msg = err && typeof err === 'object'
@@ -178,9 +178,7 @@ export function esErrorColumnasRango(err: unknown): boolean {
     : String(err)
   if (!msg) return false
   const nombre = msg.toLowerCase()
-  return ['espec_km', 'espec_anio', 'espec_placa_w', 'espec_inversor_w'].some(
-    c => nombre.includes(c.toLowerCase())
-  )
+  return COLUMNAS_RANGO.some(c => nombre.includes(c.toLowerCase()))
 }
 
 /**

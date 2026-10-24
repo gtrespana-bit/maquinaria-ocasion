@@ -40,10 +40,10 @@ describe('landings locales indexables', () => {
   test('la combinación ciudad/categoría resuelve el slug a la etiqueta guardada', async () => {
     const query = crearQuery({ count: 2 })
     const supabase = { from: jest.fn(() => query) }
-    const subcategoria = getSubcategoriaSEO('gran-volumen')?.categoria
+    const subcategoria = getSubcategoriaSEO('tractores')?.categoria
 
     await expect(
-      hayAnunciosEnCiudadCategoria(supabase, 'Madrid', 'Madrid', 'gran-volumen'),
+      hayAnunciosEnCiudadCategoria(supabase, 'Madrid', 'Madrid', 'tractores'),
     ).resolves.toBe(true)
 
     expect(subcategoria).toBeTruthy()

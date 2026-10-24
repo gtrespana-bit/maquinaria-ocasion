@@ -50,18 +50,47 @@ rutas:
       Validación: `tsc --noEmit` + `eslint` + 657/657 tests + `next build`
       sin ninguna de las rutas borradas.
 
-## Fase 3 — Taxonomía y filtros (PENDIENTE — el núcleo)
+## Fase 3 — Taxonomía y filtros (HECHA ✔ — el núcleo)
 
-- [ ] `src/lib/categorias.ts`: familias → categorías → subcategorías propias
-      (agrícola, obra, herramientas)
-- [ ] `src/lib/filtros-tecnicos.ts`: pasar de lista plana a **campos por
-      categoría** (`camposPorCategoria`). Es el cambio estructural del plan:
-      con la lista plana, un taladro pediría "plazas para dormir"
-- [ ] `src/lib/marcas.ts`: catálogo de fabricantes de maquinaria
-- [ ] `/publicar`: formulario dinámico según categoría
-- [ ] Ficha de producto: bloques técnico / estado / documentación / logística
-- [ ] `CatalogFilters`, `useProductLoader` y `usePrefetch` deben seguir leyendo
-      del mismo registro (es lo que evita el bug de páginas que "comen" filas)
+Taxonomía aprobada: `agricola` (tractores, cosechadoras, maquinaria-agricola,
+ganaderia), `obra` (excavadoras, cargadoras, compactacion, plataformas),
+`herramientas` (herramienta-electrica, motores, sierra-poda, taller-manual);
+marcas asignadas por subcategoría vía `MarcaModelo.aptoPara`.
+
+- [x] `src/lib/categorias.ts`: familias === categorías (`FAMILIAS[k].key` es
+      `categoriasData[k]`) con transversales en todos los subs (Año, Horas de
+      uso, Combustible, Potencia (CV), Peso (kg), ¿Incluye transporte?,
+      Documentación) + campos propios por familia; `Estado` sigue siendo la
+      columna `productos.estado` (check de 5 valores) y se fusiona en la ficha
+- [x] `src/lib/filtros-tecnicos.ts`: `camposPorCategoria` (transversales +
+      específicos por familia) con `filtrosDeCategoria`/`gruposDeFiltros`
+      (sin grupos vacíos) y `FILTROS_TECNICOS` como unión deduplicada por
+      `param` — la consulta JSONB `@>` + GIN **no cambia**; rangos nuevos
+      `horasMax`/`anioMin` sobre `espec_horas`/`espec_anio`
+- [x] `src/lib/marcas.ts`: catálogo de fabricantes de maquinaria (12 slugs,
+      valores únicos validados al importar)
+- [x] `/publicar`: la familia del paso 1 es la categoría (`categoria:` = key)
+      y los tipos salen de su familia; el API auto-crea la fila si falta
+- [x] Ficha de producto: 4 bloques (técnica / estado / documentación /
+      logística); claves camper legacy absorbidas al bloque técnico
+- [x] `CatalogFilters`, `useProductLoader` y `usePrefetch` siguen leyendo del
+      mismo registro; panel `FiltrosTecnicosPanel` con prop `categoria`
+      (contexto = `?categoria=` o la familia de la subelegida; sin contexto,
+      solo filtros transversales)
+- [x] Consumidores adaptados: `categorias-seo` (claves = categoriasData),
+      `productos-editar` (sub en todas las familias, legados se conservan),
+      `importar-csv` (tipos nuevos, devuelve label, columna `Horas de uso`),
+      Header/Footer/home/marcas/opengraph vía `TODAS_LAS_SUBS`
+- [x] i18n: SOLO claves nuevas (`familias.<3>.label/desc`,
+      `catalog.filters.*` nuevos, `catalog.filters.groups.{technique,docs,logistics}`);
+      dictionaries completos = Fase 4
+- [x] Migración nueva idempotente `202610240001_taxonomia_maquinaria.sql`
+      (`insert into categorias` agricola/obra/herramientas + columna
+      generada `espec_horas` + índice); `setup-maquinariaocasion.sql` y
+      migraciones previas NO se tocan
+- [x] Tests reescritos: familias, marcas-modelos, categorias-campos,
+      filtros-tecnicos, catalog-consulta, productos-editar, importar-csv,
+      seo-landings, categorias-seo
 
 ## Fase 4 — Marca, textos y SEO (PENDIENTE)
 

@@ -1,7 +1,7 @@
 'use client';
 
 import { Ruler } from 'lucide-react';
-import { GRUPOS_FILTROS_TECNICOS, RANGOS_NUMERICOS } from '@/lib/filtros-tecnicos';
+import { gruposDeFiltros, RANGOS_NUMERICOS } from '@/lib/filtros-tecnicos';
 import { RANGOS_SUGERIDOS } from '@/lib/catalog-consulta';
 
 const selectClass =
@@ -11,23 +11,32 @@ const inputClass =
   'w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm text-gray-800 bg-white focus:outline-none focus:ring-2 focus:ring-brand-accent';
 
 interface FiltrosTecnicosPanelProps {
+  /**
+   * Familia/categoría activa (`?categoria=agricola` o derivada de la
+   * subcategoría elegida). Determina qué filtros específicos se muestran;
+   * sin familia solo se muestran los transversales. Los rangos numéricos
+   * son transversales y siempre se muestran.
+   */
+  categoria?: string;
   /** Filtros técnicos activos por opción (param → valor). */
   filtrosTecnicos: Record<string, string>;
-  /** Rangos numéricos activos tal como están en la URL (param → "150000"). */
+  /** Rangos numéricos activos tal como están en la URL (param → "5000"). */
   rangos: Record<string, string>;
   t: (key: string, vars?: Record<string, string | number>) => string;
   onSetParam: (key: string, value: string) => void;
 }
 
 /**
- * Bloque de filtros técnicos camper (opciones + rangos numéricos).
+ * Bloque de filtros técnicos de maquinaria (opciones + rangos numéricos).
  *
  * Extraído de `CatalogFilters` para reutilizarlo también en `/buscar`: la lista
  * de filtros, sus opciones y los rangos salen del registro único
  * `@/lib/filtros-tecnicos`, el mismo dato que captura `/publicar`, así que
- * captura y filtro no pueden divergir.
+ * captura y filtro no pueden divergir. Los grupos vacíos para la familia
+ * activa se omiten (`gruposDeFiltros`).
  */
 export const FiltrosTecnicosPanel = ({
+  categoria,
   filtrosTecnicos,
   rangos,
   t,
@@ -35,8 +44,8 @@ export const FiltrosTecnicosPanel = ({
 }: FiltrosTecnicosPanelProps) => {
   return (
     <>
-      {/* Bloques técnicos de la ficha camper por opción (selects). */}
-      {GRUPOS_FILTROS_TECNICOS.map(grupo => (
+      {/* Filtros por opción de la familia activa (transversales + específicos). */}
+      {gruposDeFiltros(categoria).map(grupo => (
         <div key={grupo.grupo} className="mb-5 border-t border-gray-100 pt-4 first:border-t-0 first:pt-0">
           <h4 className="text-xs font-black uppercase tracking-wide text-gray-500 mb-3">
             {grupo.icono} {t(grupo.i18n)}
@@ -62,8 +71,9 @@ export const FiltrosTecnicosPanel = ({
         </div>
       ))}
 
-      {/* Rangos numéricos (km máximos, año mínimo, watios). La comparación se
-          hace sobre las columnas generadas de la migración 202609170003. */}
+      {/* Rangos numéricos transversales (horas de uso máximas, año mínimo).
+          La comparación se hace sobre las columnas generadas
+          (espec_horas / espec_anio). */}
       <div className="mb-5 border-t border-gray-100 pt-4">
         <h4 className="text-xs font-black uppercase tracking-wide text-gray-500 mb-3">
           <span className="inline-flex items-center gap-1">

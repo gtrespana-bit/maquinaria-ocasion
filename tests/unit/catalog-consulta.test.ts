@@ -60,20 +60,20 @@ describe('aplicarFiltrosCatalogo', () => {
 
   test('los filtros técnicos van en una sola contención sobre el JSONB', () => {
     const query = crearQuery()
-    aplicarFiltrosCatalogo(query, { plazasDormir: '4', bano: 'Sin baño', precioMin: '20000' })
+    aplicarFiltrosCatalogo(query, { combustible: 'Diésel', transporte: 'No', precioMin: '20000' })
 
     expect(query.llamadas).toEqual([
-      ['contains', 'especificaciones', { 'Plazas para dormir': '4', 'Baño / Ducha': 'Sin baño' }],
+      ['contains', 'especificaciones', { 'Combustible': 'Diésel', '¿Incluye transporte?': 'No' }],
     ])
   })
 
   test('combina contención JSONB y rangos cuando están activos', () => {
     const query = crearQuery()
-    aplicarFiltrosCatalogo(query, { mma: 'Hasta 3.500 kg (carnet B)', kmMax: '150000' })
+    aplicarFiltrosCatalogo(query, { documentacion: 'Parcial', horasMax: '5000' })
 
     expect(query.llamadas).toEqual([
-      ['contains', 'especificaciones', { 'MMA / Peso máximo autorizado': 'Hasta 3.500 kg (carnet B)' }],
-      ['lte', 'espec_km', 150000],
+      ['contains', 'especificaciones', { 'Documentación': 'Parcial' }],
+      ['lte', 'espec_horas', 5000],
     ])
   })
 
@@ -103,12 +103,11 @@ describe('aplicarFiltrosCatalogo', () => {
 
   test('los rangos numéricos se aplican sobre las columnas generadas (no el JSONB)', () => {
     const query = crearQuery()
-    aplicarFiltrosCatalogo(query, { kmMax: '150000', anioMin: '2019', placaWatiosMin: '200' })
+    aplicarFiltrosCatalogo(query, { horasMax: '5000', anioMin: '2015' })
 
     expect(query.llamadas).toEqual([
-      ['lte', 'espec_km', 150000],
-      ['gte', 'espec_anio', 2019],
-      ['gte', 'espec_placa_w', 200],
+      ['lte', 'espec_horas', 5000],
+      ['gte', 'espec_anio', 2015],
     ])
   })
 
@@ -120,11 +119,11 @@ describe('aplicarFiltrosCatalogo', () => {
   })
 
   test('quitarRangos y tieneRangosNumericos', () => {
-    expect(tieneRangosNumericos({ kmMax: 1 })).toBe(true)
+    expect(tieneRangosNumericos({ horasMax: 1 })).toBe(true)
     expect(tieneRangosNumericos({ q: 'x' })).toBe(false)
 
-    const sinRangos = quitarRangos({ q: 'ducato', kmMax: 150000, anioMin: 2019 })
-    expect(sinRangos).toEqual({ q: 'ducato' })
+    const sinRangos = quitarRangos({ q: 'excavadora', horasMax: 5000, anioMin: 2015 })
+    expect(sinRangos).toEqual({ q: 'excavadora' })
     expect(quitarRangos(null)).toEqual({})
   })
 

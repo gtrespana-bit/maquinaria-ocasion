@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { useRouter, useParams } from 'next/navigation'
 import { supabase, isSupabaseConfigured } from '@/lib/supabase'
 import { useAuth } from '@/components/AuthProvider'
-import { categoriasData, resolverCampos, FAMILIAS } from '@/lib/categorias'
+import { TODAS_LAS_SUBS, resolverCampos, FAMILIAS, familiaDeSub, CATEGORIA_DEFAULT } from '@/lib/categorias'
 import { agruparPorFabricante, etiquetaModelo } from '@/lib/marcas'
 import { ESTADOS, getMunicipiosNombres } from '@/lib/ubicaciones'
 import { Camera, X, ArrowLeft, Save, AlertCircle, Trash2 } from 'lucide-react'
@@ -69,12 +69,12 @@ export default function EditarPage() {
       if (!prod) { setError('No encontrado'); setLoading(false); return }
       if (user && prod.user_id !== user.id) { setError('No tienes permiso'); setLoading(false); return }
 
-      // En MaquinariaOcasión, la categoría canónica única es 'camper'.
       setTitulo(prod.titulo || '')
       setDescripcion(prod.descripcion || '')
 
       // Normalizar subcategoría si venía como slug o con formato diferente
-      const subEncontrada = categoriasData.camper.subs.find(
+      // (se busca en TODAS las familias; los valores legados se conservan).
+      const subEncontrada = TODAS_LAS_SUBS.find(
         s => s.label === prod.subcategoria || s.slug === prod.subcategoria || s.label.toLowerCase() === (prod.subcategoria || '').toLowerCase()
       )
       const subcategoriaActual = subEncontrada?.label || prod.subcategoria || ''
@@ -125,14 +125,16 @@ export default function EditarPage() {
 
   if (!session) return null
 
-  const cat = categoriasData.camper
-  const sub = cat.subs.find(s => s.label === subcategoria || s.slug === subcategoria)
+  // El tipo decide la familia: se resuelve en TODAS las familias. Los productos
+  // legados sin tipo conocido dejan `sub` en undefined (sus campos siguen
+  // guardados en `specs` y el tipo se recupera al volver a elegir uno).
+  const sub = TODAS_LAS_SUBS.find(s => s.label === subcategoria || s.slug === subcategoria)
   // resolverCampos: Marca hereda las marcas de la subcategoría y Año se genera dinámicamente.
   const camposEspeciales = resolverCampos(sub)
 
   const handleSubcategoriaChange = (val: string) => {
     setSubcategoria(val)
-    const newSub = categoriasData.camper.subs.find(s => s.label === val || s.slug === val)
+    const newSub = TODAS_LAS_SUBS.find(s => s.label === val || s.slug === val)
     const newCampos = resolverCampos(newSub)
     setSpecs(prev => {
       const updated = { ...prev }
@@ -230,7 +232,7 @@ export default function EditarPage() {
           productId: productoId,
           titulo: titulo.trim(),
           descripcion: descripcion.trim(),
-          categoria: 'camper',
+          categoria: sub ? (familiaDeSub(sub.slug)?.key ?? CATEGORIA_DEFAULT) : CATEGORIA_DEFAULT,
           subcategoria,
           marca: marca.replace(/^otra:/, '').trim() || null,
           modelo: (() => {
@@ -377,7 +379,7 @@ export default function EditarPage() {
             {FAMILIAS.map((f: any) => (
               <optgroup key={f.key} label={`${f.icon} ${f.label}`}>
                 {f.subs.map((slug: string) => {
-                  const s = categoriasData.camper.subs.find((x: any) => x.slug === slug)
+                  const s = TODAS_LAS_SUBS.find((x: any) => x.slug === slug)
                   if (!s) return null
                   return <option key={s.label} value={s.label}>{s.icon} {s.label}</option>
                 })}

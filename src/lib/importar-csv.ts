@@ -22,6 +22,7 @@
  *    reimportado duplicaría, así que la UI lo avisa.
  */
 import { COMUNIDADES_AUTONOMAS } from '@/lib/ubicaciones'
+import { TODAS_LAS_SUBS } from '@/lib/categorias'
 
 export const MAX_FILAS = 100
 
@@ -38,6 +39,7 @@ export type CampoImport =
   | 'imagenes'
   | 'anio'
   | 'km'
+  | 'horas'
 
 interface DefinicionCampo {
   campo: CampoImport
@@ -68,6 +70,7 @@ export const CAMPOS: DefinicionCampo[] = [
   { campo: 'estado', etiqueta: 'Estado', alias: ['estado', 'estado-vehiculo', 'condicion', 'condition', 'estado-producto'] },
   { campo: 'anio', etiqueta: 'Año', alias: ['ano', 'año', 'anio-matriculacion', 'year', 'matriculacion'] },
   { campo: 'km', etiqueta: 'Kilómetros', alias: ['km', 'kilometros', 'kilometraje', 'kms', 'mileage'] },
+  { campo: 'horas', etiqueta: 'Horas de uso', alias: ['horas', 'horas-de-uso', 'hours', 'horas-maquina'] },
   { campo: 'descripcion', etiqueta: 'Descripción', alias: ['descripcion', 'description', 'detalles', 'observaciones'] },
   { campo: 'imagenes', etiqueta: 'Fotos', alias: ['imagenes', 'fotos', 'images', 'urls', 'foto-1'] },
 ]
@@ -75,16 +78,35 @@ export const CAMPOS: DefinicionCampo[] = [
 /** Estados de vehículo que acepta la columna `estado` de `productos`. */
 export const ESTADOS_VEHICULO = ['Nuevo', 'Como nuevo', 'Bueno', 'Usado', 'Para repuestos'] as const
 
-/** Slugs de subcategoría válidos y las etiquetas que se aceptan por ellos. */
-const SUBCATEGORIAS: { slug: string; etiquetas: string[] }[] = [
-  { slug: 'gran-volumen', etiquetas: ['gran volumen', 'gran-volumen', 'furgoneta gran volumen'] },
-  { slug: 'camper-mediana', etiquetas: ['camper mediana', 'camper-mediana', 'compacta', 'camper mediana / compacta'] },
-  { slug: 'minicamper', etiquetas: ['minicamper', 'mini camper'] },
-  { slug: 'perfilada', etiquetas: ['perfilada', 'autocaravana perfilada'] },
-  { slug: 'capuchina', etiquetas: ['capuchina', 'autocaravana capuchina'] },
-  { slug: 'integral', etiquetas: ['integral', 'autocaravana integral'] },
-  { slug: 'overland', etiquetas: ['overland', '4x4', 'overland y 4x4'] },
-]
+/**
+ * Tipos válidos de la taxonomía de maquinaria: cada subcategoría acepta su
+ * label oficial, su slug y los alias frecuentes (singular, forma corta…).
+ * El valor canónico que se guarda es el LABEL (la misma convención que
+ * `/publicar` y `productos.subcategoria`).
+ */
+const SUBCATEGORIAS: { label: string; etiquetas: string[] }[] = TODAS_LAS_SUBS.map(sub => ({
+  label: sub.label,
+  etiquetas: [
+    sub.label.toLowerCase(),
+    sub.slug,
+    ...(
+      {
+        'tractores': ['tractor'],
+        'cosechadoras': ['cosechadora'],
+        'maquinaria-agricola': ['maquinaria auxiliar', 'aperos'],
+        'ganaderia': ['ganaderia y ganadería', 'ganadería'],
+        'excavadoras': ['excavadora', 'retroexcavadora'],
+        'cargadoras': ['cargadora', 'minicargadora', 'telecargador'],
+        'compactacion': ['compactación', 'rodillo', 'apisonador', 'dumper'],
+        'plataformas': ['plataforma', 'plataforma elevadora', 'manlift'],
+        'herramienta-electrica': ['herramienta electrica', 'taladro', 'amoladora'],
+        'motores': ['generador', 'grupo electrógeno', 'compresor', 'soldadora'],
+        'sierra-poda': ['motosierra', 'desbrozadora', 'sierra y poda', 'poda'],
+        'taller-manual': ['taller', 'utillaje'],
+      } as Record<string, string[]>
+    )[sub.slug] ?? [],
+  ],
+}))
 
 // ── Utilidades de texto ────────────────────────────────────────────────────
 
@@ -289,14 +311,19 @@ export function normalizarEstado(valor: string | null | undefined): string | nul
   return null
 }
 
-/** Devuelve el slug de subcategoría o null si no se reconoce. */
+/** Devuelve el label oficial de subcategoría o null si no se reconoce. */
 export function normalizarSubcategoria(valor: string | null | undefined): string | null {
-  const v = sinAcentos(String(valor ?? ''))
+  const v = sinAcentos(String(valor ?? '').trim())
   if (!v) return null
-  const directo = SUBCATEGORIAS.find((s) => s.slug === v.replace(/\s+/g, '-'))
-  if (directo) return directo.slug
-  const porEtiqueta = SUBCATEGORIAS.find((s) => s.etiquetas.some((e) => sinAcentos(e) === v))
-  return porEtiqueta?.slug ?? null
+  const normalizado = v.replace(/\s+/g, ' ')
+  const conGuiones = normalizado.replace(/\s+/g, '-')
+  const encontrada = SUBCATEGORIAS.find((s) =>
+    s.etiquetas.some((e) => {
+      const eNorm = sinAcentos(e)
+      return eNorm === normalizado || eNorm === conGuiones || eNorm.replace(/\s+/g, '-') === conGuiones
+    })
+  )
+  return encontrada?.label ?? null
 }
 
 /** Comunidad autónoma canónica (con sus tildes) a partir de lo que venga. */
@@ -396,7 +423,7 @@ export function validarImportacion(
     const subcategoria = normalizarSubcategoria(valor('subcategoria'))
     if (!subcategoria) {
       errores.push(
-        'El tipo no se reconoce. Usa Gran Volumen, Camper Mediana, Minicamper, Perfilada, Capuchina, Integral u Overland.',
+        'El tipo no se reconoce. Usa Tractores, Cosechadoras, Maquinaria agrícola, Ganadería, Excavadoras, Cargadoras, Compactación, Plataformas, Herramienta eléctrica, Motores, Sierra y poda o Taller manual.',
       )
     }
 
@@ -420,6 +447,10 @@ export function validarImportacion(
     const km = kmBruto ? Number(kmBruto) : null
     if (km != null && km > 2_000_000) avisos.push('Kilometraje poco creíble: no se guarda.')
 
+    const horasBruto = valor('horas').replace(/[^\d]/g, '')
+    const horas = horasBruto ? Number(horasBruto) : null
+    if (horas != null && horas > 1_000_000) avisos.push('Horas de uso poco creíbles: no se guardan.')
+
     const imagenesTodas = separarImagenes(valor('imagenes'))
     const imagenesValidas = imagenesTodas.filter(esImagenValida)
     const descartadas = imagenesTodas.length - imagenesValidas.length
@@ -433,9 +464,12 @@ export function validarImportacion(
 
     const especificaciones: Record<string, string> = {}
     if (anio != null && anio >= 1950 && anio <= anioMax) {
-      especificaciones['Año de matriculación'] = String(anio)
+      // Clave canónica del registro de maquinaria (el filtro anioMin lee
+      // 'Año' y las claves legadas vía COALESCE).
+      especificaciones['Año'] = String(anio)
     }
     if (km != null && km <= 2_000_000) especificaciones['Kilómetros'] = String(km)
+    if (horas != null && horas <= 1_000_000) especificaciones['Horas de uso'] = String(horas)
 
     filas.push({
       linea: i + 2,
@@ -471,8 +505,8 @@ export function validarImportacion(
  */
 export function plantillaCsv(): string {
   return [
-    'Titulo;Precio;Tipo;Comunidad;Ciudad;Marca;Modelo;Estado;Año;Kilómetros;Fotos;Descripción',
-    'Fiat Ducato L3H2 camperizada;38500;Gran Volumen;Comunitat Valenciana;Valencia;Fiat;Ducato;Como nuevo;2019;145000;https://ejemplo.com/foto1.jpg|https://ejemplo.com/foto2.jpg;Camper de 4 plazas con placa solar y calefacción.',
-    'Volkswagen T6.1 California;52900;Camper Mediana;Madrid;Madrid;Volkswagen;T6.1;Usado;2021;78000;;Camper oficial, techo elevable.',
+    'Titulo;Precio;Tipo;Comunidad;Ciudad;Marca;Modelo;Estado;Año;Horas de uso;Fotos;Descripción',
+    'Kubota M7 tractor agrícola;48500;Tractores;Comunitat Valenciana;Valencia;Kubota;M7;Usado;2018;4200;https://ejemplo.com/foto1.jpg|https://ejemplo.com/foto2.jpg;Tractor con 4.200 horas, enganche tres puntos y PTO 540/1000.',
+    'Caterpillar 320 excavadora;95000;Excavadoras;Madrid;Madrid;Caterpillar;320;Usado;2017;9800;;Excavadora sobre oruga de 20 t con martillo hidráulico y documentación CE.',
   ].join('\r\n')
 }

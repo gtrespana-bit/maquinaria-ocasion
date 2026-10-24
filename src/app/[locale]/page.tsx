@@ -9,7 +9,7 @@ import { productUrl } from '@/lib/product-url'
 import { formatPrecio } from '@/lib/precio'
 import { alternatesSeo } from '@/lib/seo'
 import { MARCA } from '@/lib/marca'
-import { categoriasData, FAMILIAS } from '@/lib/categorias'
+import { TODAS_LAS_SUBS, FAMILIAS } from '@/lib/categorias'
 import { resumenFabricantes } from '@/lib/marcas'
 import { CIUDADES_SEO } from '@/lib/ubicaciones-seo'
 import { aplicarOrdenCatalogo, ordenarProductosCatalogo } from '@/lib/catalog-consulta'
@@ -265,7 +265,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
 
   const provincias = getProvinciasPopulares()
   const guias = getUltimasGuias(3)
-  const subs = categoriasData.camper.subs
+  const subs = TODAS_LAS_SUBS
   const jsonLd = generateItemListSchema(recientes, 'https://maquinariaocasion.online')
 
   return (

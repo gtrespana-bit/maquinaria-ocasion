@@ -31,35 +31,39 @@ describe('parsePrice', () => {
 })
 
 describe('resolveSubcategory', () => {
-  it('resuelve labels canónicos de subcategorías camper', () => {
-    expect(resolveSubcategory('Gran Volumen')).toBe('Gran Volumen')
-    expect(resolveSubcategory('Camper Mediana / Compacta')).toBe('Camper Mediana / Compacta')
-    expect(resolveSubcategory('Minicamper')).toBe('Minicamper')
-    expect(resolveSubcategory('Autocaravana Perfilada')).toBe('Autocaravana Perfilada')
-    expect(resolveSubcategory('Autocaravana Capuchina')).toBe('Autocaravana Capuchina')
-    expect(resolveSubcategory('Autocaravana Integral')).toBe('Autocaravana Integral')
-    expect(resolveSubcategory('Célula y 4x4 Overland')).toBe('Célula y 4x4 Overland')
+  it('resuelve labels canónicos de subcategorías de maquinaria', () => {
+    expect(resolveSubcategory('Tractores')).toBe('Tractores')
+    expect(resolveSubcategory('Cosechadoras')).toBe('Cosechadoras')
+    expect(resolveSubcategory('Excavadoras')).toBe('Excavadoras')
+    expect(resolveSubcategory('Plataformas elevadoras')).toBe('Plataformas elevadoras')
+    expect(resolveSubcategory('Herramienta eléctrica')).toBe('Herramienta eléctrica')
+    expect(resolveSubcategory('Sierra y poda')).toBe('Sierra y poda')
+    expect(resolveSubcategory('Taller manual')).toBe('Taller manual')
   })
 
   it('resuelve slugs de subcategorías al label oficial', () => {
-    expect(resolveSubcategory('gran-volumen')).toBe('Gran Volumen')
-    expect(resolveSubcategory('camper-mediana')).toBe('Camper Mediana / Compacta')
-    expect(resolveSubcategory('minicamper')).toBe('Minicamper')
-    expect(resolveSubcategory('perfilada')).toBe('Autocaravana Perfilada')
-    expect(resolveSubcategory('capuchina')).toBe('Autocaravana Capuchina')
-    expect(resolveSubcategory('integral')).toBe('Autocaravana Integral')
-    expect(resolveSubcategory('overland')).toBe('Célula y 4x4 Overland')
+    expect(resolveSubcategory('tractores')).toBe('Tractores')
+    expect(resolveSubcategory('maquinaria-agricola')).toBe('Maquinaria agrícola')
+    expect(resolveSubcategory('excavadoras')).toBe('Excavadoras')
+    expect(resolveSubcategory('compactacion')).toBe('Compactación')
+    expect(resolveSubcategory('plataformas')).toBe('Plataformas elevadoras')
+    expect(resolveSubcategory('herramienta-electrica')).toBe('Herramienta eléctrica')
+    expect(resolveSubcategory('sierra-poda')).toBe('Sierra y poda')
   })
 
   it('resuelve comparaciones case-insensitive', () => {
-    expect(resolveSubcategory('gran volumen')).toBe('Gran Volumen')
-    expect(resolveSubcategory('minicamper')).toBe('Minicamper')
+    expect(resolveSubcategory('tractores')).toBe('Tractores')
+    expect(resolveSubcategory('TRACTORES')).toBe('Tractores')
+    expect(resolveSubcategory('sierra y poda')).toBe('Sierra y poda')
   })
 
-  it('devuelve null si es vacío o desconocido', () => {
+  it('devuelve null solo si es vacío; un valor legado se conserva tal cual', () => {
     expect(resolveSubcategory('')).toBeNull()
     expect(resolveSubcategory(null)).toBeNull()
-    expect(resolveSubcategory('categoria_inexistente')).toBeNull()
+    // Anuncios legados (demo antigua): el tipo se conserva para no perder datos.
+    expect(resolveSubcategory('Gran Volumen')).toBe('Gran Volumen')
+    expect(resolveSubcategory('Minicamper')).toBe('Minicamper')
+    expect(resolveSubcategory('algo_desconocido')).toBe('algo_desconocido')
   })
 })
 
@@ -159,7 +163,7 @@ describe('normalizeContactMethods', () => {
 })
 
 describe('resolveCategoryId', () => {
-  it('resuelve categoria camper existente', async () => {
+  it('resuelve la categoría legada camper existente (compatibilidad)', async () => {
     const sbMock = {
       from: jest.fn().mockReturnValue({
         select: jest.fn().mockReturnValue({
@@ -173,7 +177,7 @@ describe('resolveCategoryId', () => {
     expect(id).toBe(42)
   })
 
-  it('crea categoria camper si no existe aún', async () => {
+  it('con categoría vacía usa la categoría por defecto y la crea si falta', async () => {
     const sbMock = {
       from: jest.fn((table: string) => ({
         select: jest.fn().mockReturnValue({

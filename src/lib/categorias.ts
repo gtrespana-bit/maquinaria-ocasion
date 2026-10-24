@@ -1,10 +1,20 @@
 /**
  * Categorías y campos técnicos de MaquinariaOcasión.
  *
- * Mercado vertical 100% camper: una categoría principal
- * (Furgonetas Camper y Autocaravanas) con 7 subcategorías y campos técnicos
- * específicos (mecánica, distintivo DGT, homologación, habitabilidad y
- * equipamiento/autonomía camper).
+ * Vertical de maquinaria de ocasión: TRES familias/categorías
+ * (agrícola, obra y herramientas) con 12 subcategorías y campos técnicos
+ * específicos por tipo. La familia y la categoría son la MISMA cosa: la clave
+ * de `FAMILIAS` es la clave de `categoriasData` (y la que `productos.subcategoria`
+ * resuelve para `productos.categoria_id`; ver `resolverCategoriaId` en
+ * `src/app/api/publicar/route.ts`).
+ *
+ * Campos transversales en todas las subcategorías (la ficha y los filtros
+ * comparten estos keys con el JSONB `productos.especificaciones`):
+ * Año, Horas de uso, Combustible, Potencia (CV), Peso (kg),
+ * ¿Incluye transporte?, Documentación. El Estado NO va aquí: es la columna
+ * `productos.estado` con su constraint de cinco valores (Nuevo, Como nuevo,
+ * Bueno, Usado, Para repuestos), coleccionada en el paso de estado de
+ * `/publicar` y filtrada por `filters.condicion`.
  *
  * Las marcas y modelos de cada subcategoría NO viven aquí: se derivan del
  * catálogo maestro `@/lib/marcas` (fabricante → modelo → para qué es apto),
@@ -28,7 +38,7 @@ export interface CatField {
 export interface CatSub {
   label: string
   icon: string
-  /** Slug para URLs de SEO programático (/[provincia]/gran-volumen). */
+  /** Slug para URLs de SEO programático (/[provincia]/tractores). */
   slug: SubSlug
   /**
    * Marcas y modelos aptos para esta subcategoría, ya estructuradas por
@@ -48,14 +58,13 @@ export interface CatConfig {
 
 // ── Familias: el primer nivel de la taxonomía ────────────────────────────
 //
-// MaquinariaOcasión es un vertical 100% camper: la "categoría" única es `camper`
-// (se mantiene por compatibilidad con `productos.categoria_id` y el flujo de
-// publicación), así que el nivel que organiza la navegación son las FAMILIAS:
-// tres mundos que agrupan los 7 tipos. Es lo que ve el usuario en portada,
-// filtros, publicar y menús; la categoría ya no se presenta nunca en la UI.
+// Familia === categoría: `FAMILIAS[k].key` es `categoriasData[k]` y es la
+// clave que viaja en `publicar.categoria` (el API la resuelve a
+// `productos.categoria_id`, auto-creando la fila si falta). La navegación de
+// la UI es familias → tipos (subcategorías) → marca/modelo.
 
 export interface FamiliaCamper {
-  /** Clave estable para i18n y keys de React. */
+  /** Clave estable para i18n y keys de React (y clave de `categoriasData`). */
   key: string
   /** Etiqueta por defecto (es-ES); la UI puede traducirla vía `familias.<key>.label`. */
   label: string
@@ -66,22 +75,22 @@ export interface FamiliaCamper {
 
 export const FAMILIAS: FamiliaCamper[] = [
   {
-    key: 'campers',
-    label: 'Furgonetas Camper',
-    icon: '🚐',
-    subs: ['gran-volumen', 'camper-mediana', 'minicamper'],
+    key: 'agricola',
+    label: 'Maquinaria agrícola',
+    icon: '🚜',
+    subs: ['tractores', 'cosechadoras', 'maquinaria-agricola', 'ganaderia'],
   },
   {
-    key: 'autocaravanas',
-    label: 'Autocaravanas',
-    icon: '🏡',
-    subs: ['perfilada', 'capuchina', 'integral'],
+    key: 'obra',
+    label: 'Maquinaria de obra',
+    icon: '🏗️',
+    subs: ['excavadoras', 'cargadoras', 'compactacion', 'plataformas'],
   },
   {
-    key: 'overland',
-    label: 'Overland y 4x4',
-    icon: '🌍',
-    subs: ['overland'],
+    key: 'herramientas',
+    label: 'Herramientas y motores',
+    icon: '🔧',
+    subs: ['herramienta-electrica', 'motores', 'sierra-poda', 'taller-manual'],
   },
 ]
 
@@ -99,233 +108,306 @@ function aniosSelect(): string[] {
   return _anos
 }
 
-// ── Opciones compartidas (fuente única de verdad de los filtros) ─────────
+// ── Catálogo de opciones de los campos de formulario ──────────────────────
 
-export const OPCIONES_DGT = [
-  'Cero Emisiones',
-  'ECO',
-  'C (Verde)',
-  'B (Amarillo)',
-  'Sin distintivo',
+/** Estado del anuncio: columna `productos.estado` (constraint de 5 valores). */
+export const OPCIONES_ESTADO = [
+  'Nuevo', 'Como nuevo', 'Bueno', 'Usado', 'Para repuestos',
 ] as const
 
-export const OPCIONES_HOMOLOGACION = [
-  'Vehículo Vivienda (2448 / 3148)',
-  'Turismo (1000)',
-  'Vehículo Mixto Adaptable (3100)',
-  'Furgón (2400)',
+export const OPCIONES_COMBUSTIBLE = [
+  'Diésel', 'Gasolina', 'Eléctrico', 'Batería', 'Propano (LPG)', 'Híbrido',
 ] as const
 
-export const OPCIONES_COMBUSTIBLE = ['Diésel', 'Gasolina', 'Híbrido', 'Eléctrico'] as const
-export const OPCIONES_TRANSMISION = ['Manual', 'Automática'] as const
-export const OPCIONES_TRACCION = ['4x2', '4x4'] as const
-
-// Magnitudes de arquitectura furgonetera. Se capturan como tramos (no como
-// número exacto) para que el mismo dato sirva de filtro: un tramo de 3.500 kg
-// es la frontera del carnet B, y la longitud/altura deciden garaje y ferry.
-export const OPCIONES_MMA = [
-  'Hasta 3.500 kg (carnet B)',
-  '3.501 - 4.250 kg',
-  'Más de 4.250 kg',
-] as const
-
-export const OPCIONES_LONGITUD = [
-  'Hasta 5,5 m',
-  '5,5 - 6,5 m',
-  'Más de 6,5 m',
-] as const
-
-export const OPCIONES_ALTURA = [
-  'Hasta 2,5 m',
-  '2,5 - 3,0 m',
-  'Más de 3,0 m',
-] as const
-
-export const OPCIONES_PLAZAS_VIAJE = ['2', '3', '4', '5', '6'] as const
-export const OPCIONES_PLAZAS_DORMIR = ['1', '2', '3', '4', '5+'] as const
-
-export const OPCIONES_CALEFACCION = ['Sí - Diésel', 'Sí - Gas', 'No tiene'] as const
-export const OPCIONES_AGUA_CALIENTE = ['Sí', 'No'] as const
-
-export const OPCIONES_BANO = [
-  'Ducha interior con agua caliente + WC fijo',
-  'Ducha exterior + poti portátil',
-  'Cabina de baño completa',
-  'Sin baño',
-] as const
-
-export const OPCIONES_BATERIA_AUX = ['Litio LiFePO4', 'AGM', 'Gel', 'Sin batería auxiliar'] as const
 export const OPCIONES_SI_NO = ['Sí', 'No'] as const
 
-export const OPCIONES_NEVERA = [
-  'Compresor 12V',
-  'Trivalente gas/12V/220V',
-  'Portátil',
-  'No',
+/** Documentación: sustituye al sello de homologación camper. */
+export const OPCIONES_DOCUMENTACION = [
+  'Factura y libro de instrucciones',
+  'Declaración CE / ficha técnica',
+  'Parcial',
+  'Sin documentación',
 ] as const
 
-// ── Campos técnicos por bloque ────────────────────────────────────────────
+// Agrícola
+export const OPCIONES_TRACCION_AGRICOLA = ['4x4', '4x2', 'Sin tracción'] as const
+export const OPCIONES_ENGANCHE = [
+  'Tres puntos', 'Barra de tracción', 'Enganche frontal', 'Sin enganche',
+] as const
+export const OPCIONES_PTO = ['540 rpm', '540/1000 rpm', 'Sin PTO'] as const
+export const OPCIONES_TRANSMISION_AGRICOLA = [
+  'Manual', 'Hidrostática', 'CVT / variable',
+] as const
 
-/** Bloque "Mecánica del Vehículo". */
-const camposMecanica = (tamanos?: string[]): CatField[] => [
-  { label: 'Año de matriculación', type: 'select', placeholder: 'Selecciona...' },
-  { label: 'Kilómetros', type: 'number', placeholder: 'Ej: 145000' },
-  { label: 'Combustible', type: 'select', placeholder: 'Selecciona...', options: [...OPCIONES_COMBUSTIBLE] },
-  { label: 'Transmisión', type: 'select', placeholder: 'Selecciona...', options: [...OPCIONES_TRANSMISION] },
-  { label: 'Potencia (CV)', type: 'number', placeholder: 'Ej: 140' },
-  ...(tamanos
-    ? [{ label: 'Tamaño chasis', type: 'select' as const, placeholder: 'Selecciona...', options: tamanos }]
-    : []),
-  { label: 'Tracción', type: 'select', placeholder: 'Selecciona...', options: [...OPCIONES_TRACCION] },
-  { label: 'MMA / Peso máximo autorizado', type: 'select', placeholder: 'Selecciona...', options: [...OPCIONES_MMA] },
-  { label: 'Longitud exterior', type: 'select', placeholder: 'Selecciona...', options: [...OPCIONES_LONGITUD] },
-  { label: 'Altura exterior', type: 'select', placeholder: 'Selecciona...', options: [...OPCIONES_ALTURA] },
-  { label: 'Distintivo Ambiental DGT', type: 'select', placeholder: 'Selecciona...', options: [...OPCIONES_DGT] },
-  { label: 'Homologación', type: 'select', placeholder: 'Selecciona...', options: [...OPCIONES_HOMOLOGACION] },
+// Obra
+export const OPCIONES_TRACCION_OBRA = ['Oruga', 'Ruedas 4x2', 'Ruedas 4x4'] as const
+export const OPCIONES_CAPACIDAD_CARGA = ['Hasta 1 t', '1 – 3 t', 'Más de 3 t'] as const
+export const OPCIONES_MEDIDAS_TRANSPORTE = [
+  'Hasta 2,5 m', '2,5 – 4 m', 'Más de 4 m',
+] as const
+
+// Herramientas
+export const OPCIONES_POTENCIA_W = [
+  'Hasta 500 W', '500 – 1.000 W', '1.000 – 2.500 W', 'Más de 2.500 W',
+] as const
+export const OPCIONES_TENSION = ['230 V', '400 V', 'Bivolt', 'Batería'] as const
+
+// ── Bloques de campos reutilizables ──────────────────────────────────────
+
+const selectDe = (opciones: readonly string[]): string[] => [...opciones]
+
+/**
+ * Transversales: presentes en TODAS las subcategorías (coinciden con las
+ * claves que leen los filtros del catálogo y la ficha técnica).
+ */
+const camposTransversales = (): CatField[] => [
+  { label: 'Año', type: 'select', placeholder: 'Selecciona...' },
+  { label: 'Horas de uso', type: 'number', placeholder: 'Ej: 4500' },
+  { label: 'Combustible', type: 'select', placeholder: 'Selecciona...', options: selectDe(OPCIONES_COMBUSTIBLE) },
+  { label: 'Potencia (CV)', type: 'number', placeholder: 'Ej: 110' },
+  { label: 'Peso (kg)', type: 'number', placeholder: 'Ej: 4200' },
+  { label: '¿Incluye transporte?', type: 'select', placeholder: 'Selecciona...', options: selectDe(OPCIONES_SI_NO) },
+  { label: 'Documentación', type: 'select', placeholder: 'Selecciona...', options: selectDe(OPCIONES_DOCUMENTACION) },
 ]
 
-/** Bloque "Habitabilidad". */
-const camposHabitabilidad = (): CatField[] => [
-  { label: 'Plazas homologadas para viajar', type: 'select', placeholder: 'Selecciona...', options: [...OPCIONES_PLAZAS_VIAJE] },
-  { label: 'Plazas para dormir', type: 'select', placeholder: 'Selecciona...', options: [...OPCIONES_PLAZAS_DORMIR] },
+/** Específicos de la familia agrícola: tracción, enganche y toma de fuerza. */
+const camposAgricola = (): CatField[] => [
+  { label: 'Tracción', type: 'select', placeholder: 'Selecciona...', options: selectDe(OPCIONES_TRACCION_AGRICOLA) },
+  { label: 'Enganche', type: 'select', placeholder: 'Selecciona...', options: selectDe(OPCIONES_ENGANCHE) },
+  { label: 'Toma de fuerza (PTO)', type: 'select', placeholder: 'Selecciona...', options: selectDe(OPCIONES_PTO) },
+  { label: 'Transmisión', type: 'select', placeholder: 'Selecciona...', options: selectDe(OPCIONES_TRANSMISION_AGRICOLA) },
 ]
 
-/** Bloque "Equipamiento Camper y Autonomía". */
-const camposCamper = (): CatField[] => [
-  { label: 'Calefacción estacionaria', type: 'select', placeholder: 'Selecciona...', options: [...OPCIONES_CALEFACCION] },
-  { label: 'Agua caliente', type: 'select', placeholder: 'Selecciona...', options: [...OPCIONES_AGUA_CALIENTE] },
-  { label: 'Baño / Ducha', type: 'select', placeholder: 'Selecciona...', options: [...OPCIONES_BANO] },
-  { label: 'Depósito agua limpia (litros)', type: 'number', placeholder: 'Ej: 100' },
-  { label: 'Batería auxiliar', type: 'select', placeholder: 'Selecciona...', options: [...OPCIONES_BATERIA_AUX] },
-  { label: 'Placa solar', type: 'select', placeholder: 'Selecciona...', options: [...OPCIONES_SI_NO] },
-  { label: 'Placa solar (watios)', type: 'number', placeholder: 'Ej: 200' },
-  { label: 'Inversor 220V', type: 'select', placeholder: 'Selecciona...', options: [...OPCIONES_SI_NO] },
-  { label: 'Inversor 220V (watios)', type: 'number', placeholder: 'Ej: 3000' },
-  { label: 'Nevera', type: 'select', placeholder: 'Selecciona...', options: [...OPCIONES_NEVERA] },
+/** Específicos de la familia de obra: tracción y logística de transporte. */
+const camposObra = (): CatField[] => [
+  { label: 'Tracción', type: 'select', placeholder: 'Selecciona...', options: selectDe(OPCIONES_TRACCION_OBRA) },
+  { label: 'Medidas de transporte', type: 'select', placeholder: 'Selecciona...', options: selectDe(OPCIONES_MEDIDAS_TRANSPORTE) },
 ]
 
-const TAMANOS_GRAN_VOLUMEN = ['L2H2', 'L3H2', 'L3H3', 'L4H2', 'L4H3', 'L5H3']
-const TAMANOS_MEDIANA = ['L2H2', 'L3H2']
-const TAMANOS_MINI = ['L1', 'L2']
+/** Específicos de herramientas: potencia eléctrica y alimentación. */
+const camposHerramientas = (): CatField[] => [
+  { label: 'Potencia (W)', type: 'select', placeholder: 'Selecciona...', options: selectDe(OPCIONES_POTENCIA_W) },
+  { label: 'Tensión', type: 'select', placeholder: 'Selecciona...', options: selectDe(OPCIONES_TENSION) },
+  { label: 'Batería incluida', type: 'select', placeholder: 'Selecciona...', options: selectDe(OPCIONES_SI_NO) },
+]
+
+const campoTipo = (tipos: string[]): CatField => ({
+  label: 'Tipo', type: 'select', placeholder: 'Selecciona...', options: tipos,
+})
+
+// ── Categorías (familias) y subcategorías ────────────────────────────────
 
 export const categoriasData: Record<string, CatConfig> = {
-  camper: {
-    label: 'Furgonetas Camper y Autocaravanas',
-    icon: '🚐',
-    slug: 'camper',
+  agricola: {
+    label: 'Maquinaria agrícola',
+    icon: '🚜',
+    slug: 'agricola',
     subs: [
       {
-        label: 'Gran Volumen',
-        icon: '🚐',
-        slug: 'gran-volumen',
-        marcas: modelosDeSubcategoria('gran-volumen'),
+        label: 'Tractores',
+        icon: '🚜',
+        slug: 'tractores',
+        marcas: modelosDeSubcategoria('tractores'),
+        campos: [...camposTransversales(), ...camposAgricola()],
+      },
+      {
+        label: 'Cosechadoras',
+        icon: '🌾',
+        slug: 'cosechadoras',
+        marcas: modelosDeSubcategoria('cosechadoras'),
         campos: [
-          ...camposMecanica(TAMANOS_GRAN_VOLUMEN),
-          ...camposHabitabilidad(),
-          ...camposCamper(),
+          ...camposTransversales(),
+          ...camposAgricola(),
+          campoTipo(['Cosechadora', 'Empacadora', 'Ensiladora']),
+          { label: 'Ancho de corte (m)', type: 'number', placeholder: 'Ej: 6' },
         ],
       },
       {
-        label: 'Camper Mediana / Compacta',
-        icon: '🏕️',
-        slug: 'camper-mediana',
-        marcas: modelosDeSubcategoria('camper-mediana'),
+        label: 'Maquinaria agrícola',
+        icon: '🛠️',
+        slug: 'maquinaria-agricola',
+        marcas: modelosDeSubcategoria('maquinaria-agricola'),
         campos: [
-          ...camposMecanica(TAMANOS_MEDIANA),
-          ...camposHabitabilidad(),
-          ...camposCamper(),
+          ...camposTransversales(),
+          ...camposAgricola(),
+          campoTipo(['Arado', 'Sembradora', 'Cultivador', 'Pulverizadora', 'Rastrillo', 'Segadora']),
+          { label: 'Ancho de trabajo (m)', type: 'number', placeholder: 'Ej: 3' },
         ],
       },
       {
-        label: 'Minicamper',
-        icon: '🚙',
-        slug: 'minicamper',
-        marcas: modelosDeSubcategoria('minicamper'),
+        label: 'Ganadería',
+        icon: '🐄',
+        slug: 'ganaderia',
+        marcas: modelosDeSubcategoria('ganaderia'),
         campos: [
-          ...camposMecanica(TAMANOS_MINI),
-          ...camposHabitabilidad(),
-          ...camposCamper(),
+          ...camposTransversales(),
+          ...camposAgricola(),
+          campoTipo(['Ordenadora', 'Provocadora de celo', 'Comedero', 'Bebedero', 'Vallado']),
+          { label: 'Número de puestos', type: 'number', placeholder: 'Ej: 50' },
+        ],
+      },
+    ],
+  },
+  obra: {
+    label: 'Maquinaria de obra',
+    icon: '🏗️',
+    slug: 'obra',
+    subs: [
+      {
+        label: 'Excavadoras',
+        icon: '⛏️',
+        slug: 'excavadoras',
+        marcas: modelosDeSubcategoria('excavadoras'),
+        campos: [
+          ...camposTransversales(),
+          ...camposObra(),
+          campoTipo(['Excavadora sobre oruga', 'Retroexcavadora', 'Miniestacadora']),
+          { label: 'Profundidad máx. (m)', type: 'number', placeholder: 'Ej: 6' },
         ],
       },
       {
-        label: 'Autocaravana Perfilada',
-        icon: '🛖',
-        slug: 'perfilada',
-        marcas: modelosDeSubcategoria('perfilada'),
+        label: 'Cargadoras',
+        icon: '🚚',
+        slug: 'cargadoras',
+        marcas: modelosDeSubcategoria('cargadoras'),
         campos: [
-          ...camposMecanica(TAMANOS_GRAN_VOLUMEN),
-          ...camposHabitabilidad(),
-          ...camposCamper(),
+          ...camposTransversales(),
+          ...camposObra(),
+          campoTipo(['Minicargadora (skid-steer)', 'Cargadora frontal', 'Telecargador']),
+          { label: 'Capacidad de carga', type: 'select', placeholder: 'Selecciona...', options: selectDe(OPCIONES_CAPACIDAD_CARGA) },
         ],
       },
       {
-        label: 'Autocaravana Capuchina',
-        icon: '🚌',
-        slug: 'capuchina',
-        marcas: modelosDeSubcategoria('capuchina'),
+        label: 'Compactación',
+        icon: '🛞',
+        slug: 'compactacion',
+        marcas: modelosDeSubcategoria('compactacion'),
         campos: [
-          ...camposMecanica(TAMANOS_GRAN_VOLUMEN),
-          ...camposHabitabilidad(),
-          ...camposCamper(),
+          ...camposTransversales(),
+          ...camposObra(),
+          campoTipo(['Rodillo', 'Apisonador', 'Miniapisonador', 'Dumper articulado']),
+          { label: 'Capacidad de carga', type: 'select', placeholder: 'Selecciona...', options: selectDe(OPCIONES_CAPACIDAD_CARGA) },
         ],
       },
       {
-        label: 'Autocaravana Integral',
-        icon: '🏭',
-        slug: 'integral',
-        marcas: modelosDeSubcategoria('integral'),
+        label: 'Plataformas elevadoras',
+        icon: '🪜',
+        slug: 'plataformas',
+        marcas: modelosDeSubcategoria('plataformas'),
         campos: [
-          ...camposMecanica(),
-          ...camposHabitabilidad(),
-          ...camposCamper(),
+          ...camposTransversales(),
+          ...camposObra(),
+          campoTipo(['Telescópica', 'Articulada (tijera)', 'Vertical móvil', 'Rotativa']),
+          { label: 'Altura máx. trabajo (m)', type: 'number', placeholder: 'Ej: 14' },
+          { label: 'Capacidad de la cesta (kg)', type: 'number', placeholder: 'Ej: 250' },
+        ],
+      },
+    ],
+  },
+  herramientas: {
+    label: 'Herramientas y motores',
+    icon: '🔧',
+    slug: 'herramientas',
+    subs: [
+      {
+        label: 'Herramienta eléctrica',
+        icon: '🔌',
+        slug: 'herramienta-electrica',
+        marcas: modelosDeSubcategoria('herramienta-electrica'),
+        campos: [
+          ...camposTransversales(),
+          ...camposHerramientas(),
+          campoTipo(['Taladro', 'Amoladora', 'Sierra circular', 'Husillo', 'Rotomartillo', 'Multifunción']),
         ],
       },
       {
-        label: 'Célula y 4x4 Overland',
-        icon: '🌍',
-        slug: 'overland',
-        marcas: modelosDeSubcategoria('overland'),
+        label: 'Motores y generadores',
+        icon: '⚙️',
+        slug: 'motores',
+        marcas: modelosDeSubcategoria('motores'),
         campos: [
-          ...camposMecanica(),
-          ...camposHabitabilidad(),
-          ...camposCamper(),
+          ...camposTransversales(),
+          ...camposHerramientas(),
+          campoTipo(['Generador', 'Grupo electrógeno', 'Compresor', 'Soldadora']),
+        ],
+      },
+      {
+        label: 'Sierra y poda',
+        icon: '🌲',
+        slug: 'sierra-poda',
+        marcas: modelosDeSubcategoria('sierra-poda'),
+        campos: [
+          ...camposTransversales(),
+          ...camposHerramientas(),
+          campoTipo(['Motosierra', 'Desbrozadora', 'Podadora', 'Cortacésped', 'Multiherramienta']),
+          { label: 'Largo de espada (cm)', type: 'number', placeholder: 'Ej: 45' },
+        ],
+      },
+      {
+        label: 'Taller manual',
+        icon: '🔧',
+        slug: 'taller-manual',
+        marcas: modelosDeSubcategoria('taller-manual'),
+        campos: [
+          ...camposTransversales(),
+          ...camposHerramientas(),
+          campoTipo(['Juego de llaves', 'Destornilladores', 'Alicates', 'Gatas y elevación', 'Otros']),
         ],
       },
     ],
   },
 }
 
-// ── Helpers de consulta (contrato estable para los componentes) ───────────
+// ── Helpers de navegación y formulario ───────────────────────────────────
 
-/** Lista plana de subcategorías de una categoría para búsqueda rápida. */
-export function getSubByCategory(catKey: string): { label: string; icon: string; slug: string }[] {
-  const cat = categoriasData[catKey]
-  return cat ? cat.subs.map(s => ({ label: s.label, icon: s.icon, slug: s.slug })) : []
-}
+/** Slugs de subcategoría de TODAS las familias, en orden de taxonomía. */
+export const TODAS_LAS_SUBS: CatSub[] = Object.values(categoriasData).flatMap(c => c.subs)
 
-export function getSubConfig(catKey: string, subLabel: string): CatSub | undefined {
-  const cat = categoriasData[catKey]
-  if (!cat) return undefined
-  return cat.subs.find(s => s.label === subLabel)
-}
-
-export function getSubBySlug(catKey: string, subSlug: string): CatSub | undefined {
-  const cat = categoriasData[catKey]
-  if (!cat) return undefined
-  return cat.subs.find(s => s.slug === subSlug)
-}
+/** Clave de la primera categoría: valor por defecto para entradas legadas. */
+export const CATEGORIA_DEFAULT = 'agricola'
 
 /**
- * Valores canónicos de marca/modelo de una subcategoría (lo que se guarda en
- * `productos.marca` y viaja en `?marca=`). Para renderizar agrupado por
- * fabricante usa `agruparPorFabricante(sub.marcas)` de `@/lib/marcas`.
+ * Familia/categoría a la que pertenece una subcategoría dada por label o slug
+ * (los productos guardan el label en `productos.subcategoria`).
  */
-export function getMarcaOptions(catKey: string, subLabel: string): string[] {
-  const sub = getSubConfig(catKey, subLabel)
-  return sub ? valoresUnicos(sub.marcas) : []
+export function categoriaDeSubcategoria(subLabelOslug: string): string | undefined {
+  const v = subLabelOslug.trim().toLowerCase()
+  if (!v) return undefined
+  for (const [key, cat] of Object.entries(categoriasData)) {
+    if (cat.subs.some(s => s.label === subLabelOslug || s.slug === v)) return key
+  }
+  return undefined
 }
 
-/** ¿Es este campo el selector de marca de la subcategoría? */
+/** Lista de `{label, icon, slug}` para selects de tipos de UNA familia. */
+export function getSubByCategory(catKey: string): { label: string; icon: string; slug: string }[] {
+  const data = categoriasData[catKey]
+  if (!data) return []
+  return data.subs.map(s => ({ label: s.label, icon: s.icon, slug: s.slug }))
+}
+
+/** Devuelve la subcategoría por su label dentro de una familia. */
+export function getSubConfig(catKey: string, subLabel: string): CatSub | undefined {
+  const data = categoriasData[catKey]
+  if (!data) return undefined
+  return data.subs.find(s => s.label === subLabel)
+}
+
+/** Devuelve la subcategoría por su slug dentro de una familia. */
+export function getSubBySlug(catKey: string, subSlug: string): CatSub | undefined {
+  const data = categoriasData[catKey]
+  if (!data) return undefined
+  return data.subs.find(s => s.slug === subSlug)
+}
+
+/** Lista de valores de marca únicos de una subcategoría. */
+export function getMarcaOptions(catKey: string, subLabel: string): string[] {
+  const sub = getSubConfig(catKey, subLabel)
+  if (!sub) return []
+  return valoresUnicos(sub.marcas)
+}
+
+/** true si el campo representa la marca (usa el vocabulario de marcas). */
 export function esCampoMarca(campo: { label: string; type: string }): boolean {
   return campo.type === 'select' && campo.label.toLowerCase().includes('marca')
 }
@@ -341,7 +423,7 @@ export function esCampoAnio(campo: { label: string }): boolean {
  *
  * Dos campos resuelven sus opciones dinámicamente para no repetirlas en cada
  * subcategoría:
- *  - `Año de matriculación`: últimos 30 años.
+ *  - `Año` / `Año de matriculación`: últimos 30 años.
  *  - `Marca`: hereda la lista `marcas` de la propia subcategoría.
  */
 export function resolverCampos(sub: CatSub | undefined): CatField[] {
@@ -357,37 +439,52 @@ export function resolverCampos(sub: CatSub | undefined): CatField[] {
   })
 }
 
-/** Nombres de campo para agrupar la ficha técnica del detalle de producto. */
+// ── Ficha técnica agrupada ───────────────────────────────────────────────
+
+/**
+ * Bloques de la ficha técnica de la página de producto. Cuatro bloques:
+ * técnica, estado, documentación y logística. Las claves camper legadas
+ * siguen listadas para que los anuncios demo antiguos mantengan su ficha
+ * agrupada (la demo se elimina en la Fase 4).
+ */
 export const GRUPOS_FICHA_TECNICA: { titulo: string; icon: string; campos: string[] }[] = [
   {
-    titulo: 'Mecánica del Vehículo',
+    titulo: 'Ficha técnica',
     icon: '🔧',
     campos: [
-      'Año de matriculación',
-      'Kilómetros',
+      // Transversales de la taxonomía de maquinaria
+      'Año',
+      'Horas de uso',
       'Combustible',
-      'Transmisión',
       'Potencia (CV)',
-      'Tamaño chasis',
+      'Potencia (W)',
+      'Tensión',
+      'Peso (kg)',
       'Tracción',
+      'Enganche',
+      'Toma de fuerza (PTO)',
+      'Transmisión',
+      'Capacidad de carga',
+      'Capacidad de la cesta (kg)',
+      'Medidas de transporte',
+      'Batería incluida',
+      'Tipo',
+      'Ancho de corte (m)',
+      'Ancho de trabajo (m)',
+      'Profundidad máx. (m)',
+      'Altura máx. trabajo (m)',
+      'Largo de espada (cm)',
+      'Número de puestos',
+      // Claves legadas de anuncios camper antiguos (demo)
+      'Kilómetros',
+      'Kilometraje (km)',
+      'Año de matriculación',
       'MMA / Peso máximo autorizado',
       'Longitud exterior',
       'Altura exterior',
-      'Distintivo Ambiental DGT',
-      'Homologación',
-      'Año',
-      'Kilometraje (km)',
-    ],
-  },
-  {
-    titulo: 'Habitabilidad',
-    icon: '🛏️',
-    campos: ['Plazas homologadas para viajar', 'Plazas para dormir'],
-  },
-  {
-    titulo: 'Equipamiento Camper y Autonomía',
-    icon: '⚡',
-    campos: [
+      'Tamaño chasis',
+      'Plazas homologadas para viajar',
+      'Plazas para dormir',
       'Calefacción estacionaria',
       'Agua caliente',
       'Baño / Ducha',
@@ -398,34 +495,64 @@ export const GRUPOS_FICHA_TECNICA: { titulo: string; icon: string; campos: strin
       'Inversor 220V',
       'Inversor 220V (watios)',
       'Nevera',
+      'Distintivo Ambiental DGT',
+      'Homologación',
     ],
+  },
+  {
+    titulo: 'Estado',
+    icon: '✅',
+    campos: ['Estado'],
+  },
+  {
+    titulo: 'Documentación',
+    icon: '📄',
+    campos: ['Documentación'],
+  },
+  {
+    titulo: 'Logística',
+    icon: '🚚',
+    campos: ['¿Incluye transporte?'],
   },
 ]
 
-/** Agrupa las especificaciones guardadas por bloque de ficha técnica. */
+/**
+ * Devuelve los bloques con solo campos presentes, y su valor.
+ * @param specs objeto de especificaciones del producto (JSONB). Incluye
+ * `Estado` cuando el llamante fusiona la columna `productos.estado`.
+ */
 export function agruparFichaTecnica(
-  especificaciones: Record<string, string> | null | undefined
-): { titulo: string; icon: string; filas: [string, string][] }[] {
-  if (!especificaciones) return []
-  const usados = new Set<string>()
-  return GRUPOS_FICHA_TECNICA.map(grupo => {
-    const filas: [string, string][] = []
-    for (const campo of grupo.campos) {
-      const v = especificaciones[campo]
-      if (v && !usados.has(campo)) {
-        filas.push([campo, v])
-        usados.add(campo)
+  specs: Record<string, string | number | undefined> | null | undefined
+): { titulo: string; icon: string; campos: string[]; filas: [string, string | number][] }[] {
+  if (!specs) return []
+  const grupos: { titulo: string; icon: string; campos: string[]; filas: [string, string | number][] }[] = []
+  for (const g of GRUPOS_FICHA_TECNICA) {
+    const filas: [string, string | number][] = []
+    for (const c of g.campos) {
+      const v = specs[c]
+      if (v !== undefined && v !== null && String(v).trim() !== '') {
+        filas.push([c, v])
       }
     }
-    return { titulo: grupo.titulo, icon: grupo.icon, filas }
-  }).filter(g => g.filas.length > 0)
+    if (filas.length > 0) {
+      grupos.push({ titulo: g.titulo, icon: g.icon, campos: g.campos, filas })
+    }
+  }
+  return grupos
 }
 
-/** Campos "extra" que no pertenecen a ningún grupo conocido. */
+/**
+ * Campos extra (no listados en `GRUPOS_FICHA_TECNICA`), ordenados de forma
+ * estable por clave. Se muestran en un bloque aparte bajo "Especificaciones".
+ */
 export function camposFichaExtras(
-  especificaciones: Record<string, string> | null | undefined
-): [string, string][] {
-  if (!especificaciones) return []
+  specs: Record<string, string | number | undefined> | null | undefined
+): [string, string | number][] {
+  if (!specs) return []
   const conocidos = new Set(GRUPOS_FICHA_TECNICA.flatMap(g => g.campos))
-  return Object.entries(especificaciones).filter(([k, v]) => v && !conocidos.has(k))
+  return Object.entries(specs)
+    .filter((entry): entry is [string, string | number] =>
+      !conocidos.has(entry[0]) && entry[1] !== undefined && entry[1] !== null && String(entry[1]).trim() !== ''
+    )
+    .sort(([a], [b]) => a.localeCompare(b, 'es'))
 }
