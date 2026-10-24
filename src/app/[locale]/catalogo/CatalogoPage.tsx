@@ -10,7 +10,7 @@ import LocalLink from '@/components/LocalLink'
 import Image from 'next/image'
 import { Search, ChevronRight, XCircle } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
-import { categoriasData, familiaDeSub } from '@/lib/categorias'
+import { TODAS_LAS_SUBS, familiaDeSub, categoriaDeSubcategoria } from '@/lib/categorias'
 import UbicacionSelector from '@/components/UbicacionSelector'
 import { Pagination } from '@/components/Pagination'
 import { OptimizedProductGrid } from '@/components/OptimizedProductGrid'
@@ -317,7 +317,9 @@ export default function CatalogoClient({ initialProducts = [], initialCount = 0 
     }
   }, [currentPage, totalPages, loading, productosToShow.length, categoria, subcategoria, marca, q, precioMin, precioMax, ubicacionEstado, ubicacionCiudad, filtrosTecnicos, filtrosRango, vendedor, itemsPerPage, prefetchPage]);
 
-  const subActiva = categoriasData.camper.subs.find(s => s.label === subcategoria)
+  const subActiva = TODAS_LAS_SUBS.find(s => s.label === subcategoria)
+  // Familia/contexto de filtros: `?categoria=` o la familia de la subelegida.
+  const categoriaFiltros = categoria || categoriaDeSubcategoria(subcategoria)
   const subLabel = subcategoria
     ? (subActiva?.label || subcategoria)
     : ''
@@ -335,8 +337,7 @@ export default function CatalogoClient({ initialProducts = [], initialCount = 0 
   ]
 
   if (subcategoria) {
-    // Jerarquía real del vertical: Familia → Tipo (la categoría única
-    // `camper` ya no se expone en la UI).
+    // Jerarquía real del vertical: Familia → Tipo.
     const familia = subActiva ? familiaDeSub(subActiva.slug) : undefined
     if (familia) {
       breadcrumbs.push({
@@ -398,6 +399,7 @@ export default function CatalogoClient({ initialProducts = [], initialCount = 0 
       <div className="flex flex-col lg:flex-row gap-6">
         <aside className="w-full lg:w-72 flex-shrink-0">
           <CatalogFilters
+            categoria={categoriaFiltros}
             subcategoria={subcategoria}
             marca={marca}
             precioMin={precioMin}

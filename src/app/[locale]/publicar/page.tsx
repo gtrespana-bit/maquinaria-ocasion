@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation'
 import { supabase, isSupabaseConfigured } from '@/lib/supabase'
 import { productUrl } from '@/lib/product-url'
 import { useAuth } from '@/components/AuthProvider'
-import { categoriasData, resolverCampos, esCampoMarca, FAMILIAS } from '@/lib/categorias'
+import { categoriasData, resolverCampos, esCampoMarca, FAMILIAS, CATEGORIA_DEFAULT } from '@/lib/categorias'
 import { agruparPorFabricante, etiquetaModelo } from '@/lib/marcas'
 import { ESTADOS, getMunicipiosNombres } from '@/lib/ubicaciones'
 import { formatPrecio } from '@/lib/precio'
@@ -149,12 +149,13 @@ export default function PublicarPage() {
     )
   }
 
-  // Marketplace 100% camper: la categoría es siempre `camper` (se envía fija
-  // al API); lo que elige el usuario es la FAMILIA y luego el tipo.
-  const cat = categoriasData.camper
-  const familiaCfg = FAMILIAS.find(f => f.key === familia)
-  const tiposFamilia = familiaCfg ? cat.subs.filter(s => familiaCfg.subs.includes(s.slug)) : []
-  const sub = tiposFamilia.find(s => s.label === subcategoria) || cat.subs.find(s => s.label === subcategoria)
+  // La familia elegida en el paso 1 ES la categoría (agrícola / obra /
+  // herramientas): los tipos del paso 2 salen de su `subs` y su clave viaja en
+  // `categoria` (el API la resuelve a `categoria_id` auto-creando la fila).
+  const familiaCfg = familia ? FAMILIAS.find(f => f.key === familia) : undefined
+  const cat = familia ? categoriasData[familia] : undefined
+  const tiposFamilia = cat && familiaCfg ? cat.subs.filter(s => familiaCfg.subs.includes(s.slug)) : []
+  const sub = tiposFamilia.find(s => s.label === subcategoria) || cat?.subs.find(s => s.label === subcategoria)
 
   // Los campos de "Año" y "Marca" resuelven sus opciones dinámicamente
   // (ver resolverCampos). Antes, un campo Marca sin `options` — como el de
@@ -359,7 +360,7 @@ export default function PublicarPage() {
           user_id: user?.id,
           titulo,
           descripcion,
-          categoria: 'camper',
+          categoria: familia || CATEGORIA_DEFAULT,
           subcategoria,
           marca: marcaFinal,
           modelo: modeloFinal,

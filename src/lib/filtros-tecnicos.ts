@@ -23,12 +23,21 @@
  * Además, todos los filtros activos viajan en una sola condición `@>`, en vez
  * de una condición por campo.
  *
- * Los filtros por RANGO numérico (kilómetros máximos, año mínimo, watios de
- * placa/inversor) son otra cosa: `@>` compara igualdad de texto y no sirve
- * para ">" y "<". Esos filtros viven en `RANGOS_NUMERICOS` y su traducción a la
- * consulta está en `src/lib/catalog-consulta.ts` (`aplicarRangosNumericos`):
- * se comparan los números extraídos del JSONB con las claves canónicas
- * (`Kilómetros`, `Año de matriculación`, `Placa solar (watios)`, …).
+ * Los filtros por RANGO numérico (horas de uso máximas, año mínimo) son otra
+ * cosa: `@>` compara igualdad de texto y no sirve para ">" y "<". Esos filtros
+ * viven en `RANGOS_NUMERICOS` y su traducción a la consulta está en
+ * `src/lib/catalog-consulta.ts` (`aplicarRangosNumericos`): se comparan los
+ * números extraídos del JSONB con las claves canónicas (`Horas de uso`,
+ * `Año`, …) a través de columnas generadas (`espec_horas`, `espec_anio`).
+ *
+ * ── Filtros por categoría ───────────────────────────────────────────────
+ * La taxonomía tiene tres familias (agrícola, obra, herramientas) con filtros
+ * específicos además de los transversales (combustible, documentación y
+ * transporte, comunes a todas). `camposPorCategoria` da el conjunto de cada
+ * familia para el panel lateral (con el contexto de `?categoria=` o de la
+ * subcategoría activa) y `FILTROS_TECNICOS` es la UNIÓN deduplicada por
+ * `param`, que es lo que usan la lectura de query, la firma de caché y la
+ * traducción a consulta: el contrato de consulta no cambia por categoría.
  *
  * Las claves y los valores llevan espacios y acentos ("Plazas para dormir",
  * "C (Verde)"): supabase-js los envía percent-encoded y PostgREST los decodifica
@@ -37,77 +46,126 @@
  */
 
 import {
-  OPCIONES_DGT,
-  OPCIONES_HOMOLOGACION,
   OPCIONES_COMBUSTIBLE,
-  OPCIONES_TRACCION,
-  OPCIONES_MMA,
-  OPCIONES_LONGITUD,
-  OPCIONES_ALTURA,
-  OPCIONES_PLAZAS_VIAJE,
-  OPCIONES_PLAZAS_DORMIR,
-  OPCIONES_CALEFACCION,
-  OPCIONES_AGUA_CALIENTE,
-  OPCIONES_BANO,
-  OPCIONES_BATERIA_AUX,
+  OPCIONES_DOCUMENTACION,
   OPCIONES_SI_NO,
-  OPCIONES_NEVERA,
+  OPCIONES_TRACCION_AGRICOLA,
+  OPCIONES_ENGANCHE,
+  OPCIONES_PTO,
+  OPCIONES_TRACCION_OBRA,
+  OPCIONES_CAPACIDAD_CARGA,
+  OPCIONES_MEDIDAS_TRANSPORTE,
+  OPCIONES_POTENCIA_W,
+  OPCIONES_TENSION,
 } from './categorias'
 
 /** Bloques en los que se agrupan los filtros técnicos en la barra lateral. */
-export type GrupoFiltroTecnico = 'mecanica' | 'habitabilidad' | 'autonomia'
+export type GrupoFiltroTecnico = 'tecnica' | 'documentacion' | 'logistica'
+
+/** Familias/categorías con filtros específicos (claves de `categoriasData`). */
+export type SlugCategoria = 'agricola' | 'obra' | 'herramientas'
 
 /** Tipo de control con el que se captura el filtro. */
 export type TipoFiltro = 'select' | 'rango'
 
 export interface FiltroTecnico {
-  /** Parámetro de la query string: /catalogo?plazasDormir=4 */
+  /** Parámetro de la query string: /catalogo?combustible=Diésel */
   param: string
   /** Clave con la que el campo se guarda en el JSONB `especificaciones`. */
   campo: string
   grupo: GrupoFiltroTecnico
   /** Valores ofrecidos. Deben coincidir con las opciones del formulario. */
   opciones: readonly string[]
-  /** Clave i18n completa, p. ej. `catalog.filters.plazasDormir`. */
+  /** Clave i18n completa, p. ej. `catalog.filters.fuel`. */
   i18n: string
 }
 
-export const FILTROS_TECNICOS: readonly FiltroTecnico[] = [
-  // Mecánica y arquitectura del vehículo
-  { param: 'dgt', campo: 'Distintivo Ambiental DGT', grupo: 'mecanica', opciones: OPCIONES_DGT, i18n: 'catalog.filters.dgt' },
-  { param: 'homologacion', campo: 'Homologación', grupo: 'mecanica', opciones: OPCIONES_HOMOLOGACION, i18n: 'catalog.filters.homologation' },
-  { param: 'combustible', campo: 'Combustible', grupo: 'mecanica', opciones: OPCIONES_COMBUSTIBLE, i18n: 'catalog.filters.fuel' },
-  { param: 'traccion', campo: 'Tracción', grupo: 'mecanica', opciones: OPCIONES_TRACCION, i18n: 'catalog.filters.drive' },
-  { param: 'mma', campo: 'MMA / Peso máximo autorizado', grupo: 'mecanica', opciones: OPCIONES_MMA, i18n: 'catalog.filters.mma' },
-  { param: 'longitud', campo: 'Longitud exterior', grupo: 'mecanica', opciones: OPCIONES_LONGITUD, i18n: 'catalog.filters.length' },
-  { param: 'altura', campo: 'Altura exterior', grupo: 'mecanica', opciones: OPCIONES_ALTURA, i18n: 'catalog.filters.height' },
-
-  // Habitabilidad
-  { param: 'plazasViaje', campo: 'Plazas homologadas para viajar', grupo: 'habitabilidad', opciones: OPCIONES_PLAZAS_VIAJE, i18n: 'catalog.filters.travelSeats' },
-  { param: 'plazasDormir', campo: 'Plazas para dormir', grupo: 'habitabilidad', opciones: OPCIONES_PLAZAS_DORMIR, i18n: 'catalog.filters.sleepSeats' },
-  { param: 'calefaccion', campo: 'Calefacción estacionaria', grupo: 'habitabilidad', opciones: OPCIONES_CALEFACCION, i18n: 'catalog.filters.heating' },
-  { param: 'aguaCaliente', campo: 'Agua caliente', grupo: 'habitabilidad', opciones: OPCIONES_AGUA_CALIENTE, i18n: 'catalog.filters.hotWater' },
-  { param: 'bano', campo: 'Baño / Ducha', grupo: 'habitabilidad', opciones: OPCIONES_BANO, i18n: 'catalog.filters.bathroom' },
-
-  // Autonomía y equipamiento camper
-  { param: 'bateria', campo: 'Batería auxiliar', grupo: 'autonomia', opciones: OPCIONES_BATERIA_AUX, i18n: 'catalog.filters.battery' },
-  { param: 'placaSolar', campo: 'Placa solar', grupo: 'autonomia', opciones: OPCIONES_SI_NO, i18n: 'catalog.filters.solar' },
-  { param: 'inversor', campo: 'Inversor 220V', grupo: 'autonomia', opciones: OPCIONES_SI_NO, i18n: 'catalog.filters.inverter' },
-  { param: 'nevera', campo: 'Nevera', grupo: 'autonomia', opciones: OPCIONES_NEVERA, i18n: 'catalog.filters.fridge' },
+/** Filtros comunes a las tres familias (siempre visibles en el panel). */
+const FILTROS_TRANSVERSALES: readonly FiltroTecnico[] = [
+  { param: 'combustible', campo: 'Combustible', grupo: 'tecnica', opciones: OPCIONES_COMBUSTIBLE, i18n: 'catalog.filters.fuel' },
+  { param: 'documentacion', campo: 'Documentación', grupo: 'documentacion', opciones: OPCIONES_DOCUMENTACION, i18n: 'catalog.filters.docs' },
+  { param: 'transporte', campo: '¿Incluye transporte?', grupo: 'logistica', opciones: OPCIONES_SI_NO, i18n: 'catalog.filters.transport' },
 ]
 
-export const GRUPOS_FILTROS_TECNICOS: readonly {
+/** Filtros propios de cada familia. Misma `param` ⇒ misma `campo` (JSONB). */
+const FILTROS_ESPECIFICOS: Record<SlugCategoria, readonly FiltroTecnico[]> = {
+  agricola: [
+    { param: 'traccion', campo: 'Tracción', grupo: 'tecnica', opciones: OPCIONES_TRACCION_AGRICOLA, i18n: 'catalog.filters.drive' },
+    { param: 'enganche', campo: 'Enganche', grupo: 'tecnica', opciones: OPCIONES_ENGANCHE, i18n: 'catalog.filters.hitch' },
+    { param: 'pto', campo: 'Toma de fuerza (PTO)', grupo: 'tecnica', opciones: OPCIONES_PTO, i18n: 'catalog.filters.pto' },
+  ],
+  obra: [
+    { param: 'traccion', campo: 'Tracción', grupo: 'tecnica', opciones: OPCIONES_TRACCION_OBRA, i18n: 'catalog.filters.drive' },
+    { param: 'capacidad', campo: 'Capacidad de carga', grupo: 'logistica', opciones: OPCIONES_CAPACIDAD_CARGA, i18n: 'catalog.filters.capacity' },
+    { param: 'medidas', campo: 'Medidas de transporte', grupo: 'logistica', opciones: OPCIONES_MEDIDAS_TRANSPORTE, i18n: 'catalog.filters.transportSize' },
+  ],
+  herramientas: [
+    { param: 'potenciaW', campo: 'Potencia (W)', grupo: 'tecnica', opciones: OPCIONES_POTENCIA_W, i18n: 'catalog.filters.powerW' },
+    { param: 'tension', campo: 'Tensión', grupo: 'tecnica', opciones: OPCIONES_TENSION, i18n: 'catalog.filters.voltage' },
+    { param: 'bateriaIncluida', campo: 'Batería incluida', grupo: 'tecnica', opciones: OPCIONES_SI_NO, i18n: 'catalog.filters.batteryIncluded' },
+  ],
+}
+
+/** Conjunto de filtros (transversales + específicos) de cada familia. */
+export const camposPorCategoria: Record<string, readonly FiltroTecnico[]> =
+  Object.fromEntries(
+    (Object.keys(FILTROS_ESPECIFICOS) as SlugCategoria[]).map(key => [
+      key,
+      [...FILTROS_TRANSVERSALES, ...FILTROS_ESPECIFICOS[key]],
+    ])
+  )
+
+/**
+ * Filtros a mostrar para una familia. Sin contexto de familia (catálogo
+ * abierto) solo se muestran los transversales: los específicos de una familia
+ * no tienen sentido mezclados con los de otra.
+ */
+export function filtrosDeCategoria(categoria?: string | null): readonly FiltroTecnico[] {
+  return (categoria && camposPorCategoria[categoria]) || FILTROS_TRANSVERSALES
+}
+
+const vistosParam = new Set<string>()
+
+/**
+ * UNIÓN de todos los filtros (transversales + específicos), deduplicada por
+ * `param`. Es el contrato que usan la lectura de query, las firmas y la
+ * traducción a consulta: un parámetro de cualquier familia se lee siempre,
+ * aunque el panel no lo muestre sin su contexto.
+ */
+export const FILTROS_TECNICOS: readonly FiltroTecnico[] = Object.values(camposPorCategoria)
+  .flat()
+  .filter(f => {
+    if (vistosParam.has(f.param)) return false
+    vistosParam.add(f.param)
+    return true
+  })
+
+const DEFINICION_GRUPOS: readonly {
+  grupo: GrupoFiltroTecnico
+  icono: string
+  i18n: string
+}[] = [
+  { grupo: 'tecnica', icono: '🔧', i18n: 'catalog.filters.groups.technique' },
+  { grupo: 'documentacion', icono: '📄', i18n: 'catalog.filters.groups.docs' },
+  { grupo: 'logistica', icono: '🚚', i18n: 'catalog.filters.groups.logistics' },
+]
+
+/**
+ * Grupos del panel para una familia, SIN los grupos que quedan vacíos
+ * (un grupo solo se muestra si lleva al menos un filtro).
+ */
+export function gruposDeFiltros(categoria?: string | null): readonly {
   grupo: GrupoFiltroTecnico
   icono: string
   i18n: string
   filtros: FiltroTecnico[]
-}[] = (
-  [
-    { grupo: 'mecanica', icono: '🔧', i18n: 'catalog.filters.groups.mechanics' },
-    { grupo: 'habitabilidad', icono: '🛏️', i18n: 'catalog.filters.groups.liveability' },
-    { grupo: 'autonomia', icono: '⚡', i18n: 'catalog.filters.groups.autonomy' },
-  ] as const
-).map(g => ({ ...g, filtros: FILTROS_TECNICOS.filter(f => f.grupo === g.grupo) }))
+}[] {
+  const filtros = filtrosDeCategoria(categoria)
+  return DEFINICION_GRUPOS.map(g => ({
+    ...g,
+    filtros: filtros.filter(f => f.grupo === g.grupo),
+  })).filter(g => g.filtros.length > 0)
+}
 
 /** Parámetros de URL que corresponden a un filtro técnico por opción. */
 export const PARAMETROS_TECNICOS: readonly string[] = FILTROS_TECNICOS.map(f => f.param)
@@ -123,91 +181,70 @@ export const FILTROS_POR_PARAM: Record<string, FiltroTecnico> = Object.fromEntri
 
 // ── Filtros por rango numérico ─────────────────────────────────────────────
 //
-// Los tres campos numéricos que de verdad segmentan la búsqueda camper
-// (km máximos, año mínimo y watios de placa/inversor) se capturan como número
-// en el formulario y se guardan como TEXTO en el JSONB (`String(km)`), así
-// que un `@>` de igualdad no sirve: hay que comparar su valor numérico.
+// Los dos campos numéricos que de verdad segmentan la búsqueda de maquinaria
+// (horas de uso máximas y año mínimo) se capturan como número en el
+// formulario y se guardan como TEXTO en el JSONB (`String(valor)`), así que un
+// `@>` de igualdad no sirve: hay que comparar su valor numérico.
 //
-// El plan decía "capturarlos como tramos o añadir columnas generadas": aquí se
-// hace lo segundo. La migración `202609170003_rangos_numericos.sql` añade
-// columnas GENERATED (`espec_km`, `espec_anio`, `espec_placa_w`,
-// `espec_inversor_w`) que extraen y castean el número del JSONB, con índice
-// funcional. La consulta de rangos filtra por ESAS columnas (comparación
-// numérica real, indexada), no por la clave JSONB — filtrar con `->>` hace
-// comparación ALFABÉTICA de texto ('9' > '10') y las claves con espacios
-// rompen la ruta.
+// La migración `202609170003_rangos_numericos.sql` añadió columnas GENERATED
+// (`espec_anio` entre ellas) y la `202610240001_taxonomia_maquinaria.sql`
+// añade `espec_horas`; todas extraen y caste el número del JSONB con COALESCE
+// y llevan índice funcional. La consulta de rangos filtra por ESAS columnas
+// (comparación numérica real, indexada), no por la clave JSONB — filtrar con
+// `->>` hace comparación ALFABÉTICA de texto ('9' > '10') y las claves con
+// espacios rompen la ruta.
 //
 // Si la migración aún no está aplicada, la query falla con "column ... does
 // not exist" y `quitarRangos()` + un reintento (en los cargadores) deja el
 // catálogo funcionando SOLO con los filtros que no dependen de esa columna.
+// Las columnas legadas (`espec_km`, `espec_placa_w`, `espec_inversor_w`)
+// siguen en la base de datos por si quedan anuncios antiguos que las usen.
 
 export type OperadorRango = 'gte' | 'lte'
 
 export interface RangoNumerico {
-  /** Parámetro de la query string: /catalogo?kmMax=150000&anioMin=2019 */
+  /** Parámetro de la query string: /catalogo?horasMax=5000&anioMin=2015 */
   param: string
   /** Clave canónica con la que el campo se guarda en el JSONB. */
   campo: string
   /**
    * Claves alternativas (históricas) que también cuentan como el mismo dato.
-   * Por ejemplo, el kilometraje se guardó alguna vez como "Kilometraje (km)".
+   * Por ejemplo, el año se guardó alguna vez como "Año de matriculación".
    * La columna generada de la migración las lee todas con COALESCE.
    */
   claves: readonly string[]
   operador: OperadorRango
   grupo: GrupoFiltroTecnico
-  /** Columna generada (migración 202609170003) usada para filtrar. */
+  /** Columna generada (migraciones 202609170003 / 202610240001) para filtrar. */
   columnaGenerada: string
   i18n: string
-  /** Sufijo para el placeholder del input ("km", "año", "W"). */
+  /** Sufijo para el placeholder del input ("h", "año"). */
   unidad: string
   min?: number
 }
 
 export const RANGOS_NUMERICOS: readonly RangoNumerico[] = [
   {
-    param: 'kmMax',
-    campo: 'Kilómetros',
-    claves: ['Kilómetros', 'Kilometraje (km)', 'Kilometraje'],
+    param: 'horasMax',
+    campo: 'Horas de uso',
+    claves: ['Horas de uso', 'Horas', 'Horas de uso (h)'],
     operador: 'lte',
-    grupo: 'mecanica',
-    columnaGenerada: 'espec_km',
-    i18n: 'catalog.filters.kmMax',
-    unidad: 'km',
+    grupo: 'tecnica',
+    columnaGenerada: 'espec_horas',
+    i18n: 'catalog.filters.hoursMax',
+    unidad: 'h',
     min: 0,
   },
   {
     param: 'anioMin',
-    campo: 'Año de matriculación',
-    claves: ['Año de matriculación', 'Año', 'Ano de matriculación'],
+    campo: 'Año',
+    claves: ['Año', 'Año de matriculación', 'Ano de matriculación'],
     operador: 'gte',
-    grupo: 'mecanica',
+    grupo: 'tecnica',
     columnaGenerada: 'espec_anio',
     i18n: 'catalog.filters.anioMin',
     unidad: 'año',
     min: 1950,
-  },
-  {
-    param: 'placaWatiosMin',
-    campo: 'Placa solar (watios)',
-    claves: ['Placa solar (watios)'],
-    operador: 'gte',
-    grupo: 'autonomia',
-    columnaGenerada: 'espec_placa_w',
-    i18n: 'catalog.filters.placaWatiosMin',
-    unidad: 'W',
-    min: 0,
-  },
-  {
-    param: 'inversorWatiosMin',
-    campo: 'Inversor 220V (watios)',
-    claves: ['Inversor 220V (watios)'],
-    operador: 'gte',
-    grupo: 'autonomia',
-    columnaGenerada: 'espec_inversor_w',
-    i18n: 'catalog.filters.inversorWatiosMin',
-    unidad: 'W',
-    min: 0,
   },
 ]
 
@@ -250,7 +287,7 @@ export function parsearNumeroEs(v: unknown): number | null {
   return Number.isFinite(n) ? n : null
 }
 
-/** Filtros técnicos activos por opción: `{ plazasDormir: '4', dgt: 'ECO' }`. */
+/** Filtros técnicos activos por opción: `{ combustible: 'Diésel', traccion: 'Oruga' }`. */
 export type FiltrosTecnicos = Record<string, string>
 
 /** Filtros de rango activos: `{ kmMax: 150000, anioMin: 2019 }`. */
@@ -334,7 +371,7 @@ export function hayFiltrosRango(filtros?: Record<string, unknown> | null): boole
 
 /**
  * Traduce los filtros activos al documento JSONB que se busca por contención:
- * `{ plazasDormir: '4', dgt: 'ECO' }` → `{ 'Plazas para dormir': '4', 'Distintivo Ambiental DGT': 'ECO' }`.
+ * `{ combustible: 'Diésel', traccion: 'Oruga' }` → `{ 'Combustible': 'Diésel', 'Tracción': 'Oruga' }`.
  */
 export function especificacionesDeFiltros(filtros?: Record<string, unknown> | null): Record<string, string> {
   const specs: Record<string, string> = {}

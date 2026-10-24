@@ -5,11 +5,11 @@
  * buscador, el paso 2 de /publicar y la página /marcas. Estos tests blindan:
  *
  *  - Integridad: valores canónicos únicos y bien formados.
- *  - Compatibilidad: los valores antiguos que YA pueden estar guardados en
- *    `productos.marca` ('Fiat Ducato', 'Mercedes Marco Polo', 'Adria'…) no se
- *    pueden renombrar sin romper el filtro `?marca=…` de anuncios existentes.
- *  - Cobertura: cada subcategoría conserva al menos sus marcas históricas.
+ *  - Cobertura: cada uno de los 12 tipos de la taxonomía de maquinaria tiene
+ *    marcas propias (no son las mismas marcas para un tractor que para una
+ *    excavadora o un taladro).
  *  - Agrupación: fabricante → modelo para los <optgroup> de la UI.
+ *  - Slugs de /modelo/[slug]: únicos, limpios y con ida y vuelta.
  */
 import {
   MARCAS_MODELOS,
@@ -43,107 +43,111 @@ describe('catálogo maestro de marcas y modelos', () => {
     }
   })
 
-  test('los 7 tipos camper tienen marcas y modelos', () => {
+  test('los 12 tipos de maquinaria tienen marcas propias (≥3 fabricantes)', () => {
     for (const slug of SUBCATEGORIAS_SLUG) {
-      expect(modelosDeSubcategoria(slug).length).toBeGreaterThanOrEqual(5)
+      const entradas = modelosDeSubcategoria(slug)
+      expect(entradas.length).toBeGreaterThanOrEqual(3)
+      const fabricantes = new Set(entradas.map(m => m.fabricante))
+      expect(fabricantes.size).toBeGreaterThanOrEqual(3)
     }
   })
 
-  test('compatibilidad: los valores canónicos históricos siguen presentes', () => {
-    const historicos = [
-      // Gran volumen
-      'Fiat Ducato', 'Citroën Jumper', 'Peugeot Boxer', 'Renault Master',
-      'Volkswagen Crafter', 'Mercedes-Benz Sprinter', 'MAN TGE', 'Iveco Daily', 'Ford Transit',
-      // Camper mediana
-      'Volkswagen California', 'Volkswagen Transporter', 'Volkswagen Multivan',
-      'Mercedes Marco Polo', 'Mercedes Vito', 'Ford Transit Custom',
-      'Renault Trafic', 'Toyota Proace', 'Peugeot Expert Camper', 'Citroën Jumpy Camper',
-      // Minicamper
-      'Citroën Berlingo', 'Peugeot Rifter', 'Peugeot Partner', 'Renault Kangoo',
-      'Volkswagen Caddy', 'Dacia Dokker', 'Fiat Doblò', 'Toyota Proace City',
-      // Perfiladas y capuchinas (chasis carrozados)
-      'Fiat Ducato Autocaravana', 'Ford Transit Autocaravana',
-      'Volkswagen Crafter Autocaravana', 'Mercedes-Benz Sprinter Autocaravana',
-      'Renault Master Autocaravana', 'Iveco Daily Autocaravana', 'Opel Movano Autocaravana',
-      'Fiat Ducato Capuchina', 'Ford Transit Capuchina', 'Volkswagen Crafter Capuchina',
-      'Renault Master Capuchina', 'Opel Movano Capuchina',
-      // Integrales (fabricantes)
-      'Adria', 'Hymer', 'Challenger', 'Laika', 'Swift', 'Benimar', 'Knaus', 'Niesmann + Bissel',
-      // Overland
-      'Toyota Hilux Overland', 'Mitsubishi L200', 'Nissan Navara', 'Volkswagen Amarok',
-      'Ford Ranger', 'Land Rover Defender', 'Dacia Pik-Pik Célula', 'RAM ProMaster Célula',
-    ]
-    for (const valor of historicos) {
-      expect(modeloPorValor(valor)).toBeDefined()
-    }
+  test('las marcas son específicas por familia (no se mezclan)', () => {
+    // Tractores: marcas agrícolas
+    const aggTractores = modelosDeSubcategoria('tractores').map(m => m.fabricante)
+    expect(aggTractores).toEqual(expect.arrayContaining([
+      'John Deere', 'Kubota', 'New Holland', 'Case IH', 'Massey Ferguson', 'Fendt',
+    ]))
+    // Excavadoras: marcas de obra — NUNCA marcas agrícolas como tractor
+    const aggExcavadoras = modelosDeSubcategoria('excavadoras').map(m => m.fabricante)
+    expect(aggExcavadoras).toEqual(expect.arrayContaining([
+      'Caterpillar', 'Komatsu', 'Volvo', 'Hitachi', 'JCB',
+    ]))
+    expect(aggExcavadoras).not.toContain('John Deere')
+    // Herramienta eléctrica: sin marcas de obra
+    const aggHerramienta = modelosDeSubcategoria('herramienta-electrica').map(m => m.fabricante)
+    expect(aggHerramienta).toEqual(expect.arrayContaining(['Makita', 'Bosch', 'DeWalt']))
+    expect(aggHerramienta).not.toContain('Caterpillar')
+    expect(aggHerramienta).not.toContain('John Deere')
+    // Sierra y poda: marcas de corte/poda
+    const aggPoda = modelosDeSubcategoria('sierra-poda').map(m => m.fabricante)
+    expect(aggPoda).toEqual(expect.arrayContaining(['Stihl', 'Husqvarna']))
   })
 
-  test('las subcategorías conservan sus marcas históricas vía getMarcaOptions', () => {
-    expect(getMarcaOptions('camper', 'Gran Volumen')).toEqual(
-      expect.arrayContaining(['Fiat Ducato', 'Citroën Jumper', 'Mercedes-Benz Sprinter'])
-    )
-    expect(getMarcaOptions('camper', 'Minicamper')).toEqual(
-      expect.arrayContaining(['Citroën Berlingo', 'Volkswagen Caddy'])
-    )
-    expect(getMarcaOptions('camper', 'Minicamper')).not.toContain('Fiat Ducato')
-    // Las autocaravanas de fabricante ya no se confunden con las bases:
-    expect(getMarcaOptions('camper', 'Autocaravana Integral')).toEqual(
-      expect.arrayContaining(['Benimar', 'Hymer', 'Adria'])
-    )
-    expect(getMarcaOptions('camper', 'Autocaravana Integral')).not.toContain('Fiat Ducato')
+  test('un mismo fabricante puede cubrir varias subcategorías (aptoPara multi)', () => {
+    const merlo = MARCAS_MODELOS.find(m => m.valor === 'Merlo')
+    expect(merlo).toBeDefined()
+    expect(merlo!.aptoPara).toEqual(expect.arrayContaining(['cargadoras', 'plataformas']))
+
+    const makita = MARCAS_MODELOS.find(m => m.valor === 'Makita')
+    expect(makita).toBeDefined()
+    expect(makita!.aptoPara).toEqual(expect.arrayContaining(['herramienta-electrica', 'sierra-poda']))
   })
 
-  test('los fabricantes de autocaravanas cubren perfiladas, capuchinas e integrales', () => {
-    for (const fabricante of ['Benimar', 'Adria', 'Challenger', 'Knaus', 'Bürstner', 'Dethleffs']) {
-      const entrada = MARCAS_MODELOS.find(m => m.fabricante === fabricante)
-      expect(entrada).toBeDefined()
-      expect(entrada!.aptoPara).toContain('perfilada')
-      expect(entrada!.aptoPara).toContain('integral')
-    }
+  test('getMarcaOptions devuelve las marcas de la subcategoría pedida', () => {
+    expect(getMarcaOptions('agricola', 'Tractores')).toEqual(
+      expect.arrayContaining(['John Deere 6M', 'Kubota M7', 'Fendt 500 Vario'])
+    )
+    expect(getMarcaOptions('obra', 'Excavadoras')).toEqual(
+      expect.arrayContaining(['Caterpillar 320', 'Komatsu PC210'])
+    )
+    // La excavadora no ofrece tractores
+    expect(getMarcaOptions('obra', 'Excavadoras')).not.toContain('John Deere 6M')
+    // Subcategoría inexistente → lista vacía
+    expect(getMarcaOptions('agricola', 'No existe')).toEqual([])
   })
 
   test('agruparPorFabricante agrupa y ordena alfabéticamente', () => {
-    const grupos = agruparPorFabricante(modelosDeSubcategoria('gran-volumen'))
+    const grupos = agruparPorFabricante(modelosDeSubcategoria('excavadoras'))
 
-    const fiat = grupos.find(g => g.fabricante === 'Fiat')
-    expect(fiat).toBeDefined()
-    expect(fiat!.modelos.map(etiquetaModelo)).toContain('Ducato')
+    const cat = grupos.find(g => g.fabricante === 'Caterpillar')
+    expect(cat).toBeDefined()
+    expect(cat!.modelos.map(etiquetaModelo)).toContain('320')
 
-    const vw = grupos.find(g => g.fabricante === 'Volkswagen')
-    expect(vw).toBeDefined()
+    const komatsu = grupos.find(g => g.fabricante === 'Komatsu')
+    expect(komatsu).toBeDefined()
 
     // Orden alfabético es-ES de los grupos.
     const nombres = grupos.map(g => g.fabricante)
     expect(nombres).toEqual([...nombres].sort((a, b) => a.localeCompare(b, 'es')))
 
     // Dentro de un fabricante, los modelos también van ordenados.
-    const valoresVw = vw!.modelos.map(etiquetaModelo)
-    expect(valoresVw).toEqual([...valoresVw].sort((a, b) => a.localeCompare(b, 'es')))
+    const catValores = cat!.modelos.map(etiquetaModelo)
+    expect(catValores).toEqual([...catValores].sort((a, b) => a.localeCompare(b, 'es')))
   })
 
   test('valoresUnicos deduplica y fabricantesUnicos ordena', () => {
-    const modelos = modelosDeSubcategoria('camper-mediana')
+    const modelos = modelosDeSubcategoria('tractores')
     const valores = valoresUnicos([...modelos, ...modelos])
     expect(new Set(valores).size).toBe(valores.length)
 
     const fabs = fabricantesUnicos(modelos)
-    expect(fabs).toContain('Volkswagen')
+    expect(fabs).toContain('John Deere')
     expect(fabs).toEqual([...fabs].sort((a, b) => a.localeCompare(b, 'es')))
   })
 
   test('resumenFabricantes muestra los primeros y un contador del resto', () => {
-    const modelos = modelosDeSubcategoria('gran-volumen')
+    const modelos = modelosDeSubcategoria('excavadoras')
     const resumen = resumenFabricantes(modelos, 3)
     expect(resumen).toMatch(/\+\d+$/)
     expect(resumen).toContain(' · ')
     expect(resumenFabricantes([], 3)).toBe('')
   })
 
+  test('modeloPorValor resuelve valores del catálogo nuevo', () => {
+    expect(modeloPorValor('John Deere 6M')).toBeDefined()
+    expect(modeloPorValor('Caterpillar 320')).toBeDefined()
+    expect(modeloPorValor('Makita')).toBeDefined()
+    expect(modeloPorValor('Fiat Ducato')).toBeUndefined()
+  })
+
   test('categoriasData expone las marcas estructuradas de cada subcategoría', () => {
-    for (const sub of categoriasData.camper.subs) {
-      expect(sub.marcas.length).toBeGreaterThan(0)
-      for (const m of sub.marcas) {
-        expect(m.aptoPara).toContain(sub.slug)
+    for (const cat of Object.values(categoriasData)) {
+      for (const sub of cat.subs) {
+        expect(sub.marcas.length).toBeGreaterThan(0)
+        for (const m of sub.marcas) {
+          expect(m.aptoPara).toContain(sub.slug)
+        }
       }
     }
   })
@@ -188,9 +192,9 @@ describe('slugs de las páginas de modelo', () => {
   })
 
   it('los acentos y símbolos de los valores canónicos se normalizan', () => {
-    const jumper = MARCAS_MODELOS.find(m => m.valor === 'Citroën Jumper')
-    expect(jumper && slugModelo(jumper)).toBe('citroen-jumper')
-    const doblo = MARCAS_MODELOS.find(m => m.valor === 'Fiat Doblò')
-    expect(doblo && slugModelo(doblo)).toBe('fiat-doblo')
+    const volvo = MARCAS_MODELOS.find(m => m.valor === 'Volvo EC210')
+    expect(volvo && slugModelo(volvo)).toBe('volvo-ec210')
+    const mob = MARCAS_MODELOS.find(m => m.valor === 'Cub Cadet')
+    expect(mob && slugModelo(mob)).toBe('cub-cadet')
   })
 })

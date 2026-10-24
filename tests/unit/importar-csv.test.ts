@@ -14,7 +14,7 @@ import {
 
 const CABECERAS = 'Titulo;Precio;Tipo;Comunidad;Ciudad;Marca;Modelo;Estado;Año;Kilómetros;Fotos;Descripción'
 const FILA_OK =
-  'Fiat Ducato L3H2;38.500;Gran Volumen;Comunitat Valenciana;Valencia;Fiat;Ducato;Como nuevo;2019;145.000;https://cdn.x.com/a.jpg|https://cdn.x.com/b.jpg;Camper 4 plazas'
+  'Kubota M7 tractor;48.500;Tractores;Comunitat Valenciana;Valencia;Kubota;M7;Usado;2019;4.500;https://cdn.x.com/a.jpg|https://cdn.x.com/b.jpg;Tractor agrícola'
 
 describe('importar-csv - parser', () => {
   test('detecta el punto y coma de Excel en español', () => {
@@ -118,13 +118,15 @@ describe('importar-csv - valores', () => {
     expect(normalizarEstado('impecable')).toBeNull()
   })
 
-  test('subcategoría por slug o por etiqueta', () => {
-    expect(normalizarSubcategoria('gran volumen')).toBe('gran-volumen')
-    expect(normalizarSubcategoria('Gran Volumen')).toBe('gran-volumen')
-    expect(normalizarSubcategoria('gran-volumen')).toBe('gran-volumen')
-    expect(normalizarSubcategoria('Camper Mediana / Compacta')).toBe('camper-mediana')
-    expect(normalizarSubcategoria('autocaravana perfilada')).toBe('perfilada')
-    expect(normalizarSubcategoria('4x4')).toBe('overland')
+  test('subcategoría por label, por slug o por alias (devuelve el label)', () => {
+    expect(normalizarSubcategoria('Tractores')).toBe('Tractores')
+    expect(normalizarSubcategoria('tractores')).toBe('Tractores')
+    expect(normalizarSubcategoria('tractor')).toBe('Tractores')
+    expect(normalizarSubcategoria('excavadoras')).toBe('Excavadoras')
+    expect(normalizarSubcategoria('Excavadora')).toBe('Excavadoras')
+    expect(normalizarSubcategoria('sierra y poda')).toBe('Sierra y poda')
+    expect(normalizarSubcategoria('motosierra')).toBe('Sierra y poda')
+    expect(normalizarSubcategoria('Herramienta eléctrica')).toBe('Herramienta eléctrica')
     expect(normalizarSubcategoria('nave espacial')).toBeNull()
   })
 
@@ -156,14 +158,14 @@ describe('importar-csv - validación de filas', () => {
     expect(r.validas).toBe(1)
     expect(r.invalidas).toBe(0)
     const fila = r.filas[0]
-    expect(fila.titulo).toBe('Fiat Ducato L3H2')
-    expect(fila.precio).toBe(38500)
-    expect(fila.subcategoria).toBe('gran-volumen')
+    expect(fila.titulo).toBe('Kubota M7 tractor')
+    expect(fila.precio).toBe(48500)
+    expect(fila.subcategoria).toBe('Tractores')
     expect(fila.ubicacion_estado).toBe('Comunitat Valenciana')
-    expect(fila.estado).toBe('Como nuevo')
+    expect(fila.estado).toBe('Usado')
     expect(fila.imagenes).toHaveLength(2)
-    expect(fila.especificaciones['Año de matriculación']).toBe('2019')
-    expect(fila.especificaciones['Kilómetros']).toBe('145000')
+    expect(fila.especificaciones['Año']).toBe('2019')
+    expect(fila.especificaciones['Kilómetros']).toBe('4500')
   })
 
   test('la línea del error es la del archivo, no la del índice', () => {
@@ -183,29 +185,29 @@ describe('importar-csv - validación de filas', () => {
   })
 
   test('un título demasiado corto no se acepta', () => {
-    const r = validar(`${CABECERAS}\nAB;1000;Minicamper;Madrid`)
+    const r = validar(`${CABECERAS}\nAB;1000;Tractores;Madrid`)
     expect(r.filas[0].errores[0]).toContain('título')
   })
 
   test('lo dudoso es aviso, no error: estado raro y año imposible', () => {
-    const r = validar(`${CABECERAS}\nCamper X;20000;Integral;Galicia;;;;impecable;1850`)
+    const r = validar(`${CABECERAS}\nExcavadora X;20000;Excavadoras;Galicia;;;;impecable;1850`)
     const fila = r.filas[0]
     expect(fila.errores).toEqual([])
     expect(fila.estado).toBeNull()
     expect(fila.avisos.join(' ')).toContain('Estado')
     expect(fila.avisos.join(' ')).toContain('Año')
-    expect(fila.especificaciones['Año de matriculación']).toBeUndefined()
+    expect(fila.especificaciones['Año']).toBeUndefined()
   })
 
   test('las fotos se recortan al máximo del plan', () => {
     const fotos = ['a', 'b', 'c', 'd'].map((n) => `https://cdn.x.com/${n}.jpg`).join('|')
-    const r = validar(`${CABECERAS}\nCamper X;20000;Integral;Galicia;;;;;;;${fotos}`, { maxFotos: 2 })
+    const r = validar(`${CABECERAS}\nMotosierra X;20000;Sierra y poda;Galicia;;;;;;;${fotos}`, { maxFotos: 2 })
     expect(r.filas[0].imagenes).toHaveLength(2)
     expect(r.filas[0].avisos.join(' ')).toContain('2 fotos')
   })
 
   test('las fotos http se descartan sin invalidar la fila', () => {
-    const r = validar(`${CABECERAS}\nCamper X;20000;Integral;Galicia;;;;;;;http://x.com/a.jpg|https://x.com/b.jpg`)
+    const r = validar(`${CABECERAS}\nMotosierra X;20000;Sierra y poda;Galicia;;;;;;;http://x.com/a.jpg|https://x.com/b.jpg`)
     expect(r.filas[0].errores).toEqual([])
     expect(r.filas[0].imagenes).toEqual(['https://x.com/b.jpg'])
     expect(r.filas[0].avisos.join(' ')).toContain('descartada')

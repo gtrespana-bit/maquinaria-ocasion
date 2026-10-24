@@ -9,12 +9,13 @@ import { useEffect, useState, useCallback, useMemo, use } from 'react'
 import Image from 'next/image'
 import { supabase } from '@/lib/supabase'
 import { useAuth } from '@/components/AuthProvider'
-import { categoriasData, FAMILIAS } from '@/lib/categorias'
+import { categoriasData, FAMILIAS, TODAS_LAS_SUBS, categoriaDeSubcategoria } from '@/lib/categorias'
 import UbicacionSelector from '@/components/UbicacionSelector'
 import { useTranslations } from 'next-intl'
 import { productUrl } from '@/lib/product-url'
 import { FiltrosTecnicosPanel } from '@/components/FiltrosTecnicosPanel'
 import {
+  PARAMETROS_RANGO,
   leerFiltrosTecnicos,
   leerFiltrosRango,
 } from '@/lib/filtros-tecnicos'
@@ -187,10 +188,12 @@ export default function BuscarClient({ searchParams: searchParamsPromise }: { se
   const filtrosTecnicos = useMemo(() => leerFiltrosTecnicos(searchParams ?? {}), [searchParams])
   const filtrosRango = useMemo(() => leerFiltrosRango(searchParams ?? {}), [searchParams])
   const rangosEnBruto: Record<string, string> = {}
-  for (const k of ['kmMax', 'anioMin', 'placaWatiosMin', 'inversorWatiosMin']) {
+  for (const k of PARAMETROS_RANGO) {
     const v = searchParams?.[k]
     if (v) rangosEnBruto[k] = v
   }
+  // Familia/contexto para los filtros técnicos del panel.
+  const categoriaFiltros = categoria || categoriaDeSubcategoria(subcategoria)
 
   const [productos, setProductos] = useState<Producto[]>([])
   const [loading, setLoading] = useState(false)
@@ -269,9 +272,10 @@ export default function BuscarClient({ searchParams: searchParamsPromise }: { se
   }
 
   const cat = categoria ? categoriasData[categoria] : undefined
-  // El buscador es 100% camper: los tipos se ofrecen siempre aunque no haya
-  // categoría en la URL (`categoria` solo queda como parámetro legado).
-  const subs = cat ? cat.subs : categoriasData.camper.subs
+  // Los tipos se ofrecen siempre: con categoría en la URL solo sus tipos; sin
+  // ella, los de todas las familias (`categoria` es parámetro legado — hoy la
+  // navegación entra por `?subcategoria=`).
+  const subs = cat ? cat.subs : TODAS_LAS_SUBS
   // Marcas/modelos estructurados por fabricante (ver @/lib/marcas). Con
   // subcategoría activa solo se ofrecen los modelos aptos para ella.
   const subActiva = subcategoria ? subs.find((s) => s.label === subcategoria) : undefined
@@ -548,6 +552,7 @@ export default function BuscarClient({ searchParams: searchParamsPromise }: { se
                   mismas opciones del formulario de publicación. */}
               <div className="mt-4 pt-4 border-t">
                 <FiltrosTecnicosPanel
+                  categoria={categoriaFiltros}
                   filtrosTecnicos={filtrosTecnicos}
                   rangos={rangosEnBruto}
                   t={tu}

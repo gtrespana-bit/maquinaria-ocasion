@@ -303,6 +303,18 @@
     "overland": {
       "label": "Overland y 4x4",
       "desc": "Pickups y todoterrenos con célula para viajar sin límites."
+    },
+    "agricola": {
+      "label": "Maquinaria agrícola",
+      "desc": "Tractores, cosechadoras, aperos y equipos de ganadería de ocasión para explotaciones de todas las dimensiones."
+    },
+    "obra": {
+      "label": "Maquinaria de obra",
+      "desc": "Excavadoras, cargadoras, compactadoras y plataformas elevadoras de segunda mano para obra y urbanización."
+    },
+    "herramientas": {
+      "label": "Herramientas y motores",
+      "desc": "Herramienta eléctrica, generadores, compresores, motosierras y utillaje de taller de ocasión."
     }
   },
   "marcasPage": {
@@ -405,7 +417,10 @@
       "groups": {
         "mechanics": "Mecánica del vehículo",
         "liveability": "Habitabilidad",
-        "autonomy": "Autonomía y equipamiento"
+        "autonomy": "Autonomía y equipamiento",
+        "technique": "Ficha técnica",
+        "docs": "Documentación",
+        "logistics": "Logística"
       },
       "dgt": "Etiqueta DGT",
       "homologation": "Homologación",
@@ -428,7 +443,17 @@
       "kmMax": "Kilómetros máximos",
       "anioMin": "Año mínimo",
       "placaWatiosMin": "Placa solar mínima (W)",
-      "inversorWatiosMin": "Inversor mínimo (W)"
+      "inversorWatiosMin": "Inversor mínimo (W)",
+      "docs": "Documentación",
+      "transport": "¿Incluye transporte?",
+      "hitch": "Enganche",
+      "pto": "Toma de fuerza (PTO)",
+      "capacity": "Capacidad de carga",
+      "transportSize": "Medidas de transporte",
+      "powerW": "Potencia (W)",
+      "voltage": "Tensión",
+      "batteryIncluded": "Batería incluida",
+      "hoursMax": "Horas de uso máximas"
     },
     "typeLabel": "Tipo de vehículo",
     "allTypes": "Todos los tipos"

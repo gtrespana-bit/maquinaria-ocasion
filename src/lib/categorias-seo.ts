@@ -1,13 +1,10 @@
 /**
- * SEO de categorías de MaquinariaOcasión: 1 categoría principal + 7
- * subcategorías camper. Los slugs coinciden con categorias.ts.
+ * SEO de categorías de MaquinariaOcasión: 3 categorías (familias) y 12
+ * subcategorías de maquinaria. Los slugs coinciden con categorias.ts y las
+ * claves de `CATEGORIAS_SEO` con las claves de `categoriasData`.
  */
 
-import {
-  categoriasData,
-  OPCIONES_DGT,
-  OPCIONES_HOMOLOGACION,
-} from './categorias'
+import { categoriasData } from './categorias'
 
 export type CategoriaSEO = {
   slug: string
@@ -20,42 +17,106 @@ export type CategoriaSEO = {
   faq: { pregunta: string; respuesta: string }[]
 }
 
-const CAT = categoriasData.camper
+const CAT_AGRICOLA = categoriasData.agricola
+const CAT_OBRA = categoriasData.obra
+const CAT_HERRAMIENTAS = categoriasData.herramientas
 
 export const CATEGORIAS_SEO: Record<string, CategoriaSEO> = {
-  camper: {
-    slug: 'camper',
-    nombre: CAT.label,
-    icono: CAT.icon,
-    titulo: 'Furgonetas camper y autocaravanas de ocasión en España',
-    descripcion: 'El marketplace especializado en furgonetas camperizadas y autocaravanas de ocasión en España. Gran volumen, camper medianas, minicamper, perfiladas, capuchinas, integrales y 4x4 overland. Publica gratis.',
+  agricola: {
+    slug: 'agricola',
+    nombre: CAT_AGRICOLA.label,
+    icono: CAT_AGRICOLA.icon,
+    titulo: 'Maquinaria agrícola de ocasión: tractores, cosechadoras y aperos',
+    descripcion: 'Tractores, cosechadoras, empacadoras, aperos y maquinaria ganadera de segunda mano en España. John Deere, Kubota, New Holland, Case IH, Massey Ferguson, Fendt, Claas y más. Publica gratis tu anuncio.',
     introduccion: [
-      'MaquinariaOcasión reúne furgonetas camper y autocaravanas de segunda mano de toda España: Fiat Ducato, Peugeot Boxer, Citroën Jumper, Renault Master, Volkswagen Crafter, Mercedes Sprinter, MAN TGE, VW California y mucho más, en un rango habitual de 20.000 € a 80.000 €.',
-      'Cada anuncio muestra la ficha técnica completa: año de matriculación, kilómetros, distintivo ambiental DGT, homologación (vehículo vivienda 2448/3148, turismo, mixto o furgón), tracción, MMA (peso máximo autorizado), longitud y altura exterior, plazas para viajar y dormir, y todo el equipamiento de autonomía (calefacción estacionaria, agua caliente, baño, batería auxiliar, placa solar e inversor).',
-      'Puedes contactar con el vendedor por chat o WhatsApp, y publicar gratis tu camper de ocasión en menos de cinco minutos.',
+      'MaquinariaOcasión reúne tractores, cosechadoras, aperos de labranza y siembra, pulverizadoras y equipos de ganadería de segunda mano de toda España: desde tractores compactos de finca hasta cosechadoras de grano y empacadoras de gran capacidad.',
+      'Cada anuncio muestra la ficha técnica completa: año, horas de uso, potencia en CV, combustible, tracción, enganche de tres puntos, toma de fuerza (PTO), peso y estado. Puedes filtrar por marca, horas máximas y año mínimo, y contactar con el vendedor o publicar gratis tu máquina.',
     ],
     terminos: [
-      'Furgonetas camper segunda mano',
-      'Autocaravanas de ocasión',
-      'Camper gran volumen',
-      'Minicamper',
-      'Autocaravana integral usada',
-      'Camper 4x4 overland',
-      'Vehículo vivienda de ocasión',
-      'Furgoneta camperizada España',
+      'maquinaria agrícola de ocasión',
+      'tractor de segunda mano',
+      'cosechadora usada',
+      'aperos agrícolas de ocasión',
+      'tractor John Deere ocasión',
+      'maquinaria ganadera segunda mano',
+      'aperos y labranza baratos',
     ],
     faq: [
       {
-        pregunta: '¿Qué es MaquinariaOcasión?',
-        respuesta: 'Es el marketplace vertical en España especializado exclusivamente en furgonetas camperizadas y autocaravanas de ocasión. Todos los anuncios son de campers, autocaravanas y vehículos camper, sin otras categorías.',
+        pregunta: '¿Qué maquinaria agrícola se puede comprar de segunda mano?',
+        respuesta: 'Tractores, cosechadoras y empacadoras, arados, sembradoras, cultivadores, pulverizadoras, segadoras y aperos de forraje, así como equipos de ganadería como ordenadoras, comederos y vallados. En MaquinariaOcasión encontrarás anuncios de todo el mercado español con ficha técnica por horas de uso y potencia.',
       },
       {
-        pregunta: '¿Cuánto cuesta publicar?',
-        respuesta: 'Publicar es gratuito. Solo necesitas una cuenta para crear tu anuncio con fotos, precio, ficha técnica y ubicación (provincia y comunidad autónoma).',
+        pregunta: '¿Qué horas de uso es "mucho" en un tractor de ocasión?',
+        respuesta: 'Depende del motor y del mantenimiento, pero como referencia: un tractor de finca con 5.000–8.000 horas suele estar en la mitad de su vida útil si se ha cuidado; por encima de 12.000–15.000 horas conviene revisar motor, transmisión y hidráulica antes de comprar. Revisa siempre el libro de mantenimiento y pide las horas registradas en el diagnóstico.',
       },
       {
-        pregunta: '¿Qué campos técnicos puedo indicar al publicar?',
-        respuesta: 'Año de matriculación, kilómetros, combustible, transmisión, potencia, tracción, MMA (peso máximo autorizado), longitud y altura exterior, distintivo DGT (Cero Emisiones, ECO, C, B o sin distintivo), homologación (Vehículo Vivienda 2448/3148, Turismo, Mixto 3100 o Furgón 2400), plazas para viajar y dormir, calefacción estacionaria, agua caliente, tipo de baño, depósito de agua, batería auxiliar, placa solar, inversor 220V y nevera.',
+        pregunta: '¿Qué papeles necesita la compra de una máquina agrícola?',
+        respuesta: 'Factura o albarán de compra, ficha técnica o declaración CE del fabricante, y en tractores, la tarjeta de inscripción (ficha ITV) en vigor. Verifica que el número de bastidor o el número de serie coincidan con la documentación, y comprueba la declaración CE si la máquina es de importación.',
+      },
+    ],
+  },
+  obra: {
+    slug: 'obra',
+    nombre: CAT_OBRA.label,
+    icono: CAT_OBRA.icon,
+    titulo: 'Maquinaria de obra de ocasión: excavadoras, cargadoras y plataformas',
+    descripcion: 'Excavadoras, retroexcavadoras, cargadoras, minicargadoras, rodillos, dumperes y plataformas elevadoras de segunda mano en España. Caterpillar, Komatsu, Volvo, JCB, Bobcat, Manitou, Genie y más. Publica gratis.',
+    introduccion: [
+      'MaquinariaOcasión conecta a profesionales con excavadoras sobre oruga y ruedas, retroexcavadoras, cargadoras frontales, minicargadoras, compactadores, dumperes y plataformas elevadoras de ocasión de todas las provincias.',
+      'Las fichas incluyen tracción, capacidad de carga, medidas de transporte, profundidad de excavación o altura de trabajo, horas de uso y estado, con filtros por marca y rango de año para encontrar la máquina exacta que necesita tu obra.',
+    ],
+    terminos: [
+      'maquinaria de obra de segunda mano',
+      'excavadora de ocasión',
+      'cargadora usada precio',
+      'plataforma elevadora de ocasión',
+      'minicargadora Bobcat segunda mano',
+      'rodillo compactador usado',
+      'maquinaria obra España',
+    ],
+    faq: [
+      {
+        pregunta: '¿Qué maquinaria de obra se encuentra en ocasión?',
+        respuesta: 'Excavadoras y retroexcavadoras, cargadoras frontales y minicargadoras (skid-steer), telecargadores, rodillos y apisonadores, dumperes articulados, y plataformas elevadoras (telescópicas, articuladas y verticales). Los anuncios indican horas de uso, estado y documentación (factura, libro y declaración CE).',
+      },
+      {
+        pregunta: '¿Cómo sé si una excavadora de segunda mano está bien?',
+        respuesta: 'Revisa las horas certificadas, el desgaste de cadenas y platillas, fugas de cilindros y mangueras, el estado del volquete y la articulación, y pide historial de mantenimiento. Una prueba de excavación con el motor frío y caliente revela problemas de bombeo que no se ven en fotos.',
+      },
+      {
+        pregunta: '¿Necesito permiso especial para mover maquinaria por carretera?',
+        respuesta: 'Depende del peso y de las medidas: maquinaria sobre oruga o de gran envergadura requiere transporte especial (permiso de escolta según normativa vigente). Las medidas de transporte indicadas en el anuncio ayudan a valorar si cabe en tu remolque o necesitas empresa de transporte dedicada.',
+      },
+    ],
+  },
+  herramientas: {
+    slug: 'herramientas',
+    nombre: CAT_HERRAMIENTAS.label,
+    icono: CAT_HERRAMIENTAS.icon,
+    titulo: 'Herramienta eléctrica, generadores y sierras de ocasión en España',
+    descripcion: 'Taladros, amoladoras, motosierras, generadores, compresores y equipos de soldadura de segunda mano: Makita, Bosch, DeWalt, Milwaukee, Stihl, Husqvarna, Himoinsa, Cummins y más. Compra y publica gratis.',
+    introduccion: [
+      'MaquinariaOcasión reúne herramienta eléctrica profesional, generadores y grupos electrógenos, compresores, equipos de soldadura, motosierras y maquinaria de poda de segunda mano, con marcas líderes como Makita, Bosch, DeWalt, Milwaukee, Festool, Stihl, Husqvarna, Himoinsa o Atlas Copco.',
+      'Cada ficha detalla potencia en watios, tensión de alimentación (230 V, 400 V, bivolt o batería), si incluye batería o accesorios, estado y documentación, con filtros por rango de potencia para encontrar la herramienta exacta que necesitas.',
+    ],
+    terminos: [
+      'herramienta eléctrica de ocasión',
+      'generador de segunda mano',
+      'motosierra usada barata',
+      'compresor de aire ocasión',
+      'taladro profesional segunda mano',
+      'soldadora de ocasión',
+      'maquinaria de jardinería usada',
+    ],
+    faq: [
+      {
+        pregunta: '¿Qué conviene revisar antes de comprar herramienta de segunda mano?',
+        respuesta: 'El estado de carbones y rodamientos, la línea de corte en amoladoras y motosierras, la holgura del husillo en taladros y la prueba real bajo carga. En generadores y compresores, comprueba horas de funcionamiento, fugas y tensión estable. Un anuncio con factura y libro de instrucciones da más garantía.',
+      },
+      {
+        pregunta: '¿Merece la pena un generador eléctrico de ocasión?',
+        respuesta: 'Sí si necesitas respaldo en obra o eventos: un grupo electrónico bien mantenido dura miles de horas. Compara la potencia útil en VA/W con tu consumo total, el tipo de combustible (diésel, gasolina o gas) y las horas registradas; prioriza modelos con mantenimiento documentado como Himoinsa, Cummins, Perkins o Honda.',
       },
     ],
   },
@@ -85,164 +146,244 @@ export type SubcategoriaSEO = {
   faq: { pregunta: string; respuesta: string }[]
 }
 
-const SUBS: SubcategoriaSEO[] = CAT.subs.map((sub) => {
-  const base: Record<string, { descripcion: string; terminos: string[]; introduccion: string[]; faq: { pregunta: string; respuesta: string }[] }> = {
-    'gran-volumen': {
-      descripcion: 'Furgonetas camper gran volumen (L2H2, L3H2, L4H3) de ocasión: Fiat Ducato, Citroën Jumper, Peugeot Boxer, Renault Master, VW Crafter, Mercedes Sprinter y MAN TGE camperizadas. Interior amplio, plaza a plaza o con bañera, ideales para viajes de largo radio.',
-      terminos: ['camper gran volumen', 'Ducato camper de ocasión', 'Boxer camperizada segunda mano', 'Jumper camper usada', 'autocaravana gran volumen'],
-      introduccion: [
-        'Las campers gran volumen (L3H2, L4H2 y L4H3) son la opción familiar por excelencia: cama doble fija a la altura de la vista, zona de estar amplia y, en muchas, cuarto de baño con ducha y calefacción estacionaria. Bases habituales: Fiat Ducato, Citroën Jumper, Peugeot Boxer, Renault Master, Volkswagen Crafter, Mercedes Sprinter y MAN TGE.',
-        'Al buscar una gran volumen de segunda mano, fíjate en el MMA (3.500 kg se conduce con el permiso B), en el estado del chasis y en si la camperización está homologada como vehículo vivienda (2448/3148). En MaquinariaOcasión cada anuncio detalla plazas para viajar y dormir, equipamiento de autonomía y sello de homologación verificada cuando el expediente está revisado.',
-      ],
-      faq: [
-        {
-          pregunta: '¿Qué es una camper gran volumen?',
-          respuesta: 'Una furgoneta camperizada sobre base larga y techo alto (L3H2, L4H2 o L4H3), normalmente Fiat Ducato, Citroën Jumper, Peugeot Boxer, Renault Master, VW Crafter, Mercedes Sprinter o MAN TGE. Ofrece cama doble fija, estar amplio y suele llevar baño, cocina y calefacción estacionaria. Es la camper más espaciosa sin pasar a autocaravana.',
-        },
-        {
-          pregunta: '¿Cuántas personas duermen en una camper gran volumen?',
-          respuesta: 'De 2 a 6 personas según distribución: la mayoría tienen cama doble fija trasera más literas o mesa convertible. Comprueba siempre las plazas "para viajar" y "para dormir" en la ficha técnica del anuncio: no son lo mismo y la ITV solo homologa las que figuran.',
-        },
-        {
-          pregunta: '¿Se puede conducir una camper gran volumen con el permiso B?',
-          respuesta: 'Sí, si su MMA (peso máximo autorizado) no supera los 3.500 kg, que es lo habitual en Ducato, Boxer, Jumper, Master, Sprinter y Crafter camperizados. Si la MMA es mayor (algunas integrales y gran volumen cargadas), necesitas B+E o C1: verifica la ficha técnica antes de comprar.',
-        },
-      ],
-    },
-    'camper-mediana': {
-      descripcion: 'Camper medianas y compactas de ocasión: VW California, Transporter y Multivan camper, Mercedes Marco Polo y Vito, Ford Transit Custom, Renault Trafic y Toyota Proace. El equilibrio perfecto entre agilidad urbana y habitabilidad.',
-      terminos: ['VW California de ocasión', 'camper compacta segunda mano', 'Marco Polo usado', 'Transit Custom camper', 'camper mediana'],
-      introduccion: [
-        'Las campers medianas y compactas (L1H1/L2H1, de 4,6 a 5,3 m) son la elección habitual de parejas y pequeñas familias que quieren viajar sin renunciar a aparcar en ciudad. VW California y Transporter, Mercedes Marco Polo y Vito, Ford Transit Custom, Renault Trafic, Opel Vivaro y Toyota Proace son las bases más comunes.',
-        'Suelen dormir 2–4 personas (cama trasera o cama abatible sobre cabina), llevar cocina exterior o fregadero y nevera, y consumir entre 7 y 9 L/100 km. Muchas conservan la altura original (< 2 m) y entran en parkings de superficie y en la mayoría de parkings de ciudad.',
-      ],
-      faq: [
-        {
-          pregunta: '¿Qué es una camper mediana o compacta?',
-          respuesta: 'Una furgoneta camperizada de entre 4,6 y 5,3 metros (VW Transporter/California, Ford Transit Custom, Mercedes Vito, Renault Trafic, Opel Vivaro, Toyota Proace) con cama, cocina básica y equipamiento de viaje. Es el equilibrio entre habitabilidad y agilidad urbana: se conduce como un monovolumen.',
-        },
-        {
-          pregunta: '¿Una camper mediana cabe en un parking de ciudad?',
-          respuesta: 'Casi todas sí: miden menos de 5,3 m y muchas no superan los 2 m de altura (como una furgoneta de reparto). Eso permite entrar en parkings subterráneos con altura libre estándar (≥ 1,9–2 m) y circular por calles estrechas, algo que las autocaravanas grandes no permiten.',
-        },
-        {
-          pregunta: '¿Cuánto consume una camper mediana?',
-          respuesta: 'Entre 7 y 10 L/100 km en uso real según motor (2.0 TDI habitual), carga y estilo de conducción. Las versiones de 2.0 TDI 110–150 CV son el punto dulce: suficiente potencia con MMA de 2.800–3.100 kg y consumo contenido frente a las bases de 3.500 kg.',
-        },
-      ],
-    },
-    minicamper: {
-      descripcion: 'Minicamper de ocasión a base de berlingo, Rifter, Partner, Kangoo, Caddy y Dokker camperizadas. Convertibles, fáciles de aparcar y con consumo contenido: la puerta de entrada al mundo camper.',
-      terminos: ['minicamper de ocasión', 'Berlingo camper usada', 'Kangoo camperizada', 'Caddy camper segunda mano', 'camper pequeña barata'],
-      introduccion: [
-        'Las minicamper son furgonetas compactas (Citroën Berlingo, Peugeot Rifter y Partner, Renault Kangoo, VW Caddy, Fiat Doblò y Dokker) camperizadas por particulares o pequeños camperizadores: cama plegable, nevera portátil y a veces cocina exterior. Miden 4,4 m o menos y consumen 5–7 L/100 km.',
-        'Son la puerta de entrada al mundo camper y la opción más económica del catálogo. Eso sí: su habitabilidad es limitada (ideal para 1–2 personas) y muchas camperizaciones son ligeras, así que revisa si llevan homologación o si la camperización es desmontable.',
-      ],
-      faq: [
-        {
-          pregunta: '¿Qué es una minicamper?',
-          respuesta: 'Una furgoneta compacta (Berlingo, Rifter, Partner, Kangoo, Caddy, Doblò o Dokker) transformada en vehículo de viaje con cama plegable o abatible y equipamiento ligero. Duermen 1–2 personas, miden menos de 4,5 m y consumen poco: la opción más asequible para empezar en el camperismo.',
-        },
-        {
-          pregunta: '¿Necesita homologación una minicamper?',
-          respuesta: 'Depende: si la camperización es ligera y desmontable (saco de dormir, nevera portátil, cama plegable sin obra), puede circular como turismo o furgón sin reforma. Si incluye cocina, agua, cama fija o instalación eléctrica permanente, debe homologarse como vehículo vivienda (2448) o mixto adaptable (3100). Pide siempre la ficha técnica.',
-        },
-        {
-          pregunta: '¿Se puede dormir en una minicamper dos personas?',
-          respuesta: 'Sí, aunque justo: la cama suele medir 1,80–2,10 m de largo y 1,20–1,40 m de ancho. Para parejas es viable en verano; si viajas con niños o quieres ducha y cocina interior, una camper mediana o gran volumen dará más confort por poco más de presupuesto.',
-        },
-      ],
-    },
-    perfilada: {
-      descripcion: 'Autocaravanas perfiladas de ocasión sobre Fiat, Ford, Volkswagen, Mercedes, Renault e Iveco. Perfil bajo para aparcamiento y garaje, con zona de estar desplazada hacia la parte trasera.',
-      terminos: ['autocaravana perfilada de ocasión', 'perfilada usada', 'autocaravana perfilada barata', 'perfilada gran volumen'],
-      introduccion: [
-        'La autocaravana perfilada se reconoce por su perfil bajo y su cama doble sobre la cabina (cama "basculante" o fija según modelo). Es la familia más vendida de autocaravana en Europa: más espacio interior que una camper, altura inferior a la capuchina (2,8–3,1 m habitual) y buena visibilidad al volante.',
-        'Marcas habituales de ocasión: Adria, Hymer, Challenger, Laika, Swift, Roller Team, Benimar, PIK y Burstner, sobre chasis Fiat Ducato, Ford Transit, VW Crafter, Mercedes Sprinter, Renault Master e Iveco Daily. Duermen de 4 a 6 personas y casi todas llevan baño, ducha y truma de calefacción.',
-      ],
-      faq: [
-        {
-          pregunta: '¿Qué es una autocaravana perfilada?',
-          respuesta: 'Una autocaravana con perfil bajo y frontal liso (sin capucha sobre la cabina), cama doble normalmente sobre la cabina y zona de estar desplazada atrás. Altura típica 2,8–3,1 m: entra en la mayoría de parkings y gasolineras. Es la autocaravana más vendida por equilibrio entre espacio y conducción.',
-        },
-        {
-          pregunta: '¿Una autocaravana perfilada cabe en un garaje?',
-          respuesta: 'En la mayoría de garajes comunitarios (altura libre 1,9–2,2 m) NO: una perfilada mide 2,8–3,1 m de alto. Cabe en plazas de garaje de altura libre ≥ 2,8 m o en parking exterior. Mide siempre la altura del vehículo (con portabultos incluido) antes de comprar.',
-        },
-        {
-          pregunta: '¿Cuántas personas viajan en una perfilada?',
-          respuesta: 'Normalmente 4–6: cuatro asientos de viaje (delante + mesa) y camas para 4 (doble sobre cabina + doble trasera). Revisa en la ficha técnica las plazas de viaje homologadas (las que pueden ir sentadas con cinturón) y las plazas de dormir, que pueden diferir.',
-        },
-      ],
-    },
-    capuchina: {
-      descripcion: 'Autocaravanas capuchinas de ocasión: cabina original con litera superior, máxima habitabilidad al precio más ajustado dentro de las autocaravanas.',
-      terminos: ['autocaravana capuchina de ocasión', 'capuchina usada', 'autocaravana litera capucha', 'capuchina fiat'],
-      introduccion: [
-        'La autocaravana capuchina mantiene la cabina del vehículo industrial y añade una "capucha" sobre ella: la litera delantera, que suele ser la cama principal (1,40–1,60 m de ancho). Es la autocaravana con más plazas de dormir por metro y, por lo general, la más económica de segunda mano.',
-        'Contrapartidas: la capucha dificulta la visibilidad en tráfico urbano, su perfil alto (3,1–3,3 m) limita la entrada a parkings y gasolineras, y la litera es calurosa en verano si no lleva ventilación. Marcas habituales: Adria, Hymer, Challenger, Roller Team, Benimar, PIK, Laika y Swift sobre Ducato, Transit, Crafter y Daily.',
-      ],
-      faq: [
-        {
-          pregunta: '¿Qué es una autocaravana capuchina?',
-          respuesta: 'Una autocaravana con una protuberancia ("capucha") sobre la cabina que aloja la litera delantera, normalmente la cama principal. Ofrece máxima habitabilidad por su longitud (5,9–7,5 m) y suele ser la autocaravana de ocasión más barata por plaza de dormir.',
-        },
-        {
-          pregunta: '¿La litera de la capuchina es cómoda?',
-          respuesta: 'Es amplia (1,40–1,60 m de ancho) pero va sobre el salpicadero: notarás más ruido de carretera y, sin ventilación, calor en verano. Los modelos recientes llevan ventanas y trampillas de ventilación; al comprar de ocasión, compruébalo en persona y en movimiento.',
-        },
-        {
-          pregunta: '¿Qué altura tiene una capuchina y dónde puede aparcar?',
-          respuesta: 'Entre 3,1 y 3,3 m de altura, por lo que no entra en parkings subterráneos estándar ni bajo muchas gasolineras con toldo bajo. Circula con el toldo y antenas plegados y consulta la altura exacta en la ficha técnica antes de planificar rutas con túneles o parkings.',
-        },
-      ],
-    },
-    integral: {
-      descripcion: 'Autocaravanas integrales de ocasión: Adria, Hymer, Challenger, Laika, Swift, Profile, Autocamper, PIK y Benimar. Máximo confort, cabina independiente y acabados de nivel superior.',
-      terminos: ['autocaravana integral de ocasión', 'integral usada', 'Adria de segunda mano', 'Hymer ocasión', 'autocaravana integral barata'],
-      introduccion: [
-        'La autocaravana integral es la de mayor confort: cabina de conducción integrada en el habitáculo (salpicadero a la altura del resto), aislamiento superior, calefacción y agua caliente por gas, y acabados de gama. Duermen 4–6 personas y son la opción habitual para viajar a tiempo completo o temporadas largas.',
-        'A cambio, son las más caras (de 45.000 € a más de 150.000 € en ocasión según modelo y año), las más altas (3,1–3,4 m) y las que más consumen (12–16 L/100 km). Marcas de ocasión: Adria, Hymer, Challenger, Laika, Swift, Roller Team, Benimar, PIK, Autocamper y Dethleffs.',
-      ],
-      faq: [
-        {
-          pregunta: '¿Qué es una autocaravana integral?',
-          respuesta: 'Una autocaravana construida sobre cabina propia (no sobre furgoneta industrial), con el salpicadero integrado en el espacio habitable, aislamiento y acabados de gama alta. Es la categoría superior: máximo confort para viajes largos o vivir en la carretera, a cambio de precio, altura y consumo.',
-        },
-        {
-          pregunta: '¿Cuánto cuesta una autocaravana integral de ocasión?',
-          respuesta: 'Desde unos 45.000 € por modelos de los 2000s con muchos kilómetros, hasta 80.000–150.000 € para integrales de 2015–2022 de gama media-alta. El precio depende sobre todo de la marca, el año, el chasis (Fiat Ducato 3,5 t es lo habitual) y el estado del habitáculo y del motor diésel.',
-        },
-        {
-          pregunta: '¿Qué mantenimiento tiene una integral?',
-          respuesta: 'Similar a un furgón grande en mecánica (revisiones cada 15.000–30.000 km, distribución según motor) más el hogar: revisión anual de la instalación de gas (con boletín), revisión de juntas y sellado de carrocería (fugas de agua), y tratamiento de depósitos de agua potable y residuales. Presupuesta 1.500–3.000 €/año entre seguro, mantenimiento y áreas de servicio.',
-        },
-      ],
-    },
-    overland: {
-      descripcion: 'Células sobre pick-up y camper 4x4 overland de ocasión: Toyota, Mitsubishi, Nissan, Volkswagen, Ford y Land Rover. Para viajar fuera del asfalto, con tracción total y autonomía real.',
-      terminos: ['camper 4x4 de ocasión', 'overland España', 'célula pick-up', 'Hilux camper usada', '4x4 camperizada'],
-      introduccion: [
-        'El overland campero abarca dos mundos: células desmontables sobre pick-up (Toyota Hilux, Mitsubishi L200, Nissan Navara, Ford Ranger, VW Amarok) y furgonetas 4x4 camperizadas (VW T4/T5 4Motion, Mercedes Sprinter 4x4, Iveco Daily 4x4). Están pensadas para salir de las carreteras asfaltadas: tracción total, mayor altura libre y autonomía real de agua y energía.',
-        'Antes de comprar, verifica tres cosas: la tracción real (4x4 con reductora, no solo 4x2 con aspecto aventurero), la MMA del conjunto (célula + pick-up pueden superar 3.500 kg y exigir C1) y que la camperización de la célula esté homologada como vehículo vivienda si vas a dormir en ella de forma legal.',
-      ],
-      faq: [
-        {
-          pregunta: '¿Qué es una camper overland o 4x4?',
-          respuesta: 'Un vehículo camper preparado para terreno no asfaltado: pick-up con célula camper (Hilux, L200, Navara, Ranger, Amarok) o furgón 4x4 camperizado (T4/T5 Syncro, Sprinter 4x4, Daily 4x4). Tracción total, altura libre y autonomía ampliada: el estándar para rutas de aventura y zonas remotas.',
-        },
-        {
-          pregunta: '¿Necesito un permiso especial para una camper 4x4 o una célula?',
-          respuesta: 'Con el permiso B basta si la MMA del conjunto no supera 3.500 kg. Ojo con las células grandes sobre pick-up: suman peso y pueden elevar la MMA por encima de ese límite, exigiendo B+E o C1. Comprueba la MMA total en la ficha técnica del conjunto antes de reservar.',
-        },
-        {
-          pregunta: '¿Se puede circular por pistas forestales con una camper overland?',
-          respuesta: 'Depende de la vía y la autorización, no solo del vehículo: muchas pistas forestales y caminos rurales son transitables con 4x4, pero parques naturales y zonas protegidas exigen permiso de circulación y acampada. Consulta siempre la normativa autonómica y local; circular fuera de pista en zona protegida puede ser sancionable.',
-        },
-      ],
-    },
+type InfoSubSEO = {
+  descripcion: string
+  terminos: string[]
+  introduccion: string[]
+  faq: { pregunta: string; respuesta: string }[]
+}
+
+const SUBS_BASE: Record<string, InfoSubSEO> = {
+  // ── Agrícola ──
+  'tractores': {
+    descripcion: 'Tractores de ocasión de todas las potencias: John Deere, Kubota, New Holland, Case IH, Massey Ferguson, Fendt, Deutz-Fahr, Valtra y Claas. Segunda mano con horas de uso y ficha técnica.',
+    terminos: ['tractor de segunda mano', 'tractor John Deere ocasión', 'tractor Kubota usado', 'tractor de ocasión barato', 'tractor agrícola 4x4'],
+    introduccion: [
+      'El tractor es el corazón de la explotación agrícola y el producto con más salida en el mercado de ocasión: desde compactos de finca de 30 CV hasta modelos de 200 CV con transmisión CVT. Las marcas con más anuncios en España son John Deere, Kubota, New Holland, Case IH, Massey Ferguson, Fendt y Deutz-Fahr.',
+      'Al elegir un tractor de segunda mano, contrasta las horas registradas con el estado del motor y de la hidráulica, comprueba que el embrague y la toma de fuerza respondan, y revisa el enganche de tres puntos y el sistema de dirección. La ficha de cada anuncio recoge horas, CV, tracción y año para comparar sin sorpresas.',
+    ],
+    faq: [
+      {
+        pregunta: '¿Cuántas horas puede durar un tractor de ocasión?',
+        respuesta: 'Un tractor bien mantenido supera con frecuencia las 8.000–12.000 horas de trabajo antes de una reparación mayor de motor o transmisión. Clave: historial de cambios de aceite, estado del turbo (si lleva) y desgaste de embrague. Exige las horas en diagnóstico, no solo el cuentakilómetros.',
+      },
+      {
+        pregunta: '¿Qué potencia (CV) necesito para mi finca?',
+        respuesta: 'Como orientación: labores ligeras y huerto con 30–60 CV; arado y trabajos exigentes en medianas de 80–120 CV; grandes extensiones y aperos pesados, 140–200 CV. Unos pocos CV de más no gastan mucho combustible, pero un tractor infradimensionado fuerza motor y embrague.',
+      },
+    ],
+  },
+  'cosechadoras': {
+    descripcion: 'Cosechadoras y empacadoras de ocasión: Claas Lexion, New Holland CR/CX, Case IH Axial-Flow, John Deere S Series, Krone y McHale. Segunda mano con ancho de corte y horas.',
+    terminos: ['cosechadora de segunda mano', 'cosechadora Claas ocasión', 'empacadora usada', 'ensiladora de ocasión', 'cosechadora de grano barata'],
+    introduccion: [
+      'Las cosechadoras de grano y las empacadoras son las máquinas de mayor inversión de la campaña: comprarlas de ocasión con horas certificadas y mantenimiento documentado ahorra una fracción significativa del precio de nuevo. Claas, New Holland, Case IH, John Deere y Fendt dominan el mercado español.',
+      'Antes de comprar, revisa el sistema de trilla y cribado (golpeando en seco), el estado de la barredora y de la mesa de corte, y las horas totales y de rotor. En empacadoras (Krone, McHale, New Holland), verifica la aguja, los tensores y el sistema de enlazado.',
+    ],
+    faq: [
+      {
+        pregunta: '¿Qué revisar en una cosechadora de segunda mano?',
+        respuesta: 'Horas totales y de rotor o cilindro, desgaste de cribos y martillos de trilla, estado de barredora y mesa, fugas hidráulicas y condición de cadenas y rodamientos. Una prueba corta en cultivo revela pérdidas en el rastrojo y problemas de alimentación que no se ven parada.',
+      },
+      {
+        pregunta: '¿Cosechadora o empacadora: cuál me conviene?',
+        respuesta: 'Si produces grano (trigo, cebada, maíz para grano), la cosechadora. Si el destino es forraje o heno paja, la empacadora (fardos grandes o circulares) o la ensiladora (maíz). Elige según el cultivo y la superficie: en fincas pequeñas a menudo sale mejor contratar el servicio a un profesional.',
+      },
+    ],
+  },
+  'maquinaria-agricola': {
+    descripcion: 'Aperos y maquinaria agrícola de ocasión: arados, sembradoras, cultivadores, pulverizadoras, rastrillos y segadoras. Kuhn, Amazone, Lemken, Kverneland, Vaderstad y Horsch de segunda mano.',
+    terminos: ['arado de ocasión', 'sembradora de segunda mano', 'pulverizadora usada', 'cultivador agrícola ocasión', 'aperos y labranza baratos'],
+    introduccion: [
+      'Los aperos determinan la rentabilidad de cada campaña: arados de discos y de vertederas, sembradoras de precisión, cultivadores, pulverizadoras de barra y segadoras de disco encuentran aquí de segunda mano a precios muy por debajo del equipo nuevo.',
+      'Filtra por ancho de trabajo y tipo para encontrar la máquina que encaja con tu tractor, y comprueba el estado de discos, cuchillas y boquillas, así como los puntos de enganche y la toma de fuerza. Las fichas indican ancho, tipo y estado en todos los anuncios.',
+    ],
+    faq: [
+      {
+        pregunta: '¿Qué ancho de trabajo necesito para mi tractor?',
+        respuesta: 'Regla práctica: el ancho del apero debe aprovechar el potencia disponible sin forzar el motor. Un tractor de 100 CV mueve cómodamente arados de 3–4 discos y cultivadores de 3–4 m; revisa la ficha técnica de tu tractor (CV y potencia a la toma de fuerza) y compárala con el ancho de trabajo del anuncio.',
+      },
+      {
+        pregunta: '¿Cómo sé si una pulverizadora está en buen estado?',
+        respuesta: 'Revisa boquillas (cambiarlas por juego nuevo es barato), filtro, manómetro y ausencia de fugas en el circuito. Los tanques deben estar limpios y sin residuos cristalizados de producto; pide prueba de presión y comprueba que la barra se despliega y pliega sin holguras.',
+      },
+    ],
+  },
+  'ganaderia': {
+    descripcion: 'Equipos de ganadería de ocasión: ordenadoras, provocadoras de celo, comederos, bebederos y vallados. Lely, DeLaval, GEA y BouMatic de segunda mano en España.',
+    terminos: ['ordenadora de ocasión', 'equipos de ganadería segunda mano', 'provocadora de celo usada', 'comedero ganadero ocasión', 'maquinaria de explotación lechera'],
+    introduccion: [
+      'La maquinaria de ganadería de ocasión cubre desde sistemas de ordeño (pulsoriles, tetinas, enfriadores) hasta equipos de cría y recinto: comederos, bebederos, vallados portátiles y provocadoras de celo. Lely, DeLaval, GEA y BouMatic son las marcas de referencia en ordeño.',
+      'En equipos de ordeño usados, el estado de las gomas (tetinas y pulsoriles) y la higiene del circuito marcan la diferencia. Pide las horas de trabajo, el historial de sustitución de desgastes y, si es posible, una prueba de funcionamiento conectada a la sala de ordeño.',
+    ],
+    faq: [
+      {
+        pregunta: '¿Cuánto dura una ordenadora de segunda mano?',
+        respuesta: 'Los pulsoriles y tetinas se cambian por desgaste (cada 1.500–2.500 horas según fabricante); el resto del equipo (bomba, enfriador, sala) puede durar años si se mantiene. Verifica el número de puestos, el año y el estado de las gomas antes de decidir.',
+      },
+      {
+        pregunta: '¿Qué necesito para montar un corral o vallado nuevo?',
+        respuesta: 'Comederos y bebederos con capacidad para el número de cabezas, vallados resistentes al ambiente (galvanizado o inoxidable) y, si manejas semovientes, portones con cierre seguro. En el catálogo puedes filtrar por tipo de equipo y número de puestos para dimensionar la compra.',
+      },
+    ],
+  },
+
+  // ── Obra ──
+  'excavadoras': {
+    descripcion: 'Excavadoras y retroexcavadoras de ocasión: Caterpillar, Komatsu, Volvo, Hitachi, JCB, Case, Hyundai, Doosan, Sany y Bobcat. Sobre oruga y ruedas, de 1,5 a 35 toneladas.',
+    terminos: ['excavadora de segunda mano', 'excavadora Caterpillar ocasión', 'retroexcavadora usada', 'miniestacadora de ocasión', 'excavadora sobre oruga barata'],
+    introduccion: [
+      'La excavadora es la máquina más demandada de la obra: sobre oruga para trabajo pesado y continuo, sobre ruedas para desplazamientos rápidos, y miniexcavadoras de 1,5–6 t para urbanización y jardinería. Caterpillar, Komatsu, Volvo, Hitachi, JCB, Case y las marcas chinas Sany y XCMG tienen fuerte presencia en el mercado español.',
+      'Cada anuncio detalla peso operativo, profundidad de excavación, tracción y horas de uso. Antes de comprar, revisa cadenas o neumáticos, holguras en boom, stick y cuchara, estado de cilindros y fugas, y pide un historial de mantenimiento verificable.',
+    ],
+    faq: [
+      {
+        pregunta: '¿Qué tamaño de excavadora necesito?',
+        respuesta: 'Miniexcavadora de 1,5–3,5 t para zonas estrechas, jardinería y canalizaciones; de 6–13 t para urbanización y cimentaciones; de 20–35 t para movimiento de tierras y demolición ligera. El peso y las medidas de transporte del anuncio te dicen si puedes moverla con tu remolque.',
+      },
+      {
+        pregunta: '¿Sobre oruga o sobre ruedas?',
+        respuesta: 'La oruga da estabilidad, flotación y durabilidad en terreno blando o en continuo; las ruedas permiten desplazarse por vía pública entre puntos de obra sin camión. Para trabajo mixto urbano, hay retroexcavadoras y modelos sobre ruedas de 8–15 t que son el término medio habitual.',
+      },
+    ],
+  },
+  'cargadoras': {
+    descripcion: 'Cargadoras frontales, minicargadoras y telecargadores de ocasión: Bobcat, Manitou, Merlo, JCB, Caterpillar, Volvo y New Holland. Skid-steer, frontales y telescópicas de segunda mano.',
+    terminos: ['cargadora de segunda mano', 'minicargadora Bobcat ocasión', 'telecargador usado', 'cargadora frontal barata', 'cargadora sobre ruedas ocasión'],
+    introduccion: [
+      'Las cargadoras resuelven la manipulación de material en obra, granja y reciclaje: minicargadoras sobre ruedas (skid-steer) de Bobcat y Wacker Neuson, cargadoras frontales articuladas de Volvo, Caterpillar y New Holland, y telecargadores de Manitou, Merlo y JCB.',
+      'Filtra por capacidad de carga y tracción; en las fichas encontrarás además las medidas de transporte y la altura de vuelco, decisivas para saber si la máquina entra en tu plataforma o remolque.',
+    ],
+    faq: [
+      {
+        pregunta: '¿Cuánta carga puede mover una minicargadora?',
+        respuesta: 'Las skid-steer compactas (Bobcat S60/S70) mueven en torno a 700–1.000 kg; las medianas, 1.200–1.500 kg; y las frontales articuladas grandes superan los 3 t. Comprueba la capacidad junto con el peso operativo: la estabilidad depende del contraequilibrio, no solo del cifrado de fábrica.',
+      },
+      {
+        pregunta: '¿Qué es un telecargador y cuándo merece la pena?',
+        respuesta: 'Un telecargador (Manitou, Merlo, JCB Loadall) combina brazo telescópico y ruedas: carga paquetes a altura, alza palés en andamio y llega donde la cargadora frontal no. Es la máquina más versátil si trabajas en obra y almacenamiento; comprueba el estado del cilindro del brazo y de las horquillas.',
+      },
+    ],
+  },
+  'compactacion': {
+    descripcion: 'Rodillos, apisonadores y dumperes de ocasión: Bomag, Hamm, Dynapac, Caterpillar, Sakai, Thwaites, Bell y Astra. Compactación de suelo y transporte en obra de segunda mano.',
+    terminos: ['rodillo compactador ocasión', 'apisonador de segunda mano', 'dumper articulado usado', 'pavibradora ocasión', 'compactadora de suelo barata'],
+    introduccion: [
+      'La compactación garantiza la estabilidad de terraplenes, firmes y zanjas: rodillos tandem y articulados, apisonadores de placa, miniapisonadores y, para el transporte en obra, dumperes articulados de Thwaites, Bell, Astra o Perlini.',
+      'Filtra por tipo y capacidad de carga. En rodillos y apisonadores, revisa el sistema vibratorio (frecuencia y amplitud), el estado del tambor y las juntas; en dumperes, ejes, articulación y estado de la caja.',
+    ],
+    faq: [
+      {
+        pregunta: '¿Qué rodillo elijo para compactar?',
+        respuesta: 'Tandem doble tambor para firmes asfálticos y rodaduras; articulado para terraplenes y suelos cohesivos; apisonador de plataforma para zanjas y espacios reducidos. El peso estático y la fuerza centrífuga del anuncio indican la potencia de compactación real.',
+      },
+      {
+        pregunta: '¿Cuánta carga mueve un dumper articulado?',
+        respuesta: 'Los dumperes pequeños mueven 2–3 t; los medianos de cantera, 25–30 t; los grandes de mina superan las 40 t. Para urbanización, lo habitual son unidades de 6–10 t que caben en plataforma sin permisos especiales de movimiento.',
+      },
+    ],
+  },
+  'plataformas': {
+    descripcion: 'Plataformas elevadoras de ocasión: telescópicas, articuladas (tijera) y verticales. Genie, JCB, Manitou, Haulotte, Skyjack, Niftylift, Snorkel y Magni de segunda mano.',
+    terminos: ['plataforma elevadora ocasión', 'plataforma de tijera usada', 'manlift de segunda mano', 'plataforma telescópica barata', 'plataforma elevadora obra'],
+    introduccion: [
+      'Las plataformas elevadoras hacen segura el trabajo en altura: verticales (o elevadores de tijera) para superficies llanas y altura moderada, articuladas para saltar obstáculos, y telescópicas o rotativas para gran altura y alcance en fachada.',
+      'En la ficha encontrarás altura máxima de trabajo, capacidad de la cesta (kg) y medidas de transporte, además de horas de uso. Revisa el estado de neumáticos, estabilizadores, cestas de seguridad y la batería o motor de propulsión antes de comprar.',
+    ],
+    faq: [
+      {
+        pregunta: '¿Qué tipo de plataforma necesito para mi trabajo?',
+        respuesta: 'En planta y almacén, una vertical de tijera; en fachada y jardinería con obstáculos, una articulada de brazo; en grandes alturas y terreno irregular, una telescópica o de ruedas con estabilizadores. Comprueba en el anuncio la altura de trabajo y la capacidad de la cesta frente al peso de personas y material.',
+      },
+      {
+        pregunta: '¿Se puede trabajar con plataforma elevadora sin formación?',
+        respuesta: 'No: la normativa exige formación específica del operador y uso del arnés con línea de vida en altura. Antes de comprar, verifica el mantenimiento anual y las certificaciones de la máquina (las plataformas requieren revisiones periódicas) y ten en cuenta el coste de esa revisión anual.',
+      },
+    ],
+  },
+
+  // ── Herramientas ──
+  'herramienta-electrica': {
+    descripcion: 'Herramienta eléctrica y sin cable de ocasión: taladros, amoladoras, sierras circulares, rotomartillos y sistemas de baterías. Makita, Bosch, DeWalt, Milwaukee, Metabo, Festool y Hilti.',
+    terminos: ['taladro de ocasión', 'amoladora usada barata', 'herramienta Makita segunda mano', 'sierra circular ocasión', 'herramienta profesional de segunda mano'],
+    introduccion: [
+      'El mercado de herramienta eléctrica de ocasión es amplio: taladros y rotomartillos, amoladoras angulares, sierras circulares y de calar, fresadoras y sistemas de baterías de 18 V y 54 V. Makita, Bosch Professional, DeWalt, Milwaukee, Metabo, Festool y Hilti lideran el segmento profesional.',
+      'Cada anuncio indica potencia (W), tensión (230 V, 400 V, bivolt o batería) y si incluye batería y maletín. Para uso intensivo, prioriza modelos profesionales con historial de uso moderado y prueba la máquina antes de pagar.',
+    ],
+    faq: [
+      {
+        pregunta: '¿Merece la pena comprar herramienta profesional de segunda mano?',
+        respuesta: 'Sí, si el uso anterior fue industrial pero cuidado: los motores brushless (sin escobillas) duran mucho y las baterías Li-Ion se degradan con el tiempo. Comprueba la holgura del rodamiento, la línea de corte y pide prueba bajo carga; evita herramientas con carcasa astillada por caídas.',
+      },
+      {
+        pregunta: '¿Qué diferencia hay entre 230 V y 400 V en herramienta?',
+        respuesta: 'Los 230 V (monofásico) cubren taladros, amoladoras y sierras de taller; los 400 V (trifásico) son necesarios en máquinas industriales de mayor potencia (sierras de banco, compresores grandes, soldadoras industriales). Comprueba la tensión de tu instalación antes de comprar un anuncio de 400 V.',
+      },
+    ],
+  },
+  'motores': {
+    descripcion: 'Generadores, grupos electrógenos, compresores y equipos de soldadura de ocasión: Himoinsa, Cummins, Perkins, Honda, Pramac, Atlas Copco, Kaeser, Lincoln Electric, ESAB y Fronius.',
+    terminos: ['generador de segunda mano', 'grupo electrógeno ocasión', 'compresor de aire usado', 'soldadora de ocasión barata', 'motor industrial de segunda mano'],
+    introduccion: [
+      'Los motores y equipos auxiliares de ocasión abarcan generadores portátiles e industriales, compresores de tornillo y alternativos, y máquinas de soldadura MIG/MAG, TIG y MMA. Himoinsa, Cummins, Perkins, Honda y Pramac en generación; Atlas Copco y Kaeser en compresión.',
+      'Filtra por potencia (W), tensión y tipo. En anuncios con horas de uso registradas, un grupo electrógeno bien documentado puede funcionar miles de horas más; revisa filtros, niveles y prueba de carga antes de comprar.',
+    ],
+    faq: [
+      {
+        pregunta: '¿Qué potencia de generador necesito?',
+        respuesta: 'Suma la potencia de todos los equipos simultáneos y añade margen (20–30 %). Un compresor pequeño y unas luces pueden ir en un generador inverter de 2–3 kVA; para obra, soldadora y herramienta de 400 V, se necesitan 10–30 kVA. La ficha indica vatios útiles y tensión de salida.',
+      },
+      {
+        pregunta: '¿Cuántas horas dura un compresor de aire industrial?',
+        respuesta: 'Un compresor de tornillo bien mantenido supera las 20.000–40.000 horas con cambios regulares de aceite y separadores; los alternativos de pistón duran menos horas pero son más sencillos. Pide las horas registradas, estado del aceite y prueba de presión máxima.',
+      },
+    ],
+  },
+  'sierra-poda': {
+    descripcion: 'Motosierras, desbrozadoras, podadoras y cortacésped de ocasión: Stihl, Husqvarna, Oleo-Mac, Shindaiwa, RedMax, Makita y Bosch. Maquinaria de jardinería de segunda mano.',
+    terminos: ['motosierra de ocasión', 'desbrozadora usada barata', 'Stihl de segunda mano', 'cortacésped ocasión', 'maquinaria de jardinería usada'],
+    introduccion: [
+      'La sierra y poda son la entrada al mercado de maquinaria forestal y de jardinería: motosierras de cadena, desbrozadoras de hilo y de disco, podadoras de setos y cortacésped. Stihl, Husqvarna, Oleo-Mac, Shindaiwa y RedMax son las marcas más buscadas de ocasión.',
+      'Cada ficha indica tipo, potencia o cilindrada, tensión o combustible y largo de espada cuando aplica. Revisa la holgura de la cadena, el estado del piñón, la compresión del motor y, en eléctricas, el estado del cable y los carbones antes de comprar.',
+    ],
+    faq: [
+      {
+        pregunta: '¿Qué revisar en una motosierra de segunda mano?',
+        respuesta: 'Prueba de arranque en frío y en caliente, compresión, estado de espada y cadena (si la espada está mellada, es señal de uso duro), embrague y freno de cadena. En motosierras profesionales, pide las horas si el modelo las registra en el cuentahoras.',
+      },
+      {
+        pregunta: '¿Motosierra de gasolina o eléctrica/batería?',
+        respuesta: 'Gasolina para trabajo forestal, poda alejada de la red y potencia máxima; eléctrica 230 V o de batería para jardín urbano, menos ruido y mantenimiento. En catálogo puedes filtrar por combustible (Gasolina, Eléctrico o Batería) y por potencia en watios.',
+      },
+    ],
+  },
+  'taller-manual': {
+    descripcion: 'Herramienta manual y de taller de ocasión: juegos de llaves, destornilladores, alicates, gatas y equipos de elevación. Knipex, Wera, Bahco, Facom, Gedore, Hazet, Stanley y Würth.',
+    terminos: ['juego de llaves de ocasión', 'herramienta manual segunda mano', 'alicates Knipex ocasión', 'utillaje de taller barato', 'gata hidráulica usada'],
+    introduccion: [
+      'La herramienta manual conserva su valor mejor que casi cualquier otra: juegos de llaves combinadas, alicates de presión, destornilladores de precisión, gatas y botellas hidráulicas o multímetros. Knipex, Wera, Bahco, Facom, Gedore, Hazet y Würth son sinónimo de durabilidad.',
+      'En el catálogo puedes filtrar por tipo (juego de llaves, destornilladores, alicates, elevación) y estado. Para herramienta de precisión, inspecciona desgastes en las mordazas y juegos en las puntas; en gatas, prueba la elevación completa y revisa juntas y aceite.',
+    ],
+    faq: [
+      {
+        pregunta: '¿Cómo saber si una herramienta manual es de calidad?',
+        respuesta: 'Fíjate en el material (acero cromo-vanadio o acero S2), la marca del fabricante y el acabado de las mordazas. Marcas como Knipex, Bahco, Facom o Wera publican garantía de por vida en muchos productos; una herramienta usada sin deformaciones sigue siendo una buena compra.',
+      },
+      {
+        pregunta: '¿Qué necesito para un taller de bricolaje básico?',
+        respuesta: 'Un juego de llaves combinadas y tubo (8–19 mm), alicates universal y de presión, destornilladores de estrella y plano, un juego de llaves allen y torx, martillo, cinta métrica y, si hay que elevar, una gata de 2 toneladas con soporte. Añade multímetro si tocas la eléctrica del coche.',
+      },
+    ],
+  },
+}
+
+const TODAS_SUBS = Object.values(categoriasData).flatMap(cat => cat.subs)
+
+const SUBS: SubcategoriaSEO[] = TODAS_SUBS.map((sub) => {
+  const info = SUBS_BASE[sub.slug]
+  if (!info) {
+    throw new Error(`categorias-seo: falta el SEO de la subcategoría "${sub.slug}"`)
   }
-  const info = base[sub.slug]
   return {
     slug: sub.slug,
     nombre: sub.label,
@@ -264,10 +405,4 @@ export const SUBCATEGORIAS_SEO_MAP: Record<string, SubcategoriaSEO> = Object.fro
 
 export function getSubcategoriaSEO(slug: string): SubcategoriaSEO | undefined {
   return SUBCATEGORIAS_SEO_MAP[slug]
-}
-
-/** Distintivos DGT y homologaciones disponibles (para textos SEO). */
-export const SEO_CAMPER_DATA = {
-  dgt: OPCIONES_DGT,
-  homologacion: OPCIONES_HOMOLOGACION,
 }

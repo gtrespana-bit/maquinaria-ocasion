@@ -303,6 +303,18 @@
     "overland": {
       "label": "Overland & 4x4",
       "desc": "Pickups and 4x4s with slide-in cells to travel without limits."
+    },
+    "agricola": {
+      "label": "Farm machinery",
+      "desc": "Used tractors, harvesters, implements and livestock equipment for farms of every size."
+    },
+    "obra": {
+      "label": "Construction machinery",
+      "desc": "Second-hand excavators, loaders, compactors and aerial work platforms for construction."
+    },
+    "herramientas": {
+      "label": "Tools & engines",
+      "desc": "Used power tools, generators, compressors, chainsaws and workshop hand tools."
     }
   },
   "marcasPage": {
@@ -405,7 +417,10 @@
       "groups": {
         "mechanics": "Vehicle mechanics",
         "liveability": "Liveability",
-        "autonomy": "Power & equipment"
+        "autonomy": "Power & equipment",
+        "technique": "Technical specs",
+        "docs": "Documentation",
+        "logistics": "Logistics"
       },
       "dgt": "DGT environmental label",
       "homologation": "Type approval",
@@ -428,7 +443,17 @@
       "kmMax": "Max kilometres",
       "anioMin": "Minimum year",
       "placaWatiosMin": "Min solar panel (W)",
-      "inversorWatiosMin": "Min inverter (W)"
+      "inversorWatiosMin": "Min inverter (W)",
+      "docs": "Documentation",
+      "transport": "Includes transport?",
+      "hitch": "Hitch",
+      "pto": "PTO (power take-off)",
+      "capacity": "Load capacity",
+      "transportSize": "Transport dimensions",
+      "powerW": "Power (W)",
+      "voltage": "Voltage",
+      "batteryIncluded": "Battery included",
+      "hoursMax": "Max operating hours"
     },
     "typeLabel": "Vehicle type",
     "allTypes": "All types"

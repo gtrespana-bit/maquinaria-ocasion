@@ -3,7 +3,7 @@ import type { Metadata } from 'next'
 import { ChevronRight, Factory, ArrowRight } from 'lucide-react'
 import LocalLink from '@/components/LocalLink'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
-import { categoriasData, FAMILIAS } from '@/lib/categorias'
+import { TODAS_LAS_SUBS, FAMILIAS } from '@/lib/categorias'
 import {
   MARCAS_MODELOS,
   agruparPorFabricante,
@@ -57,7 +57,7 @@ function hrefCatalogo(subLabel: string, valor?: string): string {
 function AptasBadges({ m, subActual }: { m: MarcaModelo; subActual: SubSlug }) {
   const otras = m.aptoPara.filter(s => s !== subActual)
   if (otras.length === 0) return null
-  const subs = categoriasData.camper.subs
+  const subs = TODAS_LAS_SUBS
   return (
     <span className="inline-flex flex-wrap gap-1 align-middle">
       {otras.map(slug => {
@@ -84,7 +84,7 @@ export default async function MarcasPage({ params }: { params: Promise<{ locale:
   const tf = await getTranslations({ locale, namespace: 'familias' })
 
   const fabricantes = agruparPorFabricante(MARCAS_MODELOS)
-  const subs = categoriasData.camper.subs
+  const subs = TODAS_LAS_SUBS
 
   const SITIO = 'https://maquinariaocasion.online'
   const breadcrumbJsonLd = {

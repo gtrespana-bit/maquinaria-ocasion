@@ -1,5 +1,5 @@
 import { ImageResponse } from 'next/og'
-import { categoriasData } from '@/lib/categorias'
+import { TODAS_LAS_SUBS } from '@/lib/categorias'
 import { formatPrecio } from '@/lib/precio'
 
 export const runtime = 'edge'
@@ -14,9 +14,10 @@ export const contentType = 'image/png'
  * nace el proyecto (Vehículos, Tecnología, Moda, Hogar, Herramientas): al
  * compartir el catálogo en WhatsApp o redes se veía una imagen con categorías
  * que no existen en MaquinariaOcasión. Ahora los tipos salen del registro real
- * (`categoriasData.camper.subs`), así que la imagen no puede desincronizarse.
+ * (todos los subs de la taxonomía), así que la imagen no puede
+ * desincronizarse.
  */
-const SUBS = categoriasData.camper.subs
+const SUBS = TODAS_LAS_SUBS
 
 // Paleta por familia camper: verde para furgonetas, naranja para autocaravanas,
 // grafito para overland. Se elige por el slug de la subcategoría.

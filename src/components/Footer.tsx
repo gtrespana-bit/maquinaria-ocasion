@@ -4,16 +4,16 @@ import BrandLogo from '@/components/BrandLogo'
 import LocalLink from '@/components/LocalLink'
 import { hayDatosTitular } from '@/lib/datos-legales'
 import { useTranslations } from 'next-intl'
-import { categoriasData, FAMILIAS } from '@/lib/categorias'
+import { TODAS_LAS_SUBS, FAMILIAS } from '@/lib/categorias'
 import { CIUDADES_SEO } from '@/lib/ubicaciones-seo'
 
 // Familias → tipos: la navegación del footer refleja la taxonomía real del
-// vertical (la categoría única `camper` no se expone en la UI).
+// vertical de maquinaria.
 const FAMILIAS_FOOTER = FAMILIAS.map(f => ({
   key: f.key,
   icon: f.icon,
   tipos: f.subs
-    .map(slug => categoriasData.camper.subs.find(s => s.slug === slug))
+    .map(slug => TODAS_LAS_SUBS.find(s => s.slug === slug))
     .filter((s): s is NonNullable<typeof s> => Boolean(s))
     .map(s => ({
       label: s.label,
