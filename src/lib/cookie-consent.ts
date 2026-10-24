@@ -1,0 +1,97 @@
+/**
+ * Consentimiento de cookies en un único sitio.
+ *
+ * Antes cada pieza iba por su lado: `CookieConsent` guardaba
+ * `localStorage['cookie-consent']` y nadie lo leía, y `RootClientEffects`
+ * montaba Vercel Analytics y Speed Insights indistintamente de lo que hubiera
+ * elegido el usuario. Es decir, el banner existía pero no servía para nada: se
+ * medía a todo el mundo, incluido quien había dicho «Rechazar».
+ *
+ * Aquí viven la clave, la lectura/escritura y el aviso de cambios, de modo que
+ * el banner y los scripts no puedan volver a divergir. La regla es una sola:
+ * **nada que no sea estrictamente necesario se carga antes de un «accepted»**.
+ *
+ * Nota: access es seguro en SSR (`window` no existe) y en modo privado
+ * (localStorage puede lanzar), así que los dos casos se tratan como «sin
+ * decisión» y el banner vuelve a pedirla.
+ */
+
+export type Consentimiento = 'accepted' | 'rejected'
+
+export const CONSENT_KEY = 'cookie-consent'
+
+/** Evento que se dispara al aceptar o rechazar, para no recargar la página. */
+export const CONSENT_EVENT = 'maquinariaocasion:consent'
+
+/**
+ * Evento para volver a mostrar el aviso: lo usa el botón «Cambiar mi decisión»
+ * de la política de cookies. Es distinto del anterior a propósito — rechazar o
+ * aceptar no debe reabrir el banner, solo olvidar la elección lo hace.
+ */
+export const CONSENT_REOPEN_EVENT = 'maquinariaocasion:consent-reopen'
+
+export function leerConsentimiento(): Consentimiento | null {
+  if (typeof window === 'undefined') return null
+  try {
+    const valor = window.localStorage.getItem(CONSENT_KEY)
+    return valor === 'accepted' || valor === 'rejected' ? valor : null
+  } catch {
+    return null
+  }
+}
+
+export function guardarConsentimiento(valor: Consentimiento): void {
+  if (typeof window === 'undefined') return
+  try {
+    window.localStorage.setItem(CONSENT_KEY, valor)
+  } catch {
+    // Modo privado o almacenamiento bloqueado: la decisión vale para esta
+    // sesión, que es mejor que cargar los scripts sin permiso.
+  }
+  window.dispatchEvent(new CustomEvent(CONSENT_EVENT, { detail: valor }))
+}
+
+/**
+ * Llama a `callback` cada vez que el usuario cambia su elección, también al
+ * reabrir el aviso (null = permiso retirado) o al cambiarla en otra pestaña.
+ * Devuelve la función para dejar de escuchar.
+ */
+export function alCambiarConsentimiento(
+  callback: (valor: Consentimiento | null) => void,
+): () => void {
+  if (typeof window === 'undefined') return () => {}
+  const handler = (evento: Event) => {
+    const valor = (evento as CustomEvent).detail
+    callback(valor === 'accepted' || valor === 'rejected' ? valor : null)
+  }
+  const reabrir = () => callback(null)
+  const sincronizar = (evento: StorageEvent) => {
+    if (evento.key === CONSENT_KEY || evento.key === null) callback(leerConsentimiento())
+  }
+  window.addEventListener(CONSENT_EVENT, handler)
+  window.addEventListener(CONSENT_REOPEN_EVENT, reabrir)
+  window.addEventListener('storage', sincronizar)
+  return () => {
+    window.removeEventListener(CONSENT_EVENT, handler)
+    window.removeEventListener(CONSENT_REOPEN_EVENT, reabrir)
+    window.removeEventListener('storage', sincronizar)
+  }
+}
+
+/**
+ * Olvida la decisión y vuelve a mostrar el aviso de cookies.
+ *
+ * Mientras no haya una decisión nueva, la medición se queda descargada (el
+ * banner reaparece), así que retirar el consentimiento tiene efecto inmediato,
+ * sin necesidad de recargar.
+ */
+export function reiniciarConsentimiento(): void {
+  if (typeof window === 'undefined') return
+  try {
+    window.localStorage.removeItem(CONSENT_KEY)
+  } catch {
+    // Almacenamiento bloqueado: con recargar la página basta para volver a
+    // preguntar, porque `leerConsentimiento()` devolverá null.
+  }
+  window.dispatchEvent(new CustomEvent(CONSENT_REOPEN_EVENT))
+}
