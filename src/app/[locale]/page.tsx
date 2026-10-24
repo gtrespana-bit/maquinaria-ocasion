@@ -32,7 +32,7 @@ function generateItemListSchema(products: any[], baseUrl: string) {
     position: index + 1,
     url: `${baseUrl}/producto/${product.slug || product.id}`,
     name: product.titulo,
-    description: product.descripcion || `Camper de ocasión en España`,
+    description: product.descripcion || `Maquinaria de ocasión en España`,
     image: product.imagen_url || `${baseUrl}/placeholder-product.webp`,
     offers: {
       '@type': 'Offer',
@@ -107,7 +107,7 @@ export const revalidate = 600
 const MODERACION = 'estado_moderacion.is.null,estado_moderacion.eq.aprobado'
 const PRODUCT_COLS = 'id, slug, titulo, precio_usd, estado, imagen_url, ubicacion_ciudad, subcategoria, creado_en, boosteado_en, destacado, destacado_hasta, vendedor_tipo, es_demo'
 
-async function getProductos(limit = 8, subcategorias?: string[]) {
+async function getProductos(limit = 8, subcategorias?: string[], categoria?: string) {
   if (!supabase) return []
   try {
     let q = supabase
@@ -115,7 +115,17 @@ async function getProductos(limit = 8, subcategorias?: string[]) {
       .select(PRODUCT_COLS)
       .eq('activo', true)
       .or(MODERACION)
-    if (subcategorias && subcategorias.length === 1) {
+    if (categoria) {
+      // Familia → fila de `categorias` → categoria_id (mismo patrón que
+      // /buscar, /categoria/[categoria] y useProductLoader).
+      const { data: catRow } = await supabase
+        .from('categorias')
+        .select('id')
+        .eq('nombre', categoria)
+        .maybeSingle()
+      if (!catRow) return []
+      q = q.eq('categoria_id', catRow.id)
+    } else if (subcategorias && subcategorias.length === 1) {
       q = q.eq('subcategoria', subcategorias[0])
     } else if (subcategorias && subcategorias.length > 1) {
       q = q.in('subcategoria', subcategorias)
@@ -256,12 +266,13 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
   setRequestLocale(locale)
   const t = await getTranslations()
 
-  const [recientes, granVolumen, medianas, autocaravanas] = await Promise.all([
+  const [recientes, agricola, obra, herramientas] = await Promise.all([
     getProductos(8),
-    getProductos(8, ['Gran Volumen']),
-    getProductos(8, ['Camper Mediana / Compacta']),
-    getProductos(8, ['Autocaravana Perfilada', 'Autocaravana Capuchina', 'Autocaravana Integral']),
+    getProductos(8, undefined, 'agricola'),
+    getProductos(8, undefined, 'obra'),
+    getProductos(8, undefined, 'herramientas'),
   ])
+  const itemsPorFamilia: Record<string, any[]> = { agricola, obra, herramientas }
 
   const provincias = getProvinciasPopulares()
   const guias = getUltimasGuias(3)
@@ -524,23 +535,19 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
           <SectionGrid items={recientes} t={t} />
         </section>
 
-        {/* ═══════════ GRAN VOLUMEN ═══════════ */}
-        <section className="pb-10">
-          <SectionHeader title={t('home.granVolumen.title')} subtitle={t('home.granVolumen.subtitle')} href="/catalogo?subcategoria=Gran%20Volumen" viewAll={t('home.viewAll')} icon="🚐" />
-          <SectionGrid items={granVolumen} t={t} />
-        </section>
-
-        {/* ═══════════ CAMPERS MEDIANAS ═══════════ */}
-        <section className="pb-10">
-          <SectionHeader title={t('home.medianas.title')} subtitle={t('home.medianas.subtitle')} href="/catalogo?subcategoria=Camper%20Mediana%20%2F%20Compacta" viewAll={t('home.viewAll')} icon="🏕️" />
-          <SectionGrid items={medianas} t={t} />
-        </section>
-
-        {/* ═══════════ AUTOCARAVANAS ═══════════ */}
-        <section className="pb-10">
-          <SectionHeader title={t('home.autocaravanas.title')} subtitle={t('home.autocaravanas.subtitle')} href="/catalogo?subcategoria=Autocaravana%20Integral" viewAll={t('home.viewAll')} icon="🏭" />
-          <SectionGrid items={autocaravanas} t={t} />
-        </section>
+        {/* ═══════════ FAMILIAS: AGRÍCOLA / OBRA / HERRAMIENTAS (Fase 4) ═══════════ */}
+        {FAMILIAS.map(f => (
+          <section key={f.key} className="pb-10">
+            <SectionHeader
+              title={t(`familias.${f.key}.label`)}
+              subtitle={t(`familias.${f.key}.desc`)}
+              href={`/catalogo?categoria=${f.key}`}
+              viewAll={t('home.viewAll')}
+              icon={f.icon}
+            />
+            <SectionGrid items={itemsPorFamilia[f.key] || []} t={t} />
+          </section>
+        ))}
 
         {/* ═══════════ GUÍAS (enlazado al blog = frescor + long-tail) ═══════════ */}
         {guias.length > 0 && (

@@ -454,7 +454,7 @@ export function clasificarRuta(rutaOriginal: string): { tipo: TipoPagina; slug: 
   const fija = RUTAS_FIJAS[ruta]
   if (fija) return { tipo: fija, slug: null }
 
-  // Landings SEO por provincia: `/madrid`, `/madrid/gran-volumen`…
+  // Landings SEO por provincia: `/madrid`, `/madrid/tractores`…
   if (primero && getCiudadBySlug(primero)) return { tipo: 'provincia', slug: primero }
 
   return { tipo: 'informativa', slug: null }

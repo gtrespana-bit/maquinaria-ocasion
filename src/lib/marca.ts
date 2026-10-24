@@ -1,8 +1,8 @@
 /**
  * Identidad de MaquinariaOcasión en UN SOLO sitio.
  *
- * Heredado del clon de CamperOcasión: allí la marca estaba escrita a mano en
- * 125 ficheros y cambiarla costaba una semana. Aquí nombre, dominio, correos y
+ * El nombre, dominio, correos y
+ * paleta viven aquí para no escribirlos a mano en 125 ficheros. Antes y
  * paleta viven juntos, y `src/lib/seo.ts` reexporta `SITE_URL` y
  * `NOMBRE_SITIO` desde este módulo para no tocar las páginas que ya los usan.
  *

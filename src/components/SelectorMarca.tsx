@@ -3,10 +3,10 @@
 /**
  * Selector de marca/modelo agrupado por fabricante.
  *
- * Antes el filtro de marca era una lista plana donde "Fiat Ducato",
- * "Fiat Ducato Autocaravana" y "Volkswagen California" aparecían todos
+ * Antes el filtro de marca era una lista plana donde "CAT 320",
+ * "JCB 3CX" y "John Deere 6R" aparecían todos
  * mezclados. Ahora cada fabricante es un <optgroup> y dentro van sus
- * modelos: Fiat → Ducato · Doblò · Scudo…
+ * modelos: Caterpillar → 320 · 330 · 336…
  *
  * El valor del select sigue siendo el CANÓNICO (`m.valor`, el que está en
  * `productos.marca`), así que los `?marca=…` existentes siguen funcionando.

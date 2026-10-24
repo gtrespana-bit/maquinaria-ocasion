@@ -3,7 +3,7 @@
  *
  * Esta es la pieza de contenido que nadie más tiene en España: con los
  * anuncios reales del marketplace se calcula qué vale de verdad una Fiat
- * Ducato camper de ocasión, por tramos de antigüedad. Es lo que convierte una
+ * excavadora de ocasión, por tramos de antigüedad. Es lo que convierte una
  * página de modelo en algo que Google premia y que la gente enlaza, en lugar
  * de en un listado más.
  *

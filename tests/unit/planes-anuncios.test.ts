@@ -107,7 +107,7 @@ describe('cupones', () => {
     expect(normalizarCodigo('  mayo-20 ')).toBe('MAYO-20')
     expect(codigoValido('MAYO-20')).toBe(true)
     expect(codigoValido('ab')).toBe(false)
-    expect(generarCodigo().startsWith('CAMPER-')).toBe(true)
+    expect(generarCodigo().startsWith('MAQ-')).toBe(true)
   })
 
   test('rechaza caducado, agotado o inactivo', () => {

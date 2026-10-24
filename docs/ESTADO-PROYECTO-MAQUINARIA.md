@@ -188,16 +188,17 @@ Campos transversales: `Año`, `Horas de uso` (el equivalente a kilómetros),
 `Estado`, `Combustible`, `Potencia (CV)`, `Peso (kg)`, `¿Incluye transporte?`,
 `Documentación`.
 
-### ⬜ Fase 4 — Marca, textos y SEO (4-6 días)
+### ✅ Fase 4 — Marca, textos y SEO (hecha — PR #3)
 
-- Logo e iconos definitivos (hoy son placeholder)
-- `og-image.webp`, `pwa-tagline.webp` e imágenes de home
-- Diccionarios `src/i18n/dictionaries/{es,en}.json` (1.179 líneas cada uno)
+- Logo, iconos, `og-image.webp`, `pwa-tagline.webp` e imágenes de home: kit de
+  marca definitivo en `tools/clon-vertical/plantillas/` sincronizado en `public/`
+- Diccionarios `src/i18n/dictionaries/{es,en}.json` completos y sincronizados
+  (todo el copy camper → maquinaria, es y en en sincronía)
 - `textos-legales.ts`: revisión legal de la actividad
 - `categorias-seo.ts` y `ubicaciones-seo.ts`: copy de la nueva vertical
-- **El copy visible de la portada sigue siendo camper** (hero, navegación,
-  categorías, secciones). Solo están cambiados la marca y la metadata.
-- Search Console + sitemaps del dominio nuevo
+- **Copy visible de la portada y de todas las páginas** (hero, navegación,
+  categorías, secciones, dashboard, landings): camper → maquinaria
+- Search Console + sitemaps del dominio nuevo → **lado del usuario**
 
 ### ⬜ Fase 5 — Contenido y lanzamiento
 

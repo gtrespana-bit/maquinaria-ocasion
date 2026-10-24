@@ -1,9 +1,9 @@
 // Datos SEO de MaquinariaOcasión: una landing por cada provincia de España.
-// Objetivos de posicionamiento: "furgonetas camper segunda mano {provincia}",
-// "camper gran volumen {provincia}", "autocaravanas ocasión {provincia}", etc.
+// Objetivos de posicionamiento: "maquinaria segunda mano {provincia}",
+// "tractores de ocasión {provincia}", "excavadoras usadas {provincia}", etc.
 //
 // Genera metadata única para cada provincia y para cada combinación
-// provincia + subcategoría camper (/[provincia]/gran-volumen, ...).
+// provincia + subcategoría (/[provincia]/tractores, ...).
 
 import { MUNICIPIOS_POR_ESTADO } from './ubicaciones'
 
@@ -51,17 +51,17 @@ Object.entries(MUNICIPIOS_POR_ESTADO).forEach(([comunidad, provincias]) => {
       // Sin marca: el template del layout raíz (%s | MaquinariaOcasión) la agrega
       // una sola vez. La provincia queda en el título para captar búsquedas
       // locales sin superar el ancho útil de una SERP.
-      titulo: `Camper de ocasión en ${nombre}`,
-      descripcion: `Furgonetas camper y autocaravanas de segunda mano en ${nombre}, ${comunidad}. Gran volumen, minicamper, perfiladas e integrales. Publica gratis.`,
+      titulo: `Maquinaria de ocasión en ${nombre}`,
+      descripcion: `Tractores, excavadoras y maquinaria de segunda mano en ${nombre}, ${comunidad}. Agrícola, obra y herramienta con documentación verificada. Publica gratis.`,
       keywords: [
-        `furgonetas camper segunda mano ${provinciaMin}`,
-        `camper gran volumen ${provinciaMin}`,
-        `autocaravanas ocasion ${provinciaMin}`,
-        `autocaravana usada ${provinciaMin}`,
-        `camper de ocasión ${comunidadMin}`,
-        `furgoneta camperizada ${provinciaMin}`,
-        `minicamper ${provinciaMin}`,
-        `camper ${provinciaMin} precio`,
+        `maquinaria segunda mano ${provinciaMin}`,
+        `tractores de ocasión ${provinciaMin}`,
+        `excavadoras usadas ${provinciaMin}`,
+        `maquinaria agrícola ${provinciaMin}`,
+        `maquinaria de obra ${comunidadMin}`,
+        `retroexcavadora ${provinciaMin}`,
+        `herramienta industrial ${provinciaMin}`,
+        `maquinaria ${provinciaMin} precio`,
       ],
     })
   })
@@ -107,29 +107,29 @@ export function generateCityParams() {
   }))
 }
 
-// Subcategorías camper populares por provincia (SEO programático).
+// Subcategorías más buscadas por provincia (SEO programático).
 // IMPORTANTE — estos slugs DEBEN coincidir con los slugs de subcategoría de
 // src/lib/categorias.ts. Si no, el sitemap genera landings que no existen
 // (contenido delgado) y las subcategorías reales quedan fuera del SEO local.
 export const CATEGORIAS_POPULARES = [
-  'gran-volumen',
-  'camper-mediana',
-  'minicamper',
-  'perfilada',
-  'capuchina',
-  'integral',
-  'overland',
+  'tractores',
+  'cosechadoras',
+  'excavadoras',
+  'cargadoras',
+  'compactacion',
+  'herramienta-electrica',
+  'sierra-poda',
 ]
 
 // Nombres para mostrar en landings provincia/categoría
 export const NOMBRES_CATEGORIA_POPULAR: Record<string, string> = {
-  'gran-volumen': 'Camper Gran Volumen',
-  'camper-mediana': 'Camper Mediana y Compacta',
-  'minicamper': 'Minicamper',
-  'perfilada': 'Autocaravana Perfilada',
-  'capuchina': 'Autocaravana Capuchina',
-  'integral': 'Autocaravana Integral',
-  'overland': 'Célula y 4x4 Overland',
+  'tractores': 'Tractores',
+  'cosechadoras': 'Cosechadoras',
+  'excavadoras': 'Excavadoras',
+  'cargadoras': 'Cargadoras',
+  'compactacion': 'Compactación',
+  'herramienta-electrica': 'Herramienta eléctrica',
+  'sierra-poda': 'Sierra y poda',
 }
 
 // Generar combinaciones provincia-categoría para SEO programático

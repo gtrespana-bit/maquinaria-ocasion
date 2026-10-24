@@ -4,7 +4,7 @@
  * Reglas:
  *  · Solo el dueño edita su tienda: el usuario sale de la sesión verificada,
  *    nunca de un id enviado en el body.
- *  · Solo camperizadores y profesionales pueden activarla (el trigger de la
+ *  · Solo talleres y profesionales pueden activarla (el trigger de la
  *    base lo vuelve a comprobar; aquí se hace para dar un error legible).
  *  · La web se normaliza y se valida: acaba en un `href` de una página pública,
  *    así que un `javascript:` no puede llegar a la base.
@@ -111,7 +111,7 @@ export async function PUT(req: NextRequest) {
       {
         ok: false,
         error:
-          'Solo los camperizadores y vendedores profesionales pueden abrir tienda. Cambia tu tipo de vendedor en tu perfil.',
+          'Solo los talleres y vendedores profesionales pueden abrir tienda. Cambia tu tipo de vendedor en tu perfil.',
       },
       { status: 403 }
     )

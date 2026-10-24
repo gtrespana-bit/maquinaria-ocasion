@@ -167,7 +167,7 @@ export async function GET(req: NextRequest) {
     : null
 
   // ── 5. Mercado de su categoría ────────────────────────────────────────────
-  // Se compara con la categoría donde tiene más anuncios: mezclar furgonetas
+  // Se compara con la categoría donde tiene más anuncios: mezclar máquinas
   // y repuestos en una sola mediana no diría nada.
   const porCategoria = new Map<number, number>()
   for (const p of productos) {

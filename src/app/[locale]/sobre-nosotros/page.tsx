@@ -6,7 +6,7 @@ import { getTranslations, setRequestLocale } from 'next-intl/server'
 
 export const metadata: Metadata = {
   title: 'Quiénes somos',
-  description: 'Conoce MaquinariaOcasión, el marketplace especializado en furgonetas camper y autocaravanas de ocasión en España, con contacto directo y sin comisiones.',
+  description: 'Conoce MaquinariaOcasión, el marketplace especializado en maquinaria y herramienta de ocasión en España, con contacto directo y sin comisiones.',
   alternates: alternatesSeo('/sobre-nosotros'),
 }
 

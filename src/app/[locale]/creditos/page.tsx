@@ -440,7 +440,7 @@ export default function CreditosPage() {
           mes ahorra con el plan Profesional, que ya incluye destacados. */}
       <div className="mb-8 rounded-2xl border border-slate-200 bg-slate-50 p-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <p className="font-bold text-gray-900">¿Tienes varias camper a la venta?</p>
+          <p className="font-bold text-gray-900">¿Tienes varias máquinas a la venta?</p>
           <p className="text-sm text-gray-600">
             El plan Profesional (19 €/mes) incluye 5 destacados al mes, 15 anuncios y
             escaparate propio. Suele salir más barato que comprar créditos sueltos.

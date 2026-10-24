@@ -63,7 +63,7 @@ export const AVISO_LEGAL: Record<IdiomaLegal, DocumentoLegal> = {
       {
         titulo: '2. Objeto',
         parrafos: [
-          'MaquinariaOcasión es un servicio de intermediación en línea: un tablón donde particulares, camperizadores y profesionales publican anuncios de furgonetas camper y autocaravanas de ocasión, y donde los compradores los encuentran y contactan con ellos.',
+          'MaquinariaOcasión es un servicio de intermediación en línea: un tablón donde particulares, talleres y profesionales publican anuncios de maquinaria y herramienta de ocasión, y donde los compradores los encuentran y contactan con ellos.',
           'El acceso y uso del sitio atribuye la condición de usuario y supone la aceptación de este aviso legal, de los términos y condiciones y de la política de privacidad.',
         ],
       },
@@ -72,7 +72,7 @@ export const AVISO_LEGAL: Record<IdiomaLegal, DocumentoLegal> = {
         parrafos: [
           'MaquinariaOcasión no es el vendedor de los vehículos anunciados ni forma parte de la compraventa: no fija los precios, no cobra el importe del vehículo, no lo entrega y no responde de su estado, cargas o documentación. El contrato de compraventa se celebra directamente entre el vendedor y el comprador.',
           'Los servicios de pago que se ofrecen en la web (destacar un anuncio o subirlo al primer puesto) son servicios de visibilidad que contrata el propio vendedor con la plataforma y no tienen relación con el precio del vehículo.',
-          'Los vendedores profesionales y camperizadores son los únicos responsables de cumplir las obligaciones que les correspondan como empresarios, incluida la garantía legal frente a consumidores; identificarse como profesionales es obligatorio al publicar.',
+          'Los vendedores profesionales y los talleres son los únicos responsables de cumplir las obligaciones que les correspondan como empresarios, incluida la garantía legal frente a consumidores; identificarse como profesionales es obligatorio al publicar.',
         ],
       },
       {
@@ -124,7 +124,7 @@ export const AVISO_LEGAL: Record<IdiomaLegal, DocumentoLegal> = {
       {
         titulo: '2. Purpose',
         parrafos: [
-          'MaquinariaOcasión is an online intermediation service: a noticeboard where private sellers, converters and dealers publish listings for second-hand camper vans and motorhomes, and where buyers find them and contact the sellers.',
+          'MaquinariaOcasión is an online intermediation service: a noticeboard where private sellers, workshops and dealers publish listings for second-hand machinery and tools, and where buyers find them and contact the sellers.',
           'By accessing or using the site you become a user and accept this legal notice, the terms and conditions and the privacy policy.',
         ],
       },
@@ -196,8 +196,8 @@ export const POLITICA_PRIVACIDAD: Record<IdiomaLegal, DocumentoLegal> = {
           'Anuncios: título, descripción, fotos, precio, características del vehículo y ubicación.',
           'Contacto entre usuarios: los mensajes del chat interno, y los datos que compartes al contactar por teléfono, WhatsApp o email con otro usuario.',
           'Verificación de identidad (voluntaria): si la solicitas para obtener el sello de verificado, se piden DNI/NIE, teléfono, entidad bancaria y fotografías del documento, que se conservan en un almacenamiento privado con acceso restringido.',
-          'Homologación y trámites (voluntarios): documentación del vehículo que subes para el expediente de homologación o la gestoría.',
-          'Reservas e inspecciones: datos necesarios para gestionar una reserva con señal o una inspección precompra.',
+          'Documentación y trámites (voluntarios): documentación de la máquina que subes para el expediente de verificación documental.',
+          'Reservas: datos necesarios para gestionar una reserva con señal.',
           'Créditos: saldo, movimientos y la referencia del pago. No tratamos números de tarjeta: los pagos con tarjeta se realizan en la pasarela del proveedor de pago.',
           'Datos técnicos: dirección IP, tipo de dispositivo y navegador, y páginas visitadas, con la finalidad de seguridad, prevención de abuso y medición agregada del servicio.',
         ],
@@ -207,7 +207,7 @@ export const POLITICA_PRIVACIDAD: Record<IdiomaLegal, DocumentoLegal> = {
         lista: [
           'Prestar el servicio (cuenta, publicar anuncios, chat, reservas): ejecución del contrato o de las condiciones de uso.',
           'Moderación, seguridad, prevención del fraude y límites de uso: interés legítimo en proteger la plataforma y a sus usuarios.',
-          'Verificación de identidad, homologación y gestoría: consentimiento y, cuando exista, ejecución del servicio contratado.',
+          'Verificación de identidad y documentación: consentimiento y, cuando exista, ejecución del servicio contratado.',
           'Medición de tráfico y notificaciones push: consentimiento, que puedes retirar cuando quieras (ver la política de cookies).',
           'Facturación y obligaciones fiscales de los servicios de pago: cumplimiento de obligaciones legales.',
           'Avisos por email imprescindibles para el servicio (confirmación de cuenta, avisos de seguridad): ejecución del contrato; no son publicidad.',
@@ -299,7 +299,7 @@ export const POLITICA_PRIVACIDAD: Record<IdiomaLegal, DocumentoLegal> = {
           'Contact between users: messages in the internal chat, and the details you share when you contact another user by phone, WhatsApp or email.',
           'Identity verification (optional): if you request it to get the verified badge, you are asked for your ID number, phone, bank and photographs of your ID document, kept in private storage with restricted access.',
           'Homologation and paperwork (optional): vehicle documents you upload for the homologation file or the registration service.',
-          'Reservations and inspections: data needed to manage a reservation with a deposit or a pre-purchase inspection.',
+          'Reservations: data needed to manage a reservation with a deposit.',
           'Credits: balance, transactions and the payment reference. We do not process card numbers: card payments are made on the payment provider’s checkout.',
           'Technical data: IP address, device and browser type, and pages visited, for security, abuse prevention and aggregate measurement of the service.',
         ],
@@ -486,7 +486,7 @@ export const TERMINOS: Record<IdiomaLegal, DocumentoLegal> = {
       {
         titulo: '1. Quiénes somos y qué es MaquinariaOcasión',
         parrafos: [
-          'MaquinariaOcasión es un tablón de anuncios de furgonetas camper y autocaravanas de ocasión en España. Actúa como intermediario: pone en contacto a quien vende con quien compra, pero no vende los vehículos ni participa en la compraventa (ver el aviso legal).',
+          'MaquinariaOcasión es un tablón de anuncios de maquinaria y herramienta de ocasión en España. Actúa como intermediario: pone en contacto a quien vende con quien compra, pero no vende las máquinas ni participa en la compraventa (ver el aviso legal).',
           'Al crear una cuenta aceptas estas condiciones y la política de privacidad. Debes ser mayor de 18 años.',
         ],
       },
@@ -498,7 +498,7 @@ export const TERMINOS: Record<IdiomaLegal, DocumentoLegal> = {
         lista: [
           'El vehículo es tuyo y puedes venderlo legalmente.',
           'Las fotos y la descripción son veraces, actuales y corresponden al vehículo real.',
-          'Si eres camperizador o profesional, indicas tu condición de empresario y cumples tus obligaciones (facturación, garantía legal y demás normativa aplicable).',
+          'Si eres taller o profesional, indicas tu condición de empresario y cumples tus obligaciones (facturación, garantía legal y demás normativa aplicable).',
           'No publicas vehículos robados, siniestrados sin declararlo, con cargas no comunicadas, ni anuncios duplicados o engañosos.',
         ],
       },
@@ -510,10 +510,10 @@ export const TERMINOS: Record<IdiomaLegal, DocumentoLegal> = {
         ],
       },
       {
-        titulo: '4. Verificación, homologación e inspección',
+        titulo: '4. Verificación documental',
         parrafos: [
-          'El sello de verificado indica que hemos comprobado la identidad del vendedor con la documentación aportada, y el sello de homologación, que existe un expediente documental revisado. Son comprobaciones documentales: no equivalen a una tasación ni garantizan el estado mecánico del vehículo.',
-          'La inspección precompra la realiza un taller independiente; el informe es suyo y su precio orientativo se muestra antes de solicitarla.',
+          'El sello de verificado indica que hemos comprobado la identidad del vendedor con la documentación aportada, y el sello de documentación verificada, que existe un expediente documental revisado (factura, ficha técnica y manual). Son comprobaciones documentales: no equivalen a una tasación ni garantizan el estado mecánico de la máquina.',
+          'Las transacciones se realizan directamente entre las partes: MaquinariaOcasión no custodia fondos ni participa en la compraventa.',
         ],
       },
       {
@@ -576,7 +576,7 @@ export const TERMINOS: Record<IdiomaLegal, DocumentoLegal> = {
       {
         titulo: '1. Who we are and what MaquinariaOcasión is',
         parrafos: [
-          'MaquinariaOcasión is a noticeboard for second-hand camper vans and motorhomes in Spain. It acts as an intermediary: it connects sellers and buyers, but it does not sell the vehicles and takes no part in the sale (see the legal notice).',
+          'MaquinariaOcasión is a noticeboard for second-hand machinery and tools in Spain. It acts as an intermediary: it connects sellers and buyers, but it does not sell the machines and takes no part in the sale (see the legal notice).',
           'By creating an account you accept these terms and the privacy policy. You must be over 18.',
         ],
       },
@@ -598,10 +598,10 @@ export const TERMINOS: Record<IdiomaLegal, DocumentoLegal> = {
         ],
       },
       {
-        titulo: '4. Verification, homologation and inspection',
+        titulo: '4. Document verification',
         parrafos: [
           'The verified badge means we have checked the seller’s identity against the documents provided, and the homologation badge means a documentary file has been reviewed. These are documentary checks: they are not a valuation and do not guarantee the mechanical condition of the vehicle.',
-          'The pre-purchase inspection is carried out by an independent garage; the report is theirs and an indicative price is shown before you request it.',
+          'Transactions happen directly between the parties: MaquinariaOcasión does not hold funds and takes no part in the sale.',
         ],
       },
       {

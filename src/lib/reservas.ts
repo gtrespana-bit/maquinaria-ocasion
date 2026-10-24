@@ -4,7 +4,7 @@
  * PROBLEMA QUE RESUELVE
  * El dolor nº1 del vendedor son los "pisos": gente que dice que va en camino, que
  * se queda con la mañana libre y que nunca aparece. Una señal pequeña (300-500 €,
- * frente a los 20.000-80.000 € de una camper) filtra al comprador de verdad sin
+ * frente a los 20.000-80.000 € de una máquina) filtra al comprador de verdad sin
  * convertirse en un pago grande que espante.
  *
  * DECISIONES (y por qué)

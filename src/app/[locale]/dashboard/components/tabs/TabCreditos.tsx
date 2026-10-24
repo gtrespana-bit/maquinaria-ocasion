@@ -73,7 +73,7 @@ export default function TabCreditos({ creditos, refreshCreditos }: { creditos: n
       {/* Puente plan <-> créditos */}
       <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
-          <p className="font-bold text-gray-900">¿Publicas varias camper?</p>
+          <p className="font-bold text-gray-900">¿Publicas varias máquinas?</p>
           <p className="text-sm text-gray-600">
             Con el plan Profesional tienes más anuncios y destacados incluidos cada mes. Desde 19 €/mes.
           </p>

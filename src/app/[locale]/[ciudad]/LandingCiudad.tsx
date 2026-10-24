@@ -70,32 +70,32 @@ function faqsDeCiudad(
 
   const faqs = [
     {
-      pregunta: `¿Cuántas furgonetas camper y autocaravanas hay en ${nombre}?`,
+      pregunta: `¿Cuánta maquinaria de ocasión hay en ${nombre}?`,
       respuesta:
         stats.total > 0
-          ? `Ahora mismo hay ${stats.total} anuncios activos de furgonetas camper y autocaravanas en ${nombre} (${estado}), entre particulares, camperizadores y profesionales. El catálogo se actualiza cada vez que se publica o vende un vehículo, así que la selección cambia a diario.`
-          : `Aún no hay anuncios activos de furgonetas camper en ${nombre}. Publica gratis tu camper y sé el primero en aparecer cuando alguien busque campers en ${nombre}.`,
+          ? `Ahora mismo hay ${stats.total} anuncios activos de maquinaria y herramienta en ${nombre} (${estado}), entre particulares, talleres y profesionales. El catálogo se actualiza cada vez que se publica o vende una máquina, así que la selección cambia a diario.`
+          : `Aún no hay anuncios activos de maquinaria en ${nombre}. Publica gratis tu anuncio y sé el primero en aparecer cuando alguien busque maquinaria en ${nombre}.`,
     },
     {
-      pregunta: `¿Cuánto cuesta una camper en ${nombre}?`,
+      pregunta: `¿Cuánto cuesta la maquinaria en ${nombre}?`,
       respuesta:
         precioTexto && rangoTexto
-          ? `El precio medio de una camper en ${nombre} es de ${formatPrecio(stats.precioMedio)}, con anuncios que van ${rangoTexto} según tipo, año, kilometraje y equipamiento. El catálogo permite filtrar por rango de precio para ajustar la búsqueda a tu presupuesto.`
-          : `Los precios en ${nombre} varían según el tipo de vehículo, año y equipamiento. Usa los filtros de precio del catálogo para ver campers dentro de tu presupuesto y comprueba siempre el precio de matriculación (ITP) de tu comunidad antes de comprar.`,
+          ? `El precio medio de la maquinaria en ${nombre} es de ${formatPrecio(stats.precioMedio)}, con anuncios que van ${rangoTexto} según tipo, año, horas de uso y estado. El catálogo permite filtrar por rango de precio para ajustar la búsqueda a tu presupuesto.`
+          : `Los precios en ${nombre} varían según el tipo de máquina, año y estado. Usa los filtros de precio del catálogo para ver maquinaria dentro de tu presupuesto y, si el ejemplar está matriculado, comprueba el ITP de tu comunidad antes de comprar.`,
     },
     ...(topSub
       ? [{
-          pregunta: `¿Qué tipo de camper se vende más en ${nombre}?`,
-          respuesta: `Según los anuncios activos, la categoría más habitual en ${nombre} es ${topSub.nombre.toLowerCase()} (${topSub.total} anuncios), aunque también hay oferta de otras subcategorías camper. Pulsa en cada tipo para ver solo los anuncios de esa categoría en ${nombre}.`,
+          pregunta: `¿Qué tipo de maquinaria se vende más en ${nombre}?`,
+          respuesta: `Según los anuncios activos, la categoría más habitual en ${nombre} es ${topSub.nombre.toLowerCase()} (${topSub.total} anuncios), aunque también hay oferta de otras subcategorías de maquinaria. Pulsa en cada tipo para ver solo los anuncios de esa categoría en ${nombre}.`,
         }]
       : []),
     {
-      pregunta: `¿Cómo comprar una camper en ${nombre} con seguridad?`,
-      respuesta: `Antes de pagar, revisa la ficha técnica (homologación 2448/3148 si es vehículo vivienda, ITV al día), el estado del chasis y la corrosión, y prueba el equipamiento eléctrico y de agua. Además, infórmate del ITP que te toca en ${estado} y, para el cambio de nombre, consulta la documentación exigida por la DGT.`,
+      pregunta: `¿Cómo comprar maquinaria en ${nombre} con seguridad?`,
+      respuesta: `Antes de pagar, revisa la documentación (factura, ficha técnica y manual), las horas de uso, el estado general y el mantenimiento de la máquina. Si está matriculada, comprueba el ITP que te toca en ${estado} y, para el cambio de nombre, la documentación necesaria. Pide pruebas de funcionamiento y acuerda por escrito quién asume el transporte.`,
     },
     {
-      pregunta: `¿Puedo publicar mi camper en ${nombre} gratis?`,
-      respuesta: `Sí. Publicar un anuncio en MaquinariaOcasión es gratuito: crea tu cuenta, sube fotos, precio y ficha técnica (año, kilómetros, homologación, plazas, equipamiento de autonomía) y tu camper aparecerá en la landing de ${nombre} y en el catálogo nacional.`,
+      pregunta: `¿Puedo publicar mi maquinaria en ${nombre} gratis?`,
+      respuesta: `Sí. Publicar un anuncio en MaquinariaOcasión es gratuito: crea tu cuenta, sube fotos, precio y ficha técnica (año, horas de uso, estado, potencia) y tu anuncio aparecerá en la landing de ${nombre} y en el catálogo nacional.`,
     },
   ]
 
@@ -147,15 +147,15 @@ export default async function LandingCiudad({ slug, nombre, municipio, estado, d
       </nav>
 
       <h1 className="text-3xl md:text-4xl font-black text-gray-900 mb-2">
-        Furgonetas camper y autocaravanas de ocasión en {nombre}, {estado}
+        Maquinaria y herramienta de ocasión en {nombre}, {estado}
       </h1>
       <p className="text-gray-500 mb-8">
-        {descripcion} Encuentra la furgoneta camper o la autocaravana de ocasión ideal en {nombre}. Publica gratis tu anuncio.
+        {descripcion} Encuentra la excavadora, el tractor o la herramienta de ocasión ideal en {nombre}. Publica gratis tu anuncio.
       </p>
 
       {/* ── Datos reales de la provincia (únicos por página) ── */}
       {stats.total > 0 && (
-        <section className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-10" aria-label={`Estadísticas de campers en ${nombre}`}>
+        <section className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-10" aria-label={`Estadísticas de maquinaria en ${nombre}`}>
           <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-4 text-center">
             <p className="text-2xl md:text-3xl font-black text-brand-primary">{stats.total}</p>
             <p className="text-xs text-gray-500 mt-1">Anuncios activos en {nombre}</p>
@@ -208,7 +208,7 @@ export default async function LandingCiudad({ slug, nombre, municipio, estado, d
         </div>
       ) : (
         <div className="text-center py-16 text-gray-500">
-          <p className="text-xl mb-2">Aún no hay campers publicadas en {nombre}</p>
+          <p className="text-xl mb-2">Aún no hay maquinaria publicada en {nombre}</p>
           <p className="mb-4">¡Sé el primero en publicar!</p>
           <LocalLink href="/publicar" className="inline-block bg-brand-primary text-white px-6 py-3 rounded-lg font-bold">Publicar gratis</LocalLink>
         </div>
@@ -223,14 +223,14 @@ export default async function LandingCiudad({ slug, nombre, municipio, estado, d
       {/* ── Contenido único por provincia (topicalidad + long-tail) ── */}
       <section className="mt-14 border-t border-gray-100 pt-10">
         <h2 className="text-xl md:text-2xl font-black text-gray-900 mb-4">
-          Comprar una camper en {nombre}: el mercado de ocasión en {estado}
+          Comprar maquinaria en {nombre}: el mercado de ocasión en {estado}
         </h2>
         <div className="grid md:grid-cols-2 gap-4 text-gray-700 leading-relaxed">
           <p>
-            {nombre} es una de las provincias con más demanda de furgonetas camper y autocaravanas de segunda mano de {estado}: su orografía, su costa y su red de áreas de autocaravana hacen que campers y autocaravanas de ocasión se muevan todo el año. En MaquinariaOcasión filtramos cada anuncio por provincia real, así que los vehículos que ves aquí están en {nombre} o en municipios cercanos de la misma zona.
+            {nombre} es una provincia con demanda constante de maquinaria de segunda mano en {estado}: campo, obra pública y red de talleres mantienen el mercado activo todo el año. En MaquinariaOcasión filtramos cada anuncio por provincia real, así que las máquinas que ves aquí están en {nombre} o en municipios cercanos de la misma zona.
           </p>
           <p>
-            Nuestro catálogo de {nombre} cubre todas las familias camper: gran volumen (L3H2, L4H2) para viajar en familia, camper medianas y compactas para día a día, minicamper para parejas y autocaravanas perfiladas, capuchinas e integrales. Cada ficha incluye ficha técnica (año, kilómetros, MMA, plazas), equipamiento de autonomía (calefacción, agua caliente, batería auxiliar, placa solar, inversor) y la homologación declarada en la ficha técnica.
+            Nuestro catálogo de {nombre} cubre las tres familias de la vertical: maquinaria agrícola (tractores, cosechadoras, aperos y ganadería), maquinaria de obra (excavadoras, cargadores, compactación y plataformas) y herramienta profesional (eléctrica, motores, sierra-poda y taller). Cada ficha incluye los datos que importan —año, horas de uso, estado, potencia, peso y documentación— y los filtros por categoría afinan la búsqueda sin pedirte datos que no aplican.
           </p>
         </div>
       </section>
@@ -239,7 +239,7 @@ export default async function LandingCiudad({ slug, nombre, municipio, estado, d
       {stats.porSubcategoria.length > 0 && (
         <section className="mt-12">
           <h2 className="text-xl md:text-2xl font-black text-gray-900 mb-4">
-            Camper de ocasión en {nombre} por tipo
+            Maquinaria de ocasión en {nombre} por tipo
           </h2>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
             {stats.porSubcategoria.map(sub => (
@@ -262,7 +262,7 @@ export default async function LandingCiudad({ slug, nombre, municipio, estado, d
       {stats.porMarca.length > 0 && (
         <section className="mt-12">
           <h2 className="text-xl md:text-2xl font-black text-gray-900 mb-4">
-            Marcas de camper más habituales en {nombre}
+            Marcas de maquinaria más habituales en {nombre}
           </h2>
           <div className="flex flex-wrap gap-2">
             {stats.porMarca.map(m => (
@@ -276,7 +276,7 @@ export default async function LandingCiudad({ slug, nombre, municipio, estado, d
             ))}
           </div>
           <p className="text-sm text-gray-500 mt-3">
-            También puedes explorar modelos concretos en la <LocalLink href="/marcas" className="text-brand-primary font-semibold hover:underline">guía de marcas y modelos de camper</LocalLink>.
+            También puedes explorar modelos concretos en la <LocalLink href="/marcas" className="text-brand-primary font-semibold hover:underline">guía de marcas y modelos de maquinaria</LocalLink>.
           </p>
         </section>
       )}
@@ -284,7 +284,7 @@ export default async function LandingCiudad({ slug, nombre, municipio, estado, d
       {/* ── FAQ dinámica (La gente también pregunta) ── */}
       <section className="mt-12">
         <h2 className="text-xl md:text-2xl font-black text-gray-900 mb-4">
-          Preguntas frecuentes sobre campers en {nombre}
+          Preguntas frecuentes sobre maquinaria en {nombre}
         </h2>
         <div className="space-y-3">
           {faqs.map((f, i) => (
@@ -303,7 +303,7 @@ export default async function LandingCiudad({ slug, nombre, municipio, estado, d
       {hermanas.length > 0 && (
         <section className="mt-12">
           <h2 className="text-xl md:text-2xl font-black text-gray-900 mb-4">
-            Campers de ocasión en otras provincias de {estado}
+            Maquinaria de ocasión en otras provincias de {estado}
           </h2>
           <div className="flex flex-wrap gap-2">
             {hermanas.map(h => (
@@ -313,7 +313,7 @@ export default async function LandingCiudad({ slug, nombre, municipio, estado, d
                 className="text-sm font-semibold bg-white border border-gray-200 hover:border-brand-accent hover:bg-green-50 rounded-full px-4 py-2 transition"
               >
                 <MapPin size={12} className="inline mr-1 text-brand-accent" />
-                Furgonetas camper en {h.nombre}
+                Maquinaria en {h.nombre}
               </LocalLink>
             ))}
           </div>
@@ -323,10 +323,10 @@ export default async function LandingCiudad({ slug, nombre, municipio, estado, d
       {/* ── Cierre con enlaces de confianza ── */}
       <section className="mt-12 bg-gradient-to-r from-brand-primary to-brand-dark rounded-2xl p-6 md:p-8 text-white">
         <h2 className="text-xl md:text-2xl font-black mb-2">
-          Compra tu camper en {nombre} con confianza
+          Compra tu maquinaria en {nombre} con confianza
         </h2>
         <p className="text-gray-100 text-sm md:text-base mb-5 max-w-2xl">
-          Revisa los {stats.total > 0 ? stats.total : 'nuestros'} anuncios de {nombre}{precioMedioTexto} y, antes de pagar, comprueba la ficha técnica, la ITV y el historial del vehículo.
+          Revisa los {stats.total > 0 ? stats.total : 'nuestros'} anuncios de {nombre}{precioMedioTexto} y, antes de pagar, comprueba la documentación, las horas de uso y el historial de mantenimiento de la máquina.
         </p>
         <div className="flex flex-wrap gap-3">
           <LocalLink href="/catalogo" className="bg-white text-brand-dark font-bold px-5 py-2.5 rounded-lg text-sm hover:bg-gray-100 transition">

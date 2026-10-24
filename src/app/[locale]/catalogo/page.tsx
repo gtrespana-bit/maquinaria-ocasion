@@ -40,14 +40,14 @@ export async function generateMetadata({ searchParams }: PageProps): Promise<Met
   // se indexan por su propia URL /producto/*.
   return {
     title: tituloSeo(hasPagination
-      ? `Catálogo de campers — página ${paginaNum}`
-      : 'Catálogo de campers y autocaravanas'),
-    description: descripcionSeo('Explora furgonetas camper y autocaravanas de ocasión en toda España: gran volumen, minicamper, perfiladas, capuchinas, integrales y 4x4.'),
+      ? `Catálogo de maquinaria — página ${paginaNum}`
+      : 'Catálogo de maquinaria y herramienta'),
+    description: descripcionSeo('Explora maquinaria y herramienta de ocasión en toda España: tractores, cosechadoras, excavadoras, cargadores, plataformas y herramienta profesional.'),
     openGraph: {
       title: hasPagination
-        ? `Catálogo de campers — página ${paginaNum}`
-        : 'Catálogo de furgonetas camper y autocaravanas de ocasión',
-      description: 'Furgonetas camper y autocaravanas de ocasión en España. Gran volumen, camper medianas, minicamper, autocaravanas y 4x4 overland.',
+        ? `Catálogo de maquinaria — página ${paginaNum}`
+        : 'Catálogo de maquinaria y herramienta de ocasión',
+      description: 'Maquinaria y herramienta de ocasión en España. Agrícola, obra y herramienta profesional, con ficha técnica completa.',
       images: [{ url: ogImageUrl, width: 1200, height: 630, alt: 'Catálogo - MaquinariaOcasión' }],
       locale: 'es_ES',
     },
@@ -72,7 +72,7 @@ function buildCatalogSchemas(products: any[]) {
   const itemList = {
     '@context': 'https://schema.org',
     '@type': 'ItemList',
-    name: 'Catálogo de furgonetas camper y autocaravanas de ocasión',
+    name: 'Catálogo de maquinaria y herramienta de ocasión',
     numberOfItems: products.length,
     itemListElement: products.slice(0, 20).map((p: any, i: number) => ({
       '@type': 'ListItem',
@@ -92,8 +92,8 @@ function buildCatalogSchemas(products: any[]) {
   const collectionPage = {
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
-    name: 'Catálogo de furgonetas camper y autocaravanas de ocasión',
-    description: 'Furgonetas camper y autocaravanas de ocasión en España: gran volumen, camper medianas, minicamper, perfiladas, capuchinas, integrales y 4x4 overland.',
+    name: 'Catálogo de maquinaria y herramienta de ocasión',
+    description: 'Maquinaria y herramienta de ocasión en España: agrícola, obra y herramienta profesional.',
     url: SITIO + '/catalogo',
     isPartOf: { '@id': SITIO + '/#website' },
     breadcrumb: { '@id': SITIO + '/catalogo#breadcrumb' },

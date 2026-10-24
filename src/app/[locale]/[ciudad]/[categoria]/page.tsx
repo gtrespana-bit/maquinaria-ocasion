@@ -31,16 +31,9 @@ type Props = {
 }
 
 function ogCategoriaParam(slug: string): string {
-  const map: Record<string,string> = {
-    'gran-volumen': 'gran-volumen',
-    'camper-mediana': 'camper-mediana',
-    'minicamper': 'minicamper',
-    'perfilada': 'perfilada',
-    'capuchina': 'capuchina',
-    'integral': 'integral',
-    'overland': 'overland',
-  }
-  return map[slug] || 'camper'
+  // La OG reconoce las claves actuales (familias y subcategorías de
+  // maquinaria); cualquier slug desconocido cae al fallback del endpoint.
+  return slug
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -60,12 +53,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const stateName = ciudadSEO.estado
   
   const title = `${cat.nombre} de ocasión en ${cityName}`
-  const description = descripcionSeo(`${cat.nombre} de ocasión en ${cityName}, ${stateName}. ${cat.descripcion} Publica gratis tu camper en MaquinariaOcasión.`)
+  const description = descripcionSeo(`${cat.nombre} de ocasión en ${cityName}, ${stateName}. ${cat.descripcion} Publica gratis tu maquinaria en MaquinariaOcasión.`)
   
   const keywords = [
     `${cat.nombre.toLowerCase()} ${cityName.toLowerCase()}`,
-    `furgonetas camper segunda mano ${cityName.toLowerCase()}`,
-    `autocaravanas ocasion ${stateName.toLowerCase()}`,
+    `maquinaria segunda mano ${cityName.toLowerCase()}`,
+    `excavadoras y tractores de ocasión ${stateName.toLowerCase()}`,
     `${cat.nombre.toLowerCase()} usado ${cityName.toLowerCase()}`,
     `${cityName} ${stateName}`
   ]

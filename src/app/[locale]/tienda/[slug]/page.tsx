@@ -14,7 +14,7 @@ import TiendaClient from './TiendaClient'
 import { alternatesSeo, descripcionSeo, tituloSeo } from '@/lib/seo'
 
 /**
- * Escaparate público de un camperizador o profesional: /tienda/[slug].
+ * Escaparate público de un taller o profesional: /tienda/[slug].
  *
  * Existe aparte de `/vendedor/[id]` a propósito. Aquella es una ficha de
  * usuario con una URL de UUID que nadie puede pegar en su web; esta es una
@@ -90,8 +90,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const esCamperizador = perfil.tipo_vendedor === 'camperizador'
 
   const title = ubicacion
-    ? `${nombre} — ${esCamperizador ? 'Camperizador' : 'Concesionario'} en ${ubicacion}`
-    : `${nombre} — ${esCamperizador ? 'Camperizador' : 'Profesional'}`
+    ? `${nombre} — ${esCamperizador ? 'Taller' : 'Concesionario'} en ${ubicacion}`
+    : `${nombre} — ${esCamperizador ? 'Taller' : 'Profesional'}`
 
   const partes: string[] = []
   if (productos.length > 0) {
@@ -102,7 +102,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const description = descripcionSeo(
     (perfil.descripcion || '').trim() ||
-      `Stock de furgonetas camper y autocaravanas de ${nombre}${ubicacion ? ` en ${ubicacion}` : ''}. ${partes.join(' · ')}.`,
+      `Stock de maquinaria y herramienta de ${nombre}${ubicacion ? ` en ${ubicacion}` : ''}. ${partes.join(' · ')}.`,
   )
 
   const url = `${SITIO}/tienda/${perfil.slug}`
@@ -110,7 +110,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     ? [{ url: perfil.portada_url }]
     : perfil.foto_perfil_url
       ? [{ url: perfil.foto_perfil_url }]
-      : [{ url: `https://maquinariaocasion.online/api/og/catalog?categoria=camper`, width: 1200, height: 630, alt: title }]
+      : [{ url: `https://maquinariaocasion.online/api/og/catalog?categoria=agricola`, width: 1200, height: 630, alt: title }]
 
   return {
     title: tituloSeo(title),
@@ -258,7 +258,7 @@ export default async function TiendaPage({ params }: Props) {
     '@type': 'CollectionPage',
     '@id': pageUrl + '#collection',
     name: (perfil.nombre || 'Tienda') + ' — stock',
-    description: perfil.descripcion || 'Stock de furgonetas camper y autocaravanas',
+    description: perfil.descripcion || 'Stock de maquinaria y herramienta',
     url: pageUrl,
     isPartOf: { '@id': SITIO + '/#website' },
     breadcrumb: { '@id': pageUrl + '#breadcrumb' },

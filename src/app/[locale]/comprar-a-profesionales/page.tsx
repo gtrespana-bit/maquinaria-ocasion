@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import ComprarATipoPage, { metadataParaTipo } from '../comprar-a/ComprarATipoPage'
 
-// Landing SEO: comprar camper a profesionales (Fase 3).
+// Landing SEO: comprar maquinaria a profesionales (Fase 3).
 
 // ISR: el grid de anuncios se regenera sin redeploy (como /categoria/*).
 export const revalidate = 600

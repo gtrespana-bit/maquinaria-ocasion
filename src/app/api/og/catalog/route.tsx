@@ -31,20 +31,27 @@ function getLocalFonts(): LocalFont[] {
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url)
-  const categoria = searchParams.get('categoria') || 'camper'
+  const categoria = searchParams.get('categoria') || 'agricola'
 
   const categorias: Record<string, { name: string; tagline: string; color: string }> = {
-    camper: { name: 'Furgonetas Camper y Autocaravanas', tagline: 'El marketplace camper de España', color: '#15803D' },
-    'gran-volumen': { name: 'Camper Gran Volumen', tagline: 'Ducato, Boxer, Jumper, Master y Sprinter', color: '#0F172A' },
-    'camper-mediana': { name: 'Camper Mediana y Compacta', tagline: 'VW California, Marco Polo y Transit Custom', color: '#16A34A' },
-    minicamper: { name: 'Minicamper', tagline: 'Berlingo, Kangoo, Caddy y más', color: '#EA580C' },
-    perfilada: { name: 'Autocaravana Perfilada', tagline: 'Perfilada de ocasión en España', color: '#1E293B' },
-    capuchina: { name: 'Autocaravana Capuchina', tagline: 'Capuchina de ocasión en España', color: '#15803D' },
-    integral: { name: 'Autocaravana Integral', tagline: 'Adria, Hymer, Challenger, Laika…', color: '#0F172A' },
-    overland: { name: 'Célula y 4x4 Overland', tagline: 'Para viajar fuera del asfalto', color: '#C2410C' },
+    agricola: { name: 'Maquinaria agrícola', tagline: 'Tractores, cosechadoras y aperos de ocasión', color: '#15803D' },
+    obra: { name: 'Maquinaria de obra', tagline: 'Excavadoras, cargadores y plataformas', color: '#0F172A' },
+    herramientas: { name: 'Herramienta profesional', tagline: 'Herramienta eléctrica, motores y taller', color: '#EA580C' },
+    tractores: { name: 'Tractores de ocasión', tagline: 'De compactos de finca a 200 CV', color: '#15803D' },
+    cosechadoras: { name: 'Cosechadoras', tagline: 'Grano y forraje de segunda mano', color: '#16A34A' },
+    'maquinaria-agricola': { name: 'Aperos agrícolas', tagline: 'Sembradoras, arados y segadoras', color: '#1E293B' },
+    ganaderia: { name: 'Maquinaria de ganadería', tagline: 'Ordeñadoras y bienestar animal', color: '#0F172A' },
+    excavadoras: { name: 'Excavadoras', tagline: 'De 1,5 a 40 toneladas', color: '#C2410C' },
+    cargadoras: { name: 'Cargadores', tagline: 'Frontales y articulados', color: '#EA580C' },
+    compactacion: { name: 'Compactación', tagline: 'Rodillos y vibradores de obra', color: '#1E293B' },
+    plataformas: { name: 'Plataformas elevadoras', tagline: 'Tijeras y torres para trabajar en altura', color: '#16A34A' },
+    'herramienta-electrica': { name: 'Herramienta eléctrica', tagline: 'Taladros, amoladoras y sierras', color: '#EA580C' },
+    motores: { name: 'Motores y generadores', tagline: 'Diésel, gasolina e inverter', color: '#0F172A' },
+    'sierra-poda': { name: 'Sierras y poda', tagline: 'Motosierras y tijeras de segunda mano', color: '#15803D' },
+    'taller-manual': { name: 'Herramienta de taller', tagline: 'Llaves, dados y compresores', color: '#1E293B' },
   }
 
-  const cat = categorias[categoria] || categorias.camper
+  const cat = categorias[categoria] || categorias.agricola
 
   // SIN EMOJI: satori los renderiza fetchando SVG desde una CDN (jsdelivr).
   // Si no hay red externa, la imagen falla. Usamos formas geométricas.
@@ -61,14 +68,13 @@ export async function GET(request: NextRequest) {
   return new ImageResponse(
     (
       <div style={{ height: '100%', width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', backgroundColor: cat.color, backgroundImage: 'radial-gradient(circle at 25% 25%, rgba(255,255,255,0.2) 0%, transparent 40%), radial-gradient(circle at 75% 75%, rgba(0,0,0,0.2) 0%, transparent 40%)', padding: '40px', color: 'white', fontFamily: 'Inter, sans-serif' }}>
-        {/* Marca: silueta de furgoneta con formas */}
-        <div style={{ display: 'flex', alignItems: 'flex-end', marginBottom: '24px' }}>
-          <div style={{ width: '180px', height: '90px', backgroundColor: 'rgba(255,255,255,0.9)', borderRadius: '12px 24px 4px 4px', display: 'flex', flexDirection: 'row', alignItems: 'center', padding: '8px' }}>
-            <div style={{ width: '48px', height: '34px', backgroundColor: cat.color, borderRadius: '6px', marginRight: '10px' }} />
-            <div style={{ width: '48px', height: '34px', backgroundColor: cat.color, borderRadius: '6px' }} />
+        {/* Marca: piñón geométrico neutro (maquinaria), sin dependencias externas */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '18px', marginBottom: '24px' }}>
+          <div style={{ width: '96px', height: '96px', borderRadius: '50%', border: '14px solid rgba(255,255,255,0.9)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <div style={{ width: '34px', height: '34px', backgroundColor: 'rgba(255,255,255,0.9)', borderRadius: '6px' }} />
           </div>
-          <div style={{ width: '34px', height: '22px', borderRadius: '50%', backgroundColor: 'rgba(255,255,255,0.9)', marginLeft: '-6px', marginBottom: '8px' }} />
-          <div style={{ width: '34px', height: '22px', borderRadius: '50%', backgroundColor: 'rgba(255,255,255,0.9)', marginLeft: '10px', marginBottom: '8px' }} />
+          <div style={{ width: '140px', height: '26px', backgroundColor: 'rgba(255,255,255,0.9)', borderRadius: '8px' }} />
+          <div style={{ width: '26px', height: '26px', borderRadius: '50%', backgroundColor: 'rgba(255,255,255,0.9)' }} />
         </div>
         <h1 style={{ fontSize: '58px', fontWeight: 'bold', textAlign: 'center', textShadow: '2px 2px 4px rgba(0,0,0,0.5)', lineHeight: 1.2 }}>{cat.name}</h1>
         <p style={{ fontSize: '34px', marginTop: '18px', textAlign: 'center', opacity: 0.9 }}>{cat.tagline}</p>

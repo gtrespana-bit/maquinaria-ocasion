@@ -4,7 +4,7 @@
  * Hasta ahora el tiempo gratis solo se podía dar por dos vías indirectas: el
  * «mes de prueba» global (días desde el alta, para todos) o un cupón que el
  * usuario tenía que canjear (y que además exigía ser profesional). No había
- * forma de decir «a este camperizador dale 3 meses de Plus porque me ha
+ * forma de decir «a este taller dale 3 meses de Plus porque me ha
  * traído 5 anuncios».
  *
  * Este módulo es el cálculo, sin tocar ni base de datos ni red, para poder

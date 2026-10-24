@@ -37,35 +37,35 @@
   },
   "home": {
     "hero": {
-      "chip": "🇪 Buying & selling campers and motorhomes · All Spain",
+      "chip": "🇪 Buying & selling machinery and tools · All Spain",
       "title1": "The meeting point",
-      "title2": "of the camper world in Spain",
-      "subtitle": "Buy or sell your camper van, motorhome or 4x4. From private seller to private buyer, from builder to adventurer. Listing is free, with no commissions.",
-      "searchPlaceholder": "Which camper are you looking for? Ducato, California, Adria…",
+      "title2": "of the machinery world in Spain",
+      "subtitle": "Buy or sell farm machinery, construction equipment or professional tools. From private seller to private buyer, workshop to workshop. Listing is free, with no commissions.",
+      "searchPlaceholder": "What machinery are you looking for? John Deere, CAT, Kubota…",
       "searchButton": "Search",
       "publishFree": "List for free",
-      "explore": "Browse campers",
-      "filterType": "Camper type",
+      "explore": "Browse machinery",
+      "filterType": "Machinery family",
       "allTypes": "All types",
       "filterProvince": "Province",
       "allProvinces": "All of Spain",
       "priceMin": "Min (€)",
       "priceMax": "Max (€)",
       "audiencePrivate": "👤 Private sellers",
-      "audienceCamperizers": "🔧 Converters & builders",
+      "audienceCamperizers": "🔧 Workshops",
       "audiencePro": "🏢 Dealers & professionals",
       "audienceBuyers": "🧭 Buyers",
-      "findCamper": "Find my camper",
+      "findCamper": "Find my machinery",
       "sellFree": "Sell for free",
-      "heroImageAlt": "Camper van overlooking the Mediterranean at sunset"
+      "heroImageAlt": "Excavator working on a site at sunset"
     },
     "stats": {
       "verified": "Verified sellers",
-      "verifiedDesc": "Private owners, camper converters and pros",
+      "verifiedDesc": "Private sellers, workshops and pros",
       "allSpain": "All of Spain",
       "allSpainDesc": "50 provinces + Ceuta and Melilla",
       "range": "€20,000 – €80,000",
-      "rangeDesc": "The typical used-camper price range",
+      "rangeDesc": "The typical used-machinery price range",
       "free": "0% commissions",
       "freeDesc": "Listing and selling are free",
       "homologation": "Reviewed paperwork",
@@ -73,36 +73,24 @@
     },
     "categories": {
       "title": "Explore by family",
-      "subtitle": "Camper vans, motorhomes and overland: pick your world, then narrow by type",
+      "subtitle": "Farm, construction and professional tools: pick your world, then narrow by type",
       "viewAll": "Brands & models"
     },
     "recent": {
       "title": "Newly listed",
-      "subtitle": "The latest camper vans and motorhomes",
+      "subtitle": "The latest used machinery and tools",
       "viewAll": "See all",
       "empty": "No listings yet",
-      "emptyCta": "Be the first to list a camper",
+      "emptyCta": "Be the first to list machinery",
       "publishFree": "List for free"
     },
-    "granVolumen": {
-      "title": "Large Volume Campers",
-      "subtitle": "Ducato, Boxer, Jumper, Master, Crafter and Sprinter conversions"
-    },
-    "medianas": {
-      "title": "Medium & Compact Campers",
-      "subtitle": "VW California, Marco Polo, Transit Custom and more"
-    },
-    "autocaravanas": {
-      "title": "Motorhomes",
-      "subtitle": "Profile, cab-over and integrated motorhomes for sale"
-    },
     "provinces": {
-      "title": "Campers by province",
-      "subtitle": "Find the ideal camper van near you",
-      "link": "Campers in {province}"
+      "title": "Machinery by province",
+      "subtitle": "Find used machinery near you",
+      "link": "Machinery in {province}"
     },
     "viewAll": "See more",
-    "sectionEmpty": "No campers listed in this section yet",
+    "sectionEmpty": "No machinery listed in this section yet",
     "featured": {
       "title": "Featured"
     },
@@ -112,10 +100,10 @@
       "views": "views"
     },
     "cta": {
-      "title": "Got a camper someone is looking for?",
-      "subtitle": "Private seller, builder or professional: list it free in under 5 minutes and reach buyers across Spain.",
+      "title": "Got machinery someone is looking for?",
+      "subtitle": "Private seller, workshop or professional: list it free in under 5 minutes and reach buyers across Spain.",
       "publishNow": "List for free",
-      "explore": "Browse campers",
+      "explore": "Browse machinery",
       "note": "No commission · List today, sell today"
     },
     "productCard": {
@@ -135,10 +123,10 @@
     },
     "how": {
       "eyebrow": "Listing is this easy",
-      "title": "Sell your camper in 3 steps",
+      "title": "Sell your machinery in 3 steps",
       "subtitle": "No commission, no fine print. Listing is and will stay free.",
       "step1Title": "Upload photos and the technical sheet",
-      "step1Desc": "Price, year, mileage, DGT label, homologation and equipment. Live in under 5 minutes.",
+      "step1Desc": "Price, year, hours of use, condition and paperwork. Live in under 5 minutes.",
       "step2Title": "Get messages",
       "step2Desc": "Buyers contact you by chat or WhatsApp so you can arrange viewings.",
       "step3Title": "Sell and hand over",
@@ -148,27 +136,27 @@
     },
     "audiences": {
       "title": "Who sells on MaquinariaOcasión?",
-      "subtitle": "The marketplace is open to everyone who lives the camper world",
-      "viewAll": "List my camper",
+      "subtitle": "The marketplace for everyone who buys, sells or repairs machinery",
+      "viewAll": "List my machinery",
       "private": {
         "title": "Private sellers",
-        "desc": "Sell your camper with no commissions and no middlemen. List for free in 5 minutes with full specs and photos."
+        "desc": "Sell your machinery with no commissions and no middlemen. List for free in 5 minutes with full specs and photos."
       },
       "camperizer": {
-        "title": "Converters & workshops",
-        "desc": "Show your builds and conversions to qualified buyers across Spain."
+        "title": "Workshops & mechanics",
+        "desc": "Show your machinery repairs and rebuilds to qualified buyers across Spain."
       },
       "pro": {
         "title": "Dealers & professionals",
-        "desc": "Rotate your camper and motorhome stock with a verified profile and reach buyers looking for exactly what you sell."
+        "desc": "Rotate your machinery and tool stock with a verified profile and reach buyers looking for exactly what you sell."
       },
       "cta": "Sell for free",
       "plansCta": "Plans & pricing",
       "buyCta": "Buy from {tipo}"
     },
     "guides": {
-      "title": "Camper guides and tips",
-      "subtitle": "Budgets, homologation, safe buying and market prices: everything you need before buying or selling a camper.",
+      "title": "Machinery guides and tips",
+      "subtitle": "Paperwork, safe buying and market prices: everything you need before buying or selling machinery.",
       "viewAll": "See all guides",
       "readMore": "Read guide",
       "minRead": "min read"
@@ -228,7 +216,7 @@
       "subtitle": "Join for free. Start selling today.",
       "creating": "Creating account...",
       "sellerTypeLabel": "How will you sell?",
-      "sellerTypeHint": "It's free and you can change it later. Your first camper listing costs nothing."
+      "sellerTypeHint": "It's free and you can change it later. Your first listing costs nothing."
     },
     "confirmacion": {
       "title": "Almost there!",
@@ -242,7 +230,7 @@
     }
   },
   "header": {
-    "searchPlaceholder": "Which camper are you looking for? Ducato, California…",
+    "searchPlaceholder": "What machinery are you looking for? Kubota, CAT, Stihl…",
     "searchAria": "Search products",
     "backAria": "Go back",
     "credits": "Credits",
@@ -262,20 +250,10 @@
     "openMenu": "Open menu",
     "closeMenu": "Close menu",
     "allCategories": "See All",
-    "brands": "Brands & models",
-    "categories": {
-      "camper": "Camper Vans and Motorhomes",
-      "gran-volumen": "Large Volume",
-      "camper-mediana": "Medium / Compact",
-      "minicamper": "Minicamper",
-      "perfilada": "Low-profile",
-      "capuchina": "Overcab",
-      "integral": "Integrated",
-      "overland": "Cell & 4x4 Overland"
-    }
+    "brands": "Brands & models"
   },
   "footer": {
-    "description": "The specialised marketplace for used camper vans and motorhomes in Spain.",
+    "description": "The specialised marketplace for used machinery and tools in Spain.",
     "categories": "Categories",
     "information": "Information",
     "legal": "Legal",
@@ -286,24 +264,12 @@
     "madeWithLove": "Made with ❤️ in Spain",
     "allRightsReserved": "All rights reserved.",
     "cities": "Provinces",
-    "classifiedsIn": "Campers in {city}",
+    "classifiedsIn": "Machinery in {city}",
     "brands": "Brands & models",
     "cookies": "Cookies",
     "legalNotice": "Legal notice"
   },
   "familias": {
-    "campers": {
-      "label": "Camper Vans",
-      "desc": "Factory-built or custom-converted vans: large volume, medium and minicampers."
-    },
-    "autocaravanas": {
-      "label": "Motorhomes",
-      "desc": "Low-profile, overcab and integrated motorhomes from the great European builders."
-    },
-    "overland": {
-      "label": "Overland & 4x4",
-      "desc": "Pickups and 4x4s with slide-in cells to travel without limits."
-    },
     "agricola": {
       "label": "Farm machinery",
       "desc": "Used tractors, harvesters, implements and livestock equipment for farms of every size."
@@ -320,32 +286,37 @@
   "marcasPage": {
     "home": "Home",
     "breadcrumb": "Brands & models",
-    "heroTitle": "Camper van and motorhome brands and models",
-    "heroSubtitle": "The full catalog organized by manufacturer and model: base vehicles to convert, factory campers, motorhomes and 4x4 overland rigs. Each model shows which types it suits.",
+    "heroTitle": "Machinery brands and models",
+    "heroSubtitle": "The full catalog organized by manufacturer and model: farm machinery, construction equipment and professional tools. Each model shows which subcategories it fits.",
     "statsBrands": "{count} manufacturers",
     "statsModels": "{count} brands & models",
     "viewAds": "View listings",
     "viewCatalog": "Browse the full catalog",
-    "publishCta": "List your camper for free",
+    "publishCta": "List your machinery for free",
     "ctaTitle": "Looking for a specific brand?",
-    "ctaSubtitle": "Filter the catalog by type, brand and model, or list your camper or motorhome for free in under 5 minutes.",
+    "ctaSubtitle": "Filter the catalog by subcategory, brand and model, or list your machinery for free in under 5 minutes.",
     "desc": {
-      "gran-volumen": "Large vans (L2H2 and up), converted or ready to convert, plus factory campervans on van chassis: the flagship category of the camper world.",
-      "camper-mediana": "Medium and compact campers, factory-built or converted: Volkswagen California, Mercedes Marco Polo, Ford Nugget and friends. Easy to park, ready to travel.",
-      "minicamper": "Compact minivans converted into campers: the most affordable and agile way to travel, with bed and kitchen module in the footprint of a car.",
-      "perfilada": "Low-profile motorhomes built by manufacturers on Fiat, Ford or Mercedes chassis: the best sellers, balancing price and aerodynamics.",
-      "capuchina": "Overcab motorhomes with a fixed bed above the cabin: the family classic with the most sleeping berths.",
-      "integral": "Integrated motorhomes from the great European manufacturers: own bodywork and cab, maximum comfort on wheels.",
-      "overland": "Pickups and 4x4s with slide-in cells or overland builds for off-grid adventure and total self-sufficiency."
+      "tractores": "Farm tractors of every range: compact utility units and 200+ HP heavy tractors. Check the power (CV), hours of use and whether it has a 3-point hitch and PTO.",
+      "cosechadoras": "Grass and forage harvesters: cutting width, year and hours of use make the difference. Compare power, cutterbar condition and maintenance before closing the deal.",
+      "maquinaria-agricola": "Implements and auxiliary farm equipment: seeders, ploughs, mowers, milking machines and precision gear. Check the coupling (3-point, bar or drawbar) and each unit’s condition.",
+      "ganaderia": "Livestock machinery: milking machines, milk coolers, feed mixers and animal-welfare gear. Hours of use and upkeep show in how clean each unit is kept.",
+      "excavadoras": "Tracked and wheeled excavators, 1.5 to 40 tonnes: hours of use, undercarriage or tyre condition and paperwork in order. The most in-demand segment on site.",
+      "cargadoras": "Front and articulated loaders for material and earthmoving: load capacity, tyres and hours of use tell you how much life is left in it.",
+      "compactacion": "Compactors, rollers and vibrators for base courses and fill: smooth, padfoot and plate. Check the drum, the hydraulic system and the working hours.",
+      "plataformas": "Aerial platforms, scissor lifts and towers for work at height: reach, working height and diesel or electric power. Ask for the maintenance history.",
+      "herramienta-electrica": "Professional corded and cordless power tools: drills, grinders, saws and precision tools from brands like Makita, Bosch or DeWalt. Check the voltage and whether a battery is included.",
+      "motores": "Engines and generators: diesel, petrol and inverter units, from portable sets to three-phase machines. Power (W), voltage and hours of use are what matter.",
+      "sierra-poda": "Chainsaws, pruning shears and blowers for gardening and maintenance: chain, bar and power for the job at hand. Check the clutch and filter condition.",
+      "taller-manual": "Manual workshop tools: spanners, sockets, hex and impact tools, jacks and compressors. Professional brands like Bahco, Knipex or Wera, built to last."
     },
-    "guideTitle": "How to choose your camper brand",
-    "guideP1": "There is no universally «best» brand: the choice depends on the base vehicle (Fiat Ducato, Mercedes Sprinter, Ford Transit, Volkswagen…), the coachbuilder (Benimar, Adria, Hymer, Challenger, Laika, Swift…) and how you will use it. MaquinariaOcasión organises models by manufacturer and shows real market prices — median and P25–P75 range from our own inventory — so you compare with data, not feelings.",
-    "guideP2": "Quick rule: for camperising, the base determines parts, workshop network and fuel use; for motorhomes, the coachbuilder determines build quality and insulation. Click «View market prices» on any model to see its real-price page, and always filter by verified homologation before buying.",
-    "faqTitle": "Camper brands FAQ"
+    "guideTitle": "How to choose your machinery brand",
+    "guideP1": "There is no universally «best» brand: the choice depends on the subcategory (a farm tractor is not a 20-tonne excavator or a chainsaw), how you will use it and how close parts and workshops are to you. MaquinariaOcasión organises models by manufacturer and shows real market prices — median and P25–P75 range from our own inventory — so you compare with data, not feelings.",
+    "guideP2": "Quick rule: within a subcategory, the brand makes the difference in parts, workshop network and resale value; always compare like-for-like. Click «View market prices» on any model to see its real-price page, and filter by condition and hours of use before buying.",
+    "faqTitle": "Machinery brands FAQ"
   },
   "catalog": {
     "title": "Catalog",
-    "allProducts": "Full camper catalog",
+    "allProducts": "Full machinery catalog",
     "results": "{count} results",
     "category": "Category",
     "all": "All",
@@ -398,18 +369,6 @@
     "remove": "Clear",
     "allBrands": "All brands",
     "resultsFor": "Results for \"{q}\"",
-    "categories": {
-      "camper": "Camper Vans & Motorhomes"
-    },
-    "subcategories": {
-      "Gran Volumen": "Large Volume",
-      "Camper Mediana / Compacta": "Medium / Compact Camper",
-      "Minicamper": "Minicamper",
-      "Autocaravana Perfilada": "Profile Motorhome",
-      "Autocaravana Capuchina": "Cab-over Motorhome",
-      "Autocaravana Integral": "Integrated Motorhome",
-      "Célula y 4x4 Overland": "Cell & 4x4 Overland"
-    },
     "searchLabel": "Search",
     "priceEur": "Precio (€)",
     "filtersTitle": "Filters",
@@ -422,28 +381,10 @@
         "docs": "Documentation",
         "logistics": "Logistics"
       },
-      "dgt": "DGT environmental label",
-      "homologation": "Type approval",
       "fuel": "Fuel",
       "drive": "Drivetrain",
-      "mma": "MAM / Max. weight",
-      "length": "Exterior length",
-      "height": "Exterior height",
-      "travelSeats": "Travel seats",
-      "sleepSeats": "Sleeping berths",
-      "heating": "Stationary heater",
-      "hotWater": "Hot water",
-      "bathroom": "Bathroom / Shower",
-      "battery": "Leisure battery",
-      "solar": "Solar panel",
-      "inverter": "220V inverter",
-      "fridge": "Fridge",
-      "verified": "Verified type approval only",
       "rangeTitle": "Numeric ranges",
-      "kmMax": "Max kilometres",
       "anioMin": "Minimum year",
-      "placaWatiosMin": "Min solar panel (W)",
-      "inversorWatiosMin": "Min inverter (W)",
       "docs": "Documentation",
       "transport": "Includes transport?",
       "hitch": "Hitch",
@@ -462,41 +403,31 @@
     "featured": "Featured",
     "boost": "Top spot",
     "verified": "Verified",
-    "homologacionVerificada": "Type approval verified",
-    "homologacionPendiente": "Verification in progress",
-    "homologacionRechazada": "Documents rejected",
-    "homologacionSinExpediente": "No documents yet",
     "reserved": "Reserved"
   },
   "tiposVendedor": {
     "particular": "Private seller",
-    "camperizador": "Camper builder",
+    "camperizador": "Workshop",
     "profesional": "Professional",
-    "particularDesc": "Selling my camper or gear",
-    "camperizadorDesc": "I build and sell camper projects",
-    "profesionalDesc": "Company, workshop or dealership",
+    "particularDesc": "Selling my machinery or equipment",
+    "camperizadorDesc": "I repair and resell machinery",
+    "profesionalDesc": "Company or dealer",
     "particulares": "Private sellers",
-    "camperizadores": "Camper builders",
+    "camperizadores": "Workshops",
     "profesionales": "Pros"
   },
   "vendedorLanding": {
     "particular": {
-      "title": "Campervans from private sellers",
-      "metaTitle": "Buy a camper from private sellers",
-      "metaDescription": "Buy campervans and motorhomes directly from their owners. No middlemen: person-to-person deals across Spain.",
+      "title": "Machinery from private sellers",
+      "metaTitle": "Buy machinery from private sellers",
+      "metaDescription": "Buy farm machinery, construction equipment and tools directly from their owners. No middlemen: person-to-person deals across Spain.",
       "intro": "Buy directly from the owners: no middlemen, real history and person-to-person deals. Every listing carries the \"Private seller\" badge so you always know who you are talking to."
     },
-    "camperizador": {
-      "title": "Campers from builders",
-      "metaTitle": "Buy a camper from builders",
-      "metaDescription": "Hand-built conversions and custom projects from people who live the camper life. Straight from the builder's workshop to you.",
-      "intro": "Projects built by people who live on the road: hand-built conversions, solutions tested on real trips and sellers who know every detail of their build."
-    },
     "profesional": {
-      "title": "Campers and motorhomes from pros",
-      "metaTitle": "Buy a camper from professionals",
-      "metaDescription": "Workshops, professional converters and dealers specialised in campers. Inspected vehicles and professional backing across Spain.",
-      "intro": "Workshops and dealers specialised in campers: fresh stock, vehicles inspected before sale and professional backing."
+      "title": "Machinery and tools from pros",
+      "metaTitle": "Buy machinery from professionals",
+      "metaDescription": "Workshops, specialists and machinery dealers. Inspected machines and professional backing across Spain.",
+      "intro": "Workshops and dealers specialised in machinery: fresh stock, machines inspected before sale and professional backing."
     },
     "gridTitle": "Listings from {tipo} right now",
     "empty": "No listings of this type right now. Check back soon… or be the first to post.",
@@ -569,7 +500,7 @@
     "save": "Save",
     "shareBtn": "Share",
     "successTitle": "Published successfully! 🎉",
-    "successDesc": "Your camper is now live on MaquinariaOcasión. We'll notify you about new messages.",
+    "successDesc": "Your machinery is now live on MaquinariaOcasión. We’ll notify you about new messages.",
     "successFree": "100% FREE listing · 0 commissions · Always",
     "successBoostCta": "Feature this listing",
     "successPlansCta": "I have more stock: see Professional",
@@ -585,22 +516,22 @@
     "guestNudgeLogin": "I already have an account",
     "guestNudgeWhatsapp": "Or message on WhatsApp now",
     "soldBannerTitle": "This item has already been sold",
-    "soldBannerDesc": "This camper found its new owner. Check similar listings.",
+    "soldBannerDesc": "This machine found its new owner. Check similar listings.",
     "specsTitle": "Other details",
-    "sellerPro": "Pro / Camper converter",
+    "sellerPro": "Pro / Workshop",
     "sellerPrivate": "Private seller",
     "expedienteTitle": "Vehicle documentation file",
-    "expedienteIntroVerificada": "We have reviewed this vehicle’s documents: technical inspection sheet (ficha técnica), ITV and, where applicable, the type-approval project.",
+    "expedienteIntroVerificada": "We have reviewed this machine’s paperwork: invoice, technical sheet and owner’s manual.",
     "expedienteIntroPendiente": "The seller has uploaded vehicle documents and our team is reviewing them.",
-    "expedienteAvisoVivienda": "This listing declares a motorhome conversion (Vehículo Vivienda 2448/3148) and the type-approval project is still pending verification.",
+    "expedienteAvisoVivienda": "This listing declares a registered machine with ownership documents pending verification.",
     "expedienteNotaComprador": "Before closing the deal, ask the seller to show you the original documents.",
-    "expedienteCta": "Upload the documents and get the verified badge",
-    "itpCtaTitulo": "Calculate the transfer tax for this camper",
+    "expedienteCta": "Upload the documents and get the verified-docs badge",
+    "itpCtaTitulo": "Calculate the transfer tax for this machine",
     "itpCtaDesc": "What you will pay in tax and registration fee according to your region",
     "reservarCta": "Reserve with a deposit",
     "reservadoBadge": "Reserved",
     "contratoCtaTitulo": "Sale contract",
-    "contratoCtaDesc": "Print-ready template prefilled with this van’s details"
+    "contratoCtaDesc": "Print-ready template prefilled with this machine’s details"
   },
   "creditos": {
     "title1": "Buy credits and",
@@ -650,8 +581,8 @@
     "holder": "Account holder"
   },
   "publicar": {
-    "title": "List your camper for free",
-    "freeBanner": "Listing your camper is free",
+    "title": "List your machinery for free",
+    "freeBanner": "Listing your machinery is free",
     "freeBannerDesc": "No sale commission. Private sellers have an active-listing cap so company stock cannot hide behind a personal account.",
     "pruebaTitulo": "Trial of the {plan} plan: {dias, plural, one {1 day left} other {# days left}}",
     "pruebaDetalle": "Ends on {fecha}. Then you get 7 days of grace (until {gracia}); nothing is charged automatically.",
@@ -683,7 +614,7 @@
     "back": "← Back",
     "productDetails": "Product details",
     "titleField": "Title",
-    "titlePlaceholder": "Describe your product clearly...",
+    "titlePlaceholder": "e.g. CAT 320 excavator 2019, 8,500 hours, delivery included",
     "specs": "Specifications",
     "specsHint": "The fields you fill in become catalogue filters: berths, heating, bathroom, off-grid kit (battery, solar panel, inverter), drivetrain, MAM, exterior length and height.",
     "description": "Description",
@@ -863,8 +794,8 @@
   },
   "cityLanding": {
     "breadcrumb": "Home",
-    "title": "Buy & Sell in {city}",
-    "desc": "Classified ads in {city}. Post free and contact directly.",
+    "title": "Machinery in {city}",
+    "desc": "Used farm machinery, construction equipment and tools in {city}. Find your excavator, tractor or generator. Post free on MaquinariaOcasión.",
     "featured": "Featured",
     "noAds": "No listings in {city} yet",
     "beFirst": "Be the first to post!",
@@ -874,7 +805,7 @@
   "catLanding": {
     "breadcrumb": "Home",
     "title": "{category} in {city}",
-    "desc": "Classified ads for {category} in {city}. Post free and contact directly.",
+    "desc": "Used {category} machinery in {city}. Find the machine you need. Post free on MaquinariaOcasión.",
     "featured": "Featured",
     "noAds": "No listings for {category} in {city} yet",
     "beFirst": "Be the first to post!",
@@ -885,11 +816,11 @@
     "title": "About MaquinariaOcasión",
     "subtitle": "The marketplace built for Spain.",
     "whoTitle": "Who we are",
-    "whoP1": "MaquinariaOcasión is a marketplace designed specifically for Spain. It was born from the need for a platform where buying and selling your camper van or motorhome is easy, direct and hassle-free. We believe the camper market deserves modern tools without intermediaries charging abusive commissions.",
+    "whoP1": "MaquinariaOcasión is a marketplace designed specifically for Spain. It was born from the need for a platform where buying and selling used machinery or tools is easy, direct and hassle-free. We believe the machinery market deserves modern tools without intermediaries charging abusive commissions.",
     "whoP2": "Our team understands commerce in Spain firsthand. We know what it means to sell something you no longer use, find the product you need at a good price, and avoid the 10-15% commissions other platforms charge. That's why we created MaquinariaOcasión: so the price you set is the price you receive.",
     "missionTitle": "Our mission",
     "missionP1": "Facilitate commerce among Spainns. We want anyone to be able to post what they sell and find buyers in their city quickly, safely and without hidden costs. No middlemen, no sales commissions, no fine print.",
-    "missionP2": "Everyone should be able to sell their camper or find the one they need, without barriers. Whether it's a large-volume van in Madrid, a medium camper in Barcelona or an integrated motorhome in Valencia — MaquinariaOcasión connects sellers with buyers.",
+    "missionP2": "Everyone should be able to sell their machinery or find the one they need, without barriers. Whether it’s an excavator in Madrid, a tractor in Lleida or a chainsaw in Valencia — MaquinariaOcasión connects sellers with buyers.",
     "whyTitle": "Why MaquinariaOcasión?",
     "why1_title": "No commissions",
     "why1_desc": "The price you set is the price you receive. We don't touch your money.",
@@ -926,7 +857,7 @@
     "q9": "How do I contact a seller?",
     "a9": "Each listing has a direct message button, WhatsApp and phone (if the seller enabled it). You can also use MaquinariaOcasión's built-in chat.",
     "q10": "Can I sell other vehicles on MaquinariaOcasión?",
-    "a10": "No. MaquinariaOcasión is a vertical marketplace specialised exclusively in second-hand camper vans and motorhomes: large volume, medium/compact, minicamper, low-profile, overcab, integrated and 4x4 overland cells.",
+    "a10": "No. MaquinariaOcasión is a vertical marketplace specialised exclusively in second-hand machinery and tools: farm, construction and professional tools.",
     "q11": "Is it free to post on MaquinariaOcasión?",
     "a11": "Yes, posting is 100% free. Credits are optional and only serve to feature your listing and reach more buyers.",
     "noAnswer": "Didn't find your answer?",
@@ -957,7 +888,7 @@
     "heroTitle": "How does MaquinariaOcasión work?",
     "heroSubtitle": "Buy and sell in Spain in 4 simple steps. List for free and start receiving messages today.",
     "step1Title": "Post free in 2 minutes",
-    "step1Desc": "Create your account, upload photos of your camper, set a price in € and describe what you're selling. No commissions, no fine print. Listing is 100% free.",
+    "step1Desc": "Create your account, upload photos of your machinery, set a price in € and describe what you’re selling. No commissions, no fine print. Listing is 100% free.",
     "step2Title": "Thousands of buyers see you",
     "step2Desc": "Your ad appears on the homepage, catalogue and searches across Spain. Real buyers looking for what you offer, directly in your province.",
     "step3Title": "Contact the buyer directly",
@@ -989,7 +920,7 @@
     "faq5q": "How do I register?",
     "faq5a": "Click \"Sign up\" in the header. You can use your email or Google account. It's fast and free. Your account is active in under a minute.",
     "faq6q": "What can I sell on MaquinariaOcasión?",
-    "faq6a": "MaquinariaOcasión is camper-vertical only: second-hand camper vans and motorhomes — large volume, medium/compact, minicamper, low-profile, overcab, integrated and 4x4 overland cells. No cars, bikes, real estate or other categories.",
+    "faq6a": "MaquinariaOcasión is machinery-vertical only: second-hand machinery and tools — farm, construction and professional tools. No cars, bikes, real estate or other categories.",
     "ctaPublish": "Post now — It's free",
     "ctaCatalog": "Browse catalog"
   },
@@ -1118,8 +1049,8 @@
     "contactTitle": "Contact methods",
     "contactDesc": "Choose which contact methods to display",
     "back": "Back",
-    "expedienteTitle": "Verified Type-Approval Seal",
-    "expedienteIntro": "Uploading documents is completely optional: your listing is saved and published normally without any documents. Only upload them if you want to obtain the official “Verified Type-Approval” seal to certify vehicle specs and give buyers maximum confidence.",
+    "expedienteTitle": "Verified Documents Seal",
+    "expedienteIntro": "Uploading documents is completely optional: your listing is saved and published normally without any documents. Only upload them if you want to obtain the official “Verified Documents” seal to certify the machine and give buyers maximum confidence.",
     "expedienteCargando": "Loading documents…",
     "expedienteRequerido": "Required for seal",
     "expedienteOpcional": "Optional",
@@ -1140,7 +1071,7 @@
     "expedienteEstado": {
       "sin_verificar": "No documents yet",
       "pendiente": "Pending verification",
-      "verificada": "Type approval verified",
+      "verificada": "Documents verified",
       "rechazada": "Documents rejected"
     },
     "expedienteDocumentoEstado": {

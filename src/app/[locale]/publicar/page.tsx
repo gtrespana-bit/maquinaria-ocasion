@@ -627,8 +627,8 @@ export default function PublicarPage() {
                 {subcategoria && sub && sub.marcas.length > 0 && (
                   <div>
                     <label className="block text-sm font-semibold text-gray-900 mb-1.5">{t('brand')}</label>
-                    {/* Marca/modelo agrupados por fabricante: Fiat → Ducato ·
-                        Doblò · Scudo… El valor guardado es el canónico de
+                    {/* Marca/modelo agrupados por fabricante: Kubota → M7 · M5 · L2…
+                        El valor guardado es el canónico de
                         productos.marca (ver @/lib/marcas). */}
                     <select value={marca.startsWith('otra:') ? 'otra:' : marca} onChange={e => setMarca(e.target.value === 'otra:' ? 'otra:' : e.target.value)} className="w-full border border-gray-300 rounded-lg px-4 py-3 text-gray-800 bg-white">
                       <option value="">{t('selectBrand')}</option>

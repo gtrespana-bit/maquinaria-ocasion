@@ -4,8 +4,8 @@ import { alternatesSeo } from '@/lib/seo'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 
 export const metadata: Metadata = {
-  title: 'Preguntas frecuentes sobre campers',
-  description: 'Resuelve tus dudas sobre MaquinariaOcasión: publicar anuncios, seguridad, créditos, métodos de pago y compra de campers en España.',
+  title: 'Preguntas frecuentes sobre maquinaria',
+  description: 'Resuelve tus dudas sobre MaquinariaOcasión: publicar anuncios, seguridad, créditos, métodos de pago y compra de maquinaria en España.',
   alternates: alternatesSeo('/faq'),
 }
 

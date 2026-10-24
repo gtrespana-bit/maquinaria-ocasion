@@ -8,7 +8,7 @@ import BadgeVerificado from '@/components/BadgeVerificado'
 import { Store, MapPin } from 'lucide-react'
 
 /**
- * Directorio de camperizadores y vendedores profesionales.
+ * Directorio de talleres y vendedores profesionales.
  *
  * Doble función: al comprador le da una vía de entrada distinta a la del
  * catálogo (buscar por taller, no por vehículo) y al profesional le da un
@@ -20,9 +20,9 @@ export const revalidate = 600
 const SITIO = 'https://maquinariaocasion.online'
 
 export async function generateMetadata(): Promise<Metadata> {
-  const title = 'Camperizadores y profesionales en España'
+  const title = 'Talleres y profesionales en España'
   const description =
-    'Directorio de talleres y profesionales de campers y autocaravanas en España. Consulta stock, ubicación y valoraciones.'
+    'Directorio de talleres y profesionales de maquinaria en España. Consulta stock, ubicación y valoraciones.'
   return {
     title,
     description,
@@ -68,8 +68,8 @@ export default async function TiendasPage({ params }: { params: Promise<{ locale
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
     '@id': SITIO + '/tiendas#collection',
-    name: 'Camperizadores y concesionarios de camper en España',
-    description: 'Directorio de talleres de camperización y vendedores profesionales de furgonetas camper y autocaravanas en España.',
+    name: 'Talleres y concesionarios de maquinaria en España',
+    description: 'Directorio de talleres y vendedores profesionales de maquinaria en España.',
     url: SITIO + '/tiendas',
     isPartOf: { '@id': SITIO + '/#website' },
     breadcrumb: { '@id': SITIO + '/tiendas#breadcrumb' },
@@ -79,7 +79,7 @@ export default async function TiendasPage({ params }: { params: Promise<{ locale
     '@context': 'https://schema.org',
     '@type': 'ItemList',
     '@id': SITIO + '/tiendas#itemlist',
-    name: 'Camperizadores y profesionales',
+    name: 'Talleres y profesionales',
     numberOfItems: tiendas.length,
     itemListElement: tiendas.slice(0, 30).map((t: any, i: number) => ({
       '@type': 'ListItem',
@@ -99,10 +99,10 @@ export default async function TiendasPage({ params }: { params: Promise<{ locale
       <div className="max-w-6xl mx-auto px-4 py-12">
       <div className="text-center mb-10">
         <h1 className="text-3xl md:text-4xl font-black text-gray-800 mb-3">
-          Camperizadores y <span className="text-brand-accent">profesionales</span>
+          Talleres y <span className="text-brand-accent">profesionales</span>
         </h1>
         <p className="text-lg text-gray-500 max-w-2xl mx-auto">
-          Talleres de camperización y vendedores profesionales con stock en MaquinariaOcasión.
+          Talleres y vendedores profesionales con stock en MaquinariaOcasión.
           Mira su catálogo completo, dónde están y qué dicen sus clientes.
         </p>
       </div>
@@ -112,7 +112,7 @@ export default async function TiendasPage({ params }: { params: Promise<{ locale
           <Store size={36} className="mx-auto text-gray-300 mb-3" />
           <p className="text-gray-700 font-semibold mb-1">Todavía no hay tiendas publicadas</p>
           <p className="text-sm text-gray-500 mb-5">
-            ¿Eres camperizador o vendedor profesional? Abre tu escaparate con el plan Profesional por 19 €/mes
+            ¿Eres taller o vendedor profesional? Abre tu escaparate con el plan Profesional por 19 €/mes
             y enseña todo tu stock en una página propia.
           </p>
           <LocalLink
@@ -152,7 +152,7 @@ export default async function TiendasPage({ params }: { params: Promise<{ locale
                       {t.verificado && <BadgeVerificado size="sm" />}
                     </div>
                     <p className="text-xs text-gray-500 mb-1">
-                      {t.tipo_vendedor === 'camperizador' ? 'Camperizador' : 'Profesional'}
+                      {t.tipo_vendedor === 'camperizador' ? 'Taller' : 'Profesional'}
                     </p>
                     {ubicacion && (
                       <p className="text-sm text-gray-600 inline-flex items-center gap-1">
@@ -170,7 +170,7 @@ export default async function TiendasPage({ params }: { params: Promise<{ locale
           </div>
 
           <div className="bg-gradient-to-br from-brand-primary to-brand-dark text-white rounded-2xl p-8 mt-10 text-center">
-            <h2 className="text-2xl font-bold mb-2">¿Vendes campers de forma profesional?</h2>
+            <h2 className="text-2xl font-bold mb-2">¿Vendes maquinaria de forma profesional?</h2>
             <p className="opacity-90 mb-5 max-w-xl mx-auto">
               Abre tu escaparate con un pack: una página con tu logo, tu stock completo y tu
               dirección web propia que puedes enlazar desde tu Instagram.

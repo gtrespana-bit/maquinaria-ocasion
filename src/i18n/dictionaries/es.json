@@ -37,72 +37,60 @@
   },
   "home": {
     "hero": {
-      "chip": "🇪🇸 Compra-venta de campers y autocaravanas · Toda España",
+      "chip": "🇪🇸 Compra-venta de maquinaria y herramienta · Toda España",
       "title1": "El punto de encuentro",
-      "title2": "del mundo camper en España",
-      "subtitle": "Compra o vende tu furgoneta camper, autocaravana o 4x4. De particular a particular, de camperizador a aventurero. Publicar es gratis y sin comisiones.",
-      "searchPlaceholder": "¿Qué camper buscas? Ducato, California, Adria…",
+      "title2": "del mundo de la maquinaria en España",
+      "subtitle": "Compra o vende maquinaria agrícola, de obra o herramienta profesional. De particular a particular, de taller a taller. Publicar es gratis y sin comisiones.",
+      "searchPlaceholder": "¿Qué maquinaria buscas? John Deere, CAT, Kubota…",
       "searchButton": "Buscar",
       "publishFree": "Publicar gratis",
-      "explore": "Explorar campers",
-      "filterType": "Tipo de camper",
+      "explore": "Explorar maquinaria",
+      "filterType": "Familia de maquinaria",
       "allTypes": "Todos los tipos",
       "filterProvince": "Provincia",
       "allProvinces": "Toda España",
       "priceMin": "Mínimo (€)",
       "priceMax": "Máximo (€)",
       "audiencePrivate": "👤 Particulares",
-      "audienceCamperizers": "🔧 Camperizadores",
+      "audienceCamperizers": "🔧 Talleres",
       "audiencePro": "🏢 Profesionales y concesionarios",
       "audienceBuyers": "🧭 Compradores",
-      "findCamper": "Encontrar mi camper",
+      "findCamper": "Encontrar mi maquinaria",
       "sellFree": "Vender gratis",
-      "heroImageAlt": "Furgoneta camper con vistas al Mediterráneo al atardecer"
+      "heroImageAlt": "Excavadora trabajando en una obra al atardecer"
     },
     "stats": {
       "verified": "Vendedores verificados",
-      "verifiedDesc": "Particulares, camperizadores y profesionales",
+      "verifiedDesc": "Particulares, talleres y profesionales",
       "allSpain": "Toda España",
       "allSpainDesc": "50 provincias + Ceuta y Melilla",
       "range": "20.000 € – 80.000 €",
-      "rangeDesc": "El rango habitual de un camper de ocasión",
+      "rangeDesc": "El rango habitual de maquinaria de ocasión",
       "free": "0% comisiones",
       "freeDesc": "Publicar y vender es gratis",
-      "homologation": "Homologación revisada",
+      "homologation": "Documentación revisada",
       "homologationDesc": "Expediente del vehículo revisado por el equipo"
     },
     "categories": {
       "title": "Explora por familia",
-      "subtitle": "Furgonetas camper, autocaravanas y overland: elige tu mundo y afina por tipo",
+      "subtitle": "Agrícola, obra y herramienta profesional: elige tu mundo y afina por tipo",
       "viewAll": "Ver marcas y modelos"
     },
     "recent": {
       "title": "Recién publicadas",
-      "subtitle": "Lo último en furgonetas camper y autocaravanas",
+      "subtitle": "Lo último en maquinaria y herramienta de ocasión",
       "viewAll": "Ver todas",
       "empty": "Aún no hay publicaciones",
-      "emptyCta": "Sé el primero en publicar un camper",
+      "emptyCta": "Sé el primero en publicar maquinaria",
       "publishFree": "Publicar gratis"
     },
-    "granVolumen": {
-      "title": "Camper Gran Volumen",
-      "subtitle": "Ducato, Boxer, Jumper, Master, Crafter y Sprinter camperizados"
-    },
-    "medianas": {
-      "title": "Campers medianas y compactas",
-      "subtitle": "VW California, Marco Polo, Transit Custom y más"
-    },
-    "autocaravanas": {
-      "title": "Autocaravanas",
-      "subtitle": "Perfiladas, capuchinas e integrales de ocasión"
-    },
     "provinces": {
-      "title": "Camper por provincia",
-      "subtitle": "Encuentra la furgoneta camper ideal cerca de ti",
-      "link": "Camper en {province}"
+      "title": "Maquinaria por provincia",
+      "subtitle": "Encuentra maquinaria de ocasión cerca de ti",
+      "link": "Maquinaria en {province}"
     },
     "viewAll": "Ver más",
-    "sectionEmpty": "Aún no hay campers publicadas en esta sección",
+    "sectionEmpty": "Aún no hay maquinaria publicada en esta sección",
     "featured": {
       "title": "Destacados"
     },
@@ -112,10 +100,10 @@
       "views": "vistas"
     },
     "cta": {
-      "title": "¿Tienes una camper que alguien está buscando?",
-      "subtitle": "Particular, camperizador o profesional: publica gratis en menos de 5 minutos y llega a compradores de toda España.",
+      "title": "¿Tienes maquinaria que alguien está buscando?",
+      "subtitle": "Particular, taller o profesional: publica gratis en menos de 5 minutos y llega a compradores de toda España.",
       "publishNow": "Publicar gratis",
-      "explore": "Explorar campers",
+      "explore": "Explorar maquinaria",
       "note": "Sin comisiones · Publica hoy y vende hoy"
     },
     "productCard": {
@@ -135,10 +123,10 @@
     },
     "how": {
       "eyebrow": "Publicar es así de fácil",
-      "title": "Vende tu camper en 3 pasos",
+      "title": "Vende tu maquinaria en 3 pasos",
       "subtitle": "Sin comisiones y sin letra pequeña. Publicar es y será gratis.",
       "step1Title": "Sube las fotos y la ficha técnica",
-      "step1Desc": "Precio, año, kilómetros, distintivo DGT, homologación y equipamiento. En menos de 5 minutos está publicado.",
+      "step1Desc": "Precio, año, horas de uso, estado y documentación. En menos de 5 minutos está publicado.",
       "step2Title": "Recibe mensajes",
       "step2Desc": "Los compradores te escriben por chat o WhatsApp, tú decides qué visitas aceptas.",
       "step3Title": "Vende y entrega",
@@ -148,27 +136,27 @@
     },
     "audiences": {
       "title": "¿Quién vende en MaquinariaOcasión?",
-      "subtitle": "El marketplace abierto a todo el que vive y trabaja el mundo camper",
-      "viewAll": "Publicar mi camper",
+      "subtitle": "El marketplace abierto a todo el que compra, vende o repara maquinaria",
+      "viewAll": "Publicar mi maquinaria",
       "private": {
         "title": "Particulares",
-        "desc": "Vende tu camper sin comisiones ni intermediarios. Publica gratis en 5 minutos con ficha técnica completa y fotos."
+        "desc": "Vende tu maquinaria sin comisiones ni intermediarios. Publica gratis en 5 minutos con ficha técnica completa y fotos."
       },
       "camperizer": {
-        "title": "Camperizadores y talleres",
-        "desc": "Muestra tus construcciones y camperizaciones ante compradores cualificados de toda España."
+        "title": "Talleres y reparadores",
+        "desc": "Muestra tu reparación y reacondicionamiento de maquinaria ante compradores cualificados de toda España."
       },
       "pro": {
         "title": "Profesionales y concesionarios",
-        "desc": "Rota tu stock de campers y autocaravanas con perfil verificado y llega a compradores que buscan justo lo que vendes."
+        "desc": "Rota tu stock de maquinaria y herramienta con perfil verificado y llega a compradores que buscan justo lo que vendes."
       },
       "cta": "Vender gratis",
       "plansCta": "Planes y precios",
       "buyCta": "Comprar a {tipo}"
     },
     "guides": {
-      "title": "Guías y consejos de camper",
-      "subtitle": "Presupuestos, homologación, compra segura y precios del mercado: todo lo que necesitas antes de comprar o vender tu camper.",
+      "title": "Guías y consejos de maquinaria",
+      "subtitle": "Presupuestos, documentación, compra segura y precios del mercado: todo lo que necesitas antes de comprar o vender maquinaria.",
       "viewAll": "Ver todas las guías",
       "readMore": "Leer guía",
       "minRead": "min de lectura"
@@ -228,7 +216,7 @@
       "subtitle": "Únete gratis. Empieza a vender hoy.",
       "creating": "Creando cuenta...",
       "sellerTypeLabel": "¿Cómo vas a vender?",
-      "sellerTypeHint": "Es gratis y podrás cambiarlo cuando quieras. Tu primera camper se publica sin coste."
+      "sellerTypeHint": "Es gratis y podrás cambiarlo cuando quieras. Tu primer anuncio se publica sin coste."
     },
     "confirmacion": {
       "title": "¡Casi listo!",
@@ -242,7 +230,7 @@
     }
   },
   "header": {
-    "searchPlaceholder": "¿Qué camper buscas? Ducato, California…",
+    "searchPlaceholder": "¿Qué maquinaria buscas? Kubota, CAT, Stihl…",
     "searchAria": "Buscar productos",
     "backAria": "Volver atrás",
     "credits": "Créditos",
@@ -262,20 +250,10 @@
     "openMenu": "Abrir menú",
     "closeMenu": "Cerrar menú",
     "allCategories": "Ver Todo",
-    "brands": "Marcas y modelos",
-    "categories": {
-      "camper": "Furgonetas Camper y Autocaravanas",
-      "gran-volumen": "Gran Volumen",
-      "camper-mediana": "Camper Mediana / Compacta",
-      "minicamper": "Minicamper",
-      "perfilada": "Perfilada",
-      "capuchina": "Capuchina",
-      "integral": "Integral",
-      "overland": "Célula y 4x4 Overland"
-    }
+    "brands": "Marcas y modelos"
   },
   "footer": {
-    "description": "El marketplace especializado en furgonetas camper y autocaravanas de ocasión en España.",
+    "description": "El marketplace especializado en maquinaria y herramienta de ocasión en España.",
     "categories": "Categorías",
     "information": "Información",
     "legal": "Legal",
@@ -286,24 +264,12 @@
     "madeWithLove": "Hecho con ❤️ en España",
     "allRightsReserved": "Todos los derechos reservados.",
     "cities": "Provincias",
-    "classifiedsIn": "Camper en {city}",
+    "classifiedsIn": "Maquinaria en {city}",
     "brands": "Marcas y modelos",
     "cookies": "Cookies",
     "legalNotice": "Aviso legal"
   },
   "familias": {
-    "campers": {
-      "label": "Furgonetas Camper",
-      "desc": "Furgones camperizados de fábrica o a medida: gran volumen, medianas y minicampers."
-    },
-    "autocaravanas": {
-      "label": "Autocaravanas",
-      "desc": "Perfiladas, capuchinas e integrales de los grandes fabricantes europeos."
-    },
-    "overland": {
-      "label": "Overland y 4x4",
-      "desc": "Pickups y todoterrenos con célula para viajar sin límites."
-    },
     "agricola": {
       "label": "Maquinaria agrícola",
       "desc": "Tractores, cosechadoras, aperos y equipos de ganadería de ocasión para explotaciones de todas las dimensiones."
@@ -320,32 +286,37 @@
   "marcasPage": {
     "home": "Inicio",
     "breadcrumb": "Marcas y modelos",
-    "heroTitle": "Marcas y modelos de campers y autocaravanas",
-    "heroSubtitle": "Todo el catálogo organizado por fabricante y modelo: vehículos base para camperizar, campers de fábrica, autocaravanas y 4x4 overland. Cada modelo indica para qué tipos es apto.",
+    "heroTitle": "Marcas y modelos de maquinaria",
+    "heroSubtitle": "Todo el catálogo organizado por fabricante y modelo: maquinaria agrícola, de obra y herramienta profesional. Cada modelo indica para qué subcategorías es apto.",
     "statsBrands": "{count} fabricantes",
     "statsModels": "{count} marcas y modelos",
     "viewAds": "Ver anuncios",
     "viewCatalog": "Ver todo el catálogo",
-    "publishCta": "Publica tu camper gratis",
+    "publishCta": "Publica tu maquinaria gratis",
     "ctaTitle": "¿Buscas una marca concreta?",
-    "ctaSubtitle": "Filtra el catálogo por tipo, marca y modelo, o publica tu camper o autocaravana gratis en menos de 5 minutos.",
+    "ctaSubtitle": "Filtra el catálogo por subcategoría, marca y modelo, o publica tu maquinaria gratis en menos de 5 minutos.",
     "desc": {
-      "gran-volumen": "Furgones grandes (L2H2 en adelante) camperizados o listos para camperizar, y campers de fábrica sobre base furgón: la categoría reina del mundo camper.",
-      "camper-mediana": "Campers medianas y compactas, de fábrica o camperizadas: Volkswagen California, Mercedes Marco Polo, Ford Nugget y compañía. Fáciles de aparcar y listas para viajar.",
-      "minicamper": "Monovolúmenes compactos camperizados: la forma más económica y ágil de viajar en camper, con cama y módulo cocina en el tamaño de un turismo.",
-      "perfilada": "Autocaravanas perfiladas construidas por los fabricantes sobre chasis Fiat, Ford o Mercedes: las más vendidas por su equilibrio entre precio y aerodinámica.",
-      "capuchina": "Autocaravanas capuchinas con cama fija sobre la cabina: el clásico familiar con el máximo de plazas para dormir.",
-      "integral": "Autocaravanas integrales de los grandes fabricantes europeos: carrocería y cabina propias, el máximo confort sobre ruedas.",
-      "overland": "Pickups y todoterrenos con célula o preparación overland para aventura fuera de ruta y autonomía total."
+      "tractores": "Tractores agrícolas de todas las gamas: compactos de finca y grandes de 200 CV. Fíjate en la potencia (CV), las horas de uso y si lleva enganche de 3 puntos y toma de fuerza (PTO).",
+      "cosechadoras": "Cosechadoras de grano y de forraje: el ancho de corte, el año y las horas de uso marcan la diferencia. Compara potencia, estado del hilo y mantenimiento antes de cerrar el trato.",
+      "maquinaria-agricola": "Aperos y maquinaria auxiliar: sembradoras, arados, segadoras, ordeñadoras y aperos de precisión. Comprueba el acople (3 puntos, barra o enganche) y el estado de cada equipo.",
+      "ganaderia": "Maquinaria de ganadería: ordeñadoras, enfriadores de leche, pisadoras y equipos de bienestar animal. Las horas de uso y el mantenimiento se ven en la higiene de cada equipo.",
+      "excavadoras": "Excavadoras de oruga y rueda, de 1,5 a 40 toneladas: horas de uso, estado de cadenas o neumáticos y documentación al día. El segmento más demandado de la obra.",
+      "cargadoras": "Cargadores frontal y articulados para materiales y tierra: la capacidad de carga, los neumáticos y las horas de uso marcan la vida útil que le queda.",
+      "compactacion": "Compactadores, rodillos y vibradores para firmes y rellenos: lisos, perezosos y plates. Revisa el tambor, el sistema hidráulico y las horas de trabajo.",
+      "plataformas": "Plataformas elevadoras, tijeras y torres para trabajo en altura: alcance, altura de trabajo y motor diésel o eléctrico. Pide el historial de mantenimiento.",
+      "herramienta-electrica": "Herramienta eléctrica e inalámbrica profesional: taladros, amoladoras, sierras y herramienta de precisión de marcas como Makita, Bosch o DeWalt. Comprueba la tensión y si incluye batería.",
+      "motores": "Motores y generadores: diésel, gasolina e inverter, desde equipos portátiles hasta trifásicos. La potencia (W), la tensión y las horas de uso son lo clave.",
+      "sierra-poda": "Motosierras, tijeras de poda y sopladores para jardinería y mantenimiento: cadena, guía y potencia según el trabajo. Revisa el estado del piloto y del filtro.",
+      "taller-manual": "Herramienta manual de taller: llaves, dados, allen y de impacto, grúas y compresores. Marcas profesionales como Bahco, Knipex o Wera, pensadas para durar."
     },
-    "guideTitle": "Cómo elegir la marca de tu camper",
-    "guideP1": "No existe una marca «mejor» universal: la elección depende de la base (Fiat Ducato, Mercedes Sprinter, Ford Transit, Volkswagen…), del carrocero (Benimar, Adria, Hymer, Challenger, Laika, Swift…) y del uso que le vayas a dar. En MaquinariaOcasión organizamos los modelos por fabricante y te mostramos los precios reales de mercado de cada modelo — mediana y rango P25–P75 calculados con nuestro propio inventario — para que compares con datos, no con sensaciones.",
-    "guideP2": "Regla rápida: para camperizar, la base determina recambios, red de taller y consumo; para autocaravana, el carrocero determina calidad de construcción y aislamiento. Pulsa «Ver precios de mercado» en cualquier modelo para ver su página de precios reales, y recuerda filtrar por homologación verificada antes de comprar.",
-    "faqTitle": "Preguntas frecuentes sobre marcas de camper"
+    "guideTitle": "Cómo elegir la marca de tu maquinaria",
+    "guideP1": "No existe una marca «mejor» universal: la elección depende de la subcategoría (un tractor de finca no es una excavadora de 20 toneladas ni una motosierra), del uso que le vayas a dar y de la red de recambios y talleres que tengas cerca. En MaquinariaOcasión organizamos los modelos por fabricante y te mostramos los precios reales de mercado de cada modelo — mediana y rango P25–P75 calculados con nuestro propio inventario — para que compares con datos, no con sensaciones.",
+    "guideP2": "Regla rápida: dentro de una subcategoría, la marca marca la diferencia en recambios, red de taller y valor de reventa; compara siempre modelos equivalentes. Pulsa «Ver precios de mercado» en cualquier modelo para ver su página de precios reales, y filtra por estado y horas de uso antes de comprar.",
+    "faqTitle": "Preguntas frecuentes sobre marcas de maquinaria"
   },
   "catalog": {
     "title": "Catálogo",
-    "allProducts": "Todo el catálogo camper",
+    "allProducts": "Todo el catálogo de maquinaria",
     "results": "{count} resultados",
     "category": "Categoría",
     "all": "Todas",
@@ -398,18 +369,6 @@
     "remove": "Quitar",
     "allBrands": "Todas las marcas",
     "resultsFor": "Resultados para \"{q}\"",
-    "categories": {
-      "camper": "Furgonetas Camper y Autocaravanas"
-    },
-    "subcategories": {
-      "Gran Volumen": "Gran Volumen",
-      "Camper Mediana / Compacta": "Camper Mediana / Compacta",
-      "Minicamper": "Minicamper",
-      "Autocaravana Perfilada": "Autocaravana Perfilada",
-      "Autocaravana Capuchina": "Autocaravana Capuchina",
-      "Autocaravana Integral": "Autocaravana Integral",
-      "Célula y 4x4 Overland": "Célula y 4x4 Overland"
-    },
     "searchLabel": "Buscar",
     "priceEur": "Precio (€)",
     "filtersTitle": "Filtros",
@@ -422,28 +381,10 @@
         "docs": "Documentación",
         "logistics": "Logística"
       },
-      "dgt": "Etiqueta DGT",
-      "homologation": "Homologación",
       "fuel": "Combustible",
       "drive": "Tracción",
-      "mma": "MMA / Peso máximo",
-      "length": "Longitud exterior",
-      "height": "Altura exterior",
-      "travelSeats": "Plazas para viajar",
-      "sleepSeats": "Plazas para dormir",
-      "heating": "Calefacción estacionaria",
-      "hotWater": "Agua caliente",
-      "bathroom": "Baño / Ducha",
-      "battery": "Batería auxiliar",
-      "solar": "Placa solar",
-      "inverter": "Inversor 220V",
-      "fridge": "Nevera",
-      "verified": "Solo homologación verificada",
       "rangeTitle": "Rangos numéricos",
-      "kmMax": "Kilómetros máximos",
       "anioMin": "Año mínimo",
-      "placaWatiosMin": "Placa solar mínima (W)",
-      "inversorWatiosMin": "Inversor mínimo (W)",
       "docs": "Documentación",
       "transport": "¿Incluye transporte?",
       "hitch": "Enganche",
@@ -462,41 +403,31 @@
     "featured": "Destacado",
     "boost": "Subida al nº 1",
     "verified": "Verificado",
-    "homologacionVerificada": "Homologación verificada",
-    "homologacionPendiente": "Verificación en curso",
-    "homologacionRechazada": "Documentación rechazada",
-    "homologacionSinExpediente": "Sin expediente",
     "reserved": "Reservado"
   },
   "tiposVendedor": {
     "particular": "Particular",
-    "camperizador": "Camperizador",
+    "camperizador": "Taller",
     "profesional": "Profesional",
-    "particularDesc": "Vendo mi camper o equipamiento",
-    "camperizadorDesc": "Camperizo y vendo mis proyectos",
-    "profesionalDesc": "Empresa, taller o concesionario",
+    "particularDesc": "Vendo mi maquinaria o equipo",
+    "camperizadorDesc": "Reparo y revendo maquinaria",
+    "profesionalDesc": "Empresa o concesionario",
     "particulares": "Particulares",
-    "camperizadores": "Camperizadores",
+    "camperizadores": "Talleres",
     "profesionales": "Profesionales"
   },
   "vendedorLanding": {
     "particular": {
-      "title": "Furgonetas camper de particulares",
-      "metaTitle": "Comprar camper a particulares",
-      "metaDescription": "Compra furgonetas camper y autocaravanas directamente a sus dueños. Sin intermediarios: trato entre particulares en toda España.",
+      "title": "Maquinaria de particulares",
+      "metaTitle": "Comprar maquinaria a particulares",
+      "metaDescription": "Compra maquinaria agrícola, de obra y herramienta directamente a sus dueños. Sin intermediarios: trato entre particulares en toda España.",
       "intro": "Compra directamente a los dueños: sin intermediarios, historial real y trato de persona a persona. Cada anuncio lleva el sello \"Particular\" para que sepas siempre con quién hablas."
     },
-    "camperizador": {
-      "title": "Campers de camperizadores",
-      "metaTitle": "Comprar camper a camperizadores",
-      "metaDescription": "Camperizaciones artesanales y proyectos a medida de quienes viven el mundo camper. Directamente del taller de su creador a ti.",
-      "intro": "Proyectos montados por gente que vive la furgoneta: camperizaciones artesanales, soluciones probadas en ruta y vendedores que conocen cada detalle de su montaje."
-    },
     "profesional": {
-      "title": "Campers y autocaravanas de profesionales",
-      "metaTitle": "Comprar camper a profesionales y talleres",
-      "metaDescription": "Talleres, camperizadores profesionales y concesionarios especializados en camper. Vehículos revisados y garantía profesional en toda España.",
-      "intro": "Talleres y concesionarios especializados en camper: stock renovado, vehículos revisados antes de la venta y respaldo profesional."
+      "title": "Maquinaria y herramienta de profesionales",
+      "metaTitle": "Comprar maquinaria a profesionales",
+      "metaDescription": "Talleres, especialistas y concesionarios de maquinaria. Máquinas revisadas y garantía profesional en toda España.",
+      "intro": "Talleres y concesionarios especializados en maquinaria: stock renovado, máquinas revisadas antes de la venta y respaldo profesional."
     },
     "gridTitle": "Anuncios de {tipo} ahora mismo",
     "empty": "Ahora mismo no hay anuncios de este tipo. Vuelve pronto… o sé el primero en publicar.",
@@ -569,7 +500,7 @@
     "save": "Guardar",
     "shareBtn": "Compartir",
     "successTitle": "¡Publicado con éxito! 🎉",
-    "successDesc": "Tu camper ya está publicado en MaquinariaOcasión. Te avisaremos cuando te escriban.",
+    "successDesc": "Tu maquinaria ya está publicada en MaquinariaOcasión. Te avisaremos cuando te escriban.",
     "successFree": "Publicación 100% GRATIS · 0 comisiones · Siempre",
     "successBoostCta": "Destacar este anuncio",
     "successPlansCta": "Tengo más stock: ver Profesional",
@@ -585,22 +516,22 @@
     "guestNudgeLogin": "Ya tengo cuenta",
     "guestNudgeWhatsapp": "O escríbele por WhatsApp ya",
     "soldBannerTitle": "Este artículo ya fue vendido",
-    "soldBannerDesc": "Este camper ya encontró su nuevo dueño. Mira las publicaciones similares.",
+    "soldBannerDesc": "Esta maquinaria ya encontró su nuevo dueño. Mira las publicaciones similares.",
     "specsTitle": "Otros detalles",
-    "sellerPro": "Profesional / Camperizador",
+    "sellerPro": "Profesional / Taller",
     "sellerPrivate": "Particular",
     "expedienteTitle": "Expediente del vehículo",
-    "expedienteIntroVerificada": "Hemos revisado la documentación de este vehículo: ficha técnica, ITV y, si procede, proyecto de homologación.",
+    "expedienteIntroVerificada": "Hemos revisado la documentación de esta máquina: factura, ficha técnica y manual de instrucciones.",
     "expedienteIntroPendiente": "El vendedor ha subido documentación del vehículo y está en revisión por nuestro equipo.",
-    "expedienteAvisoVivienda": "El anuncio declara vehículo vivienda (2448/3148) y el proyecto de homologación todavía está pendiente de verificar.",
+    "expedienteAvisoVivienda": "El anuncio declara máquina matriculada y pendiente de verificar la documentación del titular.",
     "expedienteNotaComprador": "Antes de cerrar la compra, pide al vendedor que te muestre los documentos originales.",
-    "expedienteCta": "Sube la documentación y consigue el sello de homologación",
-    "itpCtaTitulo": "Calcula el ITP de esta camper",
+    "expedienteCta": "Sube la documentación y consigue el sello de documentación verificada",
+    "itpCtaTitulo": "Calcula el ITP de esta máquina",
     "itpCtaDesc": "Cuánto pagarás de impuesto y de cambio de nombre según tu comunidad",
     "reservarCta": "Reservar con señal",
     "reservadoBadge": "Reservado",
     "contratoCtaTitulo": "Contrato de compraventa",
-    "contratoCtaDesc": "Modelo listo para imprimir con los datos de esta camper"
+    "contratoCtaDesc": "Modelo listo para imprimir con los datos de esta máquina"
   },
   "creditos": {
     "title1": "Compra créditos y",
@@ -650,8 +581,8 @@
     "holder": "Titular"
   },
   "publicar": {
-    "title": "Publica tu camper gratis",
-    "freeBanner": "Publicar tu camper es gratis",
+    "title": "Publica tu maquinaria gratis",
+    "freeBanner": "Publicar tu maquinaria es gratis",
     "freeBannerDesc": "Sin comisión por venta. Los particulares tienen un cupo de anuncios activos para que el catálogo no se llene de stock de empresa.",
     "pruebaTitulo": "Prueba del plan {plan}: {dias, plural, one {queda # día} other {quedan # días}}",
     "pruebaDetalle": "Termina el {fecha}. Después tienes 7 días de gracia (hasta el {gracia}); no se cobra nada automáticamente.",
@@ -683,7 +614,7 @@
     "back": "← Atrás",
     "productDetails": "Detalles del producto",
     "titleField": "Título del anuncio",
-    "titlePlaceholder": "Ej: Fiat Ducato 2016 camperizada L3H2, 145.000 km",
+    "titlePlaceholder": "Ej: Excavadora CAT 320 2019, 8.500 horas, incluye transporte",
     "specs": "Especificaciones",
     "specsHint": "Los campos que rellenes se usan como filtros del catálogo: plazas, calefacción, baño, autonomía (batería, placa solar, inversor), tracción, MMA, longitud y altura exterior.",
     "description": "Descripción",
@@ -863,8 +794,8 @@
   },
   "cityLanding": {
     "breadcrumb": "Inicio",
-    "title": "Furgonetas camper en {city}",
-    "desc": "Furgonetas camperizadas y autocaravanas de ocasión en {city}. Compra tu camper gran volumen, mediana o autocaravana. Publica gratis en MaquinariaOcasión.",
+    "title": "Maquinaria en {city}",
+    "desc": "Maquinaria agrícola, de obra y herramienta de ocasión en {city}. Compra tu excavadora, tractor o generador. Publica gratis en MaquinariaOcasión.",
     "featured": "Destacado",
     "noAds": "No hay anuncios en {city} todavía",
     "beFirst": "¡Sé el primero en publicar!",
@@ -874,7 +805,7 @@
   "catLanding": {
     "breadcrumb": "Inicio",
     "title": "{category} en {city}",
-    "desc": "Furgonetas {category} de ocasión en {city}. Encuentra tu camper ideal. Publica gratis en MaquinariaOcasión.",
+    "desc": "Maquinaria {category} de ocasión en {city}. Encuentra la máquina que buscas. Publica gratis en MaquinariaOcasión.",
     "featured": "Destacado",
     "noAds": "No hay anuncios de {category} en {city} todavía",
     "beFirst": "¡Sé el primero en publicar!",
@@ -885,11 +816,11 @@
     "title": "Sobre MaquinariaOcasión",
     "subtitle": "El marketplace hecho para España.",
     "whoTitle": "Quiénes somos",
-    "whoP1": "MaquinariaOcasión es un marketplace diseñado específicamente para España. Nació de la necesidad de una plataforma donde comprar y vender tu furgoneta camper o autocaravana sea fácil, directo y sin complicaciones. Creemos que el mercado camper merece herramientas modernas sin intermediarios que cobren comisiones abusivas.",
+    "whoP1": "MaquinariaOcasión es un marketplace diseñado específicamente para España. Nació de la necesidad de una plataforma donde comprar y vender maquinaria o herramienta de ocasión sea fácil, directo y sin complicaciones. Creemos que el mercado de la maquinaria merece herramientas modernas sin intermediarios que cobren comisiones abusivas.",
     "whoP2": "Nuestro equipo entiende el comercio en España de primera mano. Sabemos lo que significa vender algo que ya no usas, encontrar el producto que necesitas a buen precio, y evitar las comisiones del 10-15% que otras plataformas te cobran. Por eso creamos MaquinariaOcasión: para que el precio que pones sea el precio que recibes.",
     "missionTitle": "Nuestra misión",
     "missionP1": "Facilitar el comercio entre españoles. Queremos que cualquier persona pueda publicar lo que vende y encontrar compradores en su ciudad de forma rápida, segura y sin costos escondidos. Sin intermediarios, sin comisiones por venta, sin letra pequeña.",
-    "missionP2": "Cada persona debería poder vender su camper o encontrar el que necesita, sin barreras. Ya sea una furgoneta gran volumen en Madrid, una camper mediana en Barcelona o una autocaravana integral en Valencia — MaquinariaOcasión conecta a quien vende con quien compra.",
+    "missionP2": "Cada persona debería poder vender su maquinaria o encontrar la que necesita, sin barreras. Ya sea una excavadora en Madrid, un tractor en Lleida o una motosierra en Valencia — MaquinariaOcasión conecta a quien vende con quien compra.",
     "whyTitle": "¿Por qué MaquinariaOcasión?",
     "why1_title": "Sin comisiones",
     "why1_desc": "El precio que pones es el que recibes. No tocamos tu dinero.",
@@ -926,7 +857,7 @@
     "q9": "¿Cómo contacto a un vendedor?",
     "a9": "Cada publicación tiene un botón de mensaje directo, WhatsApp y teléfono (si el vendedor lo habilitó). También puedes usar el chat integrado de MaquinariaOcasión.",
     "q10": "¿Puedo vender otros vehículos en MaquinariaOcasión?",
-    "a10": "No. MaquinariaOcasión es un marketplace vertical especializado exclusivamente en furgonetas camper y autocaravanas de ocasión: gran volumen, camper mediana y compacta, minicamper, perfiladas, capuchinas, integrales y célula 4x4 overland.",
+    "a10": "No. MaquinariaOcasión es un marketplace vertical especializado exclusivamente en maquinaria y herramienta de ocasión: agrícola, obra y herramienta profesional.",
     "q11": "¿Es gratis publicar en MaquinariaOcasión?",
     "a11": "Sí, publicar es 100% gratuito. Los créditos son opcionales y solo sirven para destacar tu anuncio y llegar a más compradores.",
     "noAnswer": "¿No encontraste tu respuesta?",
@@ -957,7 +888,7 @@
     "heroTitle": "¿Cómo funciona MaquinariaOcasión?",
     "heroSubtitle": "Compra y vende en España en 4 pasos simples. Publica gratis y empieza a recibir mensajes hoy.",
     "step1Title": "Publica gratis en 2 minutos",
-    "step1Desc": "Crea tu cuenta, sube fotos de tu camper, ponle un precio en € y describe qué vendes. Sin comisiones, sin letra pequeña. Publicar es 100% gratis.",
+    "step1Desc": "Crea tu cuenta, sube fotos de tu maquinaria, ponle un precio en € y describe qué vendes. Sin comisiones, sin letra pequeña. Publicar es 100% gratis.",
     "step2Title": "Miles de compradores te ven",
     "step2Desc": "Tu anuncio aparece en la página principal, el catálogo y las búsquedas de toda España. Compradores reales buscando lo que ofreces, directamente en tu provincia.",
     "step3Title": "Contacta directo al comprador",
@@ -989,7 +920,7 @@
     "faq5q": "¿Cómo me registro?",
     "faq5a": "Haz clic en \"Regístrate\" en la cabecera. Puedes usar tu email o tu cuenta de Google. Es rápido y gratis. En menos de un minuto tienes tu cuenta activa.",
     "faq6q": "¿Qué puedo vender en MaquinariaOcasión?",
-    "faq6a": "MaquinariaOcasión es vertical camper: solo furgonetas camperizadas y autocaravanas de ocasión — gran volumen, camper mediana/compacta, minicamper, perfiladas, capuchinas, integrales y células 4x4 overland. No aceptamos turismos, motos, inmuebles ni otras categorías.",
+    "faq6a": "MaquinariaOcasión es vertical de maquinaria: solo maquinaria y herramienta de ocasión — agrícola, obra y herramienta profesional. No aceptamos turismos, motos, inmuebles ni otras categorías.",
     "ctaPublish": "Publicar ahora — Es gratis",
     "ctaCatalog": "Ver catálogo"
   },
@@ -1118,8 +1049,8 @@
     "contactTitle": "Métodos de contacto",
     "contactDesc": "Elige qué métodos de contacto mostrar",
     "back": "Volver",
-    "expedienteTitle": "Sello de Homologación Verificada",
-    "expedienteIntro": "Subir la documentación es totalmente voluntario: tu anuncio se guarda y publica normalmente sin ningún documento. Súbelos únicamente si deseas obtener el sello oficial de «Homologación verificada» para certificar la ficha técnica y transmitir mayor confianza a los compradores.",
+    "expedienteTitle": "Sello de Documentación Verificada",
+    "expedienteIntro": "Subir la documentación es totalmente voluntario: tu anuncio se guarda y publica normalmente sin ningún documento. Súbelos únicamente si deseas obtener el sello oficial de «Documentación verificada» para certificar la máquina y transmitir mayor confianza a los compradores.",
     "expedienteCargando": "Cargando expediente…",
     "expedienteRequerido": "Necesario para el sello",
     "expedienteOpcional": "Opcional",
@@ -1140,7 +1071,7 @@
     "expedienteEstado": {
       "sin_verificar": "Sin expediente",
       "pendiente": "Pendiente de verificar",
-      "verificada": "Homologación verificada",
+      "verificada": "Documentación verificada",
       "rechazada": "Documentación rechazada"
     },
     "expedienteDocumentoEstado": {

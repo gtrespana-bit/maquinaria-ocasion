@@ -624,8 +624,8 @@ rutas:
 
 ## Fase 4 — Marca, textos y SEO (PENDIENTE)
 
-- [ ] Logo e iconos definitivos (sustituir los placeholder)
-- [ ] \`og-image.webp\`, \`pwa-tagline.webp\` e imágenes de home
+- [x] Logo e iconos definitivos (sustituir los placeholder)
+- [x] \`og-image.webp\`, \`pwa-tagline.webp\` e imágenes de home
 - [ ] Diccionarios \`src/i18n/dictionaries/{es,en}.json\`
 - [ ] \`textos-legales.ts\`: revisión legal de la actividad
 - [ ] \`categorias-seo.ts\` y \`ubicaciones-seo.ts\`: copy de la nueva vertical

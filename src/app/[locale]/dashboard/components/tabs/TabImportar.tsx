@@ -3,7 +3,7 @@
 /**
  * Importación de stock desde CSV (plan Profesional).
  *
- * Es la función que hace que un compraventa con 14 furgonetas pueda pasar de
+ * Es la función que hace que un compraventa con 14 máquinas pueda pasar de
  * Excel a publicado en dos minutos. Por eso la vista previa es obligatoria:
  * primero se enseña exactamente qué se va a crear, qué filas fallan y por qué,
  * y solo entonces se escribe en la base de datos.
@@ -299,7 +299,7 @@ export default function TabImportar() {
           }}
           rows={8}
           spellCheck={false}
-          placeholder={'Titulo;Precio;Tipo;Comunidad;Ciudad;Marca;Modelo;Estado;Año;Kilómetros;Fotos;Descripción\nFiat Ducato L3H2;38500;Gran Volumen;Comunitat Valenciana;Valencia;Fiat;Ducato;Como nuevo;2019;145000;https://…jpg;Camper 4 plazas'}
+          placeholder={'Titulo;Precio;Tipo;Comunidad;Ciudad;Marca;Modelo;Estado;Año;Horas de uso;Fotos;Descripción\nKubota M7 tractor agrícola;48500;Tractores;Comunitat Valenciana;Valencia;Kubota;M7;Usado;2018;4200;https://…jpg;Tractor con 4.200 horas, enganche 3 puntos y PTO.'}
           className="mt-3 w-full rounded-xl border border-slate-200 p-3 font-mono text-xs text-slate-800 outline-none focus:border-brand-primary"
         />
 

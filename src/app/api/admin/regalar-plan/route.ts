@@ -124,7 +124,7 @@ export async function POST(request: NextRequest) {
             : '—'
           emailEnviado = await emailPlanRegalado(
             email,
-            perfil.nombre || 'camper',
+            perfil.nombre || 'usuario',
             etiquetaPlan(plan),
             hastaTexto,
             dias,

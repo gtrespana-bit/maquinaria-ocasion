@@ -88,8 +88,8 @@ export const CatalogFilters = ({
     <div className="bg-white rounded-xl p-5 shadow-sm sticky top-20 lg:max-h-[calc(100vh-6rem)] lg:overflow-y-auto">
       <h3 className="font-bold text-lg text-gray-900 mb-4">🔍 {t('catalog.filtersTitle')}</h3>
 
-      {/* Tipo de vehículo: los 7 tipos agrupados por familia (Campers /
-          Autocaravanas / Overland), siempre visible. */}
+      {/* Familias y subcategorías de la vertical (agrícola / obra /
+          herramientas), siempre visibles. */}
       <div className="mb-4">
         <label htmlFor="filter-subcategoria" className={labelClass}>
           {t('catalog.typeLabel')}
@@ -167,7 +167,7 @@ export const CatalogFilters = ({
         </div>
       </div>
 
-      {/* ¿Quién vende? (Fase 3): particulares, camperizadores o pros. */}
+      {/* ¿Quién vende? (Fase 3): particulares, talleres o pros. */}
       <div className="mb-5">
         <span className={labelClass}>{t('catalog.whoSells')}</span>
         <div className="flex flex-wrap gap-1.5">

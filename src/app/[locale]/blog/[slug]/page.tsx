@@ -68,7 +68,7 @@ export async function generateMetadata(props: { params: Promise<{ locale: string
   const post = getPostBySlug(slug)
   if (!post) return { title: 'Post no encontrado' }
 
-  const ogImg = post.ogImage || 'https://maquinariaocasion.online/api/og/catalog?categoria=camper'
+  const ogImg = post.ogImage || 'https://maquinariaocasion.online/api/og/catalog?categoria=agricola'
   const description = descripcionSeo(post.excerpt)
   return {
     title: tituloSeo(post.title),

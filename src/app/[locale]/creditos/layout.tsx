@@ -5,14 +5,14 @@ import { alternatesSeo } from '@/lib/seo'
 // /creditos es una página cliente; la metadata vive en este layout para no
 // convertir el formulario de compra en un componente de servidor.
 export const metadata: Metadata = {
-  title: 'Créditos y destacados para tu camper',
+  title: 'Créditos y destacados para tu maquinaria',
   description:
-    'Compra créditos para destacar tu furgoneta camper o autocaravana y conseguir más visibilidad. Paquetes desde 5 €, sin suscripción y con pago seguro.',
+    'Compra créditos para destacar tu maquinaria y conseguir más visibilidad. Paquetes desde 5 €, sin suscripción y con pago seguro.',
   alternates: alternatesSeo('/creditos'),
   openGraph: {
-    title: 'Créditos y destacados para tu camper',
+    title: 'Créditos y destacados para tu maquinaria',
     description:
-      'Destaca tu anuncio de camper o autocaravana con créditos desde 5 €, sin suscripción.',
+      'Destaca tu anuncio de maquinaria con créditos desde 5 €, sin suscripción.',
     url: 'https://maquinariaocasion.online/creditos',
     siteName: 'MaquinariaOcasión',
     type: 'website',

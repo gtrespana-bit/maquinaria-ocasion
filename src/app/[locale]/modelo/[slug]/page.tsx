@@ -22,12 +22,12 @@ import { ArrowRight } from 'lucide-react'
 import { alternatesSeo, descripcionSeo, tituloSeo } from '@/lib/seo'
 
 /**
- * Página de modelo: «Fiat Ducato camper de ocasión: precios reales».
+ * Página de modelo: «excavadora CAT de ocasión: precios reales».
  *
  * El contenido único no es la lista de anuncios (eso lo tiene cualquiera), son
  * **las estadísticas de precio calculadas con nuestro propio inventario**.
- * Nadie más en España publica la mediana y el rango P25-P75 de una Ducato
- * camper por tramo de antigüedad. Eso es lo que Google premia y lo que hace
+ * Nadie más en España publica la mediana y el rango P25-P75 de una excavadora
+ * CAT por tramo de antigüedad. Eso es lo que Google premia y lo que hace
  * que alguien enlace la página.
  *
  * Regla que no se negocia: si no hay muestra suficiente, **no se publica
@@ -105,17 +105,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const url = `${SITIO}/modelo/${slug}`
 
   // OG con categoria según el modelo (usa endpoint existente)
-  const subCat = (modelo as any).aptoPara?.[0] || 'camper'
-  const ogParamMap: Record<string,string> = {
-    'gran-volumen': 'gran-volumen',
-    'camper-mediana': 'camper-mediana',
-    'minicamper': 'minicamper',
-    'perfilada': 'perfilada',
-    'capuchina': 'capuchina',
-    'integral': 'integral',
-    'overland': 'overland',
-  }
-  const ogParam = ogParamMap[subCat] || 'camper'
+  // OG con la subcategoría real del modelo (el endpoint reconoce familias y
+  // subcategorías de maquinaria; lo desconocido cae a su fallback).
+  const subCat = (modelo as any).aptoPara?.[0] || 'agricola'
+  const ogParam = subCat
 
   return {
     title: tituloSeo(title),
@@ -150,8 +143,8 @@ export default async function ModeloPage({ params }: Props) {
   const faqs: { pregunta: string; respuesta: string }[] = []
   if (est && est.muestra >= 3 && est.mediana) {
     faqs.push({
-      pregunta: `¿Cuánto cuesta un ${nombre} camper de segunda mano?`,
-      respuesta: `Según los ${est.muestra} anuncios activos de MaquinariaOcasión, el precio de referencia de un ${nombre} camper es de ${formatPrecio(est.mediana)} de mediana, con la mitad de los anuncios entre ${formatPrecio(est.p25)} y ${formatPrecio(est.p75)}. El precio final depende del año, los kilómetros, el equipamiento de autonomía y de si la camperización está homologada como vehículo vivienda.`,
+      pregunta: `¿Cuánto cuesta un ${nombre} de segunda mano?`,
+      respuesta: `Según los ${est.muestra} anuncios activos de MaquinariaOcasión, el precio de referencia de un ${nombre} es de ${formatPrecio(est.mediana)} de mediana, con la mitad de los anuncios entre ${formatPrecio(est.p25)} y ${formatPrecio(est.p75)}. El precio final depende del año, las horas de uso, el estado general y la documentación (factura, ficha técnica y manual).`,
     })
   }
   faqs.push({
@@ -161,8 +154,8 @@ export default async function ModeloPage({ params }: Props) {
       : `Ahora mismo no hay anuncios activos de ${nombre}, pero puedes publicar el tuyo gratis o filtrar el catálogo por la marca ${modelo.fabricante} para ver modelos cercanos.`,
   })
   faqs.push({
-    pregunta: `¿Qué debo revisar en un ${nombre} camper de segunda mano?`,
-    respuesta: `Antes de pagar: la ficha técnica (homologación 2448/3148 si promete vida a bordo), la ITV al día, el estado del chasis y la corrosión, el motor y la caja de cambios, y el equipamiento de autonomía (batería auxiliar, placa solar, calefacción, agua y fugas). Conviene revisarlo todo antes de pagar y llevar la factura y la transferencia en regla.`,
+    pregunta: `¿Qué debo revisar en un ${nombre} de segunda mano?`,
+    respuesta: `Antes de pagar: la documentación (factura, ficha técnica y manual), las horas certificadas de uso, el motor y el sistema hidráulico, el estado general y el mantenimiento reciente. Conviene probar la máquina en funcionamiento y llevar la factura y la transferencia en regla.`,
   })
   faqs.push({
     pregunta: `¿Se puede conducir un ${nombre} con el permiso B?`,
@@ -196,7 +189,7 @@ export default async function ModeloPage({ params }: Props) {
   const productModelJsonLd: Record<string, unknown> = {
     '@context': 'https://schema.org',
     '@type': 'Vehicle',
-    name: modelo.valor + ' camper de ocasión',
+    name: modelo.valor + ' de ocasión',
     model: modelo.valor,
     brand: { '@type': 'Brand', name: modelo.fabricante },
     ...(modelo.nota ? { description: modelo.nota } : {}),
@@ -277,7 +270,7 @@ export default async function ModeloPage({ params }: Props) {
       {/* FAQ visible (Google la usa para "La gente también pregunta") */}
       <section className="max-w-7xl mx-auto px-4 py-10 border-t border-gray-100">
         <h2 className="text-xl md:text-2xl font-black text-gray-900 mb-4">
-          Preguntas frecuentes sobre el {nombre} camper
+          Preguntas frecuentes sobre el {nombre}
         </h2>
         <div className="space-y-3">
           {faqs.map((f, i) => (

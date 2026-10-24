@@ -20,7 +20,7 @@ interface Props {
   descripcion: string
 }
 
-// Subcategorías camper: slug → subcategoría tal como se guarda en la BD
+// Subcategorías de maquinaria: slug → etiqueta tal como se guarda en la BD
 const CATEGORIA_MAP: Record<string, string> = Object.fromEntries(
   SUBCATEGORIAS_SEO.map(s => [s.slug, s.categoria])
 )
@@ -37,7 +37,7 @@ async function getProductos(ciudadNombre: string, ciudadMunicipio: string | unde
         .or('estado_moderacion.is.null,estado_moderacion.eq.aprobado'),
     ).limit(24)
 
-    // La landing filtra por la etiqueta real de subcategoría camper
+    // La landing filtra por la etiqueta real de subcategoría
     const subLabel = CATEGORIA_MAP[categoriaSlug]
     if (subLabel) {
       query = query.eq('subcategoria', subLabel)
@@ -138,7 +138,7 @@ export default async function LandingCategoria({ ciudadSlug, ciudadNombre, ciuda
     },
     {
       pregunta: `¿Dónde veo todas las ${categoriaNombre.toLowerCase()} de ${ciudadNombre}?`,
-      respuesta: `Esta landing muestra las ${stats.total > 0 ? stats.total : 'principales'} ${categoriaNombre.toLowerCase()} de ocasión en ${ciudadNombre}. Para ver el listado completo con todos los filtros (precio, kilómetros, año, homologación verificada), entra al catálogo filtrado por ${ciudadNombre}.`,
+      respuesta: `Esta landing muestra las ${stats.total > 0 ? stats.total : 'principales'} ${categoriaNombre.toLowerCase()} de ocasión en ${ciudadNombre}. Para ver el listado completo con todos los filtros (precio, horas de uso, año, estado y documentación), entra al catálogo filtrado por ${ciudadNombre}.`,
     },
   ]
 
@@ -231,7 +231,7 @@ export default async function LandingCategoria({ ciudadSlug, ciudadNombre, ciuda
       {/* ── Enlazado interno: volver a la provincia y al catálogo ── */}
       <section className="mt-10 flex flex-wrap gap-3">
         <LocalLink href={`/${ciudadSlug}`} className="inline-flex items-center gap-1.5 text-sm font-bold text-brand-primary hover:underline">
-          <ArrowRight size={14} className="rotate-180" /> Todas las campers de ocasión en {ciudadNombre}
+          <ArrowRight size={14} className="rotate-180" /> Toda la maquinaria de ocasión en {ciudadNombre}
         </LocalLink>
         <LocalLink href={`/catalogo?subcategoria=${encodeURIComponent(subLabel || categoriaNombre)}`} className="inline-flex items-center gap-1.5 text-sm font-semibold text-gray-600 hover:text-brand-primary">
           Ver todas las {categoriaNombre.toLowerCase()} de España <ArrowRight size={14} />
