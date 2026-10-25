@@ -319,6 +319,7 @@ export function Header() {
                 )}
                 <LocalLink href="/para-profesionales" onClick={() => setMobileOpen(false)} className="px-3 py-2 rounded-lg hover:bg-white/10 transition">🏷️ Planes para profesionales</LocalLink>
                 <LocalLink href="/blog" onClick={() => setMobileOpen(false)} className="px-3 py-2 rounded-lg hover:bg-white/10 transition">📝 {t('header.blog')}</LocalLink>
+                <LocalLink href="/foro" onClick={() => setMobileOpen(false)} className="px-3 py-2 rounded-lg hover:bg-white/10 transition">🗨️ {t('foro.title')}</LocalLink>
                 <LocalLink href="/catalogo" onClick={() => setMobileOpen(false)} className="px-3 py-2 rounded-lg hover:bg-white/10 transition">{t('header.viewCatalog')}</LocalLink>
               </nav>
             </div>
@@ -364,6 +365,15 @@ export function Header() {
             >
               <span className="text-base">🏷️</span>
               {t('header.brands')}
+            </LocalLink>
+
+            <span aria-hidden="true" className="mx-1 text-gray-300 select-none">•</span>
+            <LocalLink
+              href="/foro"
+              className="flex items-center gap-1.5 px-3 py-2 text-sm rounded-lg transition font-semibold whitespace-nowrap text-gray-600 hover:text-brand-darkNav hover:bg-brand-signal/25"
+            >
+              <span className="text-base">🗨️</span>
+              {t('foro.title')}
             </LocalLink>
           </div>
         </div>
