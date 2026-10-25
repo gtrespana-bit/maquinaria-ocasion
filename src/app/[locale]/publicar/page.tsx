@@ -49,6 +49,7 @@ export default function PublicarPage() {
   const [marca, setMarca] = useState('')
   const [estadoProd, setEstadoProd] = useState('')
   const [precioUsd, setPrecioUsd] = useState('')
+  const [videoUrl, setVideoUrl] = useState('')
   const [ubicacionEstado, setUbicacionEstado] = useState('')
   const [ubicacionCiudad, setUbicacionCiudad] = useState('')
   const [imagenes, setImagenes] = useState<ImageFile[]>([])
@@ -370,6 +371,7 @@ export default function PublicarPage() {
           precio: precioNum,
           precio_eur: precioNum,
           precio_usd: precioNum,
+          video_url: videoUrl.trim() || null,
           ubicacion_estado: ubicacionEstado,
           ubicacion_ciudad: ubicacionCiudad,
           imagen_url: imagenUrl,
@@ -467,6 +469,10 @@ export default function PublicarPage() {
   // `plan` es el efectivo (un pack caducado ya cuenta como gratis);
   // `planContratado` seguiría diciendo «plus» y el banner mentiría.
   const packActivo = Boolean(cupo && !cupo.trial && !cupo.trialGracia && cupo.plan !== 'gratis')
+  // El vídeo es exclusivo de planes de pago (decisión de producto): el form
+  // gratuito ni muestra el campo y /api/publicar lo descarta igualmente.
+  // La prueba activa cuenta como plan de pago; la gracia post-prueba no.
+  const puedeVideo = Boolean(cupo && !cupo.trialGracia && cupo.plan !== 'gratis')
 
   return (
     <div className="max-w-3xl mx-auto px-4 py-8">
@@ -730,6 +736,25 @@ export default function PublicarPage() {
               <label className="block text-sm font-semibold text-gray-900 mb-1.5">{t('priceEur')}</label>
               <input type="number" value={precioUsd} onChange={e => setPrecioUsd(e.target.value)} placeholder={t('pricePlaceholder')} min="0" step="0.01" required className="w-full border border-gray-300 rounded-lg px-4 py-3 text-gray-800 bg-white" />
               <p className="text-xs text-gray-500 mt-1">{t('priceNote')}</p>
+              <p className="text-xs mt-1.5">
+                <LocalLink href="/tasador" className="font-bold text-brand-darkNav underline decoration-brand-signal decoration-2 underline-offset-2 hover:text-brand-signal-dark">
+                  {t('estimatePriceCta')}
+                </LocalLink>
+              </p>
+              {puedeVideo && (
+                <div className="mt-3">
+                  <label className="block text-sm font-semibold text-gray-900 mb-1.5">{t('videoLabel')}</label>
+                  <input
+                    type="url"
+                    value={videoUrl}
+                    onChange={e => setVideoUrl(e.target.value)}
+                    placeholder={t('videoPlaceholder')}
+                    maxLength={500}
+                    className="w-full border border-gray-300 rounded-lg px-4 py-3 text-gray-800 bg-white"
+                  />
+                  <p className="text-xs text-gray-500 mt-1">{t('videoNote')}</p>
+                </div>
+              )}
             </div>
 
             <div className="grid grid-cols-2 gap-3">

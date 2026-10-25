@@ -90,6 +90,7 @@ export function Footer() {
             <div>
               <h3 className="text-white font-black mb-3 uppercase tracking-wide text-xs flex items-center gap-2 before:content-[''] before:inline-block before:w-3 before:h-3 before:bg-brand-signal before:rounded-[3px]">{t('footer.legal')}</h3>
               <ul className="space-y-2 text-sm">
+                <li><LocalLink href="/tasador" className="hover:text-brand-signal transition">{t('footer.priceTool')}</LocalLink></li>
                 <li><LocalLink href="/terminos-y-condiciones" className="hover:text-brand-signal transition">{t('footer.terms')}</LocalLink></li>
                 <li><LocalLink href="/politica-de-privacidad" className="hover:text-brand-signal transition">{t('footer.privacy')}</LocalLink></li>
                 <li><LocalLink href="/politica-de-cookies" className="hover:text-brand-signal transition">{t('footer.cookies')}</LocalLink></li>

@@ -913,6 +913,14 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
                 {t('home.cta.explore')} <ArrowRight size={18} />
               </LocalLink>
             </div>
+            <div className="mt-5">
+              <LocalLink
+                href="/tasador"
+                className="inline-flex items-center gap-1.5 text-sm font-black text-brand-darkNav underline decoration-brand-darkNav/40 decoration-2 underline-offset-4 hover:decoration-brand-darkNav transition"
+              >
+                {t('home.cta.estimator')}
+              </LocalLink>
+            </div>
           </div>
         </div>
       </section>

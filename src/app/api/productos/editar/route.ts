@@ -5,6 +5,7 @@ import { isValidUUID, isValidLength, sanitizeString } from '@/lib/validation'
 import { verificarContenido } from '@/lib/moderacion'
 import { revalidarListadosPublicos, revalidarFichaProducto } from '@/lib/revalidar'
 import { cupoDeUsuario } from '@/lib/planes-servidor'
+import { normalizarVideoUrl } from '@/lib/video-embed'
 import {
   isAllowedImageUrl,
   normalizeContactMethods,
@@ -297,7 +298,19 @@ export async function PATCH(request: NextRequest) {
     }
   }
 
+  // Vídeo (solo planes de pago): si el form no lo envió, la columna no se
+  // toca (valor actual intacto); si lo envió y no hay plan de pago, se ignora.
+  let videoUpdate: { video_url: string | null } | undefined
+  if (Object.prototype.hasOwnProperty.call(body, 'video_url')) {
+    const { resumen } = await cupoDeUsuario(auth.user.id)
+    const enPago = Boolean((resumen as any)?.plan && (resumen as any).plan !== 'gratis' && !(resumen as any)?.trialGracia)
+    if (enPago) {
+      videoUpdate = { video_url: normalizarVideoUrl(body.video_url) }
+    }
+  }
+
   const updateData: Record<string, unknown> = {
+    ...(videoUpdate || {}),
     titulo,
     descripcion,
     categoria_id: categoriaId,
