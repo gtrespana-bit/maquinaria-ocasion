@@ -11,7 +11,7 @@ import {
   slugModelo,
   type MarcaModelo,
   type SubSlug,
-} from '@/lib/marcas'
+ slugFabricante } from '@/lib/marcas'
 
 const SITIO = 'https://maquinariaocasion.online'
 
@@ -260,16 +260,12 @@ export default async function MarcasPage({ params }: { params: Promise<{ locale:
                       >
                         <div className="flex items-start justify-between gap-2 mb-3">
                           <h3 className="font-bold text-gray-900 text-lg leading-tight">
-                            {soloFabricante ? (
-                              <LocalLink
-                                href={hrefCatalogo(sub.label, entrada.valor)}
-                                className="hover:text-brand-accent transition"
-                              >
-                                {g.fabricante}
-                              </LocalLink>
-                            ) : (
-                              g.fabricante
-                            )}
+                            <LocalLink
+                              href={`/marca/${slugFabricante(g.fabricante)}`}
+                              className="hover:text-brand-accent transition"
+                            >
+                              {g.fabricante}
+                            </LocalLink>
                           </h3>
                           <LocalLink
                             href={soloFabricante ? hrefCatalogo(sub.label, entrada.valor) : hrefCatalogo(sub.label)}

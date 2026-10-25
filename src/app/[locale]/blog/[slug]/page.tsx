@@ -383,35 +383,49 @@ export default async function BlogPost(props: { params: Promise<{ locale: string
             {(post.tags || [])
               .map((tag) => tag.toLowerCase())
               .map((tag) => {
-                // Destinos reales del vertical camper. Los enlaces internos del
-                // blog solo pueden apuntar a rutas que existen: las antiguas
-                // categorías generalistas (/categoria/vehiculos, /moda…) ya no
-                // existen y devolvían 404.
+                // Destinos reales de la vertical de maquinaria. Los enlaces
+                // internos del blog solo pueden apuntar a rutas que existen:
+                // subcategoría (label) o familia de la taxonomía de Fase 3.
                 const sub = (label: string, icon: string) => ({
                   label: `${icon} Ver ${label}`,
                   href: `/catalogo?subcategoria=${encodeURIComponent(label)}`,
                 })
-                if (/gran volumen|ducato|boxer|jumper|master|crafter|sprinter|man tge|furg[oó]n/.test(tag)) {
-                  return sub('Gran Volumen', '🚐')
+                const fam = (label: string, icon: string, key: string) => ({
+                  label: `${icon} ${label}`,
+                  href: `/catalogo?categoria=${key}`,
+                })
+                if (/tractor|agricola|siembra|abono|aperos/.test(tag)) {
+                  return sub('Tractores', '🚜')
                 }
-                if (/mediana|compacta|california|marco polo|transit|nugget/.test(tag)) {
-                  return sub('Camper Mediana / Compacta', '🏕️')
+                if (/cosechadora|cosecha|vendimi/.test(tag)) return sub('Cosechadoras', '🌾')
+                if (/ganaderia|ganado|estabulo|orde/.test(tag)) return sub('Ganadería', '🐄')
+                if (/miniexcavadora|excavadora|zanja|demolicion|hidraulic/.test(tag)) {
+                  return sub('Excavadoras', '⛏️')
                 }
-                if (/minicamper|berlingo|rifter|partner|kangoo|caddy|dokker/.test(tag)) {
-                  return sub('Minicamper', '🚙')
+                if (/retro|cargadora|carga frontal/.test(tag)) return sub('Cargadoras', '🚚')
+                if (/compactac|apison|rodillo/.test(tag)) return sub('Compactación', '🛞')
+                if (/plataforma|tijera|elevaci[oó]n/.test(tag)) {
+                  return sub('Plataformas elevadoras', '🪜')
                 }
-                if (/perfilada/.test(tag)) return sub('Autocaravana Perfilada', '🛖')
-                if (/capuchina/.test(tag)) return sub('Autocaravana Capuchina', '🚌')
-                if (/integral|adria|hymer|challenger|laika|swift/.test(tag)) {
-                  return sub('Autocaravana Integral', '🏭')
+                if (/motosierra|sierra y poda|poda/.test(tag)) return sub('Sierra y poda', '🌲')
+                if (/herramienta el[eé]ctrica|rotomartillo|taladro|atornillador|bater/.test(tag)) {
+                  return sub('Herramienta eléctrica', '🔌')
                 }
-                if (/overland|4x4|pick|celul|c[eé]lula|defender|hilux/.test(tag)) {
-                  return sub('Célula y 4x4 Overland', '🌍')
+                if (/motor|generador|electr[oó]geno|bobinado/.test(tag)) {
+                  return sub('Motores y generadores', '⚙️')
                 }
-                if (/itv|ficha t[eé]cnica|legal/.test(tag)) {
+                if (/taller|llave|destornillador/.test(tag)) return sub('Taller manual', '🔧')
+                if (/obra|reforma|construccion|civil/.test(tag)) {
+                  return fam('Maquinaria de obra', '🏗️', 'obra')
+                }
+                if (/herramientas/.test(tag)) return fam('Herramientas y motores', '🧰', 'herramientas')
+                if (/agro|campo|explotacion/.test(tag)) {
+                  return fam('Maquinaria agrícola', '🌾', 'agricola')
+                }
+                if (/itp|ficha t[eé]cnica|legal|documentaci[oó]n|factura|aduana|homolog|\bce\b/.test(tag)) {
                   return { label: `📋 ${t('catSafeBuy')}`, href: '/catalogo' }
                 }
-                if (/compra|checklist|segunda mano|consejo|ocasi[oó]n|usado|revisi[oó]n|itp|impuesto|tasa|matriculaci[oó]n|precio|coste|presupuesto/.test(tag)) {
+                if (/compra|checklist|segunda mano|consejo|ocasi[oó]n|usado|revisi[oó]n|iva|impuesto|tasa|matriculaci[oó]n|precio|coste|presupuesto|horas de uso/.test(tag)) {
                   return { label: `🏷️ ${t('catItp')}`, href: '/catalogo' }
                 }
                 return null

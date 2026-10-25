@@ -328,6 +328,26 @@ export function modeloPorSlug(slug: string): MarcaModelo | undefined {
   return MARCAS_MODELOS.find(m => slugModelo(m) === slug)
 }
 
+/** Slug de URL de un fabricante: 'John Deere' → 'john-deere'. */
+export function slugFabricante(fabricante: string): string {
+  return fabricante
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+}
+
+/** Busca un fabricante por su slug de URL. */
+export function fabricantePorSlug(slug: string): string | undefined {
+  return fabricantesUnicos(MARCAS_MODELOS).find(f => slugFabricante(f) === slug)
+}
+
+/** Modelos (entradas `MarcaModelo`) de un fabricante concreto. */
+export function modelosDeFabricante(fabricante: string): MarcaModelo[] {
+  return MARCAS_MODELOS.filter(m => m.fabricante === fabricante)
+}
+
 /** Etiqueta visible de un modelo dentro de su fabricante: '6M', 'PC210'… */
 export function etiquetaModelo(m: MarcaModelo): string {
   return m.modelo || m.valor

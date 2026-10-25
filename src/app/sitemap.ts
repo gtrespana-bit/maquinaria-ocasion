@@ -1,6 +1,6 @@
 import type { MetadataRoute } from 'next'
 import { hayDatosTitular } from '@/lib/datos-legales'
-import { MARCAS_MODELOS, slugModelo } from '@/lib/marcas'
+import { MARCAS_MODELOS, fabricantesUnicos, slugFabricante, slugModelo } from '@/lib/marcas'
 import { getSupabaseServerClient } from '@/lib/supabase-server-client'
 import fs from 'fs'
 import path from 'path'
@@ -281,6 +281,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }
   }
 
+  const marcaUrls: MetadataRoute.Sitemap = fabricantesUnicos(MARCAS_MODELOS).map((f) => ({
+    url: `${BASE_URL}/marca/${slugFabricante(f)}`,
+    lastModified: new Date(),
+    changeFrequency: 'weekly',
+    priority: 0.7,
+  }))
   const modeloUrls: MetadataRoute.Sitemap = MARCAS_MODELOS.map((model) => ({
     url: `${BASE_URL}/modelo/${slugModelo(model)}`,
     changeFrequency: 'daily',
@@ -289,6 +295,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   return [
     ...staticUrls,
+    ...marcaUrls,
     ...modeloUrls,
     ...categoryUrls,
     ...cityUrls,

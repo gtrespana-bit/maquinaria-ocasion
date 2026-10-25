@@ -76,6 +76,8 @@ export const metadata: Metadata = {
 }
 
 const categoryIcons: Record<string, string> = {
+  'Guías': '🧭',
+  'Legal': '⚖️',
   'Precios': '💰',
   'Emprendimiento': '🚀',
   'Consejos': '💡',
