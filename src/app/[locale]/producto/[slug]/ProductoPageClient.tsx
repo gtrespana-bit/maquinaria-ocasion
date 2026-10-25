@@ -5,7 +5,8 @@ import LocalLink from '@/components/LocalLink'
 import Image from 'next/image'
 import { supabase } from '@/lib/supabase'
 import { useAuth } from '@/components/AuthProvider'
-import { MapPin, Tag, MessageCircle, Phone, Mail, ChevronRight, Shield, Clock, Heart, Share2, CheckCircle2, CalendarClock } from 'lucide-react'
+import { MapPin, Tag, MessageCircle, Phone, Mail, ChevronRight, Shield, Clock, Heart, Share2, CheckCircle2, CalendarClock, GitCompare, Check } from 'lucide-react'
+import { useComparar } from '@/lib/comparar'
 import Avatar from '@/components/Avatar'
 import ReportarButton from '@/components/ReportarButton'
 import BadgeVerificado from '@/components/BadgeVerificado'
@@ -89,6 +90,7 @@ function ProductoPageClientInner({
   const [loading, setLoading] = useState(true)
   const [totalResenas, setTotalResenas] = useState(0)
   const [esFavorito, setEsFavorito] = useState(false)
+  const { lista, alternar } = useComparar()
   const [toggleandoFav, setToggleandoFav] = useState(false)
   const [vendedorStats, setVendedorStats] = useState<any>(null)
   const [historial, setHistorial] = useState<any[]>([])
@@ -544,6 +546,14 @@ function ProductoPageClientInner({
               </button>
               <button onClick={() => navigator.share?.({ title: producto.titulo, url: window.location.href })} className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl border border-gray-200 text-sm font-medium text-gray-600 hover:bg-gray-50 transition">
                 <Share2 size={16} /> {t('shareBtn')}
+              </button>
+              <button
+                type="button"
+                aria-pressed={lista.some(x => x.id === producto.id)}
+                onClick={() => alternar({ id: producto.id, slug: producto.slug ?? null, titulo: producto.titulo, precio_usd: producto.precio_usd ?? null, imagen_url: producto.imagen_url ?? null })}
+                className={`flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl border text-sm font-medium transition ${lista.some(x => x.id === producto.id) ? 'border-brand-signal bg-brand-signal/25 text-brand-darkNav font-bold' : 'border-gray-200 text-gray-600 hover:bg-gray-50'}`}
+              >
+                {lista.some(x => x.id === producto.id) ? <Check size={16} /> : <GitCompare size={16} />} {t('comparar.cta')}
               </button>
               <ReportarButton productoId={producto.id} />
             </div>

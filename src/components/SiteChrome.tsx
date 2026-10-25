@@ -3,6 +3,7 @@
 import { usePathname } from 'next/navigation'
 import { Header } from '@/components/Header'
 import { Footer } from '@/components/Footer'
+import CompararBar from '@/components/CompararBar'
 import { isAdminPath } from '@/lib/admin-path'
 
 /**
@@ -38,6 +39,7 @@ export function SiteChrome({ children, lang = 'es' }: { children: React.ReactNod
         {children}
       </main>
       <Footer />
+      <CompararBar />
     </div>
   )
 }

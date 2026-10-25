@@ -1,5 +1,6 @@
 import { serializeJsonLd } from '@/lib/serialize-json-ld'
 import LocalLink from '@/components/LocalLink'
+import BotonComparar from '@/components/BotonComparar'
 import Image from 'next/image'
 import {
   Search, Star, FileCheck, ShieldCheck, MapPin, ChevronRight, ArrowRight, Package,
@@ -295,6 +296,7 @@ function ProductCard({ p, highlighted = false, priority = false, t, precioAnteri
       }`}
     >
       <div className="aspect-[4/3] bg-gray-100 relative overflow-hidden">
+        <BotonComparar item={{ id: p.id, slug: p.slug ?? null, titulo: p.titulo, precio_usd: p.precio_usd ?? null, imagen_url: p.imagen_url ?? null }} className="absolute bottom-2 right-2" />
         {highlighted && (
           <div className="absolute top-3 left-3 z-10 bg-brand-signal text-brand-darkNav text-[10px] font-black uppercase tracking-wide px-2.5 py-1 rounded-lg shadow-md flex items-center gap-1">
             <Star size={11} className="fill-current" /> {t('home.productCard.featured')}

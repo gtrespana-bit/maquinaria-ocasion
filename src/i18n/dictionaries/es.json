@@ -1155,5 +1155,25 @@
     "confirmar": "Solicitar inspección",
     "avisoSinPago": "No pagas nada ahora: primero te llega el presupuesto.",
     "errorGenerico": "No se pudo enviar la solicitud. Inténtalo de nuevo."
+  },
+  "comparar": {
+    "title": "Comparar anuncios",
+    "subtitle": "Elige hasta 4 máquinas y mira sus datos uno al lado del otro.",
+    "addAria": "Añadir a comparación",
+    "removeAria": "Quitar de la comparación",
+    "barCount": "{count} en comparación",
+    "cta": "Comparar",
+    "clear": "Vaciar",
+    "empty": "Aún no has añadido anuncios a comparar.",
+    "emptyCta": "Explorar maquinaria",
+    "price": "Precio",
+    "status": "Estado",
+    "year": "Año",
+    "hours": "Horas de uso",
+    "location": "Ubicación",
+    "seller": "Vendedor",
+    "unavailable": "Anuncio no disponible",
+    "specsTitle": "Ficha comparada",
+    "viewDetail": "Ver ficha"
   }
 }
