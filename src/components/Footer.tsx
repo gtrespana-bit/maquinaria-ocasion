@@ -77,6 +77,7 @@ export function Footer() {
                 {[
                   [t('footer.brands'), '/marcas'],
                   ['Blog', '/blog'],
+                  [t('foro.title'), '/foro'],
                   ['Planes para profesionales', '/para-profesionales'],
                   [t('footer.howItWorks'), '/como-funciona'],
                   [t('footer.aboutUs'), '/sobre-nosotros'],

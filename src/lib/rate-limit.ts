@@ -33,6 +33,10 @@ const LIMITS: Record<string, { max: number; windowMs: number }> = {
   'r2-upload': { max: 50, windowMs: 60 * 60 * 1000 },
   'telegram:webhook': { max: 120, windowMs: 60 * 60 * 1000 },
   'notificacion:send': { max: 20, windowMs: 60 * 60 * 1000 },
+  // Foro: abrir hilos es costoso (5/h) pero responder en conversación activa
+  // necesita margen (30/h) para no frustrar a quien participa de buena fe.
+  'foro:hilo': { max: 5, windowMs: 60 * 60 * 1000 },
+  'foro:mensaje': { max: 30, windowMs: 60 * 60 * 1000 },
 }
 
 function getSupabaseClient() {
