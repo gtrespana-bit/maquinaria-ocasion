@@ -161,6 +161,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { path: '', changeFrequency: 'daily', priority: 1 },
     { path: '/catalogo', changeFrequency: 'daily', priority: 0.9 },
     { path: '/blog', changeFrequency: 'weekly', priority: 0.8 },
+    { path: '/foro', changeFrequency: 'daily', priority: 0.7 },
     { path: '/publicar', changeFrequency: 'weekly', priority: 0.8 },
     { path: '/creditos', changeFrequency: 'weekly', priority: 0.7 },
     { path: '/politica-de-privacidad', changeFrequency: 'yearly', priority: 0.3 },
@@ -275,7 +276,27 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         }
       }
 
-      dynamicUrls = [...productUrls, ...vendorUrls, ...tiendaUrls]
+      // Hilos del foro visibles (RLS público): se descubren sin deploy.
+      const { data: foroHilos } = await supabase
+        .from('foro_hilos')
+        .select('id, actualizado_en')
+        .eq('estado_moderacion', 'aprobado')
+        .order('actualizado_en', { ascending: false })
+        .limit(1000)
+      const foroUrls: MetadataRoute.Sitemap = (foroHilos || []).map((hilo) => {
+        const lastModified = hilo.actualizado_en ? new Date(hilo.actualizado_en) : undefined
+        const validLastModified = lastModified && !Number.isNaN(lastModified.getTime())
+          ? lastModified
+          : undefined
+        return {
+          url: `${BASE_URL}/foro/hilo/${hilo.id}`,
+          ...(validLastModified ? { lastModified: validLastModified } : {}),
+          changeFrequency: 'daily' as const,
+          priority: 0.6,
+        }
+      })
+
+      dynamicUrls = [...productUrls, ...vendorUrls, ...tiendaUrls, ...foroUrls]
     } catch {
       // Si Supabase falla, se mantienen las URLs estáticas y editoriales.
     }

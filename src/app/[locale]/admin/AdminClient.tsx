@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import {
   LayoutDashboard, Package, ShieldAlert, Users, ShieldCheck, CreditCard, History,
   Tag, Megaphone, Download, Settings2, LogIn, LogOut, ArrowLeft, Menu, X, Sparkles, Handshake,
-  Ticket, BarChart3,
+  Ticket, BarChart3, MessageSquare,
 } from 'lucide-react'
 import LocalLink from '@/components/LocalLink'
 import { useAuth } from '@/components/AuthProvider'
@@ -14,6 +14,7 @@ import AdminDashboard from './components/AdminDashboard'
 import AdminPublicaciones from './components/AdminPublicaciones'
 import AdminUsuarios from './components/AdminUsuarios'
 import AdminModeracion from './components/AdminModeracion'
+import AdminForo from './components/AdminForo'
 import AdminTransacciones from './components/AdminTransacciones'
 import AdminAuditoria from './components/AdminAuditoria'
 import AdminCategorias from './components/AdminCategorias'
@@ -32,6 +33,7 @@ const NAV = [
   { id: 'audiencia', label: 'Audiencia', icon: BarChart3, description: 'Visitantes y actividad' },
   { id: 'publicaciones', label: 'Publicaciones', icon: Package, description: 'Gestión de productos' },
   { id: 'moderacion', label: 'Moderación', icon: ShieldAlert, description: 'Reportes y pendientes' },
+  { id: 'foro', label: 'Foro', icon: MessageSquare, description: 'Hilos y respuestas' },
   { id: 'usuarios', label: 'Usuarios', icon: Users, description: 'Perfiles y créditos' },
   { id: 'verificacion', label: 'Verificación', icon: ShieldCheck, description: 'Vendedores' },
   { id: 'reservas', label: 'Reservas', icon: Handshake, description: 'Reservas con señal' },
@@ -52,7 +54,7 @@ export default function AdminPage() {
   const [toast, setToast] = useState<string | null>(null)
   const [mobileOpen, setMobileOpen] = useState(false)
   const [perfiles, setPerfiles] = useState<Record<string, Perfil>>({})
-  const [counts, setCounts] = useState({ transacciones: 0, publicaciones: 0, moderacion: 0, verificacion: 0 })
+  const [counts, setCounts] = useState({ transacciones: 0, publicaciones: 0, moderacion: 0, verificacion: 0, foro: 0 })
   const navRef = useRef<HTMLElement>(null)
 
   const isAdmin = ADMIN_EMAILS.includes((user?.email || '').toLowerCase())
@@ -105,6 +107,7 @@ export default function AdminPage() {
         publicaciones: c.publicaciones || 0,
         moderacion: (c.publicaciones || 0) + (c.denuncias || 0),
         verificacion: c.verificacion || 0,
+        foro: c.foro || 0,
       })
     } catch {
       // Sin contadores la navegación sigue disponible.
@@ -148,6 +151,7 @@ export default function AdminPage() {
     if (tabKey === 'publicaciones') return counts.publicaciones
     if (tabKey === 'moderacion') return counts.moderacion
     if (tabKey === 'verificacion') return counts.verificacion
+    if (tabKey === 'foro') return counts.foro
     return 0
   }
 
@@ -303,6 +307,7 @@ export default function AdminPage() {
             {tab === 'audiencia' && <AdminAudiencia notify={notify} />}
             {tab === 'publicaciones' && <AdminPublicaciones notify={notify} />}
             {tab === 'moderacion' && <AdminModeracion notify={notify} adminEmail={user.email || ''} />}
+            {tab === 'foro' && <AdminForo notify={notify} />}
             {tab === 'usuarios' && <AdminUsuarios notify={notify} />}
             {tab === 'verificacion' && <VerificacionTab notify={notify} />}
             {tab === 'reservas' && <AdminReservas notify={notify} />}

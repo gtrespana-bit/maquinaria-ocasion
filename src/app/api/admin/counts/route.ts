@@ -18,14 +18,16 @@ export async function GET(request: NextRequest) {
       { auth: { persistSession: false, autoRefreshToken: false } },
     )
 
-    const [tx, pubs, verif, denies] = await Promise.all([
+    const [tx, pubs, verif, denies, foroHilos, foroMensajes] = await Promise.all([
       sb.from('transacciones_creditos').select('id', { count: 'exact', head: true }).eq('estado', 'pendiente').eq('tipo', 'compra'),
       sb.from('productos').select('id', { count: 'exact', head: true }).eq('estado_moderacion', 'pendiente'),
       sb.from('solicitudes_verificacion').select('id', { count: 'exact', head: true }).eq('estado', 'pendiente'),
       sb.from('denuncias').select('id', { count: 'exact', head: true }).eq('estado', 'activa'),
+      sb.from('foro_hilos').select('id', { count: 'exact', head: true }).eq('estado_moderacion', 'pendiente'),
+      sb.from('foro_mensajes').select('id', { count: 'exact', head: true }).eq('estado_moderacion', 'pendiente'),
     ])
 
-    const err = [tx, pubs, verif, denies].map((r) => r.error).filter(Boolean)[0]
+    const err = [tx, pubs, verif, denies, foroHilos, foroMensajes].map((r) => r.error).filter(Boolean)[0]
     if (err) {
       return NextResponse.json({ error: err.message }, { status: 500 })
     }
@@ -37,6 +39,7 @@ export async function GET(request: NextRequest) {
         publicaciones: pubs.count || 0,
         denuncias: denies.count || 0,
         verificacion: verif.count || 0,
+        foro: (foroHilos.count || 0) + (foroMensajes.count || 0),
       },
     })
   } catch (err: any) {
