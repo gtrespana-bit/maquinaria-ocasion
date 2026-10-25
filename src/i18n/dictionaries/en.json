@@ -1118,7 +1118,14 @@
     "online": "Online",
     "offline": "Offline",
     "today": "Today",
-    "yesterday": "Yesterday"
+    "yesterday": "Yesterday",
+    "quickReplies": {
+      "title": "Quick replies",
+      "available": "Is it still available?",
+      "negotiable": "Is the price negotiable?",
+      "delivery": "Does it include delivery?",
+      "visit": "Can I see it running?"
+    }
   },
   "pwa": {
     "installTitle": "Install MaquinariaOcasión",

@@ -1118,7 +1118,14 @@
     "online": "En línea",
     "offline": "Desconectado",
     "today": "Hoy",
-    "yesterday": "Ayer"
+    "yesterday": "Ayer",
+    "quickReplies": {
+      "title": "Respuestas rápidas",
+      "available": "¿Sigue disponible?",
+      "negotiable": "¿Precio negociable?",
+      "delivery": "¿Incluye transporte?",
+      "visit": "¿Puedo verlo funcionando?"
+    }
   },
   "pwa": {
     "installTitle": "Instala MaquinariaOcasión",
