@@ -5,8 +5,9 @@ import LocalLink from '@/components/LocalLink'
 import Image from 'next/image'
 import { supabase } from '@/lib/supabase'
 import { useAuth } from '@/components/AuthProvider'
-import { MapPin, Tag, MessageCircle, Phone, Mail, ChevronRight, Shield, Clock, Heart, Share2, CheckCircle2, CalendarClock, GitCompare, Check, Play, ExternalLink } from 'lucide-react'
+import { MapPin, Tag, MessageCircle, Phone, Mail, ChevronRight, Shield, Clock, Heart, Share2, CheckCircle2, CalendarClock, GitCompare, Check, Play, ExternalLink, TrendingUp, TrendingDown, Minus } from 'lucide-react'
 import { embedDeVideo } from '@/lib/video-embed'
+import { veredictoPrecio, parseNumeroEspec, type Veredicto } from '@/lib/tasador'
 import { useComparar } from '@/lib/comparar'
 import Avatar from '@/components/Avatar'
 import ReportarButton from '@/components/ReportarButton'
@@ -92,6 +93,46 @@ function ProductoPageClientInner({
   const [totalResenas, setTotalResenas] = useState(0)
   const [esFavorito, setEsFavorito] = useState(false)
   const { lista, alternar } = useComparar()
+  // Veredicto «precio justo» contra los comparables reales del portal
+  // (§5A del roadmap). Sin precio, sin datos o en anuncios demo → nada.
+  const [precioJusto, setPrecioJusto] = useState<Veredicto>(null)
+  const [precioJustoComparables, setPrecioJustoComparables] = useState(0)
+
+  // Pide el rango al estimador (misma API que /tasador) con los datos de la
+  // ficha: subtipo, marca y año/horas del JSONB. Se omite en demos (precios
+  // de siembra) y cuando hay menos de 3 comparables (nada que comparar).
+  useEffect(() => {
+    const precio = Number(producto?.precio_usd || 0)
+    if (!precio || esDemo) return
+    let cancelado = false
+    ;(async () => {
+      try {
+        const esp = producto.especificaciones || {}
+        const res = await fetch('/api/tasador', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            subcategoria: producto.subcategoria || undefined,
+            marca: producto.marca || undefined,
+            anio: parseNumeroEspec(esp['Año'] ?? esp['Ano']) ?? undefined,
+            horas: parseNumeroEspec(esp['Horas de uso'] ?? esp['Horas'] ?? esp['Horas de uso (h)']) ?? undefined,
+            tuPrecio: precio,
+          }),
+        })
+        const data = await res.json().catch(() => null)
+        if (cancelado || !data?.ok || !data.rango || (data.rango.n ?? 0) < 3) return
+        const v = veredictoPrecio(precio, data.rango)
+        if (v) {
+          setPrecioJusto(v)
+          setPrecioJustoComparables(data.rango.n)
+        }
+      } catch {
+        // silencio: el indicador es opcional
+      }
+    })()
+    return () => { cancelado = true }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [producto?.id])
   const [toggleandoFav, setToggleandoFav] = useState(false)
   const [vendedorStats, setVendedorStats] = useState<any>(null)
   const [historial, setHistorial] = useState<any[]>([])
@@ -427,6 +468,25 @@ function ProductoPageClientInner({
         <div>
           <div className="bg-white rounded-2xl shadow-sm border p-6 sticky top-20">
             <p className="text-4xl font-black text-brand-primary">{formatPrecio(producto.precio_usd || 0)}</p>
+            {precioJusto && (
+              <div
+                className={`mt-2 inline-flex flex-wrap items-center gap-1.5 text-[11px] font-black rounded-full px-3 py-1.5 border ${
+                  precioJusto === 'dentro'
+                    ? 'bg-emerald-50 border-emerald-200 text-emerald-800'
+                    : precioJusto === 'encima'
+                      ? 'bg-orange-50 border-orange-200 text-orange-800'
+                      : 'bg-sky-50 border-sky-200 text-sky-800'
+                }`}
+              >
+                {precioJusto === 'dentro' ? <Minus size={12} /> : precioJusto === 'encima' ? <TrendingUp size={12} /> : <TrendingDown size={12} />}
+                {precioJusto === 'dentro' ? t('product.fair.inRange') : precioJusto === 'encima' ? t('product.fair.above') : t('product.fair.below')}
+                {precioJustoComparables >= 3 && (
+                  <LocalLink href="/tasador" className="underline underline-offset-2 font-bold opacity-80 hover:opacity-100">
+                    {t('product.fair.link')}
+                  </LocalLink>
+                )}
+              </div>
+            )}
             <div className="flex items-center gap-4 text-xs text-gray-500 my-4 pb-4 border-b flex-wrap">
               <span className="flex items-center gap-1"><Clock size={14} /> {t('published')}</span>
               <span className="flex items-center gap-1">

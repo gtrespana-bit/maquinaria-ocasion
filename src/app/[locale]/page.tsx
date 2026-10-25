@@ -1,9 +1,11 @@
 import { serializeJsonLd } from '@/lib/serialize-json-ld'
 import LocalLink from '@/components/LocalLink'
 import BotonComparar from '@/components/BotonComparar'
+import Avatar from '@/components/Avatar'
+import BadgeTipoVendedor from '@/components/BadgeTipoVendedor'
 import Image from 'next/image'
 import {
-  Search, Star, FileCheck, ShieldCheck, MapPin, ChevronRight, ArrowRight, Package,
+  Search, Star, FileCheck, ShieldCheck, MapPin, ChevronRight, ArrowRight, Package, CheckCircle2,
   Tractor, Hammer, Wrench, Zap, Gauge, Camera, MessageCircle, BadgeCheck,
 } from 'lucide-react'
 import { supabase } from '@/lib/supabase-server-client'
@@ -280,6 +282,64 @@ async function getPreciosReducidos(limit = 8): Promise<{ p: any; precioAnterior:
   }
 }
 
+/** Testimonios: las últimas reseñas positivas con comentario (§4 del roadmap). */
+async function getTestimonios(limit = 3) {
+  if (!supabase) return []
+  try {
+    const { data, error } = await supabase
+      .from('resenas')
+      .select('id, puntuacion, comentario, creado_en, comprador_id, producto:productos(titulo, slug)')
+      .gte('puntuacion', 4)
+      .not('comentario', 'is', null)
+      .order('creado_en', { ascending: false })
+      .limit(15)
+    if (error || !data || data.length === 0) return []
+    const buenos = (data as any[]).filter(r => (r.comentario || '').trim().length >= 15).slice(0, limit)
+    if (buenos.length === 0) return []
+    const ids = [...new Set(buenos.map(r => r.comprador_id).filter(Boolean))]
+    let nombres: Record<string, string> = {}
+    if (ids.length > 0) {
+      const { data: perfiles } = await supabase.from('perfiles').select('id, nombre').in('id', ids)
+      for (const pf of perfiles || []) if (pf.nombre) nombres[pf.id] = pf.nombre
+    }
+    return buenos.map(r => ({ ...r, comprador_nombre: nombres[r.comprador_id] || null }))
+  } catch {
+    return []
+  }
+}
+
+/** Vendedores destacados: verificados con más anuncios activos (§4). */
+async function getVendedoresDestacados(limit = 6) {
+  if (!supabase) return []
+  try {
+    const { data: prods, error } = await supabase
+      .from('productos')
+      .select('user_id')
+      .eq('activo', true)
+      .eq('vendedor_verificado', true)
+      .or(MODERACION)
+      .limit(500)
+    if (error || !prods || prods.length === 0) return []
+    const conteo = new Map<string, number>()
+    for (const pr of prods as any[]) {
+      if (pr.user_id) conteo.set(pr.user_id, (conteo.get(pr.user_id) || 0) + 1)
+    }
+    const ids = [...conteo.entries()].sort((a, b) => b[1] - a[1]).slice(0, limit).map(e => e[0])
+    if (ids.length === 0) return []
+    const { data: perfiles } = await supabase
+      .from('perfiles')
+      .select('id, nombre, tipo_vendedor, foto_perfil_url')
+      .in('id', ids)
+    const porId = new Map((perfiles || []).map((pf: any) => [pf.id, pf]))
+    return ids
+      .map(id => porId.get(id))
+      .filter((pf: any) => pf && pf.nombre)
+      .map((pf: any) => ({ ...pf, anuncios: conteo.get(pf.id) || 0 }))
+  } catch {
+    return []
+  }
+}
+
 // ── Componentes ───────────────────────────────────────────────────────────
 
 function ProductCard({ p, highlighted = false, priority = false, t, precioAnterior, descuento }: { p: any; highlighted?: boolean; priority?: boolean; t: any; precioAnterior?: number | null; descuento?: number | null }) {
@@ -394,10 +454,12 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
   ])
   const itemsPorFamilia: Record<string, any[]> = { agricola, obra, herramientas }
 
-  const [conteos, reducidos, conteosFamilia] = await Promise.all([
+  const [conteos, reducidos, conteosFamilia, testimonios, destacados] = await Promise.all([
     getConteos(),
     getPreciosReducidos(8),
     Promise.all(FAMILIAS.map(f => countProductosFamilia(f.key))),
+    getTestimonios(3),
+    getVendedoresDestacados(6),
   ])
   const conteoPorFamilia: Record<string, number | null> = {}
   FAMILIAS.forEach((f, i) => { conteoPorFamilia[f.key] = conteosFamilia[i] })
@@ -737,6 +799,38 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       </section>
 
       <div className="max-w-7xl mx-auto px-4">
+        {/* ═══════════ VENDEDORES DESTACADOS — prueba social temprana ═══════════ */}
+        {destacados.length > 0 && (
+          <section className="pt-12">
+            <SectionHeader
+              title={t('home.sellers.title')}
+              subtitle={t('home.sellers.subtitle')}
+              href="/catalogo"
+              viewAll={t('home.viewAll')}
+              kicker={t('home.sellers.kicker')}
+            />
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
+              {destacados.map(d => (
+                <LocalLink
+                  key={d.id}
+                  href={`/vendedor/${d.id}`}
+                  className="group bg-white rounded-2xl border border-gray-200/80 shadow-card p-4 flex flex-col items-center text-center hover:shadow-card-hover hover:-translate-y-1 hover:border-brand-signal transition-all duration-200"
+                >
+                  <Avatar nombre={d.nombre} fotoUrl={d.foto_perfil_url || null} size="md" />
+                  <p className="text-sm font-black text-gray-900 mt-2.5 line-clamp-1 group-hover:text-brand-darkNav">{d.nombre}</p>
+                  <span className="mt-1">{d.tipo_vendedor ? <BadgeTipoVendedor tipo={d.tipo_vendedor} /> : null}</span>
+                  <span className="mt-1.5 inline-flex items-center gap-1 text-[10px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-md">
+                    <CheckCircle2 size={10} /> {t('productCard.verified')}
+                  </span>
+                  <span className="mt-2 text-[11px] font-black text-brand-darkNav bg-brand-signal/20 border border-brand-signal/50 rounded-full px-2.5 py-0.5 tabular-nums">
+                    {t('home.sellers.count', { count: d.anuncios })}
+                  </span>
+                </LocalLink>
+              ))}
+            </div>
+          </section>
+        )}
+
         {/* ═══════════ FAMILIAS: PRODUCTOS POR CATEGORÍA ═══════════ */}
         {FAMILIAS.map(f => (
           <section key={f.key} className="py-12">
@@ -889,6 +983,51 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
             ))}
           </div>
         </section>
+
+        {/* ═══════════ TESTIMONIOS — reseñas reales con producto enlazado ═══════════ */}
+        {testimonios.length > 0 && (
+          <section className="pb-12">
+            <SectionHeader
+              title={t('home.testimonials.title')}
+              subtitle={t('home.testimonials.subtitle')}
+              href="/catalogo"
+              viewAll={t('home.viewAll')}
+              kicker={t('home.testimonials.kicker')}
+            />
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-5">
+              {testimonios.map(r => (
+                <figure key={r.id} className="bg-white rounded-2xl border border-gray-200/80 border-t-4 border-t-brand-signal shadow-card p-5 flex flex-col">
+                  <div className="flex gap-0.5" aria-label={`${r.puntuacion}/5`}>
+                    {[1, 2, 3, 4, 5].map(i => (
+                      <Star key={i} size={15} className={i <= r.puntuacion ? 'fill-brand-signal text-brand-signal' : 'text-gray-300'} />
+                    ))}
+                  </div>
+                  <blockquote className="text-sm text-gray-700 leading-relaxed mt-3 line-clamp-4 flex-1">
+                    «{r.comentario}»
+                  </blockquote>
+                  <figcaption className="mt-4 pt-3 border-t border-gray-100 text-xs text-gray-500">
+                    <span className="font-black text-gray-900">{r.comprador_nombre || t('home.testimonials.buyer')}</span>
+                    {r.producto?.titulo && (
+                      <>
+                        {' · '}
+                        {r.producto.slug ? (
+                          <LocalLink href={`/producto/${r.producto.slug}`} className="text-brand-darkNav font-bold underline decoration-brand-signal decoration-2 underline-offset-2 hover:text-brand-signal-dark">
+                            {r.producto.titulo}
+                          </LocalLink>
+                        ) : (
+                          <span className="font-semibold">{r.producto.titulo}</span>
+                        )}
+                      </>
+                    )}
+                    <span className="block mt-1 text-gray-400">
+                      {new Intl.DateTimeFormat(locale === 'en' ? 'en-GB' : 'es-ES', { day: 'numeric', month: 'short', year: 'numeric' }).format(new Date(r.creado_en))}
+                    </span>
+                  </figcaption>
+                </figure>
+              ))}
+            </div>
+          </section>
+        )}
       </div>
 
       {/* ═══════════ CTA — banda de señal a sangre (letrero industrial) ═══════════ */}

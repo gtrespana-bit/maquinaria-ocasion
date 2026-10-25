@@ -178,6 +178,18 @@
     "reduced": {
       "title": "Price drops",
       "subtitle": "Machines whose price dropped since they were listed. Full history on each listing."
+    },
+    "testimonials": {
+      "title": "What buyers say",
+      "subtitle": "Real reviews from people who have bought and sold on MaquinariaOcasión.",
+      "kicker": "Verified reviews",
+      "buyer": "Verified buyer"
+    },
+    "sellers": {
+      "title": "Featured sellers",
+      "subtitle": "Verified private and professional sellers with active listings.",
+      "kicker": "Trust who you buy from",
+      "count": "{count} active listings"
     }
   },
   "notFound": {
@@ -464,7 +476,13 @@
     "contact": "Contact",
     "share": "Share",
     "report": "Report",
-    "video": "Video"
+    "video": "Video",
+    "fair": {
+      "inRange": "Price within the portal range",
+      "above": "Above the market",
+      "below": "Below the market",
+      "link": "See estimate"
+    }
   },
   "bottomNav": {
     "home": "Home",

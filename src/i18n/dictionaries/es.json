@@ -178,6 +178,18 @@
     "reduced": {
       "title": "Precios reducidos",
       "subtitle": "Máquinas cuyo precio ha bajado desde su publicación. El historial completo está en cada ficha."
+    },
+    "testimonials": {
+      "title": "Lo que dicen los compradores",
+      "subtitle": "Opiniones reales de quienes han comprado y vendido en MaquinariaOcasión.",
+      "kicker": "Opiniones verificadas",
+      "buyer": "Comprador verificado"
+    },
+    "sellers": {
+      "title": "Vendedores destacados",
+      "subtitle": "Particulares y profesionales verificados con anuncios activos.",
+      "kicker": "Confía en quien vende",
+      "count": "{count} anuncios activos"
     }
   },
   "notFound": {
@@ -464,7 +476,13 @@
     "contact": "Contactar",
     "share": "Compartir",
     "report": "Reportar",
-    "video": "Vídeo"
+    "video": "Vídeo",
+    "fair": {
+      "inRange": "Precio en el rango del portal",
+      "above": "Por encima del mercado",
+      "below": "Por debajo del mercado",
+      "link": "Ver estimación"
+    }
   },
   "bottomNav": {
     "home": "Inicio",
