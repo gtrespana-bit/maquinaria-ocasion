@@ -3,8 +3,8 @@
 @tailwind utilities;
 
 :root {
-  --foreground: #333333;
-  --background: #F5F5F5;
+  --foreground: #1F2937;
+  --background: #F4F5F7;
 }
 
 html {
@@ -25,9 +25,14 @@ body {
   cursor: auto;
 }
 
-/* ===== FOCUS VISIBLE - Accesibilidad Fase 5 ===== */
+::selection {
+  background: #FFC60C;
+  color: #0A0F1E;
+}
+
+/* ===== FOCUS VISIBLE — amarillo de señal, visible sobre fondo claro y oscuro ===== */
 :focus-visible {
-  outline: 2px solid #EA580C;
+  outline: 2px solid #D9A400;
   outline-offset: 2px;
 }
 
@@ -37,16 +42,14 @@ a:focus-visible,
 input:focus-visible,
 select:focus-visible,
 textarea:focus-visible {
-  outline: 2px solid #EA580C;
+  outline: 2px solid #D9A400;
   outline-offset: 2px;
-  box-shadow: 0 0 0 4px rgba(201, 168, 76, 0.25);
+  box-shadow: 0 0 0 4px rgba(255, 198, 12, 0.35);
 }
 
 /* Focus visible para tarjetas clicables */
-.card-hover:focus-visible,
-button:focus-visible,
-a:focus-visible {
-  border-radius: 8px;
+.card-hover:focus-visible {
+  border-radius: 12px;
 }
 
 /* Evitar outline en mouse click, solo teclado */
@@ -70,9 +73,7 @@ a:focus-visible {
 @media (max-width: 767px) {
   body { overscroll-behavior-y: none; }
   main { padding-bottom: 5.5rem; }
-  /* Extra padding en página de créditos para que el bottom nav no tape los botones */
   .creditos-grid { padding-bottom: 2rem; }
-  /* Tap delay fix — iOS no mete delay de 300ms entre clicks */
   a, button, [role="button"] {
     -webkit-tap-highlight-color: transparent;
     touch-action: manipulation;
@@ -95,10 +96,9 @@ a:focus-visible {
 /* ===== APP-LIKE CARDS ===== */
 @media (max-width: 767px) {
   .app-card {
-    border-radius: 12px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.06);
+    border-radius: 14px;
+    box-shadow: 0 1px 3px rgba(10,15,30,0.08), 0 1px 2px rgba(10,15,30,0.06);
   }
-  /* Touch-friendly tap targets */
   button, a {
     min-height: 44px; /* Apple HIG minimum tap target */
   }
@@ -121,9 +121,9 @@ a:focus-visible {
 .animate-on-scroll.delay-3 { transition-delay: 0.3s; }
 .animate-on-scroll.delay-4 { transition-delay: 0.4s; }
 
-/* ===== HERO ===== */
+/* ===== HERO — grafito con halo de señal ===== */
 .hero-gradient {
-  background: linear-gradient(135deg, #0F172A 0%, #1E293B 50%, #2d1017 100%);
+  background: linear-gradient(120deg, #0A0F1E 0%, #0F172A 55%, #16203A 100%);
   position: relative;
   overflow: hidden;
 }
@@ -131,28 +131,17 @@ a:focus-visible {
 .hero-gradient::before {
   content: '';
   position: absolute;
-  top: -50%;
-  right: -20%;
-  width: 600px;
-  height: 600px;
-  background: radial-gradient(circle, rgba(201,168,76,0.15) 0%, transparent 70%);
-  animation: hero-pulse 4s ease-in-out infinite;
-}
-
-.hero-gradient::after {
-  content: '';
-  position: absolute;
-  bottom: -30%;
-  left: -10%;
-  width: 400px;
-  height: 400px;
-  background: radial-gradient(circle, rgba(123,45,59,0.1) 0%, transparent 70%);
-  animation: hero-pulse 3s ease-in-out infinite reverse;
+  top: -45%;
+  right: -15%;
+  width: 640px;
+  height: 640px;
+  background: radial-gradient(circle, rgba(255,198,12,0.16) 0%, transparent 70%);
+  animation: hero-pulse 5s ease-in-out infinite;
 }
 
 @keyframes hero-pulse {
-  0%, 100% { transform: scale(1); opacity: 0.5; }
-  50% { transform: scale(1.2); opacity: 1; }
+  0%, 100% { transform: scale(1); opacity: 0.55; }
+  50% { transform: scale(1.15); opacity: 1; }
 }
 
 /* ===== SKELETON LOADER ===== */
@@ -168,42 +157,56 @@ a:focus-visible {
   100% { background-position: -200% 0; }
 }
 
-.skeleton-text {
-  height: 14px;
-  margin-bottom: 8px;
-}
+.skeleton-text { height: 14px; margin-bottom: 8px; }
+.skeleton-title { height: 20px; width: 80%; }
+.skeleton-price { height: 28px; width: 40%; }
 
-.skeleton-title {
-  height: 20px;
-  width: 80%;
-}
-
-.skeleton-price {
-  height: 28px;
-  width: 40%;
-}
-
-/* ===== MICRO INTERACTIONS ===== */
+/* ===== BOTONES — sistema de señalética =====
+   btn-signal: CTA primario (amarillo de seguridad, texto grafito).
+   btn-dark:   CTA sólido sobre bandas amarillas.
+   btn-ghost:  contorno sobre fondo oscuro. */
 .btn-primary {
   transition: all 0.2s ease;
 }
-
 .btn-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(123,45,59,0.3);
+  box-shadow: 0 10px 24px -8px rgba(255,198,12,0.55);
 }
+.btn-primary:active { transform: translateY(0); }
 
-.btn-primary:active {
-  transform: translateY(0);
+.btn-signal {
+  background: #FFC60C;
+  color: #0A0F1E;
+  font-weight: 800;
+  border-radius: 12px;
+  transition: all 0.18s ease;
+  box-shadow: 0 8px 22px -10px rgba(255,198,12,0.6);
+}
+.btn-signal:hover {
+  background: #FFD233;
+  transform: translateY(-2px);
+  box-shadow: 0 14px 30px -10px rgba(255,198,12,0.75);
+}
+.btn-signal:active { transform: translateY(0); }
+
+.btn-dark {
+  background: #0A0F1E;
+  color: #FFC60C;
+  font-weight: 800;
+  border-radius: 12px;
+  transition: all 0.18s ease;
+}
+.btn-dark:hover {
+  background: #16203A;
+  transform: translateY(-2px);
 }
 
 .card-hover {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
-
 .card-hover:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 24px rgba(0,0,0,0.1);
+  transform: translateY(-6px);
+  box-shadow: 0 18px 40px -14px rgba(10,15,30,0.35);
 }
 
 /* ===== BADGES ===== */
@@ -211,13 +214,13 @@ a:focus-visible {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  background: #eff6ff;
-  color: #2563eb;
+  background: #052e16;
+  color: #86efac;
   font-size: 12px;
   font-weight: 600;
   padding: 2px 8px;
   border-radius: 12px;
-  border: 1px solid #dbeafe;
+  border: 1px solid #166534;
 }
 
 .badge-trust {
@@ -225,7 +228,7 @@ a:focus-visible {
   align-items: center;
   gap: 4px;
   background: #f0fdf4;
-  color: #16a34a;
+  color: #15803d;
   font-size: 12px;
   font-weight: 600;
   padding: 2px 8px;
@@ -233,24 +236,56 @@ a:focus-visible {
   border: 1px solid #bbf7d0;
 }
 
-/* ===== SEARCH CHIPS ===== */
+/* ===== SEARCH CHIPS (hero oscuro) ===== */
 .chip-search {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  padding: 6px 14px;
-  background: rgba(255,255,255,0.15);
-  border: 1px solid rgba(255,255,255,0.25);
-  border-radius: 20px;
+  padding: 7px 15px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.18);
+  border-radius: 999px;
   color: white;
-  font-size: 14px;
+  font-size: 13px;
+  font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
 }
-
 .chip-search:hover {
-  background: rgba(255,255,255,0.25);
-  border-color: rgba(255,255,255,0.5);
+  background: rgba(255,198,12,0.18);
+  border-color: rgba(255,198,12,0.6);
+  color: #FFC60C;
+}
+
+/* ===== KICKER — micro-etiqueta con cuadrado de señal ===== */
+.kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #0A0F1E;
+}
+.kicker::before {
+  content: '';
+  width: 14px;
+  height: 14px;
+  background: #FFC60C;
+  border-radius: 3px;
+  box-shadow: 0 0 0 3px rgba(255,198,12,0.25);
+}
+.kicker-on-dark { color: #FFC60C; }
+
+/* ===== BANDAS ===== */
+.band-dark {
+  background: #0A0F1E;
+  color: #E5E7EB;
+}
+.band-signal {
+  background: #FFC60C;
+  color: #0A0F1E;
 }
 
 /* ===== FLOATING CHAT ===== */
@@ -261,33 +296,26 @@ a:focus-visible {
   z-index: 100;
   transition: all 0.3s ease;
 }
-
-.floating-chat:hover {
-  transform: scale(1.1);
-}
+.floating-chat:hover { transform: scale(1.1); }
 
 /* ===== DARK MODE — DISABLED ===== */
-/* Deshabilitado porque el sitio es light-mode y prefers-color-scheme dark
-   rompía todos los textos (Tailwind text-gray-* no se adapta automáticamente).
-   Si se quiere dark mode real, usar estrategia Tailwind darkMode: 'class'. */
 
 /* ===== FEATURED CARD ===== */
 .featured-card {
-  border: 2px solid #EA580C;
+  border: 2px solid #FFC60C;
   position: relative;
 }
-
 .featured-card::before {
   content: '⭐ Destacado';
   position: absolute;
   top: -10px;
   left: 12px;
-  background: #EA580C;
-  color: #0F172A;
+  background: #FFC60C;
+  color: #0A0F1E;
   font-size: 0.7rem;
-  font-weight: 700;
+  font-weight: 800;
   padding: 2px 8px;
-  border-radius: 4px;
+  border-radius: 6px;
   z-index: 2;
 }
 
@@ -299,58 +327,44 @@ a:focus-visible {
 .trust-bar {
   border-bottom: 2px solid #e5e7eb;
 }
-
 .dark .trust-bar {
   border-bottom-color: #374151;
 }
 
 /* ===== PULSE ANIM FOR CTA ===== */
 @keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(201,168,76,0.4); }
-  50% { box-shadow: 0 0 0 12px rgba(252,209,22,0); }
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255,198,12,0.5); }
+  50% { box-shadow: 0 0 0 14px rgba(255,198,12,0); }
 }
-
 .pulse-cta { animation: pulse-glow 2s infinite; }
 
 /* ===== TOOLTIP ===== */
-.tooltip {
-  position: relative;
-}
-
+.tooltip { position: relative; }
 .tooltip::after {
   content: attr(data-tooltip);
   position: absolute;
   bottom: 100%;
   left: 50%;
   transform: translateX(-50%);
-  background: #1a1a2e;
-  color: white;
+  background: #0A0F1E;
+  color: #FFC60C;
   padding: 4px 8px;
-  border-radius: 4px;
+  border-radius: 6px;
   font-size: 11px;
   white-space: nowrap;
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.2s;
 }
-
-.tooltip:hover::after {
-  opacity: 1;
-}
+.tooltip:hover::after { opacity: 1; }
 
 /* ===== HERO COLLAGE — flotación suave ===== */
 @keyframes float {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-8px); }
 }
-
-.animate-float {
-  animation: float 6s ease-in-out infinite;
-}
-
-.animate-float-slow {
-  animation: float 8s ease-in-out 1.2s infinite;
-}
+.animate-float { animation: float 6s ease-in-out infinite; }
+.animate-float-slow { animation: float 8s ease-in-out 1.2s infinite; }
 
 @media (prefers-reduced-motion: reduce) {
   .animate-float,

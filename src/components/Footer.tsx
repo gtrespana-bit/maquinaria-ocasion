@@ -30,7 +30,7 @@ export function Footer() {
   const t = useTranslations()
 
   return (
-    <footer className="bg-brand-dark text-gray-300 mt-auto pb-20 md:pb-0">
+    <footer className="bg-brand-darkNav text-gray-300 mt-auto pb-20 md:pb-0 border-t-4 border-brand-signal">
       <div className="hidden md:block">
         <div className="max-w-7xl mx-auto px-4 py-12">
           <div className="grid grid-cols-1 md:grid-cols-5 gap-8">
@@ -39,7 +39,7 @@ export function Footer() {
               <p className="text-sm leading-relaxed">{t('footer.description')}</p>
             </div>
             <nav aria-label={t('footer.categories')}>
-              <h3 className="text-white font-bold mb-3">{t('footer.categories')}</h3>
+              <h3 className="text-white font-black mb-3 uppercase tracking-wide text-xs flex items-center gap-2 before:content-[''] before:inline-block before:w-3 before:h-3 before:bg-brand-signal before:rounded-[3px]">{t('footer.categories')}</h3>
               <ul className="space-y-2 text-sm">
                 {FAMILIAS_FOOTER.map(f => (
                   <li key={f.key}>
@@ -49,7 +49,7 @@ export function Footer() {
                     <ul className="mt-1 space-y-1">
                       {f.tipos.map(c => (
                         <li key={c.label}>
-                          <LocalLink href={c.href} className="hover:text-green-400 transition">
+                          <LocalLink href={c.href} className="hover:text-brand-signal transition hover:underline underline-offset-2">
                             {c.label}
                           </LocalLink>
                         </li>
@@ -60,11 +60,11 @@ export function Footer() {
               </ul>
             </nav>
             <nav aria-label={t('footer.cities')}>
-              <h3 className="text-white font-bold mb-3">{t('footer.cities')}</h3>
+              <h3 className="text-white font-black mb-3 uppercase tracking-wide text-xs flex items-center gap-2 before:content-[''] before:inline-block before:w-3 before:h-3 before:bg-brand-signal before:rounded-[3px]">{t('footer.cities')}</h3>
               <ul className="space-y-2 text-sm">
                 {PROVINCIAS_FOOTER.map(c => (
                   <li key={c.slug}>
-                    <LocalLink href={`/${c.slug}`} className="hover:text-green-400 transition">
+                    <LocalLink href={`/${c.slug}`} className="hover:text-brand-signal transition">
                       {t('footer.classifiedsIn', { city: c.nombre })}
                     </LocalLink>
                   </li>
@@ -72,7 +72,7 @@ export function Footer() {
               </ul>
             </nav>
             <nav aria-label={t('footer.information')}>
-              <h3 className="text-white font-bold mb-3">{t('footer.information')}</h3>
+              <h3 className="text-white font-black mb-3 uppercase tracking-wide text-xs flex items-center gap-2 before:content-[''] before:inline-block before:w-3 before:h-3 before:bg-brand-signal before:rounded-[3px]">{t('footer.information')}</h3>
               <ul className="space-y-2 text-sm">
                 {[
                   [t('footer.brands'), '/marcas'],
@@ -83,21 +83,21 @@ export function Footer() {
                   ['FAQ', '/faq'],
                   [t('nav.contact'), '/contacto'],
                 ].map(([l, p]) => (
-                  <li key={p}><LocalLink href={p} className="hover:text-green-400 transition">{l}</LocalLink></li>
+                  <li key={p}><LocalLink href={p} className="hover:text-brand-signal transition">{l}</LocalLink></li>
                 ))}
               </ul>
             </nav>
             <div>
-              <h3 className="text-white font-bold mb-3">{t('footer.legal')}</h3>
+              <h3 className="text-white font-black mb-3 uppercase tracking-wide text-xs flex items-center gap-2 before:content-[''] before:inline-block before:w-3 before:h-3 before:bg-brand-signal before:rounded-[3px]">{t('footer.legal')}</h3>
               <ul className="space-y-2 text-sm">
-                <li><LocalLink href="/terminos-y-condiciones" className="hover:text-green-400 transition">{t('footer.terms')}</LocalLink></li>
-                <li><LocalLink href="/politica-de-privacidad" className="hover:text-green-400 transition">{t('footer.privacy')}</LocalLink></li>
-                <li><LocalLink href="/politica-de-cookies" className="hover:text-green-400 transition">{t('footer.cookies')}</LocalLink></li>
+                <li><LocalLink href="/terminos-y-condiciones" className="hover:text-brand-signal transition">{t('footer.terms')}</LocalLink></li>
+                <li><LocalLink href="/politica-de-privacidad" className="hover:text-brand-signal transition">{t('footer.privacy')}</LocalLink></li>
+                <li><LocalLink href="/politica-de-cookies" className="hover:text-brand-signal transition">{t('footer.cookies')}</LocalLink></li>
                 {/* El aviso legal solo se enlaza cuando el titular está
                     configurado: antes de eso la página no está completa y no
                     debe presentarse como si lo estuviera. */}
                 {hayDatosTitular() && (
-                  <li><LocalLink href="/aviso-legal" className="hover:text-green-400 transition">{t('footer.legalNotice')}</LocalLink></li>
+                  <li><LocalLink href="/aviso-legal" className="hover:text-brand-signal transition">{t('footer.legalNotice')}</LocalLink></li>
                 )}
               </ul>
               <p className="text-xs text-gray-300 mt-4">{t('footer.madeWithLove')}</p>
