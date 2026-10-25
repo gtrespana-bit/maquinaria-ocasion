@@ -200,12 +200,20 @@ Campos transversales: `Año`, `Horas de uso` (el equivalente a kilómetros),
   categorías, secciones, dashboard, landings): camper → maquinaria
 - Search Console + sitemaps del dominio nuevo → **lado del usuario**
 
-### ⬜ Fase 5 — Contenido y lanzamiento
+### 🟡 Fase 5 — Contenido y lanzamiento (en curso — PR #4)
 
 - **30-50 anuncios reales antes de abrir.** Un marketplace vacío no convierte y
-  Google tarda en confiar en él
-- Fotos optimizadas con `npm run optimize-images`
-- Landings por marca y por provincia
+  Google tarda en confiar en él → **37 anuncios demo `es_demo`** sembrados
+  (10 vendedores, sin teléfono ni sello de verificado): fuente
+  `src/lib/semilla-datos.js` → `supabase/migrations/202610240002_seed_anuncios_maquinaria.sql`
+  (`node scripts/generar-sql-semilla.js` la regenera); verificado en BD 37/37
+- Fotos optimizadas con `npm run optimize-images` (script reescrito con `sharp`:
+  recomprime JPG + genera WebP; 31 fotos de anuncio optimizadas)
+- Landings por marca (`/marca/[slug]` + `/marcas` + sitemap) y por provincia
+  (`/[ciudad]`)
+- Blog con 11 posts originales de maquinaria (8 Guías, 3 Legal)
+- ⏳ Pendiente: 2 fotos de arquetipo (`herramientas`, `taller`) por límite de
+  generación
 
 ---
 

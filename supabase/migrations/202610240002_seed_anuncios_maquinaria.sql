@@ -540,8 +540,8 @@ Se puede ver y probar en Valladolid con cita previa. Transferencia y transporte 
   false,
   'profesional',
   '{"Año":"2019","Horas de uso":"4180","Combustible":"Diésel","Potencia (CV)":"120","Peso (kg)":"4900","¿Incluye transporte?":"Sí","Documentación":"Factura y libro de instrucciones","Tracción":"4x4","Enganche":"Tres puntos","Toma de fuerza (PTO)":"540/1000 rpm","Transmisión":"CVT / variable"}'::jsonb,
-  'verificada',
-  now(),
+  'sin_verificar',
+  null,
   false,
   true
 )
@@ -605,8 +605,8 @@ Procede de demonstración de concesionario, de ahí las pocas horas. Factura, li
   false,
   'profesional',
   '{"Año":"2021","Horas de uso":"3050","Combustible":"Diésel","Potencia (CV)":"152","Peso (kg)":"6800","¿Incluye transporte?":"Sí","Documentación":"Factura y libro de instrucciones","Tracción":"4x4","Enganche":"Tres puntos","Toma de fuerza (PTO)":"540/1000 rpm","Transmisión":"CVT / variable"}'::jsonb,
-  'verificada',
-  now(),
+  'sin_verificar',
+  null,
   false,
   true
 )
@@ -932,8 +932,8 @@ Transporte especial incluido en la península. Se enseña con demostración en c
   false,
   'profesional',
   '{"Año":"2019","Horas de uso":"1890","Combustible":"Diésel","Potencia (CV)":"330","Peso (kg)":"12800","¿Incluye transporte?":"Sí","Documentación":"Factura y libro de instrucciones","Tracción":"4x2","Enganche":"Sin enganche","Toma de fuerza (PTO)":"Sin PTO","Transmisión":"Hidrostática"}'::jsonb,
-  'verificada',
-  now(),
+  'sin_verificar',
+  null,
   false,
   true
 )
@@ -1062,8 +1062,8 @@ Máquina parada en Valladolid desde la última campaña: engrasada y protegida. 
   false,
   'profesional',
   '{"Año":"2018","Horas de uso":"0","Combustible":"Diésel","Potencia (CV)":"90","Peso (kg)":"2100","¿Incluye transporte?":"Sí","Documentación":"Factura y libro de instrucciones","Tracción":"Sin tracción","Enganche":"Tres puntos","Toma de fuerza (PTO)":"540 rpm","Transmisión":"Manual"}'::jsonb,
-  'verificada',
-  now(),
+  'sin_verificar',
+  null,
   false,
   true
 )
@@ -1244,8 +1244,8 @@ Se entrega desmontada con esquema eléctrico y manual de instalación. CE de fab
   'Bueno',
   18400::numeric, 18400::numeric, 18400::numeric,
   'Murcia', 'Murcia',
-  '/images/anuncios/ordeño-1.webp',
-  array['/images/anuncios/ordeño-1.webp']::text[],
+  '/images/anuncios/ordeno-1.webp',
+  array['/images/anuncios/ordeno-1.webp']::text[],
   true,
   false,
   null,
@@ -1257,8 +1257,8 @@ Se entrega desmontada con esquema eléctrico y manual de instalación. CE de fab
   false,
   'camperizador',
   '{"Año":"2013","Horas de uso":"3100","Combustible":"Diésel","Potencia (CV)":"15","Peso (kg)":"1900","¿Incluye transporte?":"Sí","Documentación":"Declaración CE / ficha técnica","Tracción":"Sin tracción","Enganche":"Sin enganche","Toma de fuerza (PTO)":"Sin PTO","Transmisión":"Hidrostática"}'::jsonb,
-  'verificada',
-  now(),
+  'sin_verificar',
+  null,
   false,
   true
 )
@@ -1389,8 +1389,8 @@ Documentación completa (factura original, libro de mantenimiento sellado, CE y 
   false,
   'camperizador',
   '{"Año":"2019","Horas de uso":"9800","Combustible":"Diésel","Potencia (CV)":"174","Peso (kg)":"23200","¿Incluye transporte?":"Sí","Documentación":"Factura y libro de instrucciones","Tracción":"Oruga","Medidas de transporte":"Más de 4 m"}'::jsonb,
-  'verificada',
-  now(),
+  'sin_verificar',
+  null,
   false,
   true
 )
@@ -1523,8 +1523,8 @@ Demostración posible en Barcelona con cita. Precio con IVA no incluido para emp
   false,
   'profesional',
   '{"Año":"2020","Horas de uso":"7650","Combustible":"Diésel","Potencia (CV)":"115","Peso (kg)":"14600","¿Incluye transporte?":"Sí","Documentación":"Factura y libro de instrucciones","Tracción":"Oruga","Medidas de transporte":"Más de 4 m"}'::jsonb,
-  'verificada',
-  now(),
+  'sin_verificar',
+  null,
   false,
   true
 )
@@ -1657,8 +1657,8 @@ Factura, libro sellado, CE y ITP en vigor. Financiación disponible a través de
   false,
   'profesional',
   '{"Año":"2019","Horas de uso":"6900","Combustible":"Diésel","Potencia (CV)":"174","Peso (kg)":"21400","¿Incluye transporte?":"Sí","Documentación":"Factura y libro de instrucciones","Tracción":"Oruga","Medidas de transporte":"Más de 4 m"}'::jsonb,
-  'verificada',
-  now(),
+  'sin_verificar',
+  null,
   false,
   true
 )
@@ -1858,8 +1858,8 @@ Factura, manual, CE y ITP al día. Una de las unidades mejor conservadas que hem
   false,
   'camperizador',
   '{"Año":"2021","Horas de uso":"4450","Combustible":"Diésel","Potencia (CV)":"55","Peso (kg)":"5900","¿Incluye transporte?":"Sí","Documentación":"Factura y libro de instrucciones","Tracción":"Ruedas 4x4","Medidas de transporte":"2,5 – 4 m"}'::jsonb,
-  'verificada',
-  now(),
+  'sin_verificar',
+  null,
   false,
   true
 )

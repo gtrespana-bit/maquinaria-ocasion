@@ -107,11 +107,22 @@ marcas asignadas por subcategoría vía `MarcaModelo.aptoPara`.
 - [x] **No reutilizar copy de camperocasion** (copy original de maquinaria)
 - [ ] Search Console + sitemaps del dominio nuevo → **lado del usuario**
 
-## Fase 5 — Contenido y lanzamiento (PENDIENTE)
+## Fase 5 — Contenido y lanzamiento (EN CURSO — PR #4)
 
-- [ ] 30-50 anuncios reales antes de abrir
-- [ ] Fotos optimizadas con `npm run optimize-images`
-- [ ] Landings por marca y provincia
+- [x] **Blog:** 11 posts originales de maquinaria (8 Guías, 3 Legal), sin copy
+      camper; classifier de `blog/[slug]` a las rutas de la taxonomía nueva
+- [x] **30-50 anuncios reales antes de abrir:** 37 anuncios demo `es_demo`
+      (10 vendedores, sin teléfono, sin sello de verificado — obliga la
+      migración `202609180003`): fuente `src/lib/semilla-datos.js` →
+      migración `supabase/migrations/202610240002_seed_anuncios_maquinaria.sql`
+      (regenerar con `node scripts/generar-sql-semilla.js`); aplicada a
+      Supabase: 37/37 `es_demo`, 10 perfiles, 0 verificados
+- [x] Fotos optimizadas con `npm run optimize-images` (reescrito con `sharp`:
+      recomprime JPG in-place + genera `.webp` al lado)
+- [x] Landings por marca (`/marca/[slug]`, índice `/marcas`, en sitemap) y
+      por provincia (`/[ciudad]`, hecha en Fase 3)
+- [ ] 2 fotos de arquetipo pendientes de generar (`herramientas`, `taller` —
+      límite de 10 imágenes/turno); hasta entonces 3 alias transicionales
 
 ## Servicios externos que hay que crear (nada compartido con camper)
 
