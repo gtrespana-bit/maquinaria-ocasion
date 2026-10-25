@@ -1,54 +1,55 @@
 # Planes, mes de prueba y cupones
 
-> Actualizado 2026-10-22. El análisis completo del modelo (identidad, plan y
+> Actualizado 2026-10-26. El análisis completo del modelo (identidad, plan y
 > créditos) está en
-> [`MODELO-CUENTAS-Y-MONETIZACION-2026-10.md`](./MODELO-CUENTAS-Y-MONETIZACION-2026-10.md).
->
-> **Propuesta posterior:** en
-> [`ESTRATEGIA-PLANES-2026-10.md`](./ESTRATEGIA-PLANES-2026-10.md) se rehace
-> la arquitectura como Gratis/Básico (19 €)/Profesional (49 €). Mientras no
-> se apruebe e implemente, este documento sigue describiendo el comportamiento
-> provisional del código en esta etapa pre-lanzamiento.
+> [`MODELO-CUENTAS-Y-MONETIZACION-2026-10.md`](./MODELO-CUENTAS-Y-MONETIZACION-2026-10.md)
+> y la decisión de precios en
+> [`ESTRATEGIA-PLANES-2026-10.md`](./ESTRATEGIA-PLANES-2026-10.md).
 
-## Modelo simplificado (decisión 2026-10-22)
+## Escalera de planes (implementada 2026-10-26)
 
-Después de construir la escalera de tres packs se llegó a la conclusión de
-que **el mercado no la llena**: la mayoría de vendedores tiene una camper y los
-negocios reales, unas pocas. Tres niveles por número de anuncios añadían
-decisión, soporte y superficie de fallo a cambio de muy poco. Queda un único
-plan de pago.
+El plan provisional único `plus` (19 €/15 anuncios) se sustituyó por dos
+planes de pago antes del lanzamiento, cuando aún no hay clientes reales que
+migrar: **Básico** para talleres con poco stock y **Profesional** para
+compraventas con rotación.
 
-| Plan | Anuncios activos | Destacados/mes | Fotos | Mensual | Anual (2 meses gratis) |
+| Plan (id interno) | Anuncios activos | Destacados/mes | Fotos | Mensual | Anual (2 meses gratis) |
 | --- | --- | --- | --- | --- | --- |
 | Gratis (cualquier identidad) | 1 | 0 (créditos) | 10 | 0 € | 0 € |
-| **Profesional** | 15 | 5 | 20 | **19 €/mes** | **190 €/año** |
+| **Básico** (`starter`) | 5 | 3 | 20 + vídeo | **19 €/mes** | **190 €/año** |
+| **Profesional** (`unlimited`) | Sin límite (uso justo) | 15 | 30 + vídeo | **49 €/mes** | **490 €/año** |
 
 - El **tipo de vendedor** (particular / camperizador / profesional) sigue
-  siendo gratis y no es un plan: define el sello y los filtros. El plan se
-  llama «Profesional», pero no cambia la identidad por sí solo.
+  siendo gratis y no es un plan: define el sello y los filtros. Contratar un
+  plan no cambia la identidad por sí solo (pero ver la promoción automática
+  de abajo).
 - **Créditos** para todos: 15/40/100 créditos por 5/10/20 €. Sirven para
   subir al nº 1 o destacar un anuncio suelto. No son un plan ni caducan.
-- Abrir el **escaparate** (`/tienda/slug`) exige el plan Profesional o la
+- Abrir el **escaparate** (`/tienda/slug`) exige cualquier plan de pago o la
   prueba activa. Las tiendas ya publicadas se mantienen.
 - Si un **particular** contrata el plan, el webhook lo pasa a `profesional`
   para que reciba el cupo pagado (`aplicarPlanPerfil` →
   `promoverAProfesional`).
 
-### Qué incluye Profesional
+### Qué incluye cada plan
 
-| Función | Gratis | Profesional |
-| --- | --- | --- |
-| Anuncios activos | 1 | 15 |
-| Fotos por anuncio | 10 | 20 |
-| Destacados incluidos al mes | — | 5 |
-| Escaparate `/tienda/tu-taller` | — | ✅ |
-| Estadísticas: totales | ✅ | ✅ |
-| Estadísticas: por anuncio, mercado, 90 días y CSV | — | ✅ |
-| Importar stock desde CSV | — | ✅ (hasta 100 filas) |
+| Función | Gratis | Básico | Profesional |
+| --- | --- | --- | --- |
+| Anuncios activos | 1 | 5 | Sin límite (uso justo) |
+| Fotos por anuncio | 10 | 20 | 30 |
+| Vídeo | — | ✅ | ✅ |
+| Destacados incluidos al mes | — | 3 | 15 |
+| Escaparate `/tienda/tu-taller` | — | ✅ | ✅ |
+| Estadísticas: totales | ✅ | ✅ | ✅ |
+| Estadísticas: por anuncio y diagnóstico | — | ✅ | ✅ |
+| Estadísticas: mercado, serie diaria, 90 días y CSV | — | — | ✅ |
+| Importar stock desde CSV | — | — | ✅ (hasta 100 filas/archivo) |
+| Soporte | Estándar | Prioritario | Prioritario + alta asistida |
 
-- **Rendimiento** (`/dashboard?tab=rendimiento`): `nivelPlan()` distingue solo
-  gratis (0) y Profesional (3). El RPC `rendimiento_vendedor()` solo es
-  accesible con `service_role`.
+- **Rendimiento** (`/dashboard?tab=rendimiento`): `nivelPlan()` vale 0 en
+  gratis, 1 en Básico (detalle por anuncio y diagnóstico, 7/30 días) y 3 en
+  Profesional (todo). El RPC `rendimiento_vendedor()` solo es accesible con
+  `service_role`.
 - **Importación CSV** (`/dashboard?tab=importar`,
   `POST /api/productos/importar`): previa obligatoria y después confirmación.
   Solo Profesional; el cupo se recorta en el servidor (`min(restantes,
@@ -57,18 +58,20 @@ plan de pago.
 - **Equipo de comerciales**: **no se ofrece**. El código y la migración de la
   fase anterior se retiraron: era una función para un negocio que aún no
   existe en el catálogo. Se recupera de git si algún día aparece una flota real.
-- **Valores heredados** (`starter`, `unlimited`): ya no se venden. `etiquetaPlan`
-  los nombra «heredado» si quedara alguno en la base, y la validación SQL sigue
-  aceptándolos para no romper datos antiguos.
+- **Valor heredado** (`plus`, el plan provisional): ya no se vende, no se
+  regala y el código no lo guarda nunca. Si quedara alguna fila se equipara a
+  Profesional al leerla (`normalizarPlanContratado`) y `etiquetaPlan` lo
+  muestra como «Profesional (anterior)». La migración `202610260001` normalizó
+  las filas existentes; los CHECK SQL lo siguen aceptando por rollback.
 
-## Prueba de 30 días (fase 2, 2026-10-22)
+## Prueba de 30 días del plan Básico
 
 - Cada cuenta tiene **fechas reales de prueba** en `perfiles`:
-  `trial_iniciado_en`, `trial_hasta` y `trial_plan` (`plus`, mostrado como Profesional).
+  `trial_iniciado_en`, `trial_hasta` y `trial_plan` (`starter`, Básico).
 - **Cuándo empieza**: al darse de alta como camperizador/profesional (trigger
   `fn_iniciar_trial_perfil`), al cambiar de particular a profesional, o cuando
   el usuario pulsa «Probar 30 días gratis» (`POST /api/planes/prueba`). En ese
-  último caso se le promociona a `profesional` para que reciba el cupo de Plus.
+  último caso se le promociona a `profesional` para que reciba el cupo de Básico.
 - **Una sola vez por cuenta**: si ya tiene fechas de prueba (aunque hayan
   caducado) no puede repetirla. Caer de un pack de pago a gratis tampoco
   genera una prueba nueva.
@@ -78,7 +81,7 @@ plan de pago.
 - **Avisos**: cron diario `/api/cron/planes` (09:10 UTC), email + push a 10, 3
   y 1 días; al terminar, aviso de gracia y del último día de gracia.
   Idempotente con la tabla `plan_avisos`.
-- **Gracia de 7 días**: durante la gracia el plan sigue siendo Plus y no se
+- **Gracia de 7 días**: durante la gracia el plan sigue siendo Básico y no se
   cobra nada. Al terminar, `aplicar_cupo_planes()` pausa los anuncios que
   exceden el cupo del plan gratuito. **No borra nada**, conserva primero los
   destacados y los de más visitas, y los marca con `pausado_por_plan`.
@@ -106,19 +109,20 @@ with efectivo as (
   select p.id, p.nombre,
     case
       when p.tipo_vendedor not in ('camperizador','profesional') then 'gratis'
-      when p.plan_anuncios in ('plus','starter','unlimited')
-           and (p.plan_hasta is null or p.plan_hasta >= now()) then p.plan_anuncios
+      when p.plan_anuncios in ('starter','unlimited','plus')
+           and (p.plan_hasta is null or p.plan_hasta >= now())
+           then case when p.plan_anuncios = 'plus' then 'unlimited' else p.plan_anuncios end
       when p.trial_hasta is not null
            and p.tipo_vendedor in ('camperizador','profesional')
            and now() <= p.trial_hasta + interval '7 days'
-           then coalesce(p.trial_plan, 'plus')
+           then case coalesce(p.trial_plan, 'starter') when 'unlimited' then 'unlimited' else 'starter' end
       else 'gratis'
     end as plan
   from public.perfiles p
 ),
 cupos as (
   select id, case plan
-    when 'plus' then 15 when 'starter' then 5 when 'unlimited' then null else 1
+    when 'starter' then 5 when 'unlimited' then null else 1
   end as cupo
   from efectivo
 ),
@@ -147,7 +151,7 @@ Con un usuario de prueba, mueve sus fechas y ejecuta el cron a mano:
 update public.perfiles
    set trial_iniciado_en = now() - interval '29 days',
        trial_hasta = now() + interval '1 day',
-       trial_plan = 'plus'
+       trial_plan = 'starter'
  where id = 'UUID_DEL_USUARIO';
 
 -- Para probar la gracia: fin en el pasado, dentro de los 7 días
@@ -163,7 +167,7 @@ update public.perfiles
 
 ```bash
 curl -H "Authorization: Bearer $CRON_SECRET" \
-  https://maquinariaocasion.online/api/cron/planes
+  https://maquinaria.click/api/cron/planes
 ```
 
 La respuesta trae `avisos`, `emails`, `pausados` y `usuariosPausados`. Los
@@ -184,8 +188,12 @@ un usuario» (o el botón 🎁 de la pestaña Usuarios). Es `POST
   mismo pack); `reemplazar` empieza a contar ahora.
 - **Sin plan** (`gratis`) retira el plan: vuelve al plan gratuito.
 - El canje de cupones exige cuenta profesional; el regalo del admin **no**: si
-  el usuario es «particular» y se le regala Profesional, el modal ofrece marcarlo
+  el usuario es «particular» y se le regala un plan, el modal ofrece marcarlo
   como profesional, porque si no el cupo de 1 anuncio sigue aplicando.
+- Se pueden regalar **Básico y Profesional**. El Programa Fundadores
+  (máx. 20 primeros negocios reales, 90 días de Profesional gratis con
+  inventario real y feedback) se opera con este mismo modal: Profesional +
+  90 días + motivo «Fundadores».
 - El usuario recibe un email de aviso (`emailPlanRegalado`) para que no le
   extrañe tener más cupo sin haber pagado.
 
@@ -214,3 +222,6 @@ Migraciones:
 - `supabase/migrations/202609280001_planes_cupones.sql` (planes, cupones y ajustes).
 - `supabase/migrations/202610220001_planes_prueba_gracia_dunning.sql` (prueba
   con fechas, dunning, pausa por cupo y tabla `plan_avisos`).
+- `supabase/migrations/202610260001_planes_basico_profesional.sql` (escalera
+  Básico/Profesional: prueba Básico por defecto, cupos nuevos y normalización
+  de filas `plus`). Aplicada a producción el 2026-10-26.

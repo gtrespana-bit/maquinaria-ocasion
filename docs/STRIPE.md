@@ -14,11 +14,13 @@ El plan Profesional se cobra como **suscripción**
 
 ## Suscripciones (2026-10-22)
 
-- **Mensual o anual.** El anual son 10 mensualidades (2 meses gratis):
-  **19 €/mes o 190 €/año**. Un único plan de pago.
-- El plan se muestra como «Profesional»; su id interno sigue siendo `plus`
-  para no romper las constraints y funciones SQL que ya lo conocen. Las claves
-  de Stripe son `maquinariaocasion_plus_mensual` y `maquinariaocasion_plus_anual`.
+- **Mensual o anual.** El anual son 10 mensualidades (2 meses gratis). Dos
+  planes de pago: **Básico** (`starter`, **19 €/mes o 190 €/año**) y
+  **Profesional** (`unlimited`, **49 €/mes o 490 €/año**).
+- Las claves de Stripe son `maquinariaocasion_starter_mensual`,
+  `maquinariaocasion_starter_anual`, `maquinariaocasion_unlimited_mensual` y
+  `maquinariaocasion_unlimited_anual`. El plan provisional `plus` ya no se
+  vende y su `lookup_key` no resuelve en el webhook.
 - Los precios viven en Stripe con `lookup_key` estable
   (`maquinariaocasion_<plan>_<mensual|anual>`, ver `src/lib/stripe-precios.ts`).
   No se usa `price_data` en suscripciones: así el producto es siempre el mismo,
@@ -46,7 +48,7 @@ El plan Profesional se cobra como **suscripción**
   - No hace falta crear una `configuration` propia: la API usa la de defecto.
 - **NIF/CIF**: el checkout usa `tax_id_collection`.
 - **IVA incluido**: los precios se crean con `tax_behavior: 'inclusive'`
-  (9/19/39 € son precio final). `obtenerPrecioPlan` corrige los precios
+  (19/49 € son precio final). `obtenerPrecioPlan` corrige los precios
   existentes que estuvieran en `unspecified`; si ya eran `exclusive` (Stripe
   no deja cambiarlo), crea un precio nuevo con el mismo `lookup_key` para que
   las altas nuevas no paguen el IVA por encima. **Los suscriptores antiguos
