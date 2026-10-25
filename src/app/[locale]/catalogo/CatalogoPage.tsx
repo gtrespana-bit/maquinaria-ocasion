@@ -7,6 +7,7 @@ import { useSearchParams, useRouter } from 'next/navigation'
 import { usePathname } from 'next/navigation'
 import { useTranslations } from 'next-intl'
 import LocalLink from '@/components/LocalLink'
+import BotonComparar from '@/components/BotonComparar'
 import Image from 'next/image'
 import { Search, ChevronRight, XCircle } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
@@ -94,6 +95,7 @@ const ProductCard = memo(({ p, priority = false, t }: { p: Producto; priority?: 
   return (
     <LocalLink href={productUrl(p)} className={`bg-white rounded-xl overflow-hidden transition-all duration-200 group block border ${isPromoted ? 'border-2 border-brand-accent shadow-md hover:shadow-xl hover:-translate-y-1' : 'border-gray-100 shadow-sm hover:shadow-lg hover:-translate-y-1 hover:border-gray-200'}`}>
       <div className="aspect-square bg-gray-100 relative overflow-hidden">
+        <BotonComparar item={{ id: p.id, slug: p.slug ?? null, titulo: p.titulo, precio_usd: p.precio_usd ?? null, imagen_url: p.imagen_url ?? null }} className="absolute bottom-2 right-2" />
         {isFeatured && (
           <div className="absolute top-2 left-2 z-10 bg-brand-accent text-white text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1 shadow-sm">
             ⭐ {t('product.featured')}

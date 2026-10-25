@@ -1155,5 +1155,25 @@
     "confirmar": "Request inspection",
     "avisoSinPago": "You pay nothing now: you’ll get a quote first.",
     "errorGenerico": "The request could not be sent. Please try again."
+  },
+  "comparar": {
+    "title": "Compare listings",
+    "subtitle": "Pick up to 4 machines and see their specs side by side.",
+    "addAria": "Add to comparison",
+    "removeAria": "Remove from comparison",
+    "barCount": "{count} to compare",
+    "cta": "Compare",
+    "clear": "Clear",
+    "empty": "You haven't added any listings to compare yet.",
+    "emptyCta": "Browse machinery",
+    "price": "Price",
+    "status": "Condition",
+    "year": "Year",
+    "hours": "Operating hours",
+    "location": "Location",
+    "seller": "Seller",
+    "unavailable": "Listing no longer available",
+    "specsTitle": "Comparison specs",
+    "viewDetail": "View listing"
   }
 }
