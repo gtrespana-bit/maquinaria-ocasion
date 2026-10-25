@@ -69,12 +69,15 @@
       "free": "0% comisiones",
       "freeDesc": "Publicar y vender es gratis",
       "homologation": "Documentación revisada",
-      "homologationDesc": "Expediente del vehículo revisado por el equipo"
+      "homologationDesc": "Expediente del vehículo revisado por el equipo",
+      "listings": "{count} anuncios activos",
+      "verifiedCount": "{count} vendedores verificados"
     },
     "categories": {
       "title": "Explora por familia",
       "subtitle": "Agrícola, obra y herramienta profesional: elige tu mundo y afina por tipo",
-      "viewAll": "Ver marcas y modelos"
+      "viewAll": "Ver marcas y modelos",
+      "countLabel": "{count} anuncios"
     },
     "recent": {
       "title": "Recién publicadas",
@@ -107,7 +110,8 @@
       "note": "Sin comisiones · Publica hoy y vende hoy"
     },
     "productCard": {
-      "featured": "Destacado"
+      "featured": "Destacado",
+      "priceBefore": "Antes"
     },
     "timeAgo": {
       "now": "ahora mismo",
@@ -167,7 +171,12 @@
       "market": "Mercado de ocasión",
       "sell": "Publica y vende",
       "learn": "Antes de comprar",
-      "near": "Cerca de ti"
+      "near": "Cerca de ti",
+      "reduced": "Precio bajado"
+    },
+    "reduced": {
+      "title": "Precios reducidos",
+      "subtitle": "Máquinas cuyo precio ha bajado desde su publicación. El historial completo está en cada ficha."
     }
   },
   "notFound": {
@@ -1109,7 +1118,14 @@
     "online": "En línea",
     "offline": "Desconectado",
     "today": "Hoy",
-    "yesterday": "Ayer"
+    "yesterday": "Ayer",
+    "quickReplies": {
+      "title": "Respuestas rápidas",
+      "available": "¿Sigue disponible?",
+      "negotiable": "¿Precio negociable?",
+      "delivery": "¿Incluye transporte?",
+      "visit": "¿Puedo verlo funcionando?"
+    }
   },
   "pwa": {
     "installTitle": "Instala MaquinariaOcasión",

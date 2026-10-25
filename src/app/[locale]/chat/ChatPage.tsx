@@ -676,7 +676,30 @@ export default function ChatPageClient() {
                 </div>
 
                 {/* Input - ALWAYS VISIBLE, shrink-0, prominent */}
-                <div className="shrink-0 border-t bg-white p-3 md:p-3.5 flex items-end gap-2 md:gap-3 shadow-[0_-8px_24px_-12px_rgba(0,0,0,0.12)] z-10">
+                <div className="shrink-0 border-t bg-white p-3 md:p-3.5 shadow-[0_-8px_24px_-12px_rgba(0,0,0,0.12)] z-10">
+                  {/* Respuestas rápidas (patrón marketplace): completan el
+                      redactor con un toque; nunca se envían solas. */}
+                  <div
+                    className="flex gap-1.5 overflow-x-auto hide-scrollbar pb-2.5"
+                    role="group"
+                    aria-label={t('quickReplies.title')}
+                  >
+                    {(['available', 'negotiable', 'delivery', 'visit'] as const).map(k => (
+                      <button
+                        key={k}
+                        type="button"
+                        disabled={enviando}
+                        onClick={() => {
+                          setTexto(prev => (prev.trim() ? `${prev.trim()} ` : '') + t(`quickReplies.${k}`))
+                          inputRef.current?.focus()
+                        }}
+                        className="shrink-0 text-xs font-bold text-brand-primary bg-brand-primary/5 border border-brand-primary/15 hover:bg-brand-signal hover:text-brand-darkNav hover:border-brand-signal rounded-full px-3 py-1.5 transition disabled:opacity-50"
+                      >
+                        {t(`quickReplies.${k}`)}
+                      </button>
+                    ))}
+                  </div>
+                  <div className="flex items-end gap-2 md:gap-3">
                   <div className="flex-1 relative">
                     <input
                       ref={inputRef}
@@ -703,6 +726,7 @@ export default function ChatPageClient() {
                       <Send size={20} className="ml-[1px]" />
                     )}
                   </button>
+                  </div>
                 </div>
 
                 {/* ─── Modal reseña comprador ─── */}
