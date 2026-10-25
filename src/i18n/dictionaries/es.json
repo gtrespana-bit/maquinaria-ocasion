@@ -160,6 +160,14 @@
       "viewAll": "Ver todas las guías",
       "readMore": "Leer guía",
       "minRead": "min de lectura"
+    },
+    "kicker": {
+      "buy": "Elige tu mundo",
+      "new": "Recién en el mercado",
+      "market": "Mercado de ocasión",
+      "sell": "Publica y vende",
+      "learn": "Antes de comprar",
+      "near": "Cerca de ti"
     }
   },
   "notFound": {

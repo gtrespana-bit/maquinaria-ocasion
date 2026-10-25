@@ -142,7 +142,14 @@ export function Header() {
     <>
       <SiteAnnouncement />
       {/* ============ HEADER PRINCIPAL ============ */}
-      <header className="bg-gradient-to-r from-brand-dark via-brand-primary to-brand-primary text-white relative sticky top-0 z-50 shadow-lg">
+      <header className="bg-brand-darkNav/95 backdrop-blur-md text-white relative sticky top-0 z-50 shadow-card-hover border-b-2 border-brand-signal/80">
+        {/* Rail de señal: regla amarilla de arriba a abajo del sitio */}
+        <div className="hidden sm:block bg-brand-signal text-brand-darkNav">
+          <div className="max-w-7xl mx-auto px-4 h-8 flex items-center justify-between text-[11px] font-black uppercase tracking-widest">
+            <span>📢 {t('home.hero.publishFree')} · {t('home.stats.free')}</span>
+            <LocalLink href="/catalogo" className="hover:underline underline-offset-2">{t('header.viewCatalog')}</LocalLink>
+          </div>
+        </div>
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex items-center justify-between h-14">
             {/* Back button — PWA only */}
@@ -166,14 +173,14 @@ export function Header() {
                 type="text"
                 name="q"
                 placeholder={t('header.searchPlaceholder')}
-                className="w-full py-2 px-4 pr-12 rounded-lg text-gray-800 bg-white focus:outline-none focus:ring-2 focus:ring-brand-accent"
+                className="w-full py-2.5 px-5 pr-12 rounded-full text-gray-800 bg-white shadow-card focus:outline-none focus:ring-2 focus:ring-brand-signal"
               />
               <button 
                 type="submit" 
                 aria-label={t('header.searchAria')}
-                className="absolute right-2 top-1/2 -translate-y-1/2 bg-brand-accent p-1.5 rounded-full hover:bg-accent/90 transition"
+                className="absolute right-1.5 top-1/2 -translate-y-1/2 bg-brand-signal p-2 rounded-full hover:bg-brand-signal-dark transition"
               >
-                <Search size={18} className="text-brand-primary" />
+                <Search size={18} className="text-brand-darkNav" />
               </button>
             </form>
 
@@ -195,11 +202,11 @@ export function Header() {
               {user && (
               <>
               <LocalLink href="/para-profesionales" className="hidden lg:flex items-center gap-1.5 bg-white/10 hover:bg-white/20 text-white px-3 py-2 rounded-lg text-sm font-medium transition" title="Planes y packs">
-                <Sparkles size={16} className="text-brand-accent" />
+                <Sparkles size={16} className="text-brand-signal" />
                 <span className="hidden xl:inline">Planes</span>
               </LocalLink>
               <LocalLink href="/creditos" className="relative hidden md:flex items-center gap-1.5 bg-white/10 hover:bg-white/20 text-white px-3 py-2 rounded-lg text-sm font-medium transition" title={t('header.creditsTitle')}>
-                <Zap size={16} className="text-brand-accent" />
+                <Zap size={16} className="text-brand-signal" />
                 <span className="hidden lg:inline">{t('header.credits')}</span>
                 {creditoChecked && creditoBalance !== null && creditoBalance > 0 && (
                   <span className="absolute -top-1 -right-1 bg-brand-accent text-brand-dark text-[9px] font-black px-1.5 py-0.5 rounded-full min-w-[16px] text-center">{creditoBalance}</span>
@@ -211,7 +218,7 @@ export function Header() {
                 className="md:hidden p-2 hover:bg-white/10 rounded-lg transition relative"
                 title={t('header.credits')}
               >
-                <Zap size={20} className="text-brand-accent" />
+                <Zap size={20} className="text-brand-signal" />
                 {creditoChecked && creditoBalance !== null && creditoBalance > 0 && (
                   <span className="absolute top-0 right-0 bg-brand-accent text-brand-dark text-[9px] font-black px-1 rounded-full min-w-[16px] text-center leading-4">{creditoBalance}</span>
                 )}
@@ -232,8 +239,8 @@ export function Header() {
 
               {!user ? (
                 <>
-                  <LocalLink href="/login" className="hidden md:inline px-3 py-2 text-sm font-medium hover:text-brand-accent transition">{t('header.signIn')}</LocalLink>
-                  <LocalLink href="/register" className="hidden md:inline bg-brand-accent text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-accent/90 transition">{t('header.signUp')}</LocalLink>
+                  <LocalLink href="/login" className="hidden md:inline px-3 py-2 text-sm font-bold hover:text-brand-signal transition">{t('header.signIn')}</LocalLink>
+                  <LocalLink href="/register" className="hidden md:inline bg-brand-signal text-brand-darkNav px-4 py-2 rounded-full text-sm font-black hover:bg-brand-signal-dark transition">{t('header.signUp')}</LocalLink>
                   {!isPWA && (
                     <button 
                       aria-label={mobileOpen ? t('header.closeMenu') : t('header.openMenu')}
@@ -246,7 +253,7 @@ export function Header() {
                 </>
               ) : (
                 <>
-                  <LocalLink href="/publicar" className="hidden md:flex items-center gap-1 bg-brand-accent text-white px-3 py-2 rounded-lg text-sm font-bold hover:brightness-110 transition">
+                  <LocalLink href="/publicar" className="hidden md:flex items-center gap-1.5 bg-brand-signal text-brand-darkNav px-4 py-2 rounded-full text-sm font-black hover:bg-brand-signal-dark transition shadow-signal-glow">
                     <PlusCircle size={16} /> {t('header.publish')}
                   </LocalLink>
                   <LocalLink 
@@ -257,7 +264,7 @@ export function Header() {
                   >
                     <MessageCircle size={20} />
                     {unreadCount > 0 && (
-                      <span className="absolute top-0.5 right-0.5 bg-brand-dark text-white text-[10px] font-bold w-4 h-4 flex items-center justify-center rounded-full">{unreadCount > 9 ? '9+' : unreadCount}</span>
+                      <span className="absolute top-0.5 right-0.5 bg-brand-signal text-brand-darkNav text-[10px] font-black w-4 h-4 flex items-center justify-center rounded-full">{unreadCount > 9 ? '9+' : unreadCount}</span>
                     )}
                   </LocalLink>
                   <LocalLink 
@@ -299,11 +306,11 @@ export function Header() {
                 {!user ? (
                   <>
                     <LocalLink href="/login" onClick={() => setMobileOpen(false)} className="px-3 py-2 rounded-lg hover:bg-white/10 transition">{t('header.signIn')}</LocalLink>
-                    <LocalLink href="/register" onClick={() => setMobileOpen(false)} className="px-3 py-2 rounded-lg bg-brand-accent text-white font-bold text-center transition">{t('header.signUpFree')}</LocalLink>
+                    <LocalLink href="/register" onClick={() => setMobileOpen(false)} className="px-3 py-2 rounded-full bg-brand-signal text-brand-darkNav font-black text-center transition">{t('header.signUpFree')}</LocalLink>
                   </>
                 ) : (
                   <>
-                    <LocalLink href="/publicar" onClick={() => setMobileOpen(false)} className="px-3 py-2 rounded-lg bg-brand-accent text-white font-bold text-center transition">📢 {t('header.publishSomething')}</LocalLink>
+                    <LocalLink href="/publicar" onClick={() => setMobileOpen(false)} className="px-3 py-2 rounded-full bg-brand-signal text-brand-darkNav font-black text-center transition">📢 {t('header.publishSomething')}</LocalLink>
                     <LocalLink href="/chat" onClick={() => setMobileOpen(false)} className="px-3 py-2 rounded-lg hover:bg-white/10 transition">💬 {t('header.messages')}{unreadCount > 0 ? t('header.messagesWithCount').replace('{count}', String(unreadCount)) : ''}</LocalLink>
                     <LocalLink href="/dashboard" onClick={() => setMobileOpen(false)} className="px-3 py-2 rounded-lg hover:bg-white/10 transition">👤 {t('header.myPanel')}</LocalLink>
                     <LocalLink href="/creditos" onClick={() => setMobileOpen(false)} className="px-3 py-2 rounded-lg hover:bg-white/10 transition">⚡ {t('header.credits')}{creditoChecked && creditoBalance !== null && creditoBalance > 0 ? t('header.creditsAvailable').replace('{count}', String(creditoBalance)) : ''}</LocalLink>
@@ -325,7 +332,7 @@ export function Header() {
           <div className="flex items-center gap-1 h-11 overflow-x-auto hide-scrollbar">
             <LocalLink
               href="/catalogo"
-              className="flex items-center gap-1.5 px-3 py-2 text-sm rounded-lg transition font-bold whitespace-nowrap text-brand-primary bg-green-50 hover:bg-green-100"
+              className="flex items-center gap-1.5 px-3 py-2 text-sm rounded-lg transition font-black whitespace-nowrap text-brand-signal bg-brand-darkNav hover:bg-brand-primary"
             >
               <span className="text-base">🔍</span>
               {t('header.allCategories')}
@@ -334,14 +341,14 @@ export function Header() {
             {familiasNav.map((f) => (
               <Fragment key={f.key}>
                 <span aria-hidden="true" className="mx-1 text-gray-300 select-none">•</span>
-                <span className="flex items-center gap-1 px-1.5 text-[11px] font-black uppercase tracking-wide text-gray-400 whitespace-nowrap">
+                <span className="flex items-center gap-1 px-1.5 text-[11px] font-black uppercase tracking-wide text-brand-signal-dark/80 whitespace-nowrap">
                   <span className="text-sm">{f.icon}</span> {f.nombre}
                 </span>
                 {f.tipos.map((tipo) => (
                   <LocalLink
                     key={tipo.id}
                     href={tipo.href}
-                    className="flex items-center gap-1.5 px-2.5 py-2 text-sm rounded-lg transition font-medium whitespace-nowrap text-gray-600 hover:text-brand-accent-dark hover:bg-green-50"
+                    className="flex items-center gap-1.5 px-2.5 py-2 text-sm rounded-lg transition font-semibold whitespace-nowrap text-gray-600 hover:text-brand-darkNav hover:bg-brand-signal/25"
                   >
                     <span className="text-base">{tipo.icon}</span>
                     {tipo.nombre}
@@ -353,7 +360,7 @@ export function Header() {
             <span aria-hidden="true" className="mx-1 text-gray-300 select-none">•</span>
             <LocalLink
               href="/marcas"
-              className="flex items-center gap-1.5 px-3 py-2 text-sm rounded-lg transition font-medium whitespace-nowrap text-gray-600 hover:text-brand-accent-dark hover:bg-green-50"
+              className="flex items-center gap-1.5 px-3 py-2 text-sm rounded-lg transition font-semibold whitespace-nowrap text-gray-600 hover:text-brand-darkNav hover:bg-brand-signal/25"
             >
               <span className="text-base">🏷️</span>
               {t('header.brands')}

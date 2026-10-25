@@ -160,6 +160,14 @@
       "viewAll": "See all guides",
       "readMore": "Read guide",
       "minRead": "min read"
+    },
+    "kicker": {
+      "buy": "Choose your world",
+      "new": "Fresh on the market",
+      "market": "Second-hand market",
+      "sell": "List & sell",
+      "learn": "Before you buy",
+      "near": "Near you"
     }
   },
   "notFound": {
