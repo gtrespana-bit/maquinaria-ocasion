@@ -2,7 +2,7 @@ import { serializeJsonLd } from '@/lib/serialize-json-ld'
 import LocalLink from '@/components/LocalLink'
 import Image from 'next/image'
 import {
-  Search, Star, FileCheck, ShieldCheck, MapPin, ChevronRight, ArrowRight,
+  Search, Star, FileCheck, ShieldCheck, MapPin, ChevronRight, ArrowRight, Package,
   Tractor, Hammer, Wrench, Zap, Gauge, Camera, MessageCircle, BadgeCheck,
 } from 'lucide-react'
 import { supabase } from '@/lib/supabase-server-client'
@@ -199,9 +199,89 @@ const ICONO_FILIA: Record<string, any> = {
   herramientas: Wrench,
 }
 
+/** Conteos en vivo (la home se regenera con revalidate) para las señales de confianza. */
+async function getConteos() {
+  if (!supabase) return null
+  try {
+    const [anuncios, vendedores] = await Promise.all([
+      supabase.from('productos').select('id', { count: 'exact', head: true }).eq('activo', true).or(MODERACION),
+      supabase.from('perfiles').select('id', { count: 'exact', head: true }).eq('verificado', true),
+    ])
+    if (anuncios.error || vendedores.error) return null
+    return { anuncios: anuncios.count ?? 0, vendedores: vendedores.count ?? 0 }
+  } catch {
+    return null
+  }
+}
+
+/** Nº de anuncios activos de una familia (para el mosaico con conteo). */
+async function countProductosFamilia(categoria: string): Promise<number | null> {
+  if (!supabase) return null
+  try {
+    const { data: catRow } = await supabase
+      .from('categorias')
+      .select('id')
+      .eq('nombre', categoria)
+      .maybeSingle()
+    if (!catRow) return 0
+    const { count, error } = await supabase
+      .from('productos')
+      .select('id', { count: 'exact', head: true })
+      .eq('activo', true)
+      .eq('categoria_id', catRow.id)
+      .or(MODERACION)
+    if (error) return null
+    return count ?? 0
+  } catch {
+    return null
+  }
+}
+
+/**
+ * Anuncios con precio reducido (transparencia de precios): el último cambio
+ * de `historial_precios` subió… no: bajó el precio respecto al anterior y el
+ * precio actual sigue por debajo de ese «antes».
+ */
+async function getPreciosReducidos(limit = 8): Promise<{ p: any; precioAnterior: number; descuento: number }[]> {
+  if (!supabase) return []
+  try {
+    const { data: cambios, error } = await supabase
+      .from('historial_precios')
+      .select('producto_id, precio_anterior, precio_nuevo')
+      .order('creado_en', { ascending: false })
+      .limit(120)
+    if (error || !cambios || cambios.length === 0) return []
+    const ultimos = new Map<string, number>()
+    for (const c of cambios) {
+      if (!ultimos.has(c.producto_id)) ultimos.set(c.producto_id, Number(c.precio_anterior))
+    }
+    const ids = [...ultimos.keys()].slice(0, 60)
+    if (ids.length === 0) return []
+    const { data: prods } = await supabase
+      .from('productos')
+      .select(PRODUCT_COLS)
+      .eq('activo', true)
+      .or(MODERACION)
+      .in('id', ids)
+    if (!prods || prods.length === 0) return []
+    const reducidos: { p: any; precioAnterior: number; descuento: number }[] = []
+    for (const p of prods as any[]) {
+      const antes = ultimos.get(p.id) || 0
+      const actual = Number(p.precio_usd || 0)
+      if (antes > 0 && actual > 0 && actual < antes) {
+        reducidos.push({ p, precioAnterior: antes, descuento: Math.round((1 - actual / antes) * 100) })
+      }
+    }
+    reducidos.sort((a, b) => b.descuento - a.descuento)
+    return reducidos.slice(0, limit)
+  } catch {
+    return []
+  }
+}
+
 // ── Componentes ───────────────────────────────────────────────────────────
 
-function ProductCard({ p, highlighted = false, priority = false, t }: { p: any; highlighted?: boolean; priority?: boolean; t: any }) {
+function ProductCard({ p, highlighted = false, priority = false, t, precioAnterior, descuento }: { p: any; highlighted?: boolean; priority?: boolean; t: any; precioAnterior?: number | null; descuento?: number | null }) {
   const imgUrl = p.imagen_url || '/placeholder-product.webp'
   const meta = [p.estado, p.ubicacion_ciudad || '', relativeTime(p.creado_en, t)].filter(Boolean).join(' · ')
 
@@ -220,6 +300,11 @@ function ProductCard({ p, highlighted = false, priority = false, t }: { p: any; 
             <Star size={11} className="fill-current" /> {t('home.productCard.featured')}
           </div>
         )}
+        {descuento && descuento > 0 && precioAnterior ? (
+          <div className="absolute top-3 right-3 z-10 bg-brand-orange text-white text-[11px] font-black px-2 py-1 rounded-lg shadow-md tabular-nums">
+            −{descuento}%
+          </div>
+        ) : null}
         <Image
           src={imgUrl}
           alt={p.titulo}
@@ -234,7 +319,14 @@ function ProductCard({ p, highlighted = false, priority = false, t }: { p: any; 
         />
         {/* Precio sobre la foto — el dato que más pesa en la decisión */}
         <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-brand-darkNav/90 via-brand-darkNav/55 to-transparent p-3 pt-8">
-          <p className="text-xl font-black tracking-tight text-white leading-none">{formatPrecio(p.precio_usd || 0)}</p>
+          <div className="flex items-baseline gap-2 flex-wrap">
+            <p className="text-xl font-black tracking-tight text-white leading-none">{formatPrecio(p.precio_usd || 0)}</p>
+            {descuento && descuento > 0 && precioAnterior ? (
+              <span className="text-[11px] font-bold text-white/70 line-through leading-none">
+                {t('home.productCard.priceBefore')} {formatPrecio(precioAnterior)}
+              </span>
+            ) : null}
+          </div>
         </div>
       </div>
       <div className="px-4 py-3">
@@ -299,6 +391,15 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
     getProductos(8, undefined, 'herramientas'),
   ])
   const itemsPorFamilia: Record<string, any[]> = { agricola, obra, herramientas }
+
+  const [conteos, reducidos, conteosFamilia] = await Promise.all([
+    getConteos(),
+    getPreciosReducidos(8),
+    Promise.all(FAMILIAS.map(f => countProductosFamilia(f.key))),
+  ])
+  const conteoPorFamilia: Record<string, number | null> = {}
+  FAMILIAS.forEach((f, i) => { conteoPorFamilia[f.key] = conteosFamilia[i] })
+  const nf = new Intl.NumberFormat(locale === 'en' ? 'en-US' : 'es-ES')
 
   const provincias = getProvinciasPopulares()
   const guias = getUltimasGuias(3)
@@ -528,7 +629,14 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
                     <span className="w-11 h-11 rounded-xl bg-brand-signal text-brand-darkNav flex items-center justify-center mb-3 shadow-signal-glow">
                       <Icono size={22} strokeWidth={2.4} />
                     </span>
-                    <h3 className="text-2xl font-black text-white tracking-tight">{t(`familias.${f.key}.label`)}</h3>
+                    <div className="flex items-center gap-2.5 flex-wrap">
+                      <h3 className="text-2xl font-black text-white tracking-tight">{t(`familias.${f.key}.label`)}</h3>
+                      {conteoPorFamilia[f.key] != null && conteoPorFamilia[f.key]! > 0 && (
+                        <span className="text-[11px] font-black text-brand-signal bg-brand-darkNav/70 border border-brand-signal/40 rounded-full px-2.5 py-0.5 tabular-nums">
+                          {t('home.categories.countLabel', { count: nf.format(conteoPorFamilia[f.key]!) })}
+                        </span>
+                      )}
+                    </div>
                     <p className="text-sm text-gray-300 mt-1.5 line-clamp-2 leading-snug">{t(`familias.${f.key}.desc`)}</p>
                     <div className="mt-3 flex flex-wrap gap-1.5 max-h-[54px] overflow-hidden">
                       {f.subs.slice(0, 4).map(slug => {
@@ -566,13 +674,50 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
           />
           <SectionGrid items={recientes} t={t} />
         </section>
+
+        {/* ═══════════ PRECIOS REDUCIDOS — transparencia (historial público) ═══════════ */}
+        {reducidos.length > 0 && (
+          <section className="pb-12">
+            <SectionHeader
+              title={t('home.reduced.title')}
+              subtitle={t('home.reduced.subtitle')}
+              href="/catalogo"
+              viewAll={t('home.viewAll')}
+              kicker={t('home.kicker.reduced')}
+            />
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-5">
+              {reducidos.map(r => (
+                <ProductCard
+                  key={r.p.id}
+                  p={r.p}
+                  t={t}
+                  precioAnterior={r.precioAnterior}
+                  descuento={r.descuento}
+                />
+              ))}
+            </div>
+          </section>
+        )}
       </div>
 
       {/* ═══════════ BANDA DE CONFIANZA — oscura con iconos de señal ═══════════ */}
       <section className="band-dark border-y-4 border-brand-signal">
-        <div className="max-w-7xl mx-auto px-4 py-10 grid grid-cols-2 md:grid-cols-5 gap-6">
+        <div className="max-w-7xl mx-auto px-4 py-10 grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-6">
           {[
-            { icon: ShieldCheck, label: t('home.stats.verified'), desc: t('home.stats.verifiedDesc') },
+            {
+              icon: ShieldCheck,
+              label: conteos && conteos.vendedores > 0
+                ? t('home.stats.verifiedCount', { count: nf.format(conteos.vendedores) })
+                : t('home.stats.verified'),
+              desc: t('home.stats.verifiedDesc'),
+            },
+            {
+              icon: Package,
+              label: conteos && conteos.anuncios > 0
+                ? t('home.stats.listings', { count: nf.format(conteos.anuncios) })
+                : t('home.recent.title'),
+              desc: t('home.recent.subtitle'),
+            },
             { icon: MapPin, label: t('home.stats.allSpain'), desc: t('home.stats.allSpainDesc') },
             { icon: FileCheck, label: t('home.stats.homologation'), desc: t('home.stats.homologationDesc') },
             { icon: Zap, label: t('home.stats.free'), desc: t('home.stats.freeDesc') },

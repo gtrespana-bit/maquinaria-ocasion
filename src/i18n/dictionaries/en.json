@@ -69,12 +69,15 @@
       "free": "0% commissions",
       "freeDesc": "Listing and selling are free",
       "homologation": "Reviewed paperwork",
-      "homologationDesc": "Vehicle file checked by our team"
+      "homologationDesc": "Vehicle file checked by our team",
+      "listings": "{count} active listings",
+      "verifiedCount": "{count} verified sellers"
     },
     "categories": {
       "title": "Explore by family",
       "subtitle": "Farm, construction and professional tools: pick your world, then narrow by type",
-      "viewAll": "Brands & models"
+      "viewAll": "Brands & models",
+      "countLabel": "{count} listings"
     },
     "recent": {
       "title": "Newly listed",
@@ -107,7 +110,8 @@
       "note": "No commission · List today, sell today"
     },
     "productCard": {
-      "featured": "Featured"
+      "featured": "Featured",
+      "priceBefore": "Was"
     },
     "timeAgo": {
       "now": "just now",
@@ -167,7 +171,12 @@
       "market": "Second-hand market",
       "sell": "List & sell",
       "learn": "Before you buy",
-      "near": "Near you"
+      "near": "Near you",
+      "reduced": "Price cut"
+    },
+    "reduced": {
+      "title": "Price drops",
+      "subtitle": "Machines whose price dropped since they were listed. Full history on each listing."
     }
   },
   "notFound": {
