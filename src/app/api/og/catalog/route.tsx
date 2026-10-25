@@ -78,7 +78,7 @@ export async function GET(request: NextRequest) {
         </div>
         <h1 style={{ fontSize: '58px', fontWeight: 'bold', textAlign: 'center', textShadow: '2px 2px 4px rgba(0,0,0,0.5)', lineHeight: 1.2 }}>{cat.name}</h1>
         <p style={{ fontSize: '34px', marginTop: '18px', textAlign: 'center', opacity: 0.9 }}>{cat.tagline}</p>
-        <div style={{ position: 'absolute', bottom: '20px', fontSize: '24px', fontWeight: 'bold', color: 'white', textShadow: '2px 2px 4px rgba(0,0,0,0.5)' }}>maquinariaocasion.online</div>
+        <div style={{ position: 'absolute', bottom: '20px', fontSize: '24px', fontWeight: 'bold', color: 'white', textShadow: '2px 2px 4px rgba(0,0,0,0.5)' }}>maquinaria.click</div>
       </div>
     ),
     {

@@ -41,8 +41,8 @@ next-env.d.ts
 # Lighthouse & performance reports (kept in docs/lighthouse/)
 lh-*.json
 lh-*.html
-maquinariaocasion.online_*.report.json
-maquinariaocasion.online_*.report.html
+maquinaria.click_*.report.json
+maquinaria.click_*.report.html
 
 # Batch & URL generation scripts (dev utilities)
 batch_*.txt

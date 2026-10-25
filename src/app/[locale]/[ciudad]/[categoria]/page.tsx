@@ -74,14 +74,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description,
       type: 'website',
       locale: 'es_ES',
-      url: `https://maquinariaocasion.online/${ciudad}/${categoria}`,
-      images: [{ url: `https://maquinariaocasion.online/api/og/catalog?categoria=${ogParam}`, width: 1200, height: 630, alt: title }],
+      url: `https://maquinaria.click/${ciudad}/${categoria}`,
+      images: [{ url: `https://maquinaria.click/api/og/catalog?categoria=${ogParam}`, width: 1200, height: 630, alt: title }],
     },
     twitter: {
       card: 'summary_large_image',
       title,
       description,
-      images: [`https://maquinariaocasion.online/api/og/catalog?categoria=${ogParam}`],
+      images: [`https://maquinaria.click/api/og/catalog?categoria=${ogParam}`],
     },
     alternates: alternatesSeo(`/${ciudad}/${categoria}`),
     robots: {
@@ -154,7 +154,7 @@ export default async function CategoriaPage({ params }: Props) {
     { label: cat.nombre, href: undefined }
   ]
 
-  const SITIO = 'https://maquinariaocasion.online'
+  const SITIO = 'https://maquinaria.click'
   const pageUrl = SITIO + '/' + ciudad + '/' + categoria
 
   const breadcrumbJsonLd = {

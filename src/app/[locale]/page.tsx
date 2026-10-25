@@ -468,7 +468,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
   const provincias = getProvinciasPopulares()
   const guias = getUltimasGuias(3)
   const subs = TODAS_LAS_SUBS
-  const jsonLd = generateItemListSchema(recientes, 'https://maquinariaocasion.online')
+  const jsonLd = generateItemListSchema(recientes, 'https://maquinaria.click')
 
   const beneficios = [
     { icon: ShieldCheck, label: t('home.stats.verified'), desc: t('home.stats.verifiedDesc') },

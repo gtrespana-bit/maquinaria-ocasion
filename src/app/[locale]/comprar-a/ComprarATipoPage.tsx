@@ -34,7 +34,7 @@ const TIPO_A_PLURAL_KEY: Record<SlugTipo, string> = {
   profesionales: 'profesionales',
 }
 
-const BASE_URL = 'https://maquinariaocasion.online'
+const BASE_URL = 'https://maquinaria.click'
 const LIMITE = 24
 
 export async function metadataParaTipo(locale: string, slug: SlugTipo): Promise<Metadata> {

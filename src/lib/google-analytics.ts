@@ -18,7 +18,7 @@
  */
 
 /**
- * Propiedad GA4 de MaquinariaOcasión (maquinariaocasion.online). No es un secreto —el
+ * Propiedad GA4 de MaquinariaOcasión (maquinaria.click). No es un secreto —el
  * ID de medición va en el HTML de cualquier web con Analytics—, por eso vive
  * aquí: la web mide sin tener que tocar Vercel.
  */

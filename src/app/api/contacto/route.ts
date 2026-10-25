@@ -7,7 +7,7 @@ import { enviarEmailDetallado, emailConfigurado } from '@/lib/server-email'
 const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN
 const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID
 const CONTACTO_DESTINO =
-  process.env.CONTACTO_EMAIL || 'soporte@maquinariaocasion.online'
+  process.env.CONTACTO_EMAIL || 'soporte@maquinaria.click'
 
 /** Rate limiter distribuido vía Supabase */
 async function checkContactRateLimit(ip: string): Promise<boolean> {
@@ -114,7 +114,7 @@ export async function POST(req: NextRequest) {
       // Telegram sigue saliendo aunque falle el email.
       await sendTelegramAlert(asuntoClean, nombreClean, emailClean, mensajeClean)
       return NextResponse.json(
-        { error: 'No se pudo enviar el mensaje por email. Inténtalo de nuevo o escríbenos a soporte@maquinariaocasion.online.' },
+        { error: 'No se pudo enviar el mensaje por email. Inténtalo de nuevo o escríbenos a soporte@maquinaria.click.' },
         { status: 502 },
       )
     }

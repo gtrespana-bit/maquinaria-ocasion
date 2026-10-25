@@ -56,19 +56,19 @@ export const metadata: Metadata = {
   title: 'Guías de compra y venta de maquinaria',
   description: 'Guías para comprar y vender maquinaria de ocasión: precios, horas de uso, documentación y consejos para elegir en España.',
   alternates: {
-    canonical: 'https://maquinariaocasion.online/blog',
+    canonical: 'https://maquinaria.click/blog',
     languages: {
-      'es-ES': 'https://maquinariaocasion.online/blog',
-      'x-default': 'https://maquinariaocasion.online/blog',
+      'es-ES': 'https://maquinaria.click/blog',
+      'x-default': 'https://maquinaria.click/blog',
     },
     types: {
-      'application/rss+xml': 'https://maquinariaocasion.online/feed.xml',
+      'application/rss+xml': 'https://maquinaria.click/feed.xml',
     },
   },
   openGraph: {
     title: 'Guías de compra y venta de maquinaria',
     description: 'Guías de compra de maquinaria: precios, documentación y consejos para elegir.',
-    url: 'https://maquinariaocasion.online/blog',
+    url: 'https://maquinaria.click/blog',
     siteName: 'MaquinariaOcasión',
     type: 'website',
     locale: 'es_ES',
@@ -93,7 +93,7 @@ export default async function BlogPage({ params }: { params: Promise<{ locale: s
   const featured = posts.filter(p => p.featured)
   const regular = posts.filter(p => !p.featured)
 
-  const SITIO = 'https://maquinariaocasion.online'
+  const SITIO = 'https://maquinaria.click'
   const breadcrumbJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',

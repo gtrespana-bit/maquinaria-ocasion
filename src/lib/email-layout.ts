@@ -18,8 +18,8 @@ export const COLORS = {
   success: '#059669',
 }
 
-const URL_BASE = (typeof process !== 'undefined' && process.env?.NEXT_PUBLIC_URL) || 'https://maquinariaocasion.online'
-const CONTACT = 'soporte@maquinariaocasion.online'
+const URL_BASE = (typeof process !== 'undefined' && process.env?.NEXT_PUBLIC_URL) || 'https://maquinaria.click'
+const CONTACT = 'soporte@maquinaria.click'
 const LOGO = `${URL_BASE}/logo-maquinariaocasion.png`
 
 export function emailLayout(title: string, body: string, ctaText?: string, ctaUrl?: string): string {

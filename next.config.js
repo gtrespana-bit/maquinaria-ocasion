@@ -80,7 +80,7 @@ const nextConfig = withNextIntl({
 
   // Redirigir los dominios alternativos al dominio canónico conservando
   // la ruta y los parámetros de búsqueda. Ejemplo:
-  // vendet.online/catalogo?q=ducato → maquinariaocasion.online/catalogo?q=ducato
+  // vendet.online/catalogo?q=ducato → maquinaria.click/catalogo?q=ducato
   // maquinariaocasion.es (dominio anterior) también cae en 301 por si se
   // apuntara a Vercel en el futuro.
   // Redirigir los hosts alternativos al dominio canónico conservando ruta
@@ -89,8 +89,8 @@ const nextConfig = withNextIntl({
     return [
       {
         source: '/:path*',
-        has: [{ type: 'host', value: 'www.maquinariaocasion.online' }],
-        destination: 'https://maquinariaocasion.online/:path*',
+        has: [{ type: 'host', value: 'www.maquinaria.click' }],
+        destination: 'https://maquinaria.click/:path*',
         permanent: true,
       },
     ]

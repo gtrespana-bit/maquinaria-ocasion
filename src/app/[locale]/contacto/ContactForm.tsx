@@ -170,7 +170,7 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <p className="font-medium text-gray-800">Email</p>
-                  <p className="text-sm text-gray-500">soporte@maquinariaocasion.online</p>
+                  <p className="text-sm text-gray-500">soporte@maquinaria.click</p>
                 </div>
               </div>
               <div className="flex items-center gap-3">

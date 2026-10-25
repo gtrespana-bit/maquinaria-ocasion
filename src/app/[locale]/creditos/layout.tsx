@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     title: 'Créditos y destacados para tu maquinaria',
     description:
       'Destaca tu anuncio de maquinaria con créditos desde 5 €, sin suscripción.',
-    url: 'https://maquinariaocasion.online/creditos',
+    url: 'https://maquinaria.click/creditos',
     siteName: 'MaquinariaOcasión',
     type: 'website',
     locale: 'es_ES',

@@ -39,8 +39,8 @@ const ACTUALIZADO: Record<IdiomaLegal, string> = {
   en: 'Last updated: October 2026',
 }
 
-const BUZON_PRIVACIDAD = 'privacidad@maquinariaocasion.online'
-const BUZON_LEGAL = 'legal@maquinariaocasion.online'
+const BUZON_PRIVACIDAD = 'privacidad@maquinaria.click'
+const BUZON_LEGAL = 'legal@maquinaria.click'
 
 /* ══════════════════════════════════════════════════════════════════════════
    AVISO LEGAL — LSSI art. 10
@@ -57,7 +57,7 @@ export const AVISO_LEGAL: Record<IdiomaLegal, DocumentoLegal> = {
       {
         titulo: '1. Datos del titular',
         parrafos: [
-          'Los datos identificativos del titular de maquinariaocasion.online se muestran a continuación. Para cualquier comunicación puedes usar el correo indicado o el formulario de contacto.',
+          'Los datos identificativos del titular de maquinaria.click se muestran a continuación. Para cualquier comunicación puedes usar el correo indicado o el formulario de contacto.',
         ],
       },
       {
@@ -118,7 +118,7 @@ export const AVISO_LEGAL: Record<IdiomaLegal, DocumentoLegal> = {
       {
         titulo: '1. Owner details',
         parrafos: [
-          'The identifying details of the owner of maquinariaocasion.online are shown below. You can reach us at the email address provided or through the contact form.',
+          'The identifying details of the owner of maquinaria.click are shown below. You can reach us at the email address provided or through the contact form.',
         ],
       },
       {
@@ -186,7 +186,7 @@ export const POLITICA_PRIVACIDAD: Record<IdiomaLegal, DocumentoLegal> = {
       {
         titulo: '1. Responsable del tratamiento',
         parrafos: [
-          'El responsable del tratamiento es el titular de maquinariaocasion.online, cuyos datos identificativos figuran en el aviso legal. Para cualquier cuestión sobre privacidad puedes escribir a ' + BUZON_PRIVACIDAD + '.',
+          'El responsable del tratamiento es el titular de maquinaria.click, cuyos datos identificativos figuran en el aviso legal. Para cualquier cuestión sobre privacidad puedes escribir a ' + BUZON_PRIVACIDAD + '.',
         ],
       },
       {
@@ -288,7 +288,7 @@ export const POLITICA_PRIVACIDAD: Record<IdiomaLegal, DocumentoLegal> = {
       {
         titulo: '1. Data controller',
         parrafos: [
-          'The controller is the owner of maquinariaocasion.online, whose identifying details appear in the legal notice. For any privacy question you can write to ' + BUZON_PRIVACIDAD + '.',
+          'The controller is the owner of maquinaria.click, whose identifying details appear in the legal notice. For any privacy question you can write to ' + BUZON_PRIVACIDAD + '.',
         ],
       },
       {

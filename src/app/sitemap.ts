@@ -8,7 +8,7 @@ import { CIUDADES_SEO, CATEGORIAS_POPULARES } from '@/lib/ubicaciones-seo'
 import { CATEGORIAS_SEO_LIST, SUBCATEGORIAS_SEO } from '@/lib/categorias-seo'
 import { limpiarComillas } from '@/lib/seo'
 
-const BASE_URL = 'https://maquinariaocasion.online'
+const BASE_URL = 'https://maquinaria.click'
 const PAGE_SIZE = 1000
 
 // El sitemap se regenera periódicamente para descubrir anuncios nuevos sin

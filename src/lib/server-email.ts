@@ -6,16 +6,16 @@ import { emailLayout, card, priceLine, COLORS } from '@/lib/email-layout'
 import { escapeHtml } from '@/lib/html-escape'
 
 // ─── Remitente ─────────────────────────────────────────────
-// Configurable con EMAIL_FROM. Por defecto noreply@maquinariaocasion.online.
+// Configurable con EMAIL_FROM. Por defecto noreply@maquinaria.click.
 // IMPORTANTE (Resend): el dominio del `from` debe estar verificado en
-// Resend (Domains → maquinariaocasion.online → Verified). Si aún no lo verificas,
+// Resend (Domains → maquinaria.click → Verified). Si aún no lo verificas,
 // Resend rechaza el envío con 403 y el correo NUNCA llega.
 // Mientras verificas, puedes usar temporalmente:
 //   EMAIL_FROM="MaquinariaOcasión <onboarding@resend.dev>"
 // pero en ese modo Resend solo entrega al email dueño de la cuenta.
 const FROM =
-  process.env.EMAIL_FROM || '"MaquinariaOcasión" <noreply@maquinariaocasion.online>'
-const URL = process.env.NEXT_PUBLIC_URL || 'https://maquinariaocasion.online'
+  process.env.EMAIL_FROM || '"MaquinariaOcasión" <noreply@maquinaria.click>'
+const URL = process.env.NEXT_PUBLIC_URL || 'https://maquinaria.click'
 const htmlText = (value: unknown) => escapeHtml(String(value ?? ''))
 
 // ─── Canal 1: Resend API (preferido) ───────────────────────

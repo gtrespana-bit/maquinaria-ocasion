@@ -1,6 +1,6 @@
 import type { MetadataRoute } from 'next'
 
-const BASE_URL = 'https://maquinariaocasion.online'
+const BASE_URL = 'https://maquinaria.click'
 
 // ÚNICA fuente de verdad para robots.txt.
 // NO crear otro robots en public/ ni en [locale]/: el archivo en public/

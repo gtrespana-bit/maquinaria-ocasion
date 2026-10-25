@@ -120,7 +120,7 @@ export default async function LandingCiudad({ slug, nombre, municipio, estado, d
   const faqJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
-    '@id': `https://maquinariaocasion.online/${slug}#faq`,
+    '@id': `https://maquinaria.click/${slug}#faq`,
     mainEntity: faqs.map(f => ({
       '@type': 'Question',
       name: f.pregunta,

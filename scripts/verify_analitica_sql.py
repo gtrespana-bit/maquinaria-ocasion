@@ -161,7 +161,7 @@ check(contar("select count(*) from public.visitas_pagina") == 3, 'la retención 
 check(
     intentar(
         "insert into public.planes_regalos (user_id, plan, dias, modo, motivo, admin_email) "
-        "values (%s,'unlimited',90,'extender','colaboración','admin@maquinariaocasion.online')",
+        "values (%s,'unlimited',90,'extender','colaboración','admin@maquinaria.click')",
         (U_PRO,),
     )
     is None,

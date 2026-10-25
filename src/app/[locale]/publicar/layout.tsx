@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     title: 'Publica tu maquinaria gratis en España',
     description:
       'Crea tu anuncio con fotos, precio y ficha técnica y contacta con compradores de toda España.',
-    url: 'https://maquinariaocasion.online/publicar',
+    url: 'https://maquinaria.click/publicar',
     siteName: 'MaquinariaOcasión',
     type: 'website',
     locale: 'es_ES',

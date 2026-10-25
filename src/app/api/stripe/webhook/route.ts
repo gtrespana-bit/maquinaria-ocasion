@@ -16,7 +16,7 @@
  *    Stripe no duplican créditos.
  *
  * Configuración en Stripe (Dashboard → Developers → Webhooks):
- *   URL     https://maquinariaocasion.online/api/stripe/webhook
+ *   URL     https://maquinaria.click/api/stripe/webhook
  *   Eventos checkout.session.completed, checkout.session.async_payment_succeeded,
  *           customer.subscription.updated, customer.subscription.deleted,
  *           invoice.paid, invoice.payment_failed

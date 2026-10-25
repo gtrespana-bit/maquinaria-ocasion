@@ -28,7 +28,7 @@ export default async function FAQPage({ params }: { params: Promise<{ locale: st
     { question: t('q11'), answer: t('a11') },
   ]
 
-  const SITIO = 'https://maquinariaocasion.online'
+  const SITIO = 'https://maquinaria.click'
   const breadcrumbJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
@@ -73,8 +73,8 @@ export default async function FAQPage({ params }: { params: Promise<{ locale: st
         <div className="bg-brand-accent rounded-xl p-6 mt-8 text-center">
           <h3 className="font-bold text-brand-primary text-lg">{t('noAnswer')}</h3>
           <p className="text-brand-primary/80 mt-1">{t('noAnswerDesc')}</p>
-          <a href="mailto:soporte@maquinariaocasion.online" className="inline-block mt-3 bg-brand-primary text-white px-6 py-2 rounded-lg font-bold hover:bg-brand-dark transition">
-            soporte@maquinariaocasion.online
+          <a href="mailto:soporte@maquinaria.click" className="inline-block mt-3 bg-brand-primary text-white px-6 py-2 rounded-lg font-bold hover:bg-brand-dark transition">
+            soporte@maquinaria.click
           </a>
         </div>
       </div>

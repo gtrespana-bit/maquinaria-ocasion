@@ -103,7 +103,7 @@ los formatea siempre con `formatPrecio()` de `src/lib/precio.ts`.
 
 - 17 Comunidades Autónomas + Ceuta y Melilla (`src/lib/ubicaciones.ts`).
 - Una landing SEO por cada provincia (`/[provincia]`, p. ej.
-  `https://maquinariaocasion.online/madrid`) con keywords como
+  `https://maquinaria.click/madrid`) con keywords como
   *"furgonetas camper segunda mano madrid"*,
   *"camper gran volumen valencia"*, *"autocaravanas ocasión barcelona"*.
 - Landings programáticas provincia + subcategoría
@@ -260,9 +260,9 @@ permite `googletagmanager.com`, `google-analytics.com` y `analytics.google.com`.
 #### Si Google dice «No se ha detectado su etiqueta»
 
 1. **Desplegar los cambios en producción**. Guardarlos en una rama no actualiza
-   `maquinariaocasion.online`. Comprobar que `NEXT_PUBLIC_GA_MEASUREMENT_ID` no es
+   `maquinaria.click`. Comprobar que `NEXT_PUBLIC_GA_MEASUREMENT_ID` no es
    `off` ni apunta a otra propiedad; un cambio de variable requiere nueva build.
-2. Probar **`https://maquinariaocasion.online/`**, no una vista previa ni `/admin`.
+2. Probar **`https://maquinaria.click/`**, no una vista previa ni `/admin`.
    En «Ver código fuente» debe aparecer `ga4-bootstrap` y `G-14MFBYME0R` (o el ID
    configurado). Esto comprueba la instalación del snippet, no la recepción de
    eventos por Google.
@@ -300,7 +300,7 @@ La build es *zero-config*: Vercel detecta Next.js por `package.json` y usa
 4. **Crons**: las 4 rutas de `vercel.json` exigen `CRON_SECRET`; sin ella
    responden 401. En el plan Hobby Vercel limita las ejecuciones de cron al día.
 
-`maquinariaocasion.online` y `www.maquinariaocasion.online` se añaden en
+`maquinaria.click` y `www.maquinaria.click` se añaden en
 *Project → Settings → Domains* con el registro `CNAME cname.vercel-dns.com`
 (apex incluido: Vercel hace *CNAME flattening*; si el proveedor no lo permite,
 `A 76.76.21.21`). Los dominios alternativos `vendet.online` y el anterior

@@ -35,7 +35,7 @@ export function datosTitular(): DatosTitular {
     // El email es obligatorio en la LSSI. Por defecto, el buzón de atención
     // (`soporte@`), que es el que se revisa a diario; los derechos de
     // privacidad siguen teniendo su propio canal en `privacidad@`.
-    email: env(process.env.NEXT_PUBLIC_TITULAR_EMAIL) || env(process.env.NEXT_PUBLIC_EMAIL_CONTACTO) || 'soporte@maquinariaocasion.online',
+    email: env(process.env.NEXT_PUBLIC_TITULAR_EMAIL) || env(process.env.NEXT_PUBLIC_EMAIL_CONTACTO) || 'soporte@maquinaria.click',
     registro: env(process.env.NEXT_PUBLIC_TITULAR_REGISTRO),
   }
 }

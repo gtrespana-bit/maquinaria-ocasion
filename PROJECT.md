@@ -6,7 +6,7 @@
 
 ## General
 - **Producto:** Maquinaria agrícola, de obra y herramientas de ocasión en España
-- **Dominio canónico:** https://maquinariaocasion.online
+- **Dominio canónico:** https://maquinaria.click
 - **Idiomas:** `es` (canónico, indexado) y `en` (disponible, noindex)
 - **Moneda:** Euro (€) — formato `X.XXX €`
 

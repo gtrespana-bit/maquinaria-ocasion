@@ -116,7 +116,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     openGraph: {
       title,
       description,
-      url: `https://maquinariaocasion.online/vendedor/${id}`,
+      url: `https://maquinaria.click/vendedor/${id}`,
       siteName: 'MaquinariaOcasión',
       type: 'profile',
       locale: 'es_ES',
@@ -144,7 +144,7 @@ export default async function VendedorPage({ params }: Props) {
   // JSON-LD: Person/Organization con AggregateRating SOLO si hay reseñas
   // reales — ratingValue sin reviewCount real es spam según las políticas
   // de Google para datos estructurados.
-  const SITIO = 'https://maquinariaocasion.online'
+  const SITIO = 'https://maquinaria.click'
   const perfilJsonLd: any = {
     '@context': 'https://schema.org',
     '@type': perfil.verificado ? 'Organization' : 'Person',

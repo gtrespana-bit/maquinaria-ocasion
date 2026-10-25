@@ -18,8 +18,8 @@ export default async function EliminarCuentaPage({ params }: { params: Promise<{
         <section>
           <h2 className="text-2xl font-bold text-gray-800 mb-3">{t('howTitle')}</h2>
           <p className="text-gray-600 mb-4">
-            <a href="mailto:privacidad@maquinariaocasion.online?subject=Solicitud%20de%20eliminaci%C3%B3n%20de%20cuenta%20%E2%80%94%20MaquinariaOcasión" className="text-blue-600 underline font-medium">
-              privacidad@maquinariaocasion.online
+            <a href="mailto:privacidad@maquinaria.click?subject=Solicitud%20de%20eliminaci%C3%B3n%20de%20cuenta%20%E2%80%94%20MaquinariaOcasión" className="text-blue-600 underline font-medium">
+              privacidad@maquinaria.click
             </a> — {t('howP1')}
           </p>
           <p className="text-gray-600 mb-3">{t('howBody')}</p>
@@ -46,7 +46,7 @@ export default async function EliminarCuentaPage({ params }: { params: Promise<{
         <section className="bg-blue-50 rounded-2xl p-6 border border-blue-100">
           <h3 className="font-bold text-gray-800 mb-2">{t('contactTitle')}</h3>
           <p className="text-gray-600">
-            <a href="mailto:privacidad@maquinariaocasion.online" className="text-blue-600 underline font-medium">privacidad@maquinariaocasion.online</a>
+            <a href="mailto:privacidad@maquinaria.click" className="text-blue-600 underline font-medium">privacidad@maquinaria.click</a>
           </p>
           <p className="text-gray-500 text-sm mt-2">{t('tagline')}</p>
         </section>

@@ -41,7 +41,7 @@ export const viewport: Viewport = {
 }
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://maquinariaocasion.online'),
+  metadataBase: new URL('https://maquinaria.click'),
   title: {
     default: 'Maquinaria agrícola, de obra y herramientas de ocasión | MaquinariaOcasión',
     template: '%s | MaquinariaOcasión',
@@ -69,7 +69,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'es_ES',
-    url: 'https://maquinariaocasion.online',
+    url: 'https://maquinaria.click',
     siteName: 'MaquinariaOcasión',
     title: 'Maquinaria agrícola, de obra y herramientas de ocasión | MaquinariaOcasión',
     description: 'Marketplace especializado en maquinaria agrícola, de obra y herramientas de segunda mano en España. Publica gratis.',
@@ -154,19 +154,19 @@ export default async function RootLayout({
               '@graph': [
                 {
                   '@type': 'Organization',
-                  '@id': 'https://maquinariaocasion.online/#organization',
+                  '@id': 'https://maquinaria.click/#organization',
                   name: 'MaquinariaOcasión',
-                  url: 'https://maquinariaocasion.online/',
+                  url: 'https://maquinaria.click/',
                   logo: {
                     '@type': 'ImageObject',
-                    url: 'https://maquinariaocasion.online/logo-maquinariaocasion.png',
+                    url: 'https://maquinaria.click/logo-maquinariaocasion.png',
                     width: 320,
                     height: 320
                   },
-                  email: process.env.CONTACTO_EMAIL?.trim() || 'soporte@maquinariaocasion.online',
+                  email: process.env.CONTACTO_EMAIL?.trim() || 'soporte@maquinaria.click',
                   contactPoint: {
                     '@type': 'ContactPoint',
-                    email: process.env.CONTACTO_EMAIL?.trim() || 'soporte@maquinariaocasion.online',
+                    email: process.env.CONTACTO_EMAIL?.trim() || 'soporte@maquinaria.click',
                     contactType: 'customer service',
                     availableLanguage: ['Spanish', 'English'],
                     areaServed: 'ES'
@@ -180,18 +180,18 @@ export default async function RootLayout({
                 },
                 {
                   '@type': 'WebSite',
-                  '@id': 'https://maquinariaocasion.online/#website',
+                  '@id': 'https://maquinaria.click/#website',
                   name: 'MaquinariaOcasión',
-                  url: 'https://maquinariaocasion.online/',
+                  url: 'https://maquinaria.click/',
                   inLanguage: 'es-ES',
                   description:
                     'Marketplace especializado en maquinaria y herramienta de ocasión en España.',
-                  publisher: { '@id': 'https://maquinariaocasion.online/#organization' },
+                  publisher: { '@id': 'https://maquinaria.click/#organization' },
                   potentialAction: {
                     '@type': 'SearchAction',
                     target: {
                       '@type': 'EntryPoint',
-                      urlTemplate: 'https://maquinariaocasion.online/catalogo?q={search_term_string}'
+                      urlTemplate: 'https://maquinaria.click/catalogo?q={search_term_string}'
                     },
                     'query-input': 'required name=search_term_string'
                   }

@@ -12,7 +12,7 @@ import { emailLayout } from '@/lib/email-layout'
 import { escapeHtml } from '@/lib/html-escape'
 import { enviarEmailSMTP } from '@/lib/server-email'
 
-const SITIO_URL = process.env.NEXT_PUBLIC_URL || 'https://maquinariaocasion.online'
+const SITIO_URL = process.env.NEXT_PUBLIC_URL || 'https://maquinaria.click'
 
 function getAdminClient() {
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
@@ -99,7 +99,7 @@ export async function enviarRecuperacion(
     return {
       ok: false,
       mensaje:
-        'No se pudo enviar el correo. Inténtalo de nuevo en unos minutos o escríbenos a soporte@maquinariaocasion.online',
+        'No se pudo enviar el correo. Inténtalo de nuevo en unos minutos o escríbenos a soporte@maquinaria.click',
     }
   }
   return { ok: true }

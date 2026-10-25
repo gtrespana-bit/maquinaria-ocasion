@@ -24,7 +24,7 @@ export async function enviarEmailProducto(
   precio: string,
   slug: string
 ) {
-  const url = `${process.env.NEXT_PUBLIC_URL || 'https://maquinariaocasion.online'}/producto/${encodeURIComponent(slug)}`
+  const url = `${process.env.NEXT_PUBLIC_URL || 'https://maquinaria.click'}/producto/${encodeURIComponent(slug)}`
   return enviar('MaquinariaOcasión', email, '✅ Tu anuncio fue publicado', `
     <div style="font-family:sans-serif;max-width:500px;margin:0 auto">
       <h2 style="color:#1e3a8a">Hola ${htmlText(nombre)}!</h2>
@@ -55,7 +55,7 @@ export async function enviarEmailMensaje(
   mensajePreview: string,
   opciones?: { total?: number; conversacionId?: string }
 ) {
-  const base = process.env.NEXT_PUBLIC_URL || 'https://maquinariaocasion.online'
+  const base = process.env.NEXT_PUBLIC_URL || 'https://maquinaria.click'
   const url = opciones?.conversacionId
     ? `${base}/chat?conversation=${opciones.conversacionId}`
     : `${base}/chat`
@@ -118,7 +118,7 @@ export async function enviarEmailVerificacion(
         <p style="font-size:20px;font-weight:bold;margin:12px 0">Tu cuenta fue verificada</p>
         <p>Ahora tienes el sello de verificación visible en todos tus anuncios. Los compradores confían más en vendedores verificados.</p>
       </div>
-      <a href="${htmlText(`${process.env.NEXT_PUBLIC_URL || 'https://maquinariaocasion.online'}/dashboard`)}" style="display:inline-block;background:#1e3a8a;color:#fff;padding:12px 28px;text-decoration:none;border-radius:8px;font-weight:bold">Ir a tu perfil →</a>
+      <a href="${htmlText(`${process.env.NEXT_PUBLIC_URL || 'https://maquinaria.click'}/dashboard`)}" style="display:inline-block;background:#1e3a8a;color:#fff;padding:12px 28px;text-decoration:none;border-radius:8px;font-weight:bold">Ir a tu perfil →</a>
       <p style="color:#6b7280;font-size:12px;margin-top:28px">MaquinariaOcasión</p>
     </div>
   `)
@@ -148,7 +148,7 @@ export async function enviarEmailNivel(
         <p style="font-size:20px;font-weight:bold;margin:12px 0">Ahora eres ${htmlText(nivelNuevo)}</p>
         <p>Subiste de <strong>${htmlText(nivelAnterior)}</strong> a <strong>${htmlText(nivelNuevo)}</strong>!</p>
       </div>
-      <a href="${htmlText(`${process.env.NEXT_PUBLIC_URL || 'https://maquinariaocasion.online'}/dashboard?tab=perfil`)}" style="display:inline-block;background:#1e3a8a;color:#fff;padding:12px 28px;text-decoration:none;border-radius:8px;font-weight:bold">Ver perfil →</a>
+      <a href="${htmlText(`${process.env.NEXT_PUBLIC_URL || 'https://maquinaria.click'}/dashboard?tab=perfil`)}" style="display:inline-block;background:#1e3a8a;color:#fff;padding:12px 28px;text-decoration:none;border-radius:8px;font-weight:bold">Ver perfil →</a>
       <p style="color:#6b7280;font-size:12px;margin-top:28px">MaquinariaOcasión</p>
     </div>
   `)
@@ -205,7 +205,7 @@ export async function enviarDigestVendedor(
   nombre: string,
   stats: { visitas: number; guardados: number; topTitulo?: string }
 ) {
-  const url = `${process.env.NEXT_PUBLIC_URL || 'https://maquinariaocasion.online'}/dashboard`
+  const url = `${process.env.NEXT_PUBLIC_URL || 'https://maquinaria.click'}/dashboard`
   const topLine = stats.topTitulo
     ? `<p style="margin:8px 0 0;color:#4b5563">Tu anuncio más visto: <strong>${htmlText(stats.topTitulo)}</strong></p>`
     : ''
@@ -236,7 +236,7 @@ export async function enviarDigestVendedor(
 // nunca en bucle por cada visita.
 // ────────────────────────────────────────────────────────────────────────────
 
-const SITE_URL = process.env.NEXT_PUBLIC_URL || 'https://maquinariaocasion.online'
+const SITE_URL = process.env.NEXT_PUBLIC_URL || 'https://maquinaria.click'
 
 function fechaLarga(iso?: string | null): string {
   if (!iso) return ''
@@ -446,7 +446,7 @@ export async function enviarEmailWinback(
     ${boton('Recuperar mi cupo', `${SITE_URL}/para-profesionales`)}
     <p style="margin:18px 0 0;font-size:13px;color:${COLORS.gray}">
       Si ya has vuelto a activar Profesional, ignora este mensaje.
-      ¿Tienes dudas? Escríbenos a <a href="mailto:soporte@maquinariaocasion.online" style="color:${COLORS.accent}">soporte@maquinariaocasion.online</a>.
+      ¿Tienes dudas? Escríbenos a <a href="mailto:soporte@maquinaria.click" style="color:${COLORS.accent}">soporte@maquinaria.click</a>.
     </p>
     <p style="margin:22px 0 0;font-size:13px;color:${COLORS.gray}">MaquinariaOcasión — Publica más, vende más</p>
   `
