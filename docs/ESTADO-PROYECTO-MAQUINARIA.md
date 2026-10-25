@@ -212,8 +212,7 @@ Campos transversales: `Año`, `Horas de uso` (el equivalente a kilómetros),
 - Landings por marca (`/marca/[slug]` + `/marcas` + sitemap) y por provincia
   (`/[ciudad]`)
 - Blog con 11 posts originales de maquinaria (8 Guías, 3 Legal)
-- ⏳ Pendiente: 2 fotos de arquetipo (`herramientas`, `taller`) por límite de
-  generación
+- Fotos: 12 arquetipos generados + alias, optimizados (33 JPG → 33 WebP)
 
 ---
 

@@ -117,12 +117,11 @@ marcas asignadas por subcategoría vía `MarcaModelo.aptoPara`.
       migración `supabase/migrations/202610240002_seed_anuncios_maquinaria.sql`
       (regenerar con `node scripts/generar-sql-semilla.js`); aplicada a
       Supabase: 37/37 `es_demo`, 10 perfiles, 0 verificados
-- [x] Fotos optimizadas con `npm run optimize-images` (reescrito con `sharp`:
-      recomprime JPG in-place + genera `.webp` al lado)
+- [x] Fotos de anuncios: 12 arquetipos generados + alias (33 JPG) y optimizados
+      con `npm run optimize-images` (reescrito con `sharp`: recomprime JPG
+      in-place + genera `.webp` al lado — 33 WebP)
 - [x] Landings por marca (`/marca/[slug]`, índice `/marcas`, en sitemap) y
       por provincia (`/[ciudad]`, hecha en Fase 3)
-- [ ] 2 fotos de arquetipo pendientes de generar (`herramientas`, `taller` —
-      límite de 10 imágenes/turno); hasta entonces 3 alias transicionales
 
 ## Servicios externos que hay que crear (nada compartido con camper)
 
