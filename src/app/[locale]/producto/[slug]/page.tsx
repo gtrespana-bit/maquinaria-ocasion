@@ -428,11 +428,11 @@ export default async function ProductoPage({ params }: Props) {
   const jsonLd: any = {
     '@context': 'https://schema.org',
     '@type': 'Product',
-    '@id': `https://maquinariaocasion.online/producto/${producto.slug || slug}`,
+    '@id': `https://maquinaria.click/producto/${producto.slug || slug}`,
     name: producto.titulo,
     description: producto.descripcion?.slice(0, 500) || producto.titulo,
     image: producto.imagen_url ? [producto.imagen_url] : [],
-    url: `https://maquinariaocasion.online/producto/${producto.slug || slug}`,
+    url: `https://maquinaria.click/producto/${producto.slug || slug}`,
     sku: producto.id,
     offers: {
       '@type': 'Offer',
@@ -488,7 +488,7 @@ export default async function ProductoPage({ params }: Props) {
     { label: producto.titulo, href: undefined }
   ]
 
-  const SITIO = 'https://maquinariaocasion.online'
+  const SITIO = 'https://maquinaria.click'
   const productUrlCanonical = SITIO + '/producto/' + (producto.slug || slug)
   const breadcrumbJsonLd = {
     '@context': 'https://schema.org',

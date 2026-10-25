@@ -10,7 +10,7 @@ import { productUrl } from '@/lib/product-url'
 import { formatPrecio } from '@/lib/precio'
 import { alternatesSeo, descripcionSeo, tituloSeo } from '@/lib/seo'
 
-const BASE_URL = 'https://maquinariaocasion.online'
+const BASE_URL = 'https://maquinaria.click'
 const PRODUCT_LIMIT = 24
 
 type Props = {

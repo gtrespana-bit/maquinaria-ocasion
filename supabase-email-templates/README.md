@@ -2,9 +2,9 @@
 
 > Copiar/pegar en **Supabase Dashboard → Authentication → Emails**.
 > SMTP: Resend (configurado 2026-09-17). Remitente por defecto del sitio:
-> `"MaquinariaOcasión" <noreply@maquinariaocasion.online>`.
+> `"MaquinariaOcasión" <noreply@maquinaria.click>`.
 > Branding común: grafito `#0F172A` / verde `#16A34A` / naranja `#EA580C`,
-> español peninsular y dominio `maquinariaocasion.online`.
+> español peninsular y dominio `maquinaria.click`.
 
 ## Autenticación (llevan token o enlace de verificación)
 
@@ -27,7 +27,7 @@ tampoco se envía nada (Supabase lo exige para producción).
 ## Flujo de confirmación del sitio
 
 `{{ .ConfirmationURL }}` → `/api/confirm-email?token=…` → `/confirm` → login.
-Site URL y Redirect URLs deben apuntar a `https://maquinariaocasion.online`
+Site URL y Redirect URLs deben apuntar a `https://maquinaria.click`
 (`./confirm` y `./reset-password` incluidas).
 
 ## Resto de plantillas del dashboard (quedan por personalizar, opcional)

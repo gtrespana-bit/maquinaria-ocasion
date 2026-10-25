@@ -14,7 +14,7 @@ export default async function SobreNosotrosPage({ params }: { params: Promise<{ 
   const { locale } = await params
   setRequestLocale(locale)
   const t = await getTranslations({ locale, namespace: 'about' })
-  const SITIO = 'https://maquinariaocasion.online'
+  const SITIO = 'https://maquinaria.click'
   const breadcrumbJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',

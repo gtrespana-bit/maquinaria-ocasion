@@ -34,7 +34,7 @@ import { emailLayout } from '@/lib/email-layout'
 import { escapeHtml } from '@/lib/html-escape'
 import { enviarEmailDetallado } from '@/lib/server-email'
 
-const SITIO_URL = process.env.NEXT_PUBLIC_URL || 'https://maquinariaocasion.online'
+const SITIO_URL = process.env.NEXT_PUBLIC_URL || 'https://maquinaria.click'
 /** Página de la app que completa la verificación (token en URL). */
 const REDIRECT_CONFIRMACION = `${SITIO_URL}/confirm`
 
@@ -175,7 +175,7 @@ export async function enviarConfirmacion(
   return {
     ok: false,
     codigo: 'smtp',
-    mensaje: 'No se pudo enviar el correo de confirmación. Inténtalo de nuevo en unos minutos o escríbenos a soporte@maquinariaocasion.online',
+    mensaje: 'No se pudo enviar el correo de confirmación. Inténtalo de nuevo en unos minutos o escríbenos a soporte@maquinaria.click',
     detalle,
   }
 }
@@ -232,7 +232,7 @@ export async function reenviarConfirmacion(email: string): Promise<
   return {
     ok: false,
     codigo: 'smtp',
-    mensaje: 'No se pudo enviar el correo de confirmación. Inténtalo de nuevo en unos minutos o escríbenos a soporte@maquinariaocasion.online',
+    mensaje: 'No se pudo enviar el correo de confirmación. Inténtalo de nuevo en unos minutos o escríbenos a soporte@maquinaria.click',
     detalle,
   }
 }

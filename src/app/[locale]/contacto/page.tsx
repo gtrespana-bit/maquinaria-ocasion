@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Contacto — MaquinariaOcasión',
     description: 'Contacta con MaquinariaOcasión: soporte para comprar, vender o publicar tu maquinaria y herramienta en España.',
-    url: 'https://maquinariaocasion.online/contacto',
+    url: 'https://maquinaria.click/contacto',
     siteName: 'MaquinariaOcasión',
     type: 'website',
     locale: 'es_ES',
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 }
 
 export default function ContactPage() {
-  const SITIO = 'https://maquinariaocasion.online'
+  const SITIO = 'https://maquinaria.click'
   const jsonLd = {
     '@context': 'https://schema.org',
     '@graph': [

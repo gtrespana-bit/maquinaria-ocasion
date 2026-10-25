@@ -20,7 +20,7 @@ export function productUrl(p: { id: string; slug?: string | null }): string {
 
 export function productAbsoluteUrl(
   p: { id: string; slug?: string | null },
-  baseUrl = 'https://maquinariaocasion.online'
+  baseUrl = 'https://maquinaria.click'
 ): string {
   return `${baseUrl}${productUrl(p)}`
 }

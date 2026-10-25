@@ -24,17 +24,17 @@ export const metadata: Metadata = {
   description:
     'Publica todo tu stock sin comisión por venta. 19 €/mes, o 190 €/año con 2 meses gratis. 15 anuncios, escaparate, estadísticas y destacados.',
   alternates: {
-    canonical: 'https://maquinariaocasion.online/para-profesionales',
-    languages: { 'es-ES': 'https://maquinariaocasion.online/para-profesionales', 'x-default': 'https://maquinariaocasion.online/para-profesionales' },
+    canonical: 'https://maquinaria.click/para-profesionales',
+    languages: { 'es-ES': 'https://maquinaria.click/para-profesionales', 'x-default': 'https://maquinaria.click/para-profesionales' },
   },
   openGraph: {
     title: 'Planes para profesionales y talleres',
     description: 'Un solo plan: 19 €/mes o 190 €/año. 15 anuncios, escaparate y estadísticas. Sin comisión por venta ni permanencia.',
-    url: 'https://maquinariaocasion.online/para-profesionales',
+    url: 'https://maquinaria.click/para-profesionales',
     siteName: 'MaquinariaOcasión',
     type: 'website',
     locale: 'es_ES',
-    images: [{ url: 'https://maquinariaocasion.online/api/og/catalog?categoria=agricola', width: 1200, height: 630, alt: 'Planes para profesionales' }],
+    images: [{ url: 'https://maquinaria.click/api/og/catalog?categoria=agricola', width: 1200, height: 630, alt: 'Planes para profesionales' }],
   },
 }
 
@@ -130,7 +130,7 @@ export default async function ParaProfesionalesPage({ params }: { params: Promis
   const { locale } = await params
   setRequestLocale(locale)
 
-  const SITIO = 'https://maquinariaocasion.online'
+  const SITIO = 'https://maquinaria.click'
   const jsonLd = {
     '@context': 'https://schema.org',
     '@graph': [

@@ -76,7 +76,7 @@
                   Alguien podría haber accedido a tu cuenta. Cambia la contraseña cuanto antes desde
                   <a href="{{ .SiteURL }}/reset-password" style="color: #EA580C; font-weight: 700; text-decoration: underline;">este enlace</a>
                   y avísanos respondiendo a
-                  <a href="mailto:soporte@maquinariaocasion.online" style="color: #EA580C; text-decoration: underline;">soporte@maquinariaocasion.online</a>
+                  <a href="mailto:soporte@maquinaria.click" style="color: #EA580C; text-decoration: underline;">soporte@maquinaria.click</a>
                   para revertir el cambio.
                 </p>
                 <p style="margin: 0; font-size: 12px; color: #a16207; word-break: break-all;">
@@ -95,14 +95,14 @@
                   El marketplace camper de España 🚐🇪🇸
                 </p>
                 <p style="margin: 0; font-size: 12px; color: #9ca3af;">
-                  ¿Necesitas ayuda? Escríbenos a <a href="mailto:soporte@maquinariaocasion.online" style="color: #16A34A; text-decoration: none;">soporte@maquinariaocasion.online</a>
+                  ¿Necesitas ayuda? Escríbenos a <a href="mailto:soporte@maquinaria.click" style="color: #16A34A; text-decoration: none;">soporte@maquinaria.click</a>
                 </p>
               </div>
             </td>
           </tr>
         </table>
         <p style="margin-top: 20px; font-size: 12px; color: #9ca3af; text-align: center;">
-          © 2026 MaquinariaOcasión · maquinariaocasion.online — Todos los derechos reservados.
+          © 2026 MaquinariaOcasión · maquinaria.click — Todos los derechos reservados.
         </p>
       </td>
     </tr>
@@ -131,13 +131,13 @@ Revisa tu perfil: {{ .SiteURL }}/mi-perfil
 ⚠️ ¿No reconoces este número?
 Alguien podría haber accedido a tu cuenta. Cambia la contraseña cuanto antes
 desde {{ .SiteURL }}/reset-password y avísanos respondiendo a
-soporte@maquinariaocasion.online para revertir el cambio.
+soporte@maquinaria.click para revertir el cambio.
 
 ---
 MaquinariaOcasión
 El marketplace camper de España 🚐
 
-¿Necesitas ayuda? Escríbenos a: soporte@maquinariaocasion.online
+¿Necesitas ayuda? Escríbenos a: soporte@maquinaria.click
 
 © 2026 MaquinariaOcasión. Todos los derechos reservados.
 ```

@@ -27,7 +27,7 @@ export const revalidate = 300
 
 type Props = { params: Promise<{ locale: string; slug: string }> }
 
-const SITIO = 'https://maquinariaocasion.online'
+const SITIO = 'https://maquinaria.click'
 
 async function getTienda(slug: string) {
   if (!slug || !slugValido(slug)) return null
@@ -110,7 +110,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     ? [{ url: perfil.portada_url }]
     : perfil.foto_perfil_url
       ? [{ url: perfil.foto_perfil_url }]
-      : [{ url: `https://maquinariaocasion.online/api/og/catalog?categoria=agricola`, width: 1200, height: 630, alt: title }]
+      : [{ url: `https://maquinaria.click/api/og/catalog?categoria=agricola`, width: 1200, height: 630, alt: title }]
 
   return {
     title: tituloSeo(title),

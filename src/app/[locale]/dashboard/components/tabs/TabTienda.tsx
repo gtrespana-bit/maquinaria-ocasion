@@ -68,7 +68,7 @@ export default function TabTienda() {
   // Vista previa de la URL: el mismo slugify que usa la base, para que lo que
   // ve aquí sea exactamente la dirección que va a quedar publicada.
   const slugPrevio = slugify(form.slug || form.nombre)
-  const urlPublica = `maquinariaocasion.online/tienda/${slugPrevio || 'tu-tienda'}`
+  const urlPublica = `maquinaria.click/tienda/${slugPrevio || 'tu-tienda'}`
 
   const copiarEnlace = async () => {
     await navigator.clipboard.writeText(`https://${urlPublica}`)

@@ -145,7 +145,7 @@ export default async function LandingCategoria({ ciudadSlug, ciudadNombre, ciuda
   const faqJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
-    '@id': `https://maquinariaocasion.online/${ciudadSlug}/${categoriaSlug}#faq`,
+    '@id': `https://maquinaria.click/${ciudadSlug}/${categoriaSlug}#faq`,
     mainEntity: faqs.map(f => ({
       '@type': 'Question',
       name: f.pregunta,

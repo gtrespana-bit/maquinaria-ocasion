@@ -11,7 +11,7 @@
  */
 import { getSupabaseServerClient } from '@/lib/supabase-server-client'
 
-const BASE_URL = 'https://maquinariaocasion.online'
+const BASE_URL = 'https://maquinaria.click'
 const MAX_PRODUCTOS = 2000
 
 export const revalidate = 21600

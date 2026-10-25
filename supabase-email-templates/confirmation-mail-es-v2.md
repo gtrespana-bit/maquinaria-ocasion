@@ -5,10 +5,10 @@
 
 ---
 
-Ver `confirmation-mail-es.md` para el HTML definitivo de MaquinariaOcasión (grafito/verde/naranja, soporte@maquinariaocasion.online, maquinariaocasion.online).
+Ver `confirmation-mail-es.md` para el HTML definitivo de MaquinariaOcasión (grafito/verde/naranja, soporte@maquinaria.click, maquinaria.click).
 
 URLs en Supabase → Authentication → URLs:
-- **Site URL:** `https://maquinariaocasion.online`
-- **Redirect URL:** `https://maquinariaocasion.online/confirm`
+- **Site URL:** `https://maquinaria.click`
+- **Redirect URL:** `https://maquinaria.click/confirm`
 
 Flujo: registro → email → `{{ .ConfirmationURL }}` → `/api/confirm-email?token=…` → `/confirm` → login.

@@ -39,7 +39,7 @@ export const revalidate = 3600
 
 type Props = { params: Promise<{ locale: string; slug: string }> }
 
-const SITIO = 'https://maquinariaocasion.online'
+const SITIO = 'https://maquinaria.click'
 
 /**
  * Prerenderizamos las páginas de modelo en build: son 95 URLs estáticas con
@@ -114,8 +114,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: tituloSeo(title),
     description,
     alternates: alternatesSeo(`/modelo/${slug}`),
-    openGraph: { title, description, url, siteName: 'MaquinariaOcasión', locale: 'es_ES', images: [{ url: `https://maquinariaocasion.online/api/og/catalog?categoria=${ogParam}`, width: 1200, height: 630, alt: title }] },
-    twitter: { card: 'summary_large_image', title, description, images: [`https://maquinariaocasion.online/api/og/catalog?categoria=${ogParam}`] },
+    openGraph: { title, description, url, siteName: 'MaquinariaOcasión', locale: 'es_ES', images: [{ url: `https://maquinaria.click/api/og/catalog?categoria=${ogParam}`, width: 1200, height: 630, alt: title }] },
+    twitter: { card: 'summary_large_image', title, description, images: [`https://maquinaria.click/api/og/catalog?categoria=${ogParam}`] },
   }
 }
 

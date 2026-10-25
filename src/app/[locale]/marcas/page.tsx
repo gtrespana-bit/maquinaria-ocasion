@@ -13,7 +13,7 @@ import {
   type SubSlug,
  slugFabricante } from '@/lib/marcas'
 
-const SITIO = 'https://maquinariaocasion.online'
+const SITIO = 'https://maquinaria.click'
 
 export const metadata: Metadata = {
   title: 'Marcas de maquinaria y herramienta',
@@ -86,7 +86,7 @@ export default async function MarcasPage({ params }: { params: Promise<{ locale:
   const fabricantes = agruparPorFabricante(MARCAS_MODELOS)
   const subs = TODAS_LAS_SUBS
 
-  const SITIO = 'https://maquinariaocasion.online'
+  const SITIO = 'https://maquinaria.click'
   const breadcrumbJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',

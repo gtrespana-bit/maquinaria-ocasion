@@ -16,7 +16,7 @@ export default async function ComoFuncionaPage({ params }: { params: Promise<{ l
   setRequestLocale(locale)
   const t = await getTranslations({ locale, namespace: 'howItWorks' })
 
-  const SITIO = 'https://maquinariaocasion.online'
+  const SITIO = 'https://maquinaria.click'
   const CANONICAL = SITIO + '/como-funciona'
   const breadcrumbJsonLd = {
     '@context': 'https://schema.org',

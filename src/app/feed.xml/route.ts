@@ -9,7 +9,7 @@ import fs from 'fs'
 import path from 'path'
 import { limpiarComillas } from '@/lib/seo'
 
-const BASE_URL = 'https://maquinariaocasion.online'
+const BASE_URL = 'https://maquinaria.click'
 
 export const revalidate = 3600
 export const dynamic = 'force-static'

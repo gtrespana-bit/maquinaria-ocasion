@@ -100,8 +100,8 @@ describe('isAllowedImageUrl y validateImages', () => {
   })
 
   it('permite URLs del propio dominio', () => {
-    expect(isAllowedImageUrl('https://maquinariaocasion.online/fotos/1.webp')).toBe(true)
-    expect(isAllowedImageUrl('https://sub.maquinariaocasion.online/fotos/1.webp')).toBe(true)
+    expect(isAllowedImageUrl('https://maquinaria.click/fotos/1.webp')).toBe(true)
+    expect(isAllowedImageUrl('https://sub.maquinaria.click/fotos/1.webp')).toBe(true)
   })
 
   it('permite Supabase Storage y R2', () => {
@@ -117,7 +117,7 @@ describe('isAllowedImageUrl y validateImages', () => {
   it('validateImages conserva hasta 10 imágenes válidas', () => {
     const urls = [
       '/placeholder-product.webp',
-      'https://maquinariaocasion.online/foto1.jpg',
+      'https://maquinaria.click/foto1.jpg',
       'https://xyz.supabase.co/storage/v1/object/public/bucket/foto2.jpg',
     ]
     expect(validateImages(urls)).toEqual(urls)

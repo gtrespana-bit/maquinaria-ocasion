@@ -62,7 +62,7 @@ export default function TiendaClient({
   const anoAlta = perfil.creado_en ? new Date(perfil.creado_en).getFullYear() : null
 
   const compartir = async () => {
-    const url = `https://maquinariaocasion.online/tienda/${perfil.slug}`
+    const url = `https://maquinaria.click/tienda/${perfil.slug}`
     try {
       if (navigator.share) {
         await navigator.share({ title: perfil.nombre || 'Tienda', url })

@@ -86,7 +86,7 @@ const VENDEDORES = [
   { slug: 'maria-laura-benitez', nombre: 'María Laura Benítez', estado: 'Comunitat Valenciana', ciudad: 'Valencia', telefono: null, verificado: false, tipo: 'particular' },
   { slug: 'juan-ramon-estevez', nombre: 'Juan Ramón Estévez', estado: 'Galicia', ciudad: 'Lugo', telefono: null, verificado: false, tipo: 'particular' },
 ]
-const emailVendedor = v => `semilla+${v.slug}@maquinariaocasion.online`
+const emailVendedor = v => `semilla+${v.slug}@maquinaria.click`
 
 // ── Los 36 anuncios ────────────────────────────────────────────────────────
 // fotos: rutas relativas a /public (la PRIMERA es la portada).

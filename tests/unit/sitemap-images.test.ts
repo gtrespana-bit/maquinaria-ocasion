@@ -37,7 +37,7 @@ describe('GET /sitemap-images.xml', () => {
 
     expect(response.status).toBe(200)
     expect(response.headers.get('content-type')).toContain('application/xml')
-    expect(xml).toContain('<url>\n    <loc>https://maquinariaocasion.online/</loc>\n  </url>')
+    expect(xml).toContain('<url>\n    <loc>https://maquinaria.click/</loc>\n  </url>')
   })
 
   it('keeps returning valid XML if Supabase initialization fails', async () => {
@@ -50,7 +50,7 @@ describe('GET /sitemap-images.xml', () => {
     const xml = await response.text()
 
     expect(response.status).toBe(200)
-    expect(xml).toContain('<loc>https://maquinariaocasion.online/</loc>')
+    expect(xml).toContain('<loc>https://maquinaria.click/</loc>')
     expect(logError).toHaveBeenCalled()
   })
 
@@ -74,9 +74,9 @@ describe('GET /sitemap-images.xml', () => {
     const xml = await response.text()
 
     expect(response.status).toBe(200)
-    expect(xml).toContain('<loc>https://maquinariaocasion.online/producto/camper-uno</loc>')
+    expect(xml).toContain('<loc>https://maquinaria.click/producto/camper-uno</loc>')
     expect(xml).toContain('<image:loc>https://images.example/camper.jpg?x=1&amp;y=2</image:loc>')
     expect(xml).toContain('<image:title>Camper &amp; más</image:title>')
-    expect(xml).not.toContain('https://maquinariaocasion.online/</loc>')
+    expect(xml).not.toContain('https://maquinaria.click/</loc>')
   })
 })

@@ -92,14 +92,14 @@
                   El marketplace camper de España 🚐🇪🇸
                 </p>
                 <p style="margin: 0; font-size: 12px; color: #9ca3af;">
-                  ¿Necesitas ayuda? Escríbenos a <a href="mailto:soporte@maquinariaocasion.online" style="color: #16A34A; text-decoration: none;">soporte@maquinariaocasion.online</a>
+                  ¿Necesitas ayuda? Escríbenos a <a href="mailto:soporte@maquinaria.click" style="color: #16A34A; text-decoration: none;">soporte@maquinaria.click</a>
                 </p>
               </div>
             </td>
           </tr>
         </table>
         <p style="margin-top: 20px; font-size: 12px; color: #9ca3af; text-align: center;">
-          © 2026 MaquinariaOcasión — maquinariaocasion.online
+          © 2026 MaquinariaOcasión — maquinaria.click
         </p>
       </td>
     </tr>
@@ -133,7 +133,7 @@ Consejos:
 
 El enlace expirará en 1 hora.
 
-¿Necesitas ayuda? Escríbenos a: soporte@maquinariaocasion.online
+¿Necesitas ayuda? Escríbenos a: soporte@maquinaria.click
 
 ---
 MaquinariaOcasión

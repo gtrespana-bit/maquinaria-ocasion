@@ -31,8 +31,8 @@ export async function generateMetadata({ searchParams }: PageProps): Promise<Met
   const hasPagination = Number.isFinite(paginaNum) && paginaNum > 1
   
   const ogImageUrl = categoria 
-    ? `https://maquinariaocasion.online/api/og/catalog?categoria=${categoria}`
-    : 'https://maquinariaocasion.online/api/og/catalog'
+    ? `https://maquinaria.click/api/og/catalog?categoria=${categoria}`
+    : 'https://maquinaria.click/api/og/catalog'
 
   // Paginación: canonical siempre a /catalogo limpio para consolidar señal,
   // pero si es pagina>1 se sugiere noindex para evitar duplicado thin
@@ -59,7 +59,7 @@ export async function generateMetadata({ searchParams }: PageProps): Promise<Met
 }
 
 function buildCatalogSchemas(products: any[]) {
-  const SITIO = 'https://maquinariaocasion.online'
+  const SITIO = 'https://maquinaria.click'
   const breadcrumb = {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
@@ -140,7 +140,7 @@ export default async function CatalogoPage({ searchParams }: PageProps) {
   const totalPages = Math.max(1, Math.ceil(initialCount / CATALOG_PAGE_SIZE))
   const prevPage = currentPage > 1 ? currentPage - 1 : null
   const nextPage = currentPage < totalPages ? currentPage + 1 : null
-  const baseUrl = 'https://maquinariaocasion.online/catalogo'
+  const baseUrl = 'https://maquinaria.click/catalogo'
 
   // ✅ Suspense boundary necesario para useSearchParams() en Next.js 14
   // Sin esto, la página se desopta de static rendering y causa hydration mismatch

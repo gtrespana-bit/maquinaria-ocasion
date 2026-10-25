@@ -17,7 +17,7 @@ import { Store, MapPin } from 'lucide-react'
 
 export const revalidate = 600
 
-const SITIO = 'https://maquinariaocasion.online'
+const SITIO = 'https://maquinaria.click'
 
 export async function generateMetadata(): Promise<Metadata> {
   const title = 'Talleres y profesionales en España'

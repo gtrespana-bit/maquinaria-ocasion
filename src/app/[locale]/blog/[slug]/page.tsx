@@ -68,7 +68,7 @@ export async function generateMetadata(props: { params: Promise<{ locale: string
   const post = getPostBySlug(slug)
   if (!post) return { title: 'Post no encontrado' }
 
-  const ogImg = post.ogImage || 'https://maquinariaocasion.online/api/og/catalog?categoria=agricola'
+  const ogImg = post.ogImage || 'https://maquinaria.click/api/og/catalog?categoria=agricola'
   const description = descripcionSeo(post.excerpt)
   return {
     title: tituloSeo(post.title),
@@ -77,7 +77,7 @@ export async function generateMetadata(props: { params: Promise<{ locale: string
     openGraph: {
       title: post.title,
       description,
-      url: `https://maquinariaocasion.online/blog/${post.slug}`,
+      url: `https://maquinaria.click/blog/${post.slug}`,
       siteName: 'MaquinariaOcasión',
       type: 'article',
       locale: 'es_ES',
@@ -96,7 +96,7 @@ export async function generateMetadata(props: { params: Promise<{ locale: string
 }
 
 function generateArticleSchema(post: Post) {
-  const SITIO = 'https://maquinariaocasion.online'
+  const SITIO = 'https://maquinaria.click'
   const articleUrl = SITIO + '/blog/' + post.slug
   const breadcrumb = {
     "@type": "BreadcrumbList",

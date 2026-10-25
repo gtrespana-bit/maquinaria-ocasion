@@ -89,7 +89,7 @@ export default async function Image({ searchParams }: { searchParams?: { [key: s
             textShadow: '2px 2px 4px rgba(0,0,0,0.5)',
           }}
         >
-          maquinariaocasion.online
+          maquinaria.click
         </div>
       </div>
     ),

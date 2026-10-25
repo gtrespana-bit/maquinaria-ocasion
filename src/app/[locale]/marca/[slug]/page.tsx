@@ -39,7 +39,7 @@ export const revalidate = 3600
 
 type Props = { params: Promise<{ locale: string; slug: string }> }
 
-const SITIO = 'https://maquinariaocasion.online'
+const SITIO = 'https://maquinaria.click'
 
 export function generateStaticParams() {
   return fabricantesUnicos(MARCAS_MODELOS).map(f => ({ slug: slugFabricante(f) }))
@@ -119,7 +119,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const url = `${SITIO}/marca/${slug}`
   const familiaKey = familiaDeSub(subs[0] || '')?.key || 'agricola'
-  const ogUrl = `https://maquinariaocasion.online/api/og/catalog?categoria=${familiaKey}`
+  const ogUrl = `https://maquinaria.click/api/og/catalog?categoria=${familiaKey}`
   const titleOg = title
 
   return {

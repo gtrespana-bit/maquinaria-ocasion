@@ -31,7 +31,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   // OG dinámica por ciudad (usa endpoint existente con param categoria simulando ciudad)
   // Para provincia usamos el OG genérico pero con URL canónica correcta para CTR en WhatsApp
-  const ogImage = `https://maquinariaocasion.online/api/og/catalog?categoria=agricola`
+  const ogImage = `https://maquinaria.click/api/og/catalog?categoria=agricola`
 
   return {
     title: tituloSeo(title),
@@ -42,7 +42,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description,
       type: 'website',
       locale: 'es_ES',
-      url: `https://maquinariaocasion.online/${ciudad}`,
+      url: `https://maquinaria.click/${ciudad}`,
       images: [{ url: ogImage, width: 1200, height: 630, alt: title }],
     },
     twitter: {
@@ -117,7 +117,7 @@ export default async function CiudadPage({ params }: Props) {
     { label: ciudadSEO.nombre, href: undefined }
   ]
 
-  const SITIO = 'https://maquinariaocasion.online'
+  const SITIO = 'https://maquinaria.click'
   const cityUrl = SITIO + '/' + ciudad
 
   // JSON-LD: AdministrativeArea + BreadcrumbList + ItemList

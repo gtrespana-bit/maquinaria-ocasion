@@ -24,8 +24,8 @@ export function isAllowedImageUrl(value: string, currentUrls: Set<string> = new 
 
     // Dominio del sitio o entornos de desarrollo/pruebas
     if (
-      parsed.hostname === 'maquinariaocasion.online'
-      || parsed.hostname.endsWith('.maquinariaocasion.online')
+      parsed.hostname === 'maquinaria.click'
+      || parsed.hostname.endsWith('.maquinaria.click')
       || parsed.hostname === 'localhost'
       || parsed.hostname.endsWith('.e2b.app')
     ) {

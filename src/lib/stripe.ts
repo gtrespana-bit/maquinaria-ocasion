@@ -26,7 +26,7 @@ export function getStripe(): Stripe | null {
       // Sin fijar apiVersion: usamos la versión de la cuenta, que es la que
       // el dashboard muestra y la que Stripe mantiene al día.
       typescript: true,
-      appInfo: { name: 'MaquinariaOcasion', url: 'https://maquinariaocasion.online' },
+      appInfo: { name: 'MaquinariaOcasion', url: 'https://maquinaria.click' },
     })
   }
   return cached
@@ -41,6 +41,6 @@ export function getSiteUrl(): string {
   const url =
     process.env.NEXT_PUBLIC_URL ||
     (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : '') ||
-    'https://maquinariaocasion.online'
+    'https://maquinaria.click'
   return url.replace(/\/$/, '')
 }

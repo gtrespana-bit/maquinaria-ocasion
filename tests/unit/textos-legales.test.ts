@@ -129,6 +129,6 @@ describe('datos del titular', () => {
   it('sin email propio se usa el buzón de soporte (la LSSI lo exige)', () => {
     delete process.env.NEXT_PUBLIC_TITULAR_EMAIL
     delete process.env.NEXT_PUBLIC_EMAIL_CONTACTO
-    expect(datosTitular().email).toBe('soporte@maquinariaocasion.online')
+    expect(datosTitular().email).toBe('soporte@maquinaria.click')
   })
 })

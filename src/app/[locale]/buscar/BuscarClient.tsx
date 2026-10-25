@@ -376,14 +376,14 @@ export default function BuscarClient({ searchParams: searchParamsPromise }: { se
               Resultados de búsqueda para &ldquo;{query}&rdquo; en España
             </h1>
             <p className="text-gray-600">
-              Maquinaria y herramienta de ocasión relacionada con &ldquo;{query}&rdquo; en maquinariaocasion.online.
+              Maquinaria y herramienta de ocasión relacionada con &ldquo;{query}&rdquo; en maquinaria.click.
               Anuncios de particulares, talleres y profesionales de toda España.
             </p>
           </>
         ) : categoria ? (
           <>
             <h1 className="text-2xl font-bold text-gray-900 mb-2">
-              {cat?.label || categoria} de ocasión en España — maquinariaocasion.online
+              {cat?.label || categoria} de ocasión en España — maquinaria.click
             </h1>
             <p className="text-gray-600">
               Explora {cat?.label || categoria.toLowerCase()} de segunda mano en toda España, con ficha técnica completa
