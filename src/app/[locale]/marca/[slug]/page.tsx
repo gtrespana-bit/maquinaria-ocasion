@@ -16,7 +16,7 @@ import {
 } from '@/lib/marcas'
 import { TODAS_LAS_SUBS, familiaDeSub } from '@/lib/categorias'
 import { calcularEstadisticas, resumenMercado } from '@/lib/precios-mercado'
-import { OptimizedProductGrid } from '@/components/OptimizedProductGrid'
+import ProductGridTraducido from '@/components/ProductGridTraducido'
 import LocalLink from '@/components/LocalLink'
 import { ArrowRight } from 'lucide-react'
 import { alternatesSeo, descripcionSeo, tituloSeo } from '@/lib/seo'
@@ -150,26 +150,6 @@ export default async function MarcaPage({ params }: Props) {
 
   const pageUrl = `${SITIO}/marca/${slug}`
 
-  // Traductor universal para las tarjetas del grid (mismo patrón que el
-  // catálogo: cada prefijo de clave resuelve en su namespace).
-  const tc = await getTranslations('catalog')
-  const tp = await getTranslations('product')
-  const tcm = await getTranslations('common')
-  const tfam = await getTranslations('familias')
-  const ttv = await getTranslations('tiposVendedor')
-  const tpc = await getTranslations('productCard')
-  const tr = (key: string, vars?: Record<string, string | number>) => {
-    const parts = key.split('.')
-    const ns = parts[0]
-    const rest = parts.slice(1).join('.')
-    if (ns === 'catalog') return tc(rest, vars as never)
-    if (ns === 'product') return tp(rest, vars as never)
-    if (ns === 'common') return tcm(rest, vars as never)
-    if (ns === 'familias') return tfam(rest, vars as never)
-    if (ns === 'tiposVendedor') return ttv(rest, vars as never)
-    if (ns === 'productCard') return tpc(rest, vars as never)
-    return key
-  }
 
   const subLabels = subs
     .map(s => TODAS_LAS_SUBS.find(x => x.slug === s)?.label)
@@ -380,9 +360,8 @@ export default async function MarcaPage({ params }: Props) {
           </LocalLink>
         </div>
         {anuncios.length > 0 ? (
-          <OptimizedProductGrid
+          <ProductGridTraducido
             productos={anuncios}
-            t={tr}
             currentPage={1}
             itemsPerPage={12}
           />
