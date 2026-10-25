@@ -107,7 +107,8 @@
       "subtitle": "Particular, taller o profesional: publica gratis en menos de 5 minutos y llega a compradores de toda España.",
       "publishNow": "Publicar gratis",
       "explore": "Explorar maquinaria",
-      "note": "Sin comisiones · Publica hoy y vende hoy"
+      "note": "Sin comisiones · Publica hoy y vende hoy",
+      "estimator": "¿No sabes qué precio poner? Prueba el estimador →"
     },
     "productCard": {
       "featured": "Destacado",
@@ -284,7 +285,8 @@
     "classifiedsIn": "Maquinaria en {city}",
     "brands": "Marcas y modelos",
     "cookies": "Cookies",
-    "legalNotice": "Aviso legal"
+    "legalNotice": "Aviso legal",
+    "priceTool": "Estimador de precios"
   },
   "familias": {
     "agricola": {
@@ -461,7 +463,8 @@
     "views": "vistas",
     "contact": "Contactar",
     "share": "Compartir",
-    "report": "Reportar"
+    "report": "Reportar",
+    "video": "Vídeo"
   },
   "bottomNav": {
     "home": "Inicio",
@@ -680,7 +683,11 @@
     "priceEur": "Precio (€)",
     "family": "Familia de vehículo",
     "asLabel": "Publicando como",
-    "changeTipo": "Cambiar"
+    "changeTipo": "Cambiar",
+    "videoLabel": "Vídeo del anuncio (opcional)",
+    "videoNote": "Enlace de YouTube, Vimeo o Google Drive. Disponible en planes de pago.",
+    "videoPlaceholder": "https://www.youtube.com/watch?v=…",
+    "estimatePriceCta": "¿No sabes qué precio poner? Estímalo con el estimador →"
   },
   "dashboard": {
     "passwordTitle": "Cambiar contraseña",
@@ -1095,7 +1102,11 @@
       "pendiente": "En revisión",
       "verificado": "Verificado",
       "rechazado": "Rechazado"
-    }
+    },
+    "videoLabel": "Vídeo del anuncio (opcional)",
+    "videoNote": "Enlace de YouTube, Vimeo o Google Drive. Disponible en planes de pago.",
+    "videoPlaceholder": "https://www.youtube.com/watch?v=…",
+    "estimatePriceCta": "¿No sabes qué precio poner? Estímalo con el estimador →"
   },
   "chat": {
     "title": "Mensajes",
@@ -1175,5 +1186,27 @@
     "unavailable": "Anuncio no disponible",
     "specsTitle": "Ficha comparada",
     "viewDetail": "Ver ficha"
+  },
+  "tasador": {
+    "title": "Estimador de precios",
+    "subtitle": "Estima un precio de mercado con anuncios reales del portal: selecciona tipo, marca, año y horas.",
+    "subLabel": "Familia o tipo",
+    "marcaLabel": "Marca",
+    "anioLabel": "Año",
+    "horasLabel": "Horas de uso",
+    "tuPrecioLabel": "Tu precio (opcional)",
+    "tuPrecioPlaceholder": "p. ej. 45000",
+    "calcular": "Estimar precio",
+    "rangeLabel": "Rango del portal",
+    "medianLabel": "Mediana",
+    "count": "{count} anuncios comparables",
+    "above": "Tu precio está POR ENCIMA del mercado",
+    "below": "Tu precio está POR DEBAJO del mercado",
+    "inRange": "Tu precio está DENTRO del rango habitual",
+    "yourPriceLabel": "Tu precio",
+    "sinResultados": "No hay anuncios comparables todavía con esa combinación.",
+    "sinResultadosHint": "Prueba a ampliar: quita la marca, cambia de tipo o busca sin año/horas.",
+    "muestraTitle": "Algunos comparables",
+    "ctaPublicar": "Publicar a este precio"
   }
 }

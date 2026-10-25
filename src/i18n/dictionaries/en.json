@@ -107,7 +107,8 @@
       "subtitle": "Private seller, workshop or professional: list it free in under 5 minutes and reach buyers across Spain.",
       "publishNow": "List for free",
       "explore": "Browse machinery",
-      "note": "No commission · List today, sell today"
+      "note": "No commission · List today, sell today",
+      "estimator": "Not sure what to charge? Try the estimator →"
     },
     "productCard": {
       "featured": "Featured",
@@ -284,7 +285,8 @@
     "classifiedsIn": "Machinery in {city}",
     "brands": "Brands & models",
     "cookies": "Cookies",
-    "legalNotice": "Legal notice"
+    "legalNotice": "Legal notice",
+    "priceTool": "Price estimator"
   },
   "familias": {
     "agricola": {
@@ -461,7 +463,8 @@
     "views": "views",
     "contact": "Contact",
     "share": "Share",
-    "report": "Report"
+    "report": "Report",
+    "video": "Video"
   },
   "bottomNav": {
     "home": "Home",
@@ -680,7 +683,11 @@
     "priceEur": "Price (€)",
     "family": "Vehicle family",
     "asLabel": "Listing as",
-    "changeTipo": "Change"
+    "changeTipo": "Change",
+    "videoLabel": "Listing video (optional)",
+    "videoNote": "YouTube, Vimeo or Google Drive link. Available on paid plans.",
+    "videoPlaceholder": "https://www.youtube.com/watch?v=…",
+    "estimatePriceCta": "Not sure what to charge? Estimate it with the estimator →"
   },
   "dashboard": {
     "passwordTitle": "Change password",
@@ -1095,7 +1102,11 @@
       "pendiente": "In review",
       "verificado": "Verified",
       "rechazado": "Rejected"
-    }
+    },
+    "videoLabel": "Listing video (optional)",
+    "videoNote": "YouTube, Vimeo or Google Drive link. Available on paid plans.",
+    "videoPlaceholder": "https://www.youtube.com/watch?v=…",
+    "estimatePriceCta": "Not sure what to charge? Estimate it with the estimator →"
   },
   "chat": {
     "title": "Messages",
@@ -1175,5 +1186,27 @@
     "unavailable": "Listing no longer available",
     "specsTitle": "Comparison specs",
     "viewDetail": "View listing"
+  },
+  "tasador": {
+    "title": "Price estimator",
+    "subtitle": "Estimate a market price from real listings on the portal: type, brand, year and hours.",
+    "subLabel": "Category or type",
+    "marcaLabel": "Brand",
+    "anioLabel": "Year",
+    "horasLabel": "Operating hours",
+    "tuPrecioLabel": "Your price (optional)",
+    "tuPrecioPlaceholder": "e.g. 45000",
+    "calcular": "Estimate price",
+    "rangeLabel": "Portal range",
+    "medianLabel": "Median",
+    "count": "{count} comparable listings",
+    "above": "Your price is ABOVE the market",
+    "below": "Your price is BELOW the market",
+    "inRange": "Your price is WITHIN the usual range",
+    "yourPriceLabel": "Your price",
+    "sinResultados": "There are no comparable listings yet for that combination.",
+    "sinResultadosHint": "Try widening it: drop the brand, switch type or search without year/hours.",
+    "muestraTitle": "Some comparables",
+    "ctaPublicar": "List at this price"
   }
 }

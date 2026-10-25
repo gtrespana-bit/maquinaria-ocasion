@@ -11,6 +11,7 @@ import { Camera, X, ArrowLeft, Save, AlertCircle, Trash2 } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import Image from 'next/image'
 import { compressImages } from '@/lib/compress-image'
+import LocalLink from '@/components/LocalLink'
 
 const estadosProducto = ['Nuevo', 'Como nuevo', 'Bueno', 'Usado']
 
@@ -34,6 +35,19 @@ export default function EditarPage() {
   const [marca, setMarca] = useState('')
   const [estadoProd, setEstadoProd] = useState('')
   const [precioUsd, setPrecioUsd] = useState('')
+  const [videoUrl, setVideoUrl] = useState('')
+  const [puedeVideo, setPuedeVideo] = useState(false)
+
+  // Plan efectivo: el campo de vídeo solo se muestra en planes de pago
+  // (mismo criterio que /publicar y que los gates de las APIs).
+  useEffect(() => {
+    fetch('/api/cupo-anuncios')
+      .then(r => (r.ok ? r.json() : null))
+      .then(d => {
+        if (d?.ok) setPuedeVideo(Boolean(d.plan && d.plan !== 'gratis' && !d.trialGracia))
+      })
+      .catch(() => {})
+  }, [])
   const [ubicacionEstado, setUbicacionEstado] = useState('')
   const [ubicacionCiudad, setUbicacionCiudad] = useState('')
   const [activo, setActivo] = useState(true)
@@ -86,6 +100,7 @@ export default function EditarPage() {
       // Precio: leer de precio (canónico), precio_eur o precio_usd
       const precioValor = prod.precio ?? prod.precio_eur ?? prod.precio_usd
       setPrecioUsd(precioValor != null ? String(precioValor) : '')
+      setVideoUrl(prod.video_url || '')
 
       setUbicacionEstado(prod.ubicacion_estado || '')
       setUbicacionCiudad(prod.ubicacion_ciudad || '')
@@ -248,6 +263,7 @@ export default function EditarPage() {
           precio: precioNum,
           precio_eur: precioNum,
           precio_usd: precioNum,
+          video_url: videoUrl.trim(),
           ubicacion_estado: ubicacionEstado || null,
           ubicacion_ciudad: ubicacionCiudad || null,
           activo,
@@ -361,6 +377,25 @@ export default function EditarPage() {
           <div>
             <label className="block text-sm font-semibold text-gray-900 mb-1.5">{t('priceEur') || 'Precio (€)'}</label>
             <input type="number" value={precioUsd} onChange={e => setPrecioUsd(e.target.value)} className="w-full border rounded-lg px-4 py-3" />
+            <p className="text-xs mt-1.5">
+              <LocalLink href="/tasador" className="font-bold text-brand-darkNav underline decoration-brand-signal decoration-2 underline-offset-2 hover:text-brand-signal-dark">
+                {t('estimatePriceCta')}
+              </LocalLink>
+            </p>
+            {puedeVideo && (
+              <div className="mt-3">
+                <label className="block text-sm font-semibold text-gray-900 mb-1.5">{t('videoLabel')}</label>
+                <input
+                  type="url"
+                  value={videoUrl}
+                  onChange={e => setVideoUrl(e.target.value)}
+                  placeholder={t('videoPlaceholder')}
+                  maxLength={500}
+                  className="w-full border rounded-lg px-4 py-3"
+                />
+                <p className="text-xs text-gray-500 mt-1">{t('videoNote')}</p>
+              </div>
+            )}
           </div>
           <div>
             <label className="block text-sm font-semibold text-gray-900 mb-1.5">Condición</label>

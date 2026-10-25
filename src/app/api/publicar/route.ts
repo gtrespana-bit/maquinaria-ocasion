@@ -7,6 +7,7 @@ import { requireUser } from '@/lib/require-auth'
 import { revalidarListadosPublicos } from '@/lib/revalidar'
 import { mensajeCupoLleno } from '@/lib/planes-anuncios'
 import { cupoDeUsuario } from '@/lib/planes-servidor'
+import { normalizarVideoUrl } from '@/lib/video-embed'
 
 /**
  * Devuelve el id de una categoría por nombre, creándola si no existe.
@@ -160,6 +161,15 @@ export async function POST(req: NextRequest) {
           { error: `Tu pack permite ${cupo.fotosMax} fotos por anuncio.`, codigo: 'FOTOS' },
           { status: 403 },
         )
+      }
+
+      // Vídeo: exclusivo de planes de pago (además del gate visual en el form).
+      // `cupo` aquí es el `resumen` de cupoDeUsuario: plan efectivo + gracia.
+      const enPago = Boolean((cupo as any)?.plan && (cupo as any).plan !== 'gratis' && !(cupo as any)?.trialGracia)
+      if (Object.prototype.hasOwnProperty.call(sanitizedData, 'video_url')) {
+        const limpio = normalizarVideoUrl(sanitizedData.video_url)
+        if (enPago && limpio) sanitizedData.video_url = limpio
+        else delete sanitizedData.video_url
       }
     }
 

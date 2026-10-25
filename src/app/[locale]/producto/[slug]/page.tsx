@@ -55,6 +55,7 @@ const PRODUCT_COLUMNS = `
   imagen_url,
   imagenes,
   metodos_contacto,
+  video_url,
   destacado,
   destacado_hasta,
   boosteado_en
@@ -65,6 +66,7 @@ const PRODUCT_COLUMNS_LEGACY = PRODUCT_COLUMNS.replace(/\n\s*slug,/, '')
 // Sin `especificaciones`: para bases donde la migración 025 aún no se aplicó.
 // PostgREST responde 42703 y rechaza el SELECT entero si se pide una columna
 // inexistente, así que hay que poder reintentar sin ella.
+const PRODUCT_COLUMNS_SIN_VIDEO = PRODUCT_COLUMNS.replace(/\n\s*video_url,/, '')
 const PRODUCT_COLUMNS_SIN_SPECS = PRODUCT_COLUMNS.replace(/\n\s*especificaciones,/, '')
 const PRODUCT_COLUMNS_LEGACY_SIN_SPECS = PRODUCT_COLUMNS_LEGACY.replace(/\n\s*especificaciones,/, '')
 
@@ -81,6 +83,19 @@ function queryProducto(column: 'id' | 'slug', value: string, columns: string) {
     // → 404. Antes todo inactivo caía en un 200 "No encontrado" = soft-404.
     .or('estado_moderacion.is.null,estado_moderacion.eq.aprobado,estado_moderacion.eq.pendiente')
     .maybeSingle()
+}
+
+/**
+ * SELECT principal tolerante a la columna `video_url` (fase 10): si la base
+ * aún no la tiene (42703), se reintenta sin ella en lugar de 404.
+ */
+function queryProductoSeguro(column: 'id' | 'slug', value: string) {
+  return queryProducto(column, value, PRODUCT_COLUMNS).then(r => {
+    if (faltaColumna(r.error, 'video_url')) {
+      return queryProducto(column, value, PRODUCT_COLUMNS_SIN_VIDEO)
+    }
+    return r
+  })
 }
 
 /**
@@ -160,7 +175,7 @@ async function getProduct(slugOrId: string) {
   try {
     if (isUuid(slugOrId)) {
       // URL legacy con UUID
-      ;({ data, error } = await queryProducto('id', slugOrId, PRODUCT_COLUMNS))
+      ;({ data, error } = await queryProductoSeguro('id', slugOrId))
       if (faltaColumna(error, 'especificaciones')) {
         ;({ data, error } = await queryProducto('id', slugOrId, PRODUCT_COLUMNS_SIN_SPECS))
       }
@@ -172,7 +187,7 @@ async function getProduct(slugOrId: string) {
       }
     } else {
       // URL canónica con slug SEO
-      ;({ data, error } = await queryProducto('slug', slugOrId, PRODUCT_COLUMNS))
+      ;({ data, error } = await queryProductoSeguro('slug', slugOrId))
       if (faltaColumna(error, 'especificaciones')) {
         ;({ data, error } = await queryProducto('slug', slugOrId, PRODUCT_COLUMNS_SIN_SPECS))
       }

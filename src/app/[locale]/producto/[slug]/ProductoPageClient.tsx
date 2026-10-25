@@ -5,7 +5,8 @@ import LocalLink from '@/components/LocalLink'
 import Image from 'next/image'
 import { supabase } from '@/lib/supabase'
 import { useAuth } from '@/components/AuthProvider'
-import { MapPin, Tag, MessageCircle, Phone, Mail, ChevronRight, Shield, Clock, Heart, Share2, CheckCircle2, CalendarClock, GitCompare, Check } from 'lucide-react'
+import { MapPin, Tag, MessageCircle, Phone, Mail, ChevronRight, Shield, Clock, Heart, Share2, CheckCircle2, CalendarClock, GitCompare, Check, Play, ExternalLink } from 'lucide-react'
+import { embedDeVideo } from '@/lib/video-embed'
 import { useComparar } from '@/lib/comparar'
 import Avatar from '@/components/Avatar'
 import ReportarButton from '@/components/ReportarButton'
@@ -229,6 +230,7 @@ function ProductoPageClientInner({
     messenger: Boolean(contactos.messengerUrl),
   }
   const imagenes = producto.imagenes && producto.imagenes.length > 0 ? producto.imagenes : producto.imagen_url ? [producto.imagen_url] : []
+  const videoEmbed = embedDeVideo(producto.video_url)
   // Enlace construido con el helper compartido: antes anteponía el prefijo de
   // Venezuela ('58') y todos los móviles españoles quedaban en un número
   // inexistente, así que el botón de WhatsApp no funcionaba.
@@ -318,6 +320,38 @@ function ProductoPageClientInner({
           ) : (
             <div className="bg-white rounded-2xl shadow-sm border overflow-hidden">
               <div className="aspect-square md:aspect-[16/10] bg-gray-100 flex items-center justify-center"><Tag size={48} className="text-gray-500" /></div>
+            </div>
+          )}
+          {videoEmbed && (
+            <div className="bg-white rounded-2xl shadow-sm border overflow-hidden">
+              <div className="px-4 pt-4">
+                <h2 className="text-xs font-black uppercase tracking-widest text-gray-500 flex items-center gap-2">
+                  <Play size={13} className="text-brand-signal-dark" aria-hidden="true" /> {t('product.video')}
+                </h2>
+              </div>
+              {videoEmbed.tipo === 'iframe' ? (
+                <div className="aspect-video mt-3">
+                  <iframe
+                    src={videoEmbed.src}
+                    title={t('product.video')}
+                    loading="lazy"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowFullScreen
+                    className="w-full h-full"
+                  />
+                </div>
+              ) : (
+                <div className="p-4">
+                  <a
+                    href={videoEmbed.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 text-sm font-black text-brand-darkNav bg-brand-signal hover:bg-brand-signal-dark rounded-full px-4 py-2 transition"
+                  >
+                    <ExternalLink size={14} /> {t('product.video')}
+                  </a>
+                </div>
+              )}
             </div>
           )}
           <div className="bg-white rounded-2xl shadow-sm border p-6">
