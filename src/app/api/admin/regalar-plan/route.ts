@@ -33,7 +33,7 @@ import { emailPlanRegalado } from '@/lib/server-email'
 
 export const dynamic = 'force-dynamic'
 
-const PACKS_VIGENTES = ['plus']
+const PACKS_VIGENTES = ['starter', 'unlimited', 'plus']
 
 export async function POST(request: NextRequest) {
   try {
@@ -48,7 +48,7 @@ export async function POST(request: NextRequest) {
 
     if (!esPlanRegalable(body.plan)) {
       return NextResponse.json(
-        { error: 'Pack inválido (plus o gratis para retirarlo)' },
+        { error: 'Pack inválido (starter, unlimited o gratis para retirarlo)' },
         { status: 400 },
       )
     }
@@ -189,7 +189,8 @@ export async function GET(request: NextRequest) {
     }
 
     const resumen = {
-      plus: packs.filter((p) => p.plan_anuncios === 'plus').length,
+      starter: packs.filter((p) => p.plan_anuncios === 'starter').length,
+      unlimited: packs.filter((p) => p.plan_anuncios === 'unlimited').length,
       total: packs.length,
     }
 

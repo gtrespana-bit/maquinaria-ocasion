@@ -624,8 +624,8 @@ export default function AdminAudiencia({ notify }: { notify: (msg: string) => vo
           <div className="mt-4 flex flex-wrap items-center gap-2 text-xs text-gray-600">
             <span className="font-semibold">Planes activos:</span>
             {estado.packsPorPlan.map((p) => (
-              <Badge key={p.plan} tone={p.plan === 'plus' ? 'brand' : 'gray'}>
-                {p.plan === 'plus' ? 'Profesional' : `${p.plan} (heredado)`} · {p.usuarios}
+              <Badge key={p.plan} tone={p.plan === 'unlimited' ? 'brand' : p.plan === 'starter' ? 'blue' : 'gray'}>
+                {p.plan === 'starter' ? 'Básico' : p.plan === 'unlimited' ? 'Profesional' : 'Profesional (anterior)'} · {p.usuarios}
               </Badge>
             ))}
             {estado.porcentajeAnunciosConVisitas != null && (

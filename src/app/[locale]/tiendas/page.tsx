@@ -112,7 +112,7 @@ export default async function TiendasPage({ params }: { params: Promise<{ locale
           <Store size={36} className="mx-auto text-gray-300 mb-3" />
           <p className="text-gray-700 font-semibold mb-1">Todavía no hay tiendas publicadas</p>
           <p className="text-sm text-gray-500 mb-5">
-            ¿Eres taller o vendedor profesional? Abre tu escaparate con el plan Profesional por 19 €/mes
+            ¿Eres taller o vendedor profesional? Abre tu escaparate con el plan Básico (19 €/mes) o Profesional (49 €/mes)
             y enseña todo tu stock en una página propia.
           </p>
           <LocalLink

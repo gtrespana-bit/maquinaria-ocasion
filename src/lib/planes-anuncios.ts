@@ -7,31 +7,53 @@
  */
 
 export type TipoVendedor = 'particular' | 'camperizador' | 'profesional'
-export type PlanAnuncios = 'gratis' | 'plus'
+export type PlanAnuncios = 'gratis' | 'starter' | 'unlimited'
 /** Periodicidad de cobro de un pack. El anual equivale a 10 mensualidades. */
 export type Periodicidad = 'mensual' | 'anual'
 
 export const PLANES_PRO = [
   {
-    id: 'plus' as const,
-    nombre: 'Profesional',
+    id: 'starter' as const,
+    nombre: 'Básico',
     precioMes: 19,
     /** 10 meses: 2 gratis frente al pago mensual. */
     precioAnual: 190,
-    cupo: 15 as number | null,
+    cupo: 5 as number | null,
     fotos: 20,
-    destacadosMes: 5,
-    eslogan: 'Para quien vende maquinaria de forma habitual',
-    paraQuien: 'Compraventas, talleres y profesionales',
+    destacadosMes: 3,
+    eslogan: 'Para talleres y compraventas con poco stock',
+    paraQuien: 'Talleres y vendedores con hasta 5 máquinas a la venta',
+    destacado: false,
+    incluido: [
+      '5 anuncios activos a la vez',
+      '3 destacados incluidos al mes',
+      'Hasta 20 fotos y vídeo por anuncio',
+      'Escaparate /tienda/tu-taller',
+      'Estadísticas por anuncio y diagnóstico',
+      'Soporte prioritario por email',
+    ],
+  },
+  {
+    id: 'unlimited' as const,
+    nombre: 'Profesional',
+    precioMes: 49,
+    /** 10 meses: 2 gratis frente al pago mensual. */
+    precioAnual: 490,
+    /** Sin límite comercial (uso justo: stock real del negocio). */
+    cupo: null as number | null,
+    fotos: 30,
+    destacadosMes: 15,
+    eslogan: 'Para quien vive de vender maquinaria',
+    paraQuien: 'Compraventas y negocios con rotación alta',
     destacado: true,
     incluido: [
-      '15 anuncios activos a la vez',
-      '5 destacados incluidos al mes',
-      'Hasta 20 fotos por anuncio',
+      'Anuncios sin límite (uso justo)',
+      '15 destacados incluidos al mes',
+      'Hasta 30 fotos y vídeo por anuncio',
+      'Importar stock desde CSV (100 filas por archivo)',
+      'Estadísticas completas: mercado, 90 días y exportación CSV',
       'Escaparate /tienda/tu-taller',
-      'Estadísticas completas y comparativa de mercado',
-      'Importar stock desde CSV',
-      'Soporte por email',
+      'Soporte prioritario y alta asistida',
     ],
   },
 ] as const
@@ -39,8 +61,8 @@ export const PLANES_PRO = [
 export type PlanPago = (typeof PLANES_PRO)[number]['id']
 
 export const DIAS_MES_GRATIS_DEFAULT = 30
-/** Durante el mes gratis se prueba el plan Profesional (15 anuncios, 5 destacados). */
-export const PLAN_PRUEBA: PlanPago = 'plus'
+/** Durante el mes gratis se prueba el plan Básico (5 anuncios, 3 destacados). */
+export const PLAN_PRUEBA: PlanPago = 'starter'
 /**
  * Días de acceso tras terminar la prueba antes de pausar anuncios.
  * Debe coincidir con el intervalo de `aplicar_cupo_planes()` en SQL.
@@ -71,11 +93,12 @@ export const PLAN_GRATIS = {
 
 /** Etiqueta humana y consistente en toda la app. */
 export function etiquetaPlan(plan: string | null | undefined): string {
-  if (plan === 'plus') return 'Profesional'
-  // Valores heredados de la escalera anterior: se muestran tal cual para no
-  // mentir si algún perfil antiguo los conserva en la base.
-  if (plan === 'starter') return 'Starter (heredado)'
-  if (plan === 'unlimited') return 'Unlimited Flota (heredado)'
+  if (plan === 'starter') return 'Básico'
+  if (plan === 'unlimited') return 'Profesional'
+  // `plus` era el plan provisional único (19 €/15 anuncios) anterior a la
+  // escalera Básico/Profesional. Solo lo conservan filas semilla o bitácoras;
+  // se muestra como anterior para no confundirlo con el Profesional actual.
+  if (plan === 'plus') return 'Profesional (anterior)'
   return 'Gratis'
 }
 
@@ -124,12 +147,30 @@ export function esTipoVendedor(v: unknown): v is TipoVendedor {
 }
 
 export function esPlanAnuncios(v: unknown): v is PlanAnuncios {
-  return v === 'gratis' || v === 'plus'
+  return v === 'gratis' || v === 'starter' || v === 'unlimited'
 }
 
-/** Un único plan de pago: Profesional (id interno `plus`). */
+/** Planes vendibles: Básico (`starter`) y Profesional (`unlimited`). */
 export function esPlanPago(v: unknown): v is PlanPago {
-  return v === 'plus'
+  return v === 'starter' || v === 'unlimited'
+}
+
+/**
+ * Normaliza el plan contratado guardado en la base.
+ *
+ * `plus` fue el plan provisional único antes de la escalera Básico/Profesional.
+ * Ningún cliente real lo compró (la web aún no se ha lanzado), pero perfiles
+ * semilla y bitácoras pueden conservarlo: se equipara a Profesional para que
+ * ningún cálculo lo trate como gratis por accidente.
+ */
+export function normalizarPlanContratado(v: unknown): PlanPago | null {
+  if (v === 'plus') return 'unlimited'
+  return esPlanPago(v) ? v : null
+}
+
+/** La importación masiva desde CSV solo está en el plan Profesional. */
+export function puedeImportarCsv(plan: string | null | undefined): boolean {
+  return normalizarPlanContratado(plan) === 'unlimited' || plan === 'unlimited'
 }
 
 export function esProfesional(tipo: string | null | undefined): boolean {
@@ -231,7 +272,7 @@ export function trialGraciaVigente(opts: {
 
 /**
  * Plan efectivo: suscripción de pago vigente > prueba > gracia > gratis.
- * El plan que se prueba es `trialPlan` (por defecto Profesional).
+ * El plan que se prueba es `trialPlan` (por defecto Básico).
  */
 export function planEfectivo(opts: {
   tipo?: string | null
@@ -249,13 +290,15 @@ export function planEfectivo(opts: {
   if (!esProfesional(opts.tipo)) return 'gratis'
 
   const planHasta = opts.planHasta ? new Date(opts.planHasta) : null
+  const contratado = normalizarPlanContratado(opts.plan)
   const pagoVigente =
-    esPlanPago(opts.plan) && (!planHasta || planHasta.getTime() >= ahora.getTime())
-  if (pagoVigente) return opts.plan as PlanPago
+    contratado != null && (!planHasta || planHasta.getTime() >= ahora.getTime())
+  if (pagoVigente) return contratado
 
   const enPrueba = trialVigente({ ...opts, ahora, planPagoVigente: false })
   const enGracia = trialGraciaVigente({ ...opts, ahora, planPagoVigente: false })
   if (enPrueba || enGracia) {
+    // Un `trial_plan` antiguo ('plus') cae al plan de prueba actual: Básico.
     return esPlanPago(opts.trialPlan) ? (opts.trialPlan as PlanPago) : PLAN_PRUEBA
   }
   return 'gratis'
@@ -306,7 +349,7 @@ export function resumenCupo(opts: {
   const usados = Math.max(0, Number(opts.usados) || 0)
   const pagoVigente =
     esProfesional(tipo) &&
-    esPlanPago(opts.plan) &&
+    normalizarPlanContratado(opts.plan) != null &&
     (!opts.planHasta || new Date(opts.planHasta).getTime() >= ahora.getTime())
   const trial = trialVigente({
     tipo,
@@ -345,7 +388,7 @@ export function resumenCupo(opts: {
     profesional: esProfesional(tipo),
     tipo,
     plan: efectivo,
-    planContratado: esPlanPago(opts.plan) ? opts.plan : 'gratis',
+    planContratado: normalizarPlanContratado(opts.plan) ?? 'gratis',
     trial,
     trialGracia: gracia,
     trialHasta: periodo.hasta ? periodo.hasta.toISOString() : null,
@@ -363,10 +406,13 @@ export function resumenCupo(opts: {
 
 export function mensajeCupoLleno(resumen: ReturnType<typeof resumenCupo>): string {
   if (resumen.tipo === 'particular') {
-    return 'Como particular solo puedes tener 1 anuncio activo (una máquina). Márcalo como vendido o páusalo para publicar otra. Si tienes stock, contrata un pack: al confirmarse el pago tu cuenta pasa a profesional automáticamente.'
+    return 'Como particular solo puedes tener 1 anuncio activo (una máquina). Márcalo como vendido o páusalo para publicar otra. Si tienes stock, contrata el plan Básico o Profesional: al confirmarse el pago tu cuenta pasa a profesional automáticamente.'
   }
   if (resumen.plan === 'gratis' && !resumen.trial) {
-    return 'Sin plan Profesional el cupo es de 1 anuncio activo, igual que un particular. Contrata el plan Profesional o canjea un cupón.'
+    return 'Sin un plan de pago el cupo es de 1 anuncio activo, igual que un particular. Contrata el plan Básico (5 anuncios) o Profesional (sin límite), o canjea un cupón.'
+  }
+  if (resumen.plan === 'starter') {
+    return `Has llegado a tu cupo de ${resumen.max} anuncios activos del plan Básico. Pasa a Profesional (sin límite) o pausa anuncios que ya no estén a la venta.`
   }
   return `Has llegado a tu cupo de ${resumen.max} anuncios activos. Amplía el pack o pausa anuncios que ya no estén a la venta.`
 }

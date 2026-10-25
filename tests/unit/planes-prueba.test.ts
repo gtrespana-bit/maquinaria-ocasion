@@ -99,7 +99,7 @@ describe('prueba con fechas reales', () => {
       diasGratis: 30,
       ahora: new Date('2026-11-04T10:00:00Z'),
     })
-    expect(plan).toBe('plus')
+    expect(plan).toBe('starter')
 
     const despues = planEfectivo({
       ...PERFIL,
@@ -160,7 +160,7 @@ describe('prueba con fechas reales', () => {
     const trial = calcularTrial({ ahora: AHORA, dias: 30 })
     expect(trial.inicio.toISOString()).toBe(AHORA.toISOString())
     expect(trial.hasta.toISOString()).toBe('2026-11-21T10:00:00.000Z')
-    expect(trial.plan).toBe('plus')
+    expect(trial.plan).toBe('starter')
   })
 })
 

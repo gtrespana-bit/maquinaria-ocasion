@@ -14,7 +14,7 @@ import {
   TrendingUp,
 } from 'lucide-react'
 import LocalLink from '@/components/LocalLink'
-import { PLANES_PRO, PLAN_GRATIS, etiquetaPlan } from '@/lib/planes-anuncios'
+import { PLANES_PRO, PLAN_GRATIS, PLAN_PRUEBA, etiquetaPlan, getPlanDef } from '@/lib/planes-anuncios'
 import { formatPrecioObligatorio as formatPrecio } from '@/lib/precio'
 
 type Estado = {
@@ -149,8 +149,8 @@ export default function TabPlan({ onRefresh }: { onRefresh?: () => void }) {
       }
       setAviso(
         data.reactivados > 0
-          ? `Hemos vuelto a publicar ${data.reactivados} anuncio${data.reactivados === 1 ? '' : 's'}.${data.restantes > 0 ? ` Te quedan ${data.restantes} pausados: pasa a Profesional para recuperarlos.` : ''}`
-          : 'No cabe ningún anuncio más con tu plan actual. Pausa otro o pasa a Profesional.',
+          ? `Hemos vuelto a publicar ${data.reactivados} anuncio${data.reactivados === 1 ? '' : 's'}.${data.restantes > 0 ? ` Te quedan ${data.restantes} pausados: amplía tu plan para recuperarlos.` : ''}`
+          : 'No cabe ningún anuncio más con tu plan actual. Pausa otro o amplía tu plan.',
       )
       await cargar()
       onRefresh?.()
@@ -203,14 +203,21 @@ export default function TabPlan({ onRefresh }: { onRefresh?: () => void }) {
       ? Math.min(100, Math.max(0, Math.round((estado.diasTrial / estado.diasTrialTotal) * 100)))
       : 0
 
-  // Un solo plan de pago: si no lo tienen (o están en prueba), se ofrece
-  // Profesional. Ya no hay escalera ni «cambiar de pack».
-  const siguiente = estado.planPagoVigente ? null : PLANES_PRO[0]
-  const tituloSiguiente = siguiente
-    ? estado.trial || estado.trialGracia
-      ? 'Activa Profesional y conserva tus 15 anuncios'
-      : 'Hazte Profesional y publica hasta 15 a la vez'
-    : ''
+  // Escalera de upsell: gratis o en prueba → Básico; Básico vigente →
+  // Profesional; Profesional vigente ya está en lo más alto.
+  const defPrueba = getPlanDef(PLAN_PRUEBA) ?? PLANES_PRO[0]
+  const siguiente = estado.planPagoVigente
+    ? estado.planContratado === 'starter'
+      ? (PLANES_PRO.find(p => p.id === 'unlimited') ?? null)
+      : null
+    : (PLANES_PRO.find(p => p.id === 'starter') ?? PLANES_PRO[0])
+  const tituloSiguiente = !siguiente
+    ? ''
+    : estado.planPagoVigente
+      ? 'Pasa a Profesional: anuncios sin límite'
+      : estado.trial || estado.trialGracia
+        ? `Activa ${defPrueba.nombre} y conserva tus anuncios`
+        : `Hazte ${defPrueba.nombre} y publica hasta ${defPrueba.cupo} máquinas a la vez`
 
   return (
     <div className="space-y-5">
@@ -221,7 +228,7 @@ export default function TabPlan({ onRefresh }: { onRefresh?: () => void }) {
             <div>
               <p className="text-xs font-semibold uppercase tracking-wider text-white/60">Tu plan</p>
               <h2 className="mt-1 flex flex-wrap items-center gap-2 text-2xl font-black">
-                {estado.trial ? 'Prueba Profesional' : estado.trialGracia ? 'Prueba Profesional · gracia' : planNombre}
+                {estado.trial ? `Prueba ${etiquetaPlan(estado.cupo.plan)}` : estado.trialGracia ? `Prueba ${etiquetaPlan(estado.cupo.plan)} · gracia` : planNombre}
                 {estado.trial ? (
                   <span className="inline-flex items-center gap-1 rounded-full bg-amber-400/20 px-2.5 py-1 text-xs font-bold text-amber-200">
                     <Sparkles size={12} /> {estado.diasTrial} días
@@ -246,7 +253,7 @@ export default function TabPlan({ onRefresh }: { onRefresh?: () => void }) {
               </h2>
               <p className="mt-2 max-w-lg text-sm text-white/75">
                 {estado.trial
-                  ? `Tienes el plan Profesional de prueba hasta el ${fecha(estado.trialHasta)}. No se cobra nada automáticamente; al terminar tendrás 7 días de gracia.`
+                  ? `Tienes el plan ${etiquetaPlan(estado.cupo.plan)} de prueba hasta el ${fecha(estado.trialHasta)}. No se cobra nada automáticamente; al terminar tendrás 7 días de gracia.`
                   : estado.trialGracia
                     ? `La prueba terminó el ${fecha(estado.trialHasta)}. Tienes hasta el ${fecha(estado.graciaHasta)} antes de que se pausen los anuncios que excedan el plan gratuito. No se borra nada.`
                     : estado.pagoFallido
@@ -276,7 +283,7 @@ export default function TabPlan({ onRefresh }: { onRefresh?: () => void }) {
                 href="/para-profesionales"
                 className="inline-flex items-center gap-1.5 rounded-xl bg-brand-accent px-3.5 py-2 text-sm font-bold text-white hover:bg-brand-accent-dark"
               >
-                {estado.trial || estado.trialGracia ? 'Activar Profesional' : esGratis ? 'Hacerme Profesional' : 'Ver Profesional'}
+                {estado.trial || estado.trialGracia ? `Activar ${etiquetaPlan(estado.cupo.plan)}` : 'Ver planes'}
                 <ArrowRight size={14} />
               </LocalLink>
             </div>
@@ -340,7 +347,7 @@ export default function TabPlan({ onRefresh }: { onRefresh?: () => void }) {
               href="/para-profesionales"
               className="inline-flex items-center gap-1.5 rounded-xl border border-red-300 bg-white px-4 py-2 text-sm font-semibold text-red-800 hover:bg-red-100"
             >
-              Ver Profesional
+              Ver planes
             </LocalLink>
           </div>
         </section>
@@ -353,27 +360,28 @@ export default function TabPlan({ onRefresh }: { onRefresh?: () => void }) {
           </h3>
           <p className="mt-1 text-sm text-amber-800">
             El {fecha(estado.graciaHasta)} se pausarán los anuncios que excedan el cupo del plan gratuito.
-            No se borra ninguno: podrás reactivarlos al pasar a Profesional o pausar otro para dejar sitio.
+            No se borra ninguno: podrás reactivarlos al activar un plan o pausar otro para dejar sitio.
           </p>
           <LocalLink
             href="/para-profesionales"
             className="mt-3 inline-flex items-center gap-1.5 rounded-xl bg-brand-accent px-4 py-2 text-sm font-bold text-white hover:bg-brand-accent-dark"
           >
-            Activar Profesional <ArrowRight size={14} />
+            Activar {etiquetaPlan(estado.cupo.plan)} <ArrowRight size={14} />
           </LocalLink>
         </section>
       )}
 
       {estado.trialElegible && (
         <section className="rounded-2xl border-2 border-emerald-200 bg-emerald-50 p-5">
-          <h3 className="text-base font-black text-emerald-900">Prueba Profesional 30 días, gratis</h3>
+          <h3 className="text-base font-black text-emerald-900">Prueba {defPrueba.nombre} 30 días, gratis</h3>
           <p className="mt-1 text-sm text-emerald-800">
-            15 anuncios, 5 destacados al mes, escaparate y 20 fotos por anuncio. Sin tarjeta y sin cobro
-            automático. Al terminar tienes 7 días de gracia y no se borra ningún anuncio.
+            {defPrueba.cupo} anuncios, {defPrueba.destacadosMes} destacados al mes, escaparate, vídeo y{' '}
+            {defPrueba.fotos} fotos por anuncio. Sin tarjeta y sin cobro automático. Al terminar tienes
+            7 días de gracia y no se borra ningún anuncio.
             {estado.tipo === 'particular' && (
               <span className="mt-1 block text-xs text-emerald-700">
                 Al empezar, tu cuenta pasa a «profesional» (la identidad es gratis) para que recibas
-                el cupo de Profesional.
+                el cupo del plan {defPrueba.nombre}.
               </span>
             )}
           </p>
@@ -396,7 +404,7 @@ export default function TabPlan({ onRefresh }: { onRefresh?: () => void }) {
           </h3>
           <p className="mt-1 text-sm text-slate-600">
             Los pausamos al bajar el plan, pero no los borramos. Si ahora tienes hueco, puedes volver a
-            publicarlos; si no, pasa a Profesional o pausa otro anuncio para dejar sitio.
+            publicarlos; si no, amplía tu plan o pausa otro anuncio para dejar sitio.
           </p>
           <button
             type="button"
@@ -430,7 +438,7 @@ export default function TabPlan({ onRefresh }: { onRefresh?: () => void }) {
               {estado.cupo.max == null
                 ? 'Sin límite de anuncios activos.'
                 : estado.cupo.restantes === 0
-                  ? 'Cupo lleno. Pausa uno o pasa a Profesional.'
+                  ? 'Cupo lleno. Pausa uno o amplía tu plan.'
                   : `Te quedan ${estado.cupo.restantes} libres.`}
             </p>
           </div>
@@ -492,7 +500,7 @@ export default function TabPlan({ onRefresh }: { onRefresh?: () => void }) {
               href="/para-profesionales"
               className="inline-flex shrink-0 items-center justify-center gap-1.5 rounded-xl bg-brand-accent px-4 py-2.5 text-sm font-bold text-white hover:bg-brand-accent-dark"
             >
-              Ver Profesional <ArrowRight size={15} />
+              Ver {siguiente.nombre} <ArrowRight size={15} />
             </LocalLink>
           </div>
           <ul className="mt-3 grid gap-1.5 text-sm text-slate-700 sm:grid-cols-3">
@@ -519,7 +527,7 @@ export default function TabPlan({ onRefresh }: { onRefresh?: () => void }) {
             Cambiar tipo de vendedor
           </LocalLink>
           <LocalLink href="/para-profesionales" className="rounded-xl border border-slate-300 px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50">
-            Ver qué incluye Profesional
+            Ver qué incluyen los planes
           </LocalLink>
         </div>
       </section>

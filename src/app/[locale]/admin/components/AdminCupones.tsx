@@ -53,7 +53,7 @@ type RegaloPlan = {
 
 type PacksInfo = {
   ok: boolean
-  resumen: { plus: number; total: number }
+  resumen: { starter: number; unlimited: number; total: number }
   packs: PackActivo[]
   regalos: RegaloPlan[]
 }
@@ -72,7 +72,7 @@ export default function AdminCupones({ notify }: { notify: (msg: string) => void
   const [tipo, setTipo] = useState<'regalo_dias' | 'descuento'>('regalo_dias')
   const [codigo, setCodigo] = useState('')
   const [dias, setDias] = useState(30)
-  const [plan, setPlan] = useState('plus')
+  const [plan, setPlan] = useState('starter')
   const [maxUsos, setMaxUsos] = useState('100')
   const [porcentaje, setPorcentaje] = useState(20)
   const [meses, setMeses] = useState(3)
@@ -301,7 +301,8 @@ export default function AdminCupones({ notify }: { notify: (msg: string) => void
           </h3>
           <div className="mb-4 grid grid-cols-2 gap-3 sm:grid-cols-4">
             {[
-              { label: 'Profesional', valor: packsInfo.resumen.plus, tone: 'brand' as const },
+              { label: 'Básico', valor: packsInfo.resumen.starter, tone: 'blue' as const },
+              { label: 'Profesional', valor: packsInfo.resumen.unlimited, tone: 'brand' as const },
               { label: 'Total con plan', valor: packsInfo.resumen.total, tone: 'gray' as const },
             ].map((kpi) => (
               <div key={kpi.label} className="rounded-xl border border-gray-100 bg-gray-50/60 p-3">
@@ -431,7 +432,8 @@ export default function AdminCupones({ notify }: { notify: (msg: string) => void
           <label className="block">
             Plan
             <select value={plan} onChange={e => setPlan(e.target.value)} className="mt-1 w-full border rounded-lg px-3 py-2">
-              <option value="plus">Profesional</option>
+              <option value="starter">Básico</option>
+              <option value="unlimited">Profesional</option>
             </select>
           </label>
           <label className="block">

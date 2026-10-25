@@ -12,17 +12,16 @@
  * justifica pagar:
  *
  *   Gratis      totales del periodo
- *   Gratis      totales del periodo
- *   Plus        + mercado, serie diaria y precio frente a la mediana de su categoría
- *   Profesional todo: detalle, mercado, 90 días y CSV
+ *   Básico      + detalle por anuncio y diagnóstico (7/30 días)
+ *   Profesional todo: + mercado, serie diaria, 90 días y exportación CSV
  */
 
 export type NivelPlan = 0 | 1 | 2 | 3
 
 /**
- * Con un solo plan de pago ya no hay escalera: gratis ve totales y
- * Profesional lo ve todo. Los valores antiguos se conservan por si algún
- * perfil quedó con ellos en la base.
+ * Básico (starter) desbloquea el detalle por anuncio; Profesional
+ * (unlimited) lo ve todo. `plus` es el plan provisional anterior y se
+ * equipara a Profesional por si algún perfil antiguo lo conserva.
  */
 const NIVELES: Record<string, NivelPlan> = {
   gratis: 0,
@@ -360,7 +359,7 @@ export function motivoUpsell(
       return {
         titulo: 'Mira qué anuncio te trae compradores',
         detalle:
-          'Con Profesional ves visitas, favoritos y contactos de cada anuncio, y un diagnóstico de qué cambiar.',
+          'Con el plan Básico ves visitas, favoritos y contactos de cada anuncio, y un diagnóstico de qué cambiar.',
       }
     case 'serie':
       return {

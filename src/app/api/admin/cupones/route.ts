@@ -62,7 +62,7 @@ export async function POST(req: NextRequest) {
 
   if (tipo === 'regalo_dias') {
     const dias = Math.min(365, Math.max(1, Number(body.dias) || 30))
-    const plan = esPlanPago(body.plan) ? body.plan : 'plus'
+    const plan = esPlanPago(body.plan) ? body.plan : 'starter'
     fila.dias = dias
     fila.plan = plan
   } else {

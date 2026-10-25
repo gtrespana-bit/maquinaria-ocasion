@@ -78,13 +78,13 @@ export async function POST(req: NextRequest) {
 
   // ── Plan: solo Profesional ──────────────────────────────────────────────
   const estado = await estadoPlanUsuario(userId)
-  if (estado.plan !== 'plus') {
+  if (estado.plan !== 'unlimited') {
     return NextResponse.json(
       {
         ok: false,
         codigo: 'PLAN',
         error:
-          'La importación desde CSV está incluida en el plan Profesional. En el plan gratuito puedes publicar tu maquinaria desde el formulario.',
+          'La importación desde CSV está incluida en el plan Profesional. Con los planes Gratis y Básico puedes publicar tu maquinaria desde el formulario.',
       },
       { status: 403 },
     )

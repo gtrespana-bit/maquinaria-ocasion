@@ -150,8 +150,8 @@ export default function TabTienda() {
         <Store size={36} className="mx-auto text-gray-300 mb-3" />
         <h3 className="font-bold text-gray-900 mb-1">Tu escaparate, con un pack</h3>
         <p className="text-sm text-gray-600 max-w-md mx-auto mb-4">
-          El escaparate con URL propia (<strong>/tienda/tu-taller</strong>) está incluido en
-          el plan Profesional. Tus anuncios ya publicados siguen visibles: solo falta la
+          El escaparate con URL propia (<strong>/tienda/tu-taller</strong>) está incluido en los
+          planes Básico y Profesional. Tus anuncios ya publicados siguen visibles: solo falta la
           página de tienda.
         </p>
         <div className="flex flex-col sm:flex-row gap-2 justify-center">
@@ -159,7 +159,7 @@ export default function TabTienda() {
             href="/para-profesionales"
             className="inline-block bg-brand-accent text-white px-5 py-2.5 rounded-xl font-semibold hover:bg-brand-accent-dark transition"
           >
-            Ver Profesional, 19 €/mes
+            Ver planes desde 19 €/mes
           </LocalLink>
           <LocalLink
             href="/dashboard?tab=plan"

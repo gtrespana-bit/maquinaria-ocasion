@@ -225,7 +225,7 @@ export default function PlanesClient() {
         <div className="mb-6 rounded-2xl border border-emerald-200 bg-emerald-50 p-5 flex items-start gap-3">
           <BadgeCheck className="text-emerald-600 mt-0.5 shrink-0" size={22} />
           <div className="flex-1">
-            <p className="font-bold text-emerald-900">¡Plan Profesional activado! Gracias por confiar en MaquinariaOcasión.</p>
+            <p className="font-bold text-emerald-900">¡Plan {nombrePlan(planPagado) || 'de pago'} activado! Gracias por confiar en MaquinariaOcasión.</p>
             <p className="text-sm text-emerald-800 mt-1">
               {planPagado ? `Ya tienes el plan ${nombrePlan(planPagado)}. ` : ''}
               Puedes publicar tu siguiente anuncio ahora mismo. La factura llega por email desde Stripe.
@@ -263,7 +263,7 @@ export default function PlanesClient() {
             href="/dashboard?tab=plan"
             className="inline-flex shrink-0 items-center gap-1.5 rounded-xl bg-brand-accent px-4 py-2 text-sm font-bold text-white hover:bg-brand-accent-dark"
           >
-            Activar Profesional <ArrowRight size={14} />
+            Activar mi plan <ArrowRight size={14} />
           </LocalLink>
         </div>
       )}
@@ -271,11 +271,11 @@ export default function PlanesClient() {
         <div className="mb-6 rounded-2xl border border-amber-200 bg-amber-50 p-4 flex flex-col sm:flex-row sm:items-center gap-3 justify-between">
           <div>
             <p className="font-bold text-amber-900">
-              Estás probando el plan Profesional{estado.diasTrial > 0 ? ` · quedan ${estado.diasTrial} días` : ''}
+              Estás probando el plan {nombrePlan(estado.plan) || 'Básico'}{estado.diasTrial > 0 ? ` · quedan ${estado.diasTrial} días` : ''}
             </p>
             <p className="text-sm text-amber-800">
               Aprovecha para publicar todo tu stock. Al terminar hay 7 días de gracia y después se pausan
-              los anuncios que sobren, sin borrarlos. Activa Profesional cuando quieras.
+              los anuncios que sobren, sin borrarlos. Activa tu plan cuando quieras.
             </p>
           </div>
           <div className="flex shrink-0 flex-wrap items-center gap-2">
@@ -286,7 +286,7 @@ export default function PlanesClient() {
               href="/dashboard?tab=plan"
               className="inline-flex items-center gap-1.5 rounded-xl bg-brand-accent px-3 py-1.5 text-xs font-bold text-white hover:bg-brand-accent-dark"
             >
-              Activar Plus <ArrowRight size={13} />
+              Activar ahora <ArrowRight size={13} />
             </LocalLink>
           </div>
         </div>
@@ -296,13 +296,13 @@ export default function PlanesClient() {
       {session && estado?.trialElegible && (
         <div className="mb-6 rounded-2xl border border-emerald-200 bg-emerald-50 p-4 flex flex-col sm:flex-row sm:items-center gap-3 justify-between">
           <div>
-            <p className="font-bold text-emerald-900">Puedes probar Profesional 30 días, gratis</p>
+            <p className="font-bold text-emerald-900">Puedes probar el plan Básico 30 días, gratis</p>
             <p className="text-sm text-emerald-800">
-              15 anuncios, 5 destacados al mes y escaparate. Sin tarjeta y sin cobro automático.
+              5 anuncios, 3 destacados al mes, escaparate y vídeo. Sin tarjeta y sin cobro automático.
               Al terminar, 7 días de gracia y no se borra ningún anuncio.
               {estado?.tipo === 'particular' && (
                 <span className="mt-1 block text-xs text-emerald-700">
-                  Al empezar, tu cuenta pasa a «profesional» (gratis) para recibir el cupo de Profesional.
+                  Al empezar, tu cuenta pasa a «profesional» (gratis) para recibir el cupo del plan Básico.
                 </span>
               )}
             </p>
@@ -323,9 +323,9 @@ export default function PlanesClient() {
       <div className="rounded-2xl border border-slate-200 bg-white p-4 sm:p-5 mb-6">
         <div className="flex flex-col lg:flex-row lg:items-center gap-4 justify-between">
           <div>
-            <p className="text-sm font-bold text-slate-900">Un único plan, sin escalones</p>
+            <p className="text-sm font-bold text-slate-900">Dos planes, según tu stock</p>
             <p className="text-xs text-slate-500 mt-0.5">
-              Todo lo que necesita un profesional, con 15 anuncios activos. Si algún día necesitas más, se habla.
+              Básico para hasta 5 máquinas a la vez. Profesional, sin límite, para compraventas con rotación.
             </p>
           </div>
 
@@ -358,8 +358,8 @@ export default function PlanesClient() {
         </div>
       </div>
 
-      {/* Tarjeta única */}
-      <div className="mx-auto grid max-w-md gap-4">
+      {/* Tarjetas de planes */}
+      <div className="mx-auto grid max-w-3xl gap-4 md:grid-cols-2">
         {PLANES_PRO.map(p => {
           const esActual = planActual === p.id
           const precio = precioPlan(p.id, periodicidad)
@@ -370,11 +370,19 @@ export default function PlanesClient() {
           return (
             <div
               key={p.id}
-              className={`relative flex flex-col rounded-2xl border border-brand-accent bg-white p-5 shadow-lg ring-1 ring-brand-accent sm:p-6`}
+              className={`relative flex flex-col rounded-2xl border bg-white p-5 sm:p-6 ${
+                p.destacado
+                  ? 'border-brand-accent shadow-lg ring-1 ring-brand-accent'
+                  : 'border-slate-200 shadow-sm'
+              }`}
             >
               <div className="flex items-start justify-between gap-2 min-h-[24px]">
-                <span className="inline-flex items-center gap-1 rounded-full bg-brand-accent px-2.5 py-1 text-[11px] font-black uppercase tracking-wide text-white">
-                  <Sparkles size={12} /> Único plan
+                <span
+                  className={`inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-[11px] font-black uppercase tracking-wide ${
+                    p.destacado ? 'bg-brand-accent text-white' : 'bg-slate-100 text-slate-700'
+                  }`}
+                >
+                  <Sparkles size={12} /> {p.destacado ? 'Recomendado' : 'Para empezar'}
                 </span>
                 {esActual && (
                   <span className="inline-flex items-center gap-1 rounded-full bg-slate-900 px-2.5 py-1 text-[11px] font-bold text-white">
@@ -426,7 +434,9 @@ export default function PlanesClient() {
                 className={`mt-6 inline-flex w-full items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-bold transition disabled:opacity-70 ${
                   esActual
                     ? 'bg-slate-100 text-slate-500'
-                    : 'bg-brand-accent text-white hover:bg-brand-accent-dark'
+                    : p.destacado
+                      ? 'bg-brand-accent text-white hover:bg-brand-accent-dark'
+                      : 'bg-slate-900 text-white hover:bg-slate-800'
                 }`}
               >
                 {loading === p.id ? (
@@ -445,6 +455,10 @@ export default function PlanesClient() {
                   <>
                     Activar {p.nombre} ahora <ArrowRight size={16} />
                   </>
+                ) : estado?.planPagoVigente ? (
+                  <>
+                    Cambiar a {p.nombre} <ArrowRight size={16} />
+                  </>
                 ) : (
                   <>
                     Elegir {p.nombre} <ArrowRight size={16} />
@@ -452,7 +466,7 @@ export default function PlanesClient() {
                 )}
               </button>
 
-              {p.id === 'plus' && estado?.trialElegible && (
+              {p.id === 'starter' && estado?.trialElegible && (
                 <button
                   type="button"
                   onClick={empezarPrueba}
@@ -566,7 +580,7 @@ export default function PlanesClient() {
           </div>
         )}
         <p className="mt-3 text-xs text-slate-500">
-          El descuento se aplica al pulsar «Elegir Profesional». Los cupones de días se canjean aquí sin pasar por el pago.
+          El descuento se aplica al elegir un plan. Los cupones de días se canjean aquí sin pasar por el pago.
         </p>
       </div>
 
@@ -594,7 +608,7 @@ export default function PlanesClient() {
 
       {session && estado?.tipo === 'particular' && (
         <p className="mt-4 rounded-xl bg-slate-50 p-3 text-xs text-slate-600">
-          Al contratar Profesional, tu perfil pasa a <strong>profesional</strong> automáticamente (es gratis). Así
+          Al contratar un plan, tu perfil pasa a <strong>profesional</strong> automáticamente (es gratis). Así
           recibes el cupo que pagas en lugar de quedarte en el límite de 1 anuncio.
         </p>
       )}

@@ -257,7 +257,7 @@ export async function enviarEmailTrialTermina(
   nombre: string,
   opts: { dias: number; fechaFin: string; plan: string },
 ) {
-  const plan = opts.plan || 'Plus'
+  const plan = opts.plan || 'Básico'
   const cuando =
     opts.dias <= 0
       ? 'hoy'
@@ -273,16 +273,16 @@ export async function enviarEmailTrialTermina(
       Tu prueba de <strong style="color:${COLORS.dark}">${htmlText(plan)}</strong> termina ${htmlText(cuando)}${opts.fechaFin ? ` (${htmlText(fechaLarga(opts.fechaFin))})` : ''}.
     </p>
     <p style="margin:0 0 14px;font-size:15px;color:${COLORS.gray};line-height:1.6">
-      <strong style="color:${COLORS.dark}">No se borra ninguno de tus anuncios.</strong> Si no pasas a Profesional,
+      <strong style="color:${COLORS.dark}">No se borra ninguno de tus anuncios.</strong> Si no activas un plan,
       tu cuenta volverá al plan gratuito y se pausarán los que excedan el cupo; podrás reactivarlos cuando quieras.
     </p>
     <p style="margin:0 0 18px;font-size:15px;color:${COLORS.gray};line-height:1.6">
-      Si quieres mantener el cupo, el escaparate y los destacados incluidos, pasa a Profesional por 19 €/mes.
-      Sin permanencia y se cancela en dos clics.
+      Si quieres mantener el cupo, el escaparate y los destacados incluidos, activa Básico por 19 €/mes
+      (o Profesional, sin límite, por 49 €/mes). Sin permanencia y se cancela en dos clics.
     </p>
-    ${boton('Ver Profesional', `${SITE_URL}/dashboard?tab=plan`)}
+    ${boton('Ver planes', `${SITE_URL}/dashboard?tab=plan`)}
     <p style="margin:18px 0 0;font-size:13px;color:${COLORS.gray}">
-      Si ya has pasado a Profesional, ignora este mensaje.
+      Si ya has activado un plan, ignora este mensaje.
     </p>
     <p style="margin:22px 0 0;font-size:13px;color:${COLORS.gray}">MaquinariaOcasión — Publica más, vende más</p>
   `
@@ -311,11 +311,11 @@ export async function enviarEmailTrialGracia(
     </p>
     <p style="margin:0 0 14px;font-size:15px;color:${COLORS.gray};line-height:1.6">
       Durante la gracia todo sigue como está: tus anuncios publicados, tu escaparate y tus estadísticas.
-      Después, si no pasas a Profesional, se pausarán los anuncios que excedan el cupo del plan gratuito.
+      Después, si no activas un plan, se pausarán los anuncios que excedan el cupo del plan gratuito.
       <strong style="color:${COLORS.dark}">No se borra nada.</strong>
     </p>
     ${pausados > 0 ? `<p style="margin:0 0 14px;font-size:15px;color:${COLORS.gray}">Ahora mismo tienes <strong>${pausados}</strong> anuncio${pausados === 1 ? '' : 's'} más de los que permite el plan gratuito.</p>` : ''}
-    ${boton('Activar Profesional', `${SITE_URL}/dashboard?tab=plan`)}
+    ${boton('Activar mi plan', `${SITE_URL}/dashboard?tab=plan`)}
     <p style="margin:18px 0 0;font-size:13px;color:${COLORS.gray}">
       ¿Prefieres otra cosa? Desde tu panel puedes pausar anuncios y seguir gratis.
     </p>
@@ -338,7 +338,7 @@ export async function enviarEmailPagoFallido(
   nombre: string,
   opts: { plan: string; fechaFin?: string | null; diasGracia?: number },
 ) {
-  const plan = opts.plan || 'tu plan Profesional'
+  const plan = opts.plan || 'tu plan'
   const cuerpo = `
     <p style="margin:0 0 14px;font-size:16px;color:${COLORS.dark}">Hola ${htmlText(nombre)},</p>
     <p style="margin:0 0 14px;font-size:15px;color:${COLORS.gray};line-height:1.6">
@@ -394,12 +394,12 @@ export async function enviarEmailAnunciosPausados(
     <ul style="margin:0 0 16px;padding-left:20px">${lista}</ul>
     ${resto}
     <p style="margin:0 0 16px;font-size:15px;color:${COLORS.gray};line-height:1.6">
-      Puedes reactivarlos en un clic si pasas a Profesional, o pausar otro para dejar sitio. También puedes dejarlos
+      Puedes reactivarlos en un clic si amplías tu plan, o pausar otro para dejar sitio. También puedes dejarlos
       pausados sin coste: siguen guardados y se republican cuando quieras.
     </p>
     ${boton('Ver mis anuncios', `${SITE_URL}/dashboard?tab=productos`)}
     <p style="margin:18px 0 0;font-size:13px;color:${COLORS.gray}">
-      Si quieres recuperar todos a la vez: <a href="${htmlText(`${SITE_URL}/dashboard?tab=plan`)}" style="color:${COLORS.accent}">pasar a Profesional</a>.
+      Si quieres recuperar todos a la vez: <a href="${htmlText(`${SITE_URL}/dashboard?tab=plan`)}" style="color:${COLORS.accent}">ampliar tu plan</a>.
     </p>
     <p style="margin:22px 0 0;font-size:13px;color:${COLORS.gray}">MaquinariaOcasión</p>
   `
@@ -425,7 +425,7 @@ export async function enviarEmailWinback(
   nombre: string,
   opts: { plan?: string; fechaFin?: string | null; anunciosPausados?: number },
 ) {
-  const plan = opts.plan || 'Profesional'
+  const plan = opts.plan || 'Básico'
   const cupon = (process.env.WINBACK_CUPON || '').trim()
   const pausados = Number(opts.anunciosPausados) || 0
   const cuerpo = `
@@ -436,16 +436,17 @@ export async function enviarEmailWinback(
     </p>
     <p style="margin:0 0 14px;font-size:15px;color:${COLORS.gray};line-height:1.6">
       Lo que cambia es el cupo: sin plan de pago, la cuenta vuelve a 1 anuncio activo y los que sobran quedan pausados.
-      ${pausados > 0 ? `Ahora mismo tienes <strong style="color:${COLORS.dark}">${pausados} pausado${pausados === 1 ? '' : 's'}</strong>; al activar Profesional vuelven a publicarse solos.` : 'Al activar Profesional vuelven a publicarse solos.'}
+      ${pausados > 0 ? `Ahora mismo tienes <strong style="color:${COLORS.dark}">${pausados} pausado${pausados === 1 ? '' : 's'}</strong>; al activar un plan de pago vuelven a publicarse solos.` : 'Al activar un plan de pago vuelven a publicarse solos.'}
     </p>
     <p style="margin:0 0 14px;font-size:15px;color:${COLORS.gray};line-height:1.6">
-      Puedes volver con el plan Profesional por <strong style="color:${COLORS.dark}">19 €/mes</strong> (15 anuncios,
-      5 destacados al mes y escaparate), sin permanencia y cancelando en dos clics.
+      Puedes volver con el plan Básico por <strong style="color:${COLORS.dark}">19 €/mes</strong> (5 anuncios,
+      3 destacados al mes y escaparate) o con Profesional por 49 €/mes (sin límite), sin permanencia y
+      cancelando en dos clics.
     </p>
     ${cupon ? `<p style="margin:0 0 14px;font-size:15px;color:${COLORS.gray};line-height:1.6">Si vuelves esta semana, usa el código <strong style="color:${COLORS.dark}">${htmlText(cupon)}</strong> al contratar.</p>` : ''}
     ${boton('Recuperar mi cupo', `${SITE_URL}/para-profesionales`)}
     <p style="margin:18px 0 0;font-size:13px;color:${COLORS.gray}">
-      Si ya has vuelto a activar Profesional, ignora este mensaje.
+      Si ya has vuelto a activar un plan, ignora este mensaje.
       ¿Tienes dudas? Escríbenos a <a href="mailto:soporte@maquinaria.click" style="color:${COLORS.accent}">soporte@maquinaria.click</a>.
     </p>
     <p style="margin:22px 0 0;font-size:13px;color:${COLORS.gray}">MaquinariaOcasión — Publica más, vende más</p>

@@ -149,6 +149,8 @@ function Bloqueo({
   plan: string
 }) {
   const { titulo, detalle } = motivoUpsell(capacidad)
+  // El detalle por anuncio se desbloquea con Básico; el resto, con Profesional.
+  const esBasico = capacidad === 'porAnuncio'
   return (
     <div className="rounded-2xl border border-dashed border-slate-300 bg-slate-50/60 p-5">
       <div className="flex items-start gap-3">
@@ -163,9 +165,9 @@ function Bloqueo({
               href="/para-profesionales"
               className="inline-flex items-center gap-1.5 rounded-xl bg-brand-primary px-3.5 py-2 text-sm font-bold text-white hover:bg-brand-dark"
             >
-              Ver Profesional <ArrowRight size={14} />
+              Ver {esBasico ? 'Básico' : 'Profesional'} <ArrowRight size={14} />
             </LocalLink>
-            <span className="text-xs text-slate-500">19 €/mes · sin permanencia</span>
+            <span className="text-xs text-slate-500">{esBasico ? '19 €/mes' : '49 €/mes'} · sin permanencia</span>
           </div>
         </div>
       </div>
@@ -533,18 +535,18 @@ export default function TabRendimiento() {
         <section className="rounded-2xl border border-brand-primary/20 bg-gradient-to-br from-brand-primary/5 to-brand-accent/5 p-5">
           <p className="flex items-center gap-2 font-bold text-slate-900">
             <CheckCircle2 size={17} className="text-brand-primary" />
-            Profesional te enseña qué anuncio te trae compradores
+            Básico te enseña qué anuncio te trae compradores
           </p>
           <p className="mt-1 text-sm text-slate-600">
-            Detalle por anuncio, contactos reales, comparativa con el mercado, 90 días de histórico
-            y exportación en CSV. 19 €/mes.
+            Detalle por anuncio y contactos reales con Básico (19 €/mes). Profesional (49 €/mes)
+            suma comparativa con el mercado, 90 días de histórico y exportación en CSV.
           </p>
           <div className="mt-3 flex flex-wrap items-center gap-3">
             <LocalLink
               href="/para-profesionales"
               className="inline-flex items-center gap-1.5 rounded-xl bg-brand-primary px-4 py-2 text-sm font-bold text-white hover:bg-brand-dark"
             >
-              Hacerme Profesional
+              Ver planes
               <ArrowRight size={14} />
             </LocalLink>
             <LocalLink href="/dashboard?tab=plan" className="text-sm font-semibold text-slate-600 hover:underline">
