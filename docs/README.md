@@ -13,6 +13,8 @@ concreta, se conserva como traza de las decisiones).
 | [`plan-confianza-marketplace.md`](./plan-confianza-marketplace.md) | Los 6 pilares de confianza: homologación verificada, inspección, filtros, gestoría, escrow. Qué está hecho y qué falta, por fases. |
 | [`PENDIENTES-DESPLIEGUE.md`](./PENDIENTES-DESPLIEGUE.md) | Checklist de despliegue: variables de entorno, dominios, DNS, SMTP, crons. |
 | [`PANEL-ADMIN.md`](./PANEL-ADMIN.md) | Manual del panel de administración. |
+| [`PLANES-ANUNCIOS.md`](./PLANES-ANUNCIOS.md) | **Planes implementados hoy en el código (pre-lanzamiento)**: plan único provisional de 19 €/mes, prueba, cupones, regalos y dunning. |
+| [`ESTRATEGIA-PLANES-2026-10.md`](./ESTRATEGIA-PLANES-2026-10.md) | **Propuesta re-hecha €19/€49**: Gratis/Básico/Profesional, Fundadores, transición, KPIs y plan de aplicación. No vigente hasta aprobarla e implementarla. |
 | [`rls-policies.md`](./rls-policies.md) | Políticas de seguridad de base de datos (RLS). |
 
 ## Diagnósticos puntuales (vigentes, de consulta)

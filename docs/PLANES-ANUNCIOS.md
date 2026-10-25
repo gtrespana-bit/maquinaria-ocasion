@@ -3,6 +3,12 @@
 > Actualizado 2026-10-22. El análisis completo del modelo (identidad, plan y
 > créditos) está en
 > [`MODELO-CUENTAS-Y-MONETIZACION-2026-10.md`](./MODELO-CUENTAS-Y-MONETIZACION-2026-10.md).
+>
+> **Propuesta posterior:** en
+> [`ESTRATEGIA-PLANES-2026-10.md`](./ESTRATEGIA-PLANES-2026-10.md) se rehace
+> la arquitectura como Gratis/Básico (19 €)/Profesional (49 €). Mientras no
+> se apruebe e implemente, este documento sigue describiendo el comportamiento
+> provisional del código en esta etapa pre-lanzamiento.
 
 ## Modelo simplificado (decisión 2026-10-22)
 
