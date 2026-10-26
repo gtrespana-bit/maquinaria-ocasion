@@ -2,7 +2,7 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { ANUNCIOS, VENDEDORES, specs } from '@/lib/semilla-datos.js'
-import { analizarSemilla } from '@/lib/semilla-calidad.js'
+import { analizarDossierFotos, analizarSemilla, vistasRequeridas } from '@/lib/semilla-calidad.js'
 
 const porRef = (ref: string): any => {
   const anuncio = ANUNCIOS.find((a: any) => a.ref === ref)
@@ -10,6 +10,66 @@ const porRef = (ref: string): any => {
   return anuncio
 }
 const vendedorDe = (anuncio: any) => VENDEDORES.find((v: any) => v.slug === anuncio.vendedor)
+
+function anuncioConDossierValido(): any {
+  const base = structuredClone(porRef('SEM-030'))
+  const hash = 'a'.repeat(64)
+  const fotos = vistasRequeridas(base).map((vista: string, indice: number) => ({
+    ruta: `/images/anuncios/festool-ts-55-v2-${String(indice + 1).padStart(2, '0')}-${vista}.webp`,
+    vista,
+    origen: `https://upload.wikimedia.org/wikipedia/commons/ejemplo-${vista}.jpg`,
+    esPortada: indice === 0,
+    anchoOriginal: 1600,
+    altoOriginal: 1200,
+    anchoSalida: 1408,
+    altoSalida: 768,
+    sha256Original: hash,
+    sha256Salida: hash,
+  }))
+
+  return {
+    ...base,
+    estadoFotos: 'verificado',
+    fotos: fotos.map((f: any) => f.ruta),
+    dossierFotos: {
+      version: 1,
+      estadoRevision: 'aprobado',
+      mismaUnidad: true,
+      procedencia: {
+        tipo: 'archivo-abierto',
+        nombre: 'Wikimedia Commons',
+        url: 'https://commons.wikimedia.org/wiki/File:Ejemplo.jpg',
+        autor: 'Autor de prueba',
+        licencia: 'CC BY-SA 4.0',
+        licenciaUrl: 'https://creativecommons.org/licenses/by-sa/4.0/',
+        evidenciaDerechos: 'https://commons.wikimedia.org/wiki/File:Ejemplo.jpg',
+        atribucion: 'Autor de prueba, CC BY-SA 4.0',
+        atribucionUrl: '/creditos-fotograficos#sem-030',
+        cambios: 'Recorte 1408x768 y conversión a WebP',
+      },
+      unidad: {
+        marcaModelo: 'Festool TS 55 F',
+        fechaSesion: '2026-10-26',
+        contexto: 'Banco de trabajo del vendedor particular',
+        conciliadoConAnuncio: true,
+      },
+      revision: {
+        revisor: 'Revisión editorial',
+        fecha: '2026-10-26',
+        checklist: {
+          mismaUnidad: true,
+          modeloYConfiguracion: true,
+          contextoCompatibleConVendedor: true,
+          desgasteYDefectosCoherentes: true,
+          sinMarcasNiLogosDeTerceros: true,
+          sinIaRenderNiPackshot: true,
+          derechosComprobados: true,
+        },
+      },
+      fotos,
+    },
+  }
+}
 
 describe('reconstrucción editorial de la semilla', () => {
   test('cada anuncio tiene ref estable, canal de venta y decisión trazable', () => {
@@ -76,5 +136,28 @@ describe('reconstrucción editorial de la semilla', () => {
       modelo: 'TC-MX 1400-2 E',
     })
     expect(porRef('SEM-037').ficha.Combustible).toBe('Eléctrico')
+  })
+
+  test('un dossier verificado exige procedencia, revisión, vistas y rutas trazables', () => {
+    expect(analizarDossierFotos(anuncioConDossierValido())).toEqual([])
+
+    const sinVista = anuncioConDossierValido()
+    sinVista.dossierFotos.fotos.pop()
+    sinVista.fotos = sinVista.dossierFotos.fotos.map((f: any) => f.ruta)
+    expect(analizarDossierFotos(sinVista).join(' ')).toMatch(/vistas requeridas/)
+
+    const sinAtribucion = anuncioConDossierValido()
+    sinAtribucion.dossierFotos.procedencia.atribucion = ''
+    expect(analizarDossierFotos(sinAtribucion).join(' ')).toMatch(/CC BY sin texto de atribución/)
+
+    const rutasDescuadradas = anuncioConDossierValido()
+    rutasDescuadradas.fotos = [...rutasDescuadradas.fotos].reverse()
+    expect(analizarDossierFotos(rutasDescuadradas).join(' ')).toMatch(/no coinciden en orden/)
+
+    const anunciosSinExpediente = structuredClone(ANUNCIOS).map((a: any) => (
+      a.ref === 'SEM-030' ? { ...a, estadoFotos: 'verificado' } : a
+    ))
+    const resultado = analizarSemilla({ VENDEDORES, ANUNCIOS: anunciosSinExpediente })
+    expect(resultado.errores.join(' ')).toMatch(/SEM-030: estadoFotos=verificado sin dossierFotos/)
   })
 })

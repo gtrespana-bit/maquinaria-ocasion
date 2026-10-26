@@ -1,0 +1,63 @@
+{
+  "version": 1,
+  "dossiers": [
+    {
+      "ref": "SEM-000",
+      "procedencia": {
+        "tipo": "encargo",
+        "nombre": "Sesión encargada en las instalaciones del vendedor",
+        "url": "",
+        "autor": "Nombre y apellidos o razón social del fotógrafo",
+        "licencia": "Cesión/licencia contractual para MaquinariaOcasión",
+        "licenciaUrl": "",
+        "evidenciaDerechos": "Expediente interno FOTO-SEM-000 (contrato y factura archivados fuera del repositorio)",
+        "expedientePermiso": "FOTO-SEM-000",
+        "atribucion": "",
+        "atribucionUrl": "",
+        "cambios": "Recorte 1408x768, conversión a WebP/JPG y ajuste neutro de exposición sin alterar el estado de la máquina"
+      },
+      "unidad": {
+        "marcaModelo": "Marca y modelo exactos que aparecen en la placa",
+        "fechaSesion": "2026-10-27",
+        "contexto": "Campa o taller del vendedor; misma sesión y misma unidad",
+        "conciliadoConAnuncio": true
+      },
+      "revision": {
+        "revisor": "Nombre de quien visiona el dossier completo",
+        "fecha": "2026-10-27",
+        "checklist": {
+          "mismaUnidad": true,
+          "modeloYConfiguracion": true,
+          "contextoCompatibleConVendedor": true,
+          "desgasteYDefectosCoherentes": true,
+          "sinMarcasNiLogosDeTerceros": true,
+          "sinIaRenderNiPackshot": true,
+          "derechosComprobados": true
+        }
+      },
+      "fotos": [
+        {
+          "vista": "general",
+          "origen": "semilla-fotos/originales/SEM-000/01-general.jpg",
+          "esPortada": true
+        },
+        {
+          "vista": "lado-contrario",
+          "origen": "semilla-fotos/originales/SEM-000/02-lado-contrario.jpg"
+        },
+        {
+          "vista": "placa-modelo",
+          "origen": "semilla-fotos/originales/SEM-000/03-placa-modelo.jpg"
+        },
+        {
+          "vista": "desgaste",
+          "origen": "semilla-fotos/originales/SEM-000/04-desgaste.jpg"
+        },
+        {
+          "vista": "accesorios-incluidos",
+          "origen": "semilla-fotos/originales/SEM-000/05-accesorios.jpg"
+        }
+      ]
+    }
+  ]
+}

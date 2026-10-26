@@ -594,6 +594,22 @@ const ANUNCIOS = [
   },
 ]
 
+// ── Dossiers fotográficos aprobados ────────────────────────────────────────
+// El registro lo escribe `scripts/importar-dossiers-fotos.js` después de
+// descargar/conciliar los originales, generar los derivados 1408×768 y
+// registrar procedencia, licencia, hashes y revisión visual. Fusionarlo aquí
+// evita reescribir a mano este fichero: solo un ref presente en el registro
+// puede salir de cuarentena, y `semilla-calidad.js` vuelve a validar el
+// expediente completo antes de que el generador SQL lo acepte.
+const REGISTRO_DOSSIERS = require('./semilla-dossiers.json')
+for (const anuncio of ANUNCIOS) {
+  const dossier = REGISTRO_DOSSIERS?.dossiers?.[anuncio.ref]
+  if (!dossier) continue
+  anuncio.dossierFotos = dossier
+  anuncio.estadoFotos = 'verificado'
+  anuncio.fotos = dossier.fotos.map(foto => foto.ruta)
+}
+
 module.exports = {
   VENDEDORES,
   ANUNCIOS,

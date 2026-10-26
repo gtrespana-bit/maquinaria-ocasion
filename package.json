@@ -14,6 +14,8 @@
     "test:watch": "jest --config jest.unit.config.js --watch",
     "test:coverage": "jest --config jest.unit.config.js --coverage",
     "optimize-images": "node scripts/optimize-images.js",
+    "fotos:importar": "node scripts/importar-dossiers-fotos.js",
+    "fotos:verificar": "node scripts/importar-dossiers-fotos.js --verificar-registro",
     "performance-test": "npm run build && node scripts/performance-test.js",
     "apply-optimizations": "node scripts/apply-optimizations.js",
     "check:node": "node scripts/check-node-version.cjs",

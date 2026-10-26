@@ -125,10 +125,33 @@ necesariamente publicarse íntegro. Si el dossier no coincide con el texto de
 objetivo, se adapta el anuncio a la unidad fotografiada; no se fuerza la
 unidad a encajar en el texto.
 
+### Resultado de la búsqueda en fuentes abiertas
+
+La búsqueda posterior en Wikimedia Commons, Openverse/Flickr, Geograph,
+Internet Archive, GSA Auctions y el pool heredado no produjo ningún dossier
+aprobable: predominan unidades nuevas o de feria, máquinas trabajando para
+terceros, contextos extranjeros, fotos sueltas y series sin cabina,
+cuentahoras ni desgaste. La única serie de una unidad con licencia abierta
+que queda condicionada es la Festool TS 55 EBQ de SEM-030, pero exigiría
+reescribir el anuncio, recuperar el original 2 y crear la atribución pública;
+no se ha integrado.
+
+El detalle está en `docs/SEMILLA-FOTOS-CANDIDATAS-2026-10-26.csv` y el brief
+para licenciar o encargar los dossiers en
+`docs/SEMILLA-FOTOS-BRIEF-ENCARGO-2026-10-26.md`. Para el piloto ya hay tres
+leads comerciales concretos —SEM-001, SEM-017 y SEM-030— con mensajes listos
+en `docs/SEMILLA-FOTOS-CONTACTOS-PILOTO-2026-10-26.md`, pero ninguno tiene
+todavía licencia ni originales. La importación queda
+mecanizada en `scripts/importar-dossiers-fotos.js`: registra procedencia,
+licencia, revisión visual, vistas y SHA-256 en
+`src/lib/semilla-dossiers.json`, y `analizarDossierFotos()` impide declarar
+«verificado» un set sin expediente completo.
+
 ## Protección contra regresiones
 
 - `tests/unit/semilla-datos-calidad.test.ts` valida las 37 referencias, voces,
-  canales, ausencia de defaults y cuarentena fotográfica.
+  canales, ausencia de defaults, cuarentena fotográfica y el expediente
+  mínimo que exige un dossier verificado.
 - `scripts/generar-sql-semilla.js` valida ya `taller`, no el legado
   `camperizador`.
 - El generador exige fotos verificadas y cero decisiones pendientes.

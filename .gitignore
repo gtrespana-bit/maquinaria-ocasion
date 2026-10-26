@@ -63,5 +63,12 @@ convert-to-webp.ps1
 __pycache__/
 *.pyc
 
+# Exploración y originales fotográficos: nunca se versionan. Solo entran en
+# Git los derivados aprobados de public/images/anuncios y su expediente en
+# src/lib/semilla-dossiers.json.
+image-search/
+semilla-fotos/manifiesto.json
+semilla-fotos/originales/
+
 # .env.example SÍ se versiona (plantilla sin secretos)
 !.env.example

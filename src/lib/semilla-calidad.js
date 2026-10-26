@@ -118,6 +118,164 @@ function vistasRequeridas(anuncio) {
   return ['general', 'lado-contrario', 'placa-modelo', 'desgaste', 'accesorios-incluidos']
 }
 
+const ANCHO_FOTO_SALIDA = 1408
+const ALTO_FOTO_SALIDA = 768
+
+const TIPOS_PROCEDENCIA_FOTOS = [
+  'archivo-abierto',
+  'licencia-directa',
+  'encargo',
+  'propias',
+]
+
+const CHECKLIST_DOSSIER_FOTOS = [
+  'mismaUnidad',
+  'modeloYConfiguracion',
+  'contextoCompatibleConVendedor',
+  'desgasteYDefectosCoherentes',
+  'sinMarcasNiLogosDeTerceros',
+  'sinIaRenderNiPackshot',
+  'derechosComprobados',
+]
+
+function textoNoVacio(valor) {
+  return typeof valor === 'string' && valor.trim().length > 0
+}
+
+function esFechaIso(valor) {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(String(valor || ''))) return false
+  const fecha = new Date(`${valor}T00:00:00Z`)
+  return !Number.isNaN(fecha.getTime()) && fecha.toISOString().slice(0, 10) === valor
+}
+
+function esUrlHttps(valor) {
+  try {
+    return new URL(String(valor)).protocol === 'https:'
+  } catch {
+    return false
+  }
+}
+
+function vistasFaltantes(anuncio, fotos = []) {
+  const presentes = new Set((fotos || []).map(f => f?.vista).filter(Boolean))
+  return vistasRequeridas(anuncio).filter(vista => !presentes.has(vista))
+}
+
+function licenciaExigeAtribucion(licencia) {
+  return /\bcc\s+by(?:\s|-)/i.test(String(licencia || ''))
+}
+
+/**
+ * Valida el expediente que permite declarar `estadoFotos: 'verificado'`.
+ *
+ * La existencia de tres rutas no basta: el registro debe demostrar, como
+ * mínimo, procedencia/derechos, una sola unidad, revisión visual completa,
+ * cobertura de vistas y correspondencia exacta entre `anuncio.fotos` y los
+ * derivados generados por `scripts/importar-dossiers-fotos.js`.
+ */
+function analizarDossierFotos(anuncio) {
+  const errores = []
+  const ref = anuncio?.ref || anuncio?.titulo || 'sin-ref'
+  const dossier = anuncio?.dossierFotos
+  const err = mensaje => errores.push(`${ref}: dossier de fotos ${mensaje}`)
+
+  if (!dossier || typeof dossier !== 'object' || Array.isArray(dossier)) {
+    return [`${ref}: estadoFotos=verificado sin dossierFotos registrado`]
+  }
+
+  if (dossier.version !== 1) err('con version distinta de 1')
+  if (dossier.estadoRevision !== 'aprobado') err('sin estadoRevision=aprobado')
+  if (dossier.mismaUnidad !== true) err('sin mismaUnidad=true')
+
+  const procedencia = dossier.procedencia || {}
+  if (!TIPOS_PROCEDENCIA_FOTOS.includes(procedencia.tipo)) {
+    err(`con procedencia.tipo no soportado (${procedencia.tipo || 'ausente'})`)
+  }
+  if (!textoNoVacio(procedencia.nombre)) err('sin procedencia.nombre')
+  if (!textoNoVacio(procedencia.autor)) err('sin procedencia.autor')
+  if (!textoNoVacio(procedencia.licencia)) err('sin procedencia.licencia')
+  if (!textoNoVacio(procedencia.evidenciaDerechos)) {
+    err('sin evidenciaDerechos (URL de licencia, permiso o expediente contractual)')
+  } else if (!esUrlHttps(procedencia.evidenciaDerechos) && procedencia.evidenciaDerechos.trim().length < 8) {
+    err('con evidenciaDerechos demasiado vaga')
+  }
+  if (procedencia.tipo === 'archivo-abierto') {
+    if (!esUrlHttps(procedencia.url)) err('de archivo abierto sin URL HTTPS de la ficha fuente')
+    if (!esUrlHttps(procedencia.licenciaUrl)) err('de archivo abierto sin licenciaUrl HTTPS')
+  }
+  if (['licencia-directa', 'encargo', 'propias'].includes(procedencia.tipo)
+    && !textoNoVacio(procedencia.expedientePermiso)) {
+    err('sin expedientePermiso para licencia directa, encargo o material propio')
+  }
+  if (licenciaExigeAtribucion(procedencia.licencia)) {
+    if (!textoNoVacio(procedencia.atribucion)) err('CC BY sin texto de atribución')
+    if (!/^\/(?:es\/|en\/)?creditos-fotograficos(?:[/?#].*)?$/.test(String(procedencia.atribucionUrl || ''))) {
+      err('CC BY sin atribucionUrl pública en /creditos-fotograficos')
+    }
+    if (!textoNoVacio(procedencia.cambios)) err('CC BY sin descripción de cambios aplicados')
+  }
+
+  const unidad = dossier.unidad || {}
+  if (!textoNoVacio(unidad.marcaModelo)) err('sin unidad.marcaModelo')
+  if (!esFechaIso(unidad.fechaSesion)) err('sin unidad.fechaSesion ISO válida')
+  if (!textoNoVacio(unidad.contexto)) err('sin unidad.contexto de la sesión')
+  if (unidad.conciliadoConAnuncio !== true) err('sin conciliadoConAnuncio=true')
+
+  const revision = dossier.revision || {}
+  if (!textoNoVacio(revision.revisor)) err('sin revision.revisor')
+  if (!esFechaIso(revision.fecha)) err('sin revision.fecha ISO válida')
+  for (const clave of CHECKLIST_DOSSIER_FOTOS) {
+    if (revision.checklist?.[clave] !== true) err(`con checklist incompleto: falta ${clave}=true`)
+  }
+
+  const fotos = dossier.fotos
+  if (!Array.isArray(fotos) || fotos.length === 0) {
+    err('sin fotos detalladas')
+    return errores
+  }
+
+  const faltantes = vistasFaltantes(anuncio, fotos)
+  if (faltantes.length) err(`sin las vistas requeridas: ${faltantes.join(', ')}`)
+
+  const vistas = fotos.map(f => f?.vista)
+  if (new Set(vistas).size !== vistas.length) err('con vistas duplicadas')
+  const rutas = fotos.map(f => f?.ruta)
+  if (new Set(rutas).size !== rutas.length) err('con rutas duplicadas')
+  if (JSON.stringify(rutas) !== JSON.stringify(anuncio.fotos || [])) {
+    err('cuyas rutas no coinciden en orden con anuncio.fotos')
+  }
+  const portadas = fotos.filter(f => f?.esPortada === true)
+  if (portadas.length !== 1 || fotos[0]?.esPortada !== true) {
+    err('sin una única portada marcada en la primera posición')
+  }
+
+  fotos.forEach((foto, indice) => {
+    const etiqueta = `foto ${indice + 1} (${foto?.vista || 'sin-vista'})`
+    if (!/^\/images\/anuncios\/[a-z0-9][a-z0-9._-]*\.webp$/i.test(String(foto?.ruta || ''))) {
+      err(`con ${etiqueta} fuera de /images/anuncios/*.webp`)
+    }
+    if (!textoNoVacio(foto?.vista)) err(`con ${etiqueta} sin vista`)
+    if (!textoNoVacio(foto?.origen)) err(`con ${etiqueta} sin origen trazable`)
+    if (!Number.isInteger(foto?.anchoOriginal) || foto.anchoOriginal < ANCHO_FOTO_SALIDA) {
+      err(`con ${etiqueta} de ancho original insuficiente (<${ANCHO_FOTO_SALIDA}px)`)
+    }
+    if (!Number.isInteger(foto?.altoOriginal) || foto.altoOriginal < ALTO_FOTO_SALIDA) {
+      err(`con ${etiqueta} de alto original insuficiente (<${ALTO_FOTO_SALIDA}px)`)
+    }
+    if (foto?.anchoSalida !== ANCHO_FOTO_SALIDA || foto?.altoSalida !== ALTO_FOTO_SALIDA) {
+      err(`con ${etiqueta} sin salida ${ANCHO_FOTO_SALIDA}x${ALTO_FOTO_SALIDA}`)
+    }
+    if (!/^[a-f0-9]{64}$/i.test(String(foto?.sha256Original || ''))) {
+      err(`con ${etiqueta} sin sha256Original válido`)
+    }
+    if (!/^[a-f0-9]{64}$/i.test(String(foto?.sha256Salida || ''))) {
+      err(`con ${etiqueta} sin sha256Salida válido`)
+    }
+  })
+
+  return errores
+}
+
 function analizarFicha(anuncio, errores) {
   const f = anuncio.ficha || {}
   const ref = anuncio.ref || anuncio.titulo
@@ -280,8 +438,15 @@ function analizarSemilla(
       avisos.push(`${ref}: pendiente de ${a.decision} antes de cerrar modelo/precio`)
     }
 
-    if (a.estadoFotos !== 'verificado') {
-      bloqueosFotos.push(`${ref}: fotos en estado ${a.estadoFotos || 'ausente'}; faltan ${vistasRequeridas(a).join(', ')}`)
+    if (!['cuarentena', 'verificado'].includes(a.estadoFotos)) {
+      errores.push(`${ref}: estadoFotos inválido (${a.estadoFotos || 'ausente'})`)
+    } else if (a.estadoFotos !== 'verificado') {
+      if (a.dossierFotos) {
+        errores.push(`${ref}: tiene dossierFotos pero sigue en cuarentena; no debe mezclarse un registro aprobado con rutas heredadas`)
+      }
+      bloqueosFotos.push(`${ref}: fotos en estado ${a.estadoFotos}; faltan ${vistasRequeridas(a).join(', ')}`)
+    } else {
+      errores.push(...analizarDossierFotos(a))
     }
   }
 
@@ -290,7 +455,13 @@ function analizarSemilla(
 }
 
 module.exports = {
+  ALTO_FOTO_SALIDA,
+  ANCHO_FOTO_SALIDA,
   CANALES_POR_TIPO,
+  CHECKLIST_DOSSIER_FOTOS,
+  TIPOS_PROCEDENCIA_FOTOS,
+  analizarDossierFotos,
   analizarSemilla,
+  vistasFaltantes,
   vistasRequeridas,
 }
