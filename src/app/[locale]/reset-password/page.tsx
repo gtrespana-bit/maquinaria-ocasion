@@ -5,7 +5,8 @@ import { useState, useEffect } from 'react'
 import LocalLink from '@/components/LocalLink'
 import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
-import { AlertCircle } from 'lucide-react'
+import { establecerSesionDesdeEnlace } from '@/lib/sesion-desde-enlace'
+import { AlertCircle, XCircle } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 
 export default function ResetPasswordPage() {
@@ -17,37 +18,28 @@ export default function ResetPasswordPage() {
   const [error, setError] = useState('')
   const [success, setSuccess] = useState(false)
   const [checkingSession, setCheckingSession] = useState(true)
+  const [enlaceInvalido, setEnlaceInvalido] = useState(false)
 
   useEffect(() => {
-    // Supabase redirige al usuario aquí después de hacer clic en el enlace del email.
-    // El token viene en el hash de la URL (#access_token=...). Supabase lo procesa
-    // automáticamente al cargar la página, así solo verificamos que haya sesión.
-    const checkSession = async () => {
-      const { data: { session } } = await supabase.auth.getSession()
-
-      // Si no hay sesión, puede que el token aún no se haya procesado.
-      // Supabase suele establecer la sesión automáticamente desde el hash.
-      // Si no hay sesión después de un momento, mostramos un error.
-      if (!session) {
-        // Escuchamos cambios de auth (el hash se procesa asíncronamente)
-        const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-          if (session) {
-            subscription.unsubscribe()
-            setCheckingSession(false)
-          }
-        })
-
-        // Timeout de 5 segundos — si no llega sesión, asumimos token inválido
-        setTimeout(() => {
-          setCheckingSession(false)
-          subscription.unsubscribe()
-        }, 5000)
-      } else {
-        setCheckingSession(false)
-      }
+    // El enlace del correo llega con los tokens en el fragmento de la URL
+    // (#access_token=…). El cliente usa flujo PKCE y NO consume ese
+    // fragmento solo: hay que establecer la sesión explícitamente o
+    // `updateUser` falla con «Auth session missing!».
+    let cancelado = false
+    establecerSesionDesdeEnlace(supabase)
+      .then((resultado) => {
+        if (cancelado) return
+        if (!resultado.ok) setEnlaceInvalido(true)
+      })
+      .catch(() => {
+        if (!cancelado) setEnlaceInvalido(true)
+      })
+      .finally(() => {
+        if (!cancelado) setCheckingSession(false)
+      })
+    return () => {
+      cancelado = true
     }
-
-    checkSession()
   }, [])
 
   const handleReset = async (e: React.FormEvent) => {
@@ -69,7 +61,13 @@ export default function ResetPasswordPage() {
     const { error } = await supabase.auth.updateUser({ password })
 
     if (error) {
-      setError(error.message)
+      // Sesión de recuperación perdida/caducada: mismo estado que un enlace
+      // inválido, en vez del mensaje crudo en inglés de supabase-js.
+      if (/session/i.test(error.message)) {
+        setEnlaceInvalido(true)
+      } else {
+        setError(error.message)
+      }
     } else {
       setSuccess(true)
       setTimeout(() => router.push('/login'), 3000)
@@ -98,9 +96,7 @@ export default function ResetPasswordPage() {
             {success ? t('titleSuccess') : t('title')}
           </h1>
           <p className="text-gray-500 mt-1">
-            {success
-              ? 'Serás redirigido al login en unos segundos...'
-              : 'Crea una nueva contraseña para tu cuenta'}
+            {success ? t('subtitleSuccess') : t('subtitle')}
           </p>
         </div>
 
@@ -120,7 +116,23 @@ export default function ResetPasswordPage() {
                 href="/login"
                 className="inline-block mt-6 bg-brand-primary text-white px-8 py-3 rounded-lg font-bold hover:bg-brand-dark transition"
               >
-                Ir al login
+                {t('goLogin')}
+              </LocalLink>
+            </div>
+          ) : enlaceInvalido ? (
+            <div className="text-center py-8">
+              <div className="flex justify-center mb-6">
+                <div className="bg-red-100 rounded-full p-4">
+                  <XCircle className="text-red-600" size={48} />
+                </div>
+              </div>
+              <p className="text-gray-800 font-semibold text-lg">{t('linkInvalidTitle')}</p>
+              <p className="text-gray-500 mt-2">{t('linkInvalidDesc')}</p>
+              <LocalLink
+                href="/login"
+                className="inline-block mt-6 bg-brand-primary text-white px-8 py-3 rounded-lg font-bold hover:bg-brand-dark transition"
+              >
+                {t('requestNewLink')}
               </LocalLink>
             </div>
           ) : (
@@ -161,7 +173,7 @@ export default function ResetPasswordPage() {
 
               <p className="text-center text-sm text-gray-500 mt-4">
                 <LocalLink href="/login" className="text-brand-primary font-semibold hover:underline">
-                  Volver al login
+                  {t('backToLogin')}
                 </LocalLink>
               </p>
             </form>
