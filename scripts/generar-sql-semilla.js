@@ -2,8 +2,10 @@
 // Genera la migración SQL idempotente de la semilla de anuncios de
 // demostración a partir de `src/lib/semilla-datos.js` (única fuente de verdad).
 //
-// Uso:   node scripts/generar-sql-semilla.js
-// Salida: supabase/migrations/<fecha>_seed_anuncios_maquinaria.sql
+// Uso:   node scripts/generar-sql-semilla.js --salida=supabase/migrations/<nueva>.sql
+// Sin --salida apunta a la migración histórica y el script se niega a
+// sobrescribirla: ya está aplicada. La reconstrucción necesita una vía de
+// despliegue que sustituya/actualice la semilla v1 sin duplicarla.
 //
 // La migración:
 //   1) crea (o actualiza) los usuarios de auth de los vendedores de semilla
@@ -25,9 +27,15 @@ const fs = require('fs')
 const path = require('path')
 const crypto = require('crypto')
 const { VENDEDORES, ANUNCIOS, emailVendedor } = require('../src/lib/semilla-datos.js')
+const { analizarSemilla } = require('../src/lib/semilla-calidad.js')
 
 const ROOT = path.join(__dirname, '..')
-const SALIDA = path.join(ROOT, 'supabase/migrations/202610240002_seed_anuncios_maquinaria.sql')
+const salidaArg = process.argv.find(a => a.startsWith('--salida='))
+const SALIDA = salidaArg
+  ? path.resolve(ROOT, salidaArg.slice('--salida='.length))
+  : path.join(ROOT, 'supabase/migrations/202610240002_seed_anuncios_maquinaria.sql')
+const SALIDA_HISTORICA = path.join(ROOT, 'supabase/migrations/202610240002_seed_anuncios_maquinaria.sql')
+const PERMITIR_SOBREESCRIBIR_APLICADA = process.argv.includes('--permitir-sobreescribir-aplicada')
 
 // ── UUIDs deterministas (v5, namespace URL) ────────────────────────────────
 const NS_URL = '6ba7b810-9dad-11d1-80b4-00c04fd430c8'
@@ -114,7 +122,7 @@ const slugsVend = new Set()
 for (const v of VENDEDORES) {
   if (slugsVend.has(v.slug)) errores.push(`vendedor slug duplicado: ${v.slug}`)
   slugsVend.add(v.slug)
-  if (!['particular', 'camperizador', 'profesional'].includes(v.tipo)) errores.push(`${v.slug}: tipo inválido ${v.tipo}`)
+  if (!['particular', 'taller', 'profesional'].includes(v.tipo)) errores.push(`${v.slug}: tipo inválido ${v.tipo}`)
   if (!ESTADOS.includes(v.estado)) errores.push(`${v.slug}: estado no canónico "${v.estado}"`)
   if (v.telefono !== null) errores.push(`${v.slug}: la semilla no lleva teléfono`)
 }
@@ -152,6 +160,20 @@ for (const a of ANUNCIOS) {
   check('Batería incluida', f['Batería incluida'], OPS['Batería incluida'])
 }
 if (ANUNCIOS.length < 30 || ANUNCIOS.length > 50) errores.push(`ANUNCIOS=${ANUNCIOS.length} fuera del rango 30-50`)
+
+// Calidad editorial: voz/canal del vendedor, ficha aplicable y dossier
+// fotográfico. A diferencia del test de trabajo en curso, generar SQL exige
+// el estándar completo: sin decisiones pendientes y con fotos verificadas.
+const calidad = analizarSemilla({ VENDEDORES, ANUNCIOS })
+errores.push(...calidad.errores)
+errores.push(...calidad.avisos.map(a => `decisión editorial pendiente: ${a}`))
+if (calidad.bloqueosFotos.length) {
+  errores.push(`${calidad.bloqueosFotos.length} anuncios sin dossier fotográfico verificado de una sola unidad (ej.: ${calidad.bloqueosFotos[0]})`)
+}
+if (SALIDA === SALIDA_HISTORICA && !PERMITIR_SOBREESCRIBIR_APLICADA) {
+  errores.push('la salida por defecto es una migración ya aplicada; usa --salida=<nueva-migracion.sql> y una estrategia de sustitución de la v1')
+}
+
 if (errores.length) {
   console.error('❌ Validación fallida:')
   for (const e of errores) console.error('  ·', e)
@@ -162,11 +184,14 @@ if (errores.length) {
 const q = s => (s == null ? 'null' : `'${String(s).replace(/'/g, "''")}'`)
 const intervalo = (campo, horas) => `${campo} = now() - interval '${Math.round(horas)} hours'`
 const uuidVend = v => uuidv5(`semilla:vendedor:${v.slug}`)
-const uuidProd = (a, i) => uuidv5(`semilla:producto:${a.titulo}`)
+// La `ref` es estable aunque cambie el título comercial. Ojo al desplegar:
+// la v1 generó UUID desde el título, así que una actualización en producción
+// necesita retirar/mapear la semilla antigua antes de insertar estos UUID.
+const uuidProd = (a, i) => uuidv5(`semilla:producto:${a.ref || a.titulo}`)
 
 const out = []
 out.push(`-- ============================================================================
--- 202610240002 — Semilla de anuncios de maquinaria (37 anuncios, es_demo)
+-- ${path.basename(SALIDA)} — Semilla de anuncios de maquinaria (37 anuncios, es_demo)
 --
 -- GENERADA por scripts/generar-sql-semilla.js desde src/lib/semilla-datos.js
 -- (única fuente de verdad). NO editar a mano: regenerar con el script.

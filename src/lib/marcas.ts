@@ -95,7 +95,7 @@ export const MARCAS_MODELOS: MarcaModelo[] = [
   { fabricante: 'Fendt', modelo: 'C Series', valor: 'Fendt C Series', aptoPara: ['cosechadoras'], nota: 'Cosechadora de maíz' },
 
   // ─────────────────────── Maquinaria agrícola auxiliar ───────────────────────
-  { fabricante: 'Kuhn', modelo: '', valor: 'Kuhn', aptoPara: ['maquinaria-agricola'], nota: 'Arados, sembradoras y aperos' },
+  { fabricante: 'Kuhn', modelo: '', valor: 'Kuhn', aptoPara: ['maquinaria-agricola', 'ganaderia'], nota: 'Aperos y alimentación animal' },
   { fabricante: 'Amazone', modelo: '', valor: 'Amazone', aptoPara: ['maquinaria-agricola'], nota: 'Sembradoras y fertilizadoras' },
   { fabricante: 'Lemken', modelo: '', valor: 'Lemken', aptoPara: ['maquinaria-agricola'], nota: 'Arados y labranza' },
   { fabricante: 'Kverneland', modelo: '', valor: 'Kverneland', aptoPara: ['maquinaria-agricola'], nota: 'Arados y siembra' },
@@ -186,12 +186,12 @@ export const MARCAS_MODELOS: MarcaModelo[] = [
   // ─────────────────────────── Plataformas elevadoras ───────────────────────────
   { fabricante: 'Genie', modelo: 'S-85', valor: 'Genie S-85', aptoPara: ['plataformas'], nota: 'Plataforma telescópica' },
   { fabricante: 'Genie', modelo: 'S-65', valor: 'Genie S-65', aptoPara: ['plataformas'], nota: 'Plataforma telescópica' },
-  { fabricante: 'Genie', modelo: 'GS-2630', valor: 'Genie GS-2630', aptoPara: ['plataformas'], nota: 'Plataforma articulada (tijera)' },
+  { fabricante: 'Genie', modelo: 'GS-2630', valor: 'Genie GS-2630', aptoPara: ['plataformas'], nota: 'Plataforma de tijera eléctrica' },
   { fabricante: 'Genie', modelo: 'Z-45', valor: 'Genie Z-45', aptoPara: ['plataformas'], nota: 'Plataforma articulada' },
   { fabricante: 'JCB', modelo: 'S1932', valor: 'JCB S1932', aptoPara: ['plataformas'], nota: 'Plataforma vertical móvil' },
   { fabricante: 'Manitou', modelo: '200 ATL', valor: 'Manitou 200 ATL', aptoPara: ['plataformas'], nota: 'Plataforma sobre telecargador' },
   { fabricante: 'Manitou', modelo: '110 ATJ', valor: 'Manitou 110 ATJ', aptoPara: ['plataformas'], nota: 'Plataforma articulada' },
-  { fabricante: 'Haulotte', modelo: 'HA20 LT', valor: 'Haulotte HA20 LT', aptoPara: ['plataformas'], nota: 'Plataforma articulada' },
+  { fabricante: 'Haulotte', modelo: 'HA20 RTJ', valor: 'Haulotte HA20 RTJ', aptoPara: ['plataformas'], nota: 'Plataforma articulada todoterreno' },
   { fabricante: 'Skyjack', modelo: '', valor: 'Skyjack', aptoPara: ['plataformas'], nota: 'Plataformas de tijera y obra' },
   { fabricante: 'Niftylift', modelo: 'HR15', valor: 'Niftylift HR15', aptoPara: ['plataformas'], nota: 'Plataforma elevadora articulada' },
   { fabricante: 'Snorkel', modelo: 'TM12', valor: 'Snorkel TM12', aptoPara: ['plataformas'], nota: 'Plataforma telescópica autopropulsada' },
