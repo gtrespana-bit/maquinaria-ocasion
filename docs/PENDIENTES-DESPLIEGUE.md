@@ -139,6 +139,12 @@ Verifica además que los buzones que anuncian las páginas existen y se leen:
 **privacidad@** y **legal@maquinariaocasion.online**. Una obligación de información
 que apunta a un correo que nadie contesta no cumple la norma.
 
+✅ **Hecho (2026-10-26):** recepción activa en **Zoho Mail** (MX
+`mx.zoho.com`, `mx2`, `mx3` verificados vía DNS) con los buzones
+`soporte@`, `privacidad@` y `legal@maquinaria.click` creados. El envío sigue
+saliendo por Resend (`noreply@maquinaria.click`), independiente de la
+recepción.
+
 Los textos describen con exactitud el tratamiento y las condiciones del
 servicio, pero **no sustituyen una revisión profesional**: antes de empezar a
 facturar conviene el visto bueno de un abogado, sobre todo en la cláusula de
