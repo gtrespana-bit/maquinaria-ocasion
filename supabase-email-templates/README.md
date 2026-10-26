@@ -61,22 +61,22 @@ dashboard:
   `/reset-password`, `/en/reset-password`
   (sin esto, GoTrue ignora el `redirectTo` de la app y los enlaces de
   correo aterrizarían en la home).
-- **Plantillas:** preparadas en esta carpeta; **pendientes de pegar** en el
-  dashboard (pasos de arriba). Hasta entonces, cualquier correo que salga
-  por Supabase usa el texto por defecto en inglés.
-- **SMTP de Supabase:** sin configurar (servicio compartido de Supabase,
-  límite ~2 correos/hora y remitente genérico). La app **no depende** de él:
-  confirmación y recuperación se envían por el canal propio
+- **Plantillas aplicadas** (verificado vía API, 2026-10-26): ✅ Confirm
+  signup, ✅ Change Email Address, ✅ Password Changed, ✅ Email Address
+  Changed.
+- **Pendientes de pegar:** ⏳ **Reset Password** (= la solicitud de cambio de
+  contraseña; fichero `recovery.html`) — es la importante de las que faltan,
+  porque es la vía de respaldo si un restablecimiento saliera por GoTrue.
+  Sin uso hoy en la app, pero listas por completitud: Invite User, Magic
+  Link, Reauthentication, Phone Number Changed, MFA Enrolled/Unenrolled e
+  Identity Linked/Unlinked.
+- **SMTP de Supabase:** ✅ configurado (Resend, `smtp.resend.com:465`,
+  remitente `noreply@maquinaria.click`, límite de Auth 30 correos/hora).
+  Aun así, la app **no depende** de él en el día a día: confirmación y
+  recuperación se envían por el canal propio
   (`src/lib/confirmacion-email.ts`, `src/lib/recuperacion-email.ts`) y estas
   plantillas actúan como red de seguridad (reenvíos por el fallback,
   acciones desde el dashboard, futuros flujos).
-
-  Para dejarlo redondo tras el lanzamiento: configurar el SMTP de Resend en
-  *Project Settings → Authentication → SMTP* (`smtp.resend.com`, usuario
-  `resend`, contraseña = API key de Resend, remitente
-  `MaquinariaOcasión <noreply@maquinaria.click>`), que requiere el dominio
-  `maquinaria.click` verificado en Resend, y subir entonces el límite de
-  envío de Auth.
 
 ## Flujo de los enlaces
 
