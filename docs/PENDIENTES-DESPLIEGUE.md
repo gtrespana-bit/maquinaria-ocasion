@@ -136,10 +136,10 @@ NEXT_PUBLIC_TITULAR_REGISTRO   = (solo sociedades: datos del Registro Mercantil)
 con los datos del titular — **Lanza Reformas SL** (CIF B56514201,
 Arrecife, Las Palmas) — y producción redesplegada. El aviso legal muestra la
 identidad completa, el pie ya enlaza la página y la política de privacidad
-nombre a la sociedad como responsable del tratamiento. **Pendiente menor:**
-rellenar `NEXT_PUBLIC_TITULAR_REGISTRO` con los datos de inscripción
-(Registro Mercantil de Las Palmas: tomo, folio y hoja) cuando el propietario
-facilite la nota simple.
+nombre a la sociedad como responsable del tratamiento. `NEXT_PUBLIC_TITULAR_REGISTRO` quedó relleno el mismo día con la referencia
+que facilitó el propietario: la publicación de la constitución en el BORME
+(acto 451.165, página 48.223). Si llega la nota simple, se puede sustituir
+por el formato clásico de tomo, folio y hoja GC (1 variable + redeploy).
 
 **Adecuación pendiente (detectada el 2026-10-26 al publicar el aviso):** los
 textos legales (`src/lib/textos-legales.ts`, ES/EN) arrastran vocabulario de
