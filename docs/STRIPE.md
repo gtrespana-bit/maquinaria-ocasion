@@ -1,5 +1,14 @@
 # Stripe — créditos y suscripción Profesional
 
+> **Estado (2026-10-26): activado en producción con claves live.** Cuenta
+> propia de MaquinariaOcasión (España, EUR); variables `STRIPE_SECRET_KEY` y
+> `STRIPE_WEBHOOK_SECRET` en Vercel; webhook creado con los 6 eventos de
+> abajo; `/api/stripe/estado` devuelve `{"disponible":true}` y la prueba de
+> humo del propietario confirmó que el checkout de planes abre con el negocio
+> correcto (los precios se crean solos por `lookup_key`). Sin compra de
+> prueba a propósito: el webhook de extremo a extremo queda por verificar
+> con la primera venta real.
+
 El plan Profesional se cobra como **suscripción**
 (`POST /api/planes/checkout`). En el webhook de Stripe hay que escuchar:
 
@@ -158,7 +167,7 @@ Dashboard → *Settings → Public details*:
 
 - **Business name**: MaquinariaOcasión (esto es el «Pagar a …» del checkout)
 - **Statement descriptor**: MAQUINARIAOCASION
-- **Support**: soporte@maquinariaocasion.online / maquinariaocasion.online
+- **Support**: soporte@maquinaria.click / maquinaria.click
 - **Brand**: logo y color de MaquinariaOcasión
 
 Dashboard → *Settings → Account details*: país ES, moneda predeterminada EUR.
@@ -180,7 +189,7 @@ cambiar por API: solo en el dashboard de la cuenta correcta.
 
 Dashboard de Stripe → *Developers → Webhooks → Add endpoint*:
 
-- **URL**: `https://maquinariaocasion.online/api/stripe/webhook`
+- **URL**: `https://maquinaria.click/api/stripe/webhook`
 - **Eventos**: `checkout.session.completed` y
   `checkout.session.async_payment_succeeded`
 

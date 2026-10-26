@@ -139,6 +139,12 @@ Verifica además que los buzones que anuncian las páginas existen y se leen:
 **privacidad@** y **legal@maquinariaocasion.online**. Una obligación de información
 que apunta a un correo que nadie contesta no cumple la norma.
 
+✅ **Hecho (2026-10-26):** recepción activa en **Zoho Mail** (MX
+`mx.zoho.com`, `mx2`, `mx3` verificados vía DNS) con los buzones
+`soporte@`, `privacidad@` y `legal@maquinaria.click` creados. El envío sigue
+saliendo por Resend (`noreply@maquinaria.click`), independiente de la
+recepción.
+
 Los textos describen con exactitud el tratamiento y las condiciones del
 servicio, pero **no sustituyen una revisión profesional**: antes de empezar a
 facturar conviene el visto bueno de un abogado, sobre todo en la cláusula de
@@ -406,34 +412,53 @@ en build time. No envíes el secreto como parámetro de URL.
 
 ## 2. Al aplicar el SQL, comprobar en producción
 
-- [ ] Subir un documento de prueba en un anuncio propio → aparece en el
-      expediente y se abre con el enlace firmado.
-- [ ] Reservar un anuncio propio con otra cuenta → llega una solicitud a
-      `/dashboard?tab=reservas` del vendedor. Confirmarla desde ahí (recibió la
-      señal) → la tarjeta del catálogo pasa a "Reservado". Luego cancela para
-      liberar el anuncio.
-- [ ] Comprobar que una **solicitud sin confirmar NO bloquea** el anuncio (sigue
-      disponible para todos), y que una activa **no** permite una segunda reserva.
-- [ ] **Rangos numéricos**: en `/catalogo`, filtra "Kilómetros máximos" con un
-      valor intermedio (p. ej. 150.000) y confirma que filtra por número: un
-      anuncio de 1.500.000 km no aparece y uno de 145.000 km sí (si comparara
-      texto, `'9' > '10'` y el orden saldría mal). Prueba también "Año mínimo",
-      "Placa solar mínima" e "Inversor mínimo".
-- [ ] **Rangos en `/buscar`**: confirma que los mismos 4 filtros de rango
-      aparecen y acotan junto al resto de la ficha técnica camper.
-- [ ] **Inspección + gestoría**: pide una inspección desde la ficha de un
-      anuncio y confirma que llega a `/admin?tab=inspecciones`; envía un lead
-      desde `/gestoria-cambio-nombre` y confirma que llega a
-      `/admin?tab=gestoria`.
-- [ ] **Calculadora ITP**: elige etiqueta "ECO" o "Cero Emisiones" y confirma
-      que el ITP estimado cambia (tipos reducidos) y que la comparativa por
-      comunidades se actualiza.
+> **Verificado el 2026-10-26** (prueba funcional pre-lanzamiento, proyecto
+> Supabase `uwstkzojtwresdxhfext` + `maquinaria.click`). Resultado por punto:
+
+- [ ] ~~Subir un documento de prueba~~ — **sin objeto**: el expediente de
+      documentos/homologación se retiró del código en el refactor
+      camper → maquinaria (no queda UI ni una sola referencia a
+      `documentos_vehiculo`). La tabla, el bucket `documentos-vehiculo` y
+      `fn_es_dueno_del_anuncio` siguen en la BD como objetos huérfanos.
+- [x] **Reservas** — verificado en producción a nivel de datos con cuentas y
+      anuncio semilla (ciclo completo ejecutado y fila de prueba borrada al
+      terminar): la solicitud (`solicitada`) **no** bloquea el anuncio; al
+      confirmar (`activa`) el trigger marca `reservado=true` con
+      `reservado_hasta` = +7 días; una segunda reserva activa sobre el mismo
+      anuncio es rechazada por el índice único (`23505`,
+      `reservas_producto_activa_key`); al cancelar, el anuncio queda libre.
+      Esquema y `fn_propagar_reserva` en producción corresponden al modelo
+      «confirma el vendedor» (§3). Tests unitarios de reservas en verde
+      (710/710). Solo falta el clic visual del propietario (botón en la ficha
+      + pestaña Reservas) como prueba de humo final.
+- [x] **Rangos numéricos** — verificados y ya adaptados a maquinaria: los
+      filtros son **Horas de uso máximas** y **Año mínimo** (`espec_horas`,
+      `espec_anio`); los antiguos de km/placa/inversor ya no se usan aunque
+      sus columnas sigan en la BD. Comparación numérica comprobada sobre los
+      datos de producción y en la UI pública (`/catalogo?horasMax=100`
+      devuelve solo herramientas/aperos sin horas de motor). El panel de
+      rangos está también en `/buscar` (`FiltrosTecnicosPanel` +
+      `PARAMETROS_RANGO`).
+- [ ] ~~**Inspección + gestoría**~~ — **sin objeto**: retiradas del código en
+      el refactor a maquinaria (sin rutas, UI ni referencias a
+      `solicitudes_inspeccion`/`solicitudes_gestoria`, y sin enlaces muertos
+      a `/gestoria-cambio-nombre` ni `/contrato-compraventa`). Las dos tablas
+      quedan huérfanas en la BD. **Decisión pendiente del propietario:**
+      restaurarlas como fase futura (eran parte del «plan de confianza») o
+      eliminar los objetos huérfanos de la BD.
+- [ ] ~~**Calculadora ITP**~~ — **sin objeto**: no existe en el código actual
+      (ni `src/lib/itp.ts` ni landings por comunidad). Misma decisión
+      pendiente que el punto anterior.
 
 ## 2-bis. La Fase 0.3 (ITP) NO necesita SQL
 
 `TIPOS_ITP` vive en `src/lib/itp.ts` y las 19 landings se generan desde la
 configuración: no hay tabla ni migración. Lo único a recordar es revisar los
 tipos cada año (la constante `REVISADO_EN` indica de cuándo son los datos).
+
+> **Actualización 2026-10-26:** la calculadora ITP ya no forma parte del
+> código (se retiró en el refactor a maquinaria); este apartado queda como
+> histórico. Ver §2.
 
 ---
 
