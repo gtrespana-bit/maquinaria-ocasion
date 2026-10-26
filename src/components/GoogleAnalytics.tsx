@@ -3,7 +3,6 @@
 import { useEffect } from 'react'
 import { usePathname } from 'next/navigation'
 import {
-  GA_MEASUREMENT_ID,
   GA_NAVIGATION_EVENT,
   idEntornoInvalido,
 } from '@/lib/google-analytics'
@@ -25,7 +24,7 @@ export default function GoogleAnalytics() {
   useEffect(() => {
     if (idEntornoInvalido(process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID)) {
       console.warn(
-        `[GoogleAnalytics] NEXT_PUBLIC_GA_MEASUREMENT_ID no tiene formato G-XXXXXXXXXX (ni es "off"); se ignora${GA_MEASUREMENT_ID ? ` y se mide con ${GA_MEASUREMENT_ID}` : ''}.`,
+        '[GoogleAnalytics] NEXT_PUBLIC_GA_MEASUREMENT_ID no tiene formato G-XXXXXXXXXX (ni es "off"); se ignora y no se medirá nada.',
       )
     }
   }, [])
