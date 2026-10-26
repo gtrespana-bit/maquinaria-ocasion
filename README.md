@@ -231,6 +231,11 @@ build time). Sin esa variable —o con el valor `off`— la web no carga Analyti
 ni envía dato alguno a Google. La resolución del ID vive en
 `src/lib/google-analytics.ts` (`resolverIdMedicion`).
 
+**Estado (2026-10-26):** propiedad GA4 propia de MaquinariaOcasión
+configurada en Vercel (`NEXT_PUBLIC_GA_MEASUREMENT_ID=G-QJNP2W8ZJG`, solo
+Production) y producción redesplegada: la web ya mide en ella, siempre tras
+el «Aceptar» del aviso de cookies.
+
 `src/components/GoogleAnalyticsScript.tsx` publica el **snippet propio en el
 `<head>` del HTML inicial**. Ya no depende de un chunk dinámico, de la hidratación
 de React ni de `load` + idle. Si hay consentimiento guardado, carga gtag.js de
