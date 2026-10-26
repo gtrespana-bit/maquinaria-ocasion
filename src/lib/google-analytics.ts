@@ -1,12 +1,12 @@
 /**
  * Google Analytics 4 (gtag.js) — configuración compartida.
  *
- * El ID de medición (`G-XXXXXXXXXX`) es el de la propiedad GA4 del proyecto
- * (`GA_ID_POR_DEFECTO`), que se usa en producción sin configurar nada.
+ * El ID de medición (`G-XXXXXXXXXX`) viene exclusivamente de la variable
  * `NEXT_PUBLIC_GA_MEASUREMENT_ID` (Vercel → Project → Settings → Environment
- * Variables) permite sustituirlo por otra propiedad o apagar la medición con
- * `off`. Es `NEXT_PUBLIC_` porque se incrusta en el bundle en build time:
- * cambiarlo obliga a redeployar.
+ * Variables). No hay propiedad por defecto en el código: sin un ID válido en
+ * la variable —o con `off`— no se carga Analytics en absoluto ni se envía
+ * dato alguno a ninguna propiedad. Es `NEXT_PUBLIC_` porque se incrusta en el
+ * bundle en build time: cambiarlo obliga a redeployar.
  *
  * Reglas:
  *  - El snippet propio está en el <head> del HTML inicial. La librería remota
@@ -16,13 +16,6 @@
  *    cookies promete que no hay cookies publicitarias ni de perfilado.
  *  - El panel /admin no se mide.
  */
-
-/**
- * Propiedad GA4 de MaquinariaOcasión (maquinaria.click). No es un secreto —el
- * ID de medición va en el HTML de cualquier web con Analytics—, por eso vive
- * aquí: la web mide sin tener que tocar Vercel.
- */
-export const GA_ID_POR_DEFECTO = 'G-14MFBYME0R'
 
 /** Formato de los ID de medición de GA4. Los `UA-…` (Universal Analytics) ya
  *  no existen y los `GTM-…` son de Tag Manager, otro script distinto. */
@@ -57,26 +50,24 @@ export function idEntornoInvalido(valorEntorno: string | undefined | null): bool
 }
 
 /**
- * Decide qué propiedad se mide:
- *  - `NEXT_PUBLIC_GA_MEASUREMENT_ID=off` → nada.
- *  - Un `G-…` válido en la variable → esa propiedad.
- *  - Sin variable (o mal escrita) → en producción la propiedad del proyecto;
- *    en desarrollo (`npm run dev`) y en tests nada, para no mezclar pruebas
- *    locales con las estadísticas reales.
+ * Decide qué propiedad se mide. Solo manda la variable de entorno:
+ *  - Un `G-…` válido → esa propiedad.
+ *  - `off`, vacío o un valor mal escrito → null (no se mide nada).
+ *
+ * Sin una propiedad propia configurada en Vercel, la web no envía datos a
+ * ninguna propiedad ajena.
  */
 export function resolverIdMedicion(
   valorEntorno: string | undefined | null,
-  produccion: boolean,
 ): string | null {
   const valor = (valorEntorno || '').trim()
   if (valor.toLowerCase() === 'off') return null
-  return normalizarIdMedicion(valor) ?? (produccion ? GA_ID_POR_DEFECTO : null)
+  return normalizarIdMedicion(valor)
 }
 
 /** ID de medición activo en esta build (null = no se carga GA). */
 export const GA_MEASUREMENT_ID = resolverIdMedicion(
   process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID,
-  process.env.NODE_ENV === 'production',
 )
 
 type Gtag = (...args: unknown[]) => void

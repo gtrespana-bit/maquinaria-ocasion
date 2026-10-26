@@ -223,12 +223,13 @@ de cookies (igual que Vercel Analytics). Migración:
 
 ### Google Analytics 4
 
-La propiedad GA4 del proyecto (`G-14MFBYME0R`, `GA_ID_POR_DEFECTO` en
-`src/lib/google-analytics.ts`) se mide en producción sin configurar nada; en
-`npm run dev` no se mide. `NEXT_PUBLIC_GA_MEASUREMENT_ID` (Vercel → Settings →
-Environment Variables; es `NEXT_PUBLIC_`, así que hay que **redeployar** tras
-cambiarla) sirve para medir con otra propiedad (`G-XXXXXXXXXX`) o apagar GA con
-`off`.
+**Apagado por defecto: no hay ninguna propiedad GA4 en el código.** La medición
+solo se activa poniendo `NEXT_PUBLIC_GA_MEASUREMENT_ID=G-XXXXXXXXXX` (el ID de
+una propiedad GA4 propia de MaquinariaOcasión) en Vercel → Settings →
+Environment Variables y **redeployando** (es `NEXT_PUBLIC_`: se incrusta en
+build time). Sin esa variable —o con el valor `off`— la web no carga Analytics
+ni envía dato alguno a Google. La resolución del ID vive en
+`src/lib/google-analytics.ts` (`resolverIdMedicion`).
 
 `src/components/GoogleAnalyticsScript.tsx` publica el **snippet propio en el
 `<head>` del HTML inicial**. Ya no depende de un chunk dinámico, de la hidratación
@@ -246,8 +247,7 @@ vuelve a descargar gtag.js ni a configurar la propiedad.
 
 El **aviso de cookies** (`CookieConsent`, montado en el layout raíz) es la única
 puerta de entrada a ese consentimiento: si no aparece en la web, nadie puede
-aceptar y GA4 medirá 0 visitas (le pasó al sitio en 2026-10; diagnóstico
-completo en `docs/DIAGNOSTICO-GOOGLE-ANALYTICS-2026-10-18.md`). El test
+aceptar y GA4 medirá 0 visitas. El test
 `tests/unit/cookie-consent-banner.test.tsx` vigila que siga montado.
 
 `GoogleAnalytics.tsx` solo comunica los cambios de ruta para excluir el panel.
@@ -257,23 +257,23 @@ Medición mejorada → Cambios de página basados en eventos del historial del
 navegador*), así que no se envía `page_view` a mano. La CSP de `next.config.js` ya
 permite `googletagmanager.com`, `google-analytics.com` y `analytics.google.com`.
 
-#### Si Google dice «No se ha detectado su etiqueta»
+#### Si Google dice «No se ha detectado su etiqueta» (con una propiedad configurada)
 
 1. **Desplegar los cambios en producción**. Guardarlos en una rama no actualiza
-   `maquinaria.click`. Comprobar que `NEXT_PUBLIC_GA_MEASUREMENT_ID` no es
-   `off` ni apunta a otra propiedad; un cambio de variable requiere nueva build.
+   `maquinaria.click`. Comprobar que `NEXT_PUBLIC_GA_MEASUREMENT_ID` trae el ID
+   de la propiedad propia (ni `off` ni otra propiedad); un cambio de variable
+   requiere nueva build.
 2. Probar **`https://maquinaria.click/`**, no una vista previa ni `/admin`.
-   En «Ver código fuente» debe aparecer `ga4-bootstrap` y `G-14MFBYME0R` (o el ID
-   configurado). Esto comprueba la instalación del snippet, no la recepción de
-   eventos por Google.
+   En «Ver código fuente» debe aparecer `ga4-bootstrap` y el ID configurado.
+   Esto comprueba la instalación del snippet, no la recepción de eventos.
 3. Abrir **Tag Assistant** (`https://tagassistant.google.com/`), conectar esa URL
    y pulsar **Aceptar** en el aviso de cookies de la web. Si antes se rechazó,
    ir a `/politica-de-cookies` → «Cambiar mi decisión» y aceptar. Desactivar
    bloqueadores de anuncios/privacidad solo durante la prueba.
-4. En Red/Network debe aparecer `gtag/js?id=G-14MFBYME0R` y, tras aceptar, las
-   peticiones `g/collect`. Confirmar el mismo ID en Tag Assistant y comprobar
-   **Tiempo real** en GA4. No instalar un segundo snippet ni un contenedor GTM
-   para forzar la detección: duplicaría la medición.
+4. En Red/Network debe aparecer `gtag/js?id=<ID configurado>` y, tras aceptar,
+   las peticiones `g/collect`. Confirmar el mismo ID en Tag Assistant y
+   comprobar **Tiempo real** en GA4. No instalar un segundo snippet ni un
+   contenedor GTM para forzar la detección: duplicaría la medición.
 5. En un navegador limpio, antes de decidir o después de rechazar, **no debe
    haber solicitudes a Google Analytics**. El comprobador automático de Google
    puede seguir indicando que no encuentra la etiqueta si no interactúa con el

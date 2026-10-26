@@ -10,7 +10,6 @@ import GoogleAnalyticsScript from '@/components/GoogleAnalyticsScript'
 import { crearScriptGoogleAnalytics } from '@/lib/google-analytics-bootstrap'
 import {
   GA_COOKIE_EXPIRES_SECONDS,
-  GA_ID_POR_DEFECTO,
   GA_NAVIGATION_EVENT,
   GA_SCRIPT_ID,
   claveDesactivar,
@@ -94,34 +93,24 @@ describe('normalizarIdMedicion', () => {
 })
 
 describe('resolverIdMedicion', () => {
-  it('la propiedad del proyecto es un ID de GA4 válido', () => {
-    expect(normalizarIdMedicion(GA_ID_POR_DEFECTO)).toBe(GA_ID_POR_DEFECTO)
+  it('sin variable no se mide nada (no hay propiedad por defecto en el código)', () => {
+    expect(resolverIdMedicion(undefined)).toBeNull()
+    expect(resolverIdMedicion('')).toBeNull()
   })
 
-  it('en producción, sin variable, mide con la propiedad del proyecto', () => {
-    expect(resolverIdMedicion(undefined, true)).toBe(GA_ID_POR_DEFECTO)
-    expect(resolverIdMedicion('', true)).toBe(GA_ID_POR_DEFECTO)
+  it('la variable manda si trae un ID válido (normaliza espacios y minúsculas)', () => {
+    expect(resolverIdMedicion('G-OTRA1234')).toBe('G-OTRA1234')
+    expect(resolverIdMedicion(' g-otra1234 ')).toBe('G-OTRA1234')
   })
 
-  it('en desarrollo y tests, sin variable, no mide (no ensucia las estadísticas reales)', () => {
-    expect(resolverIdMedicion(undefined, false)).toBeNull()
-    expect(resolverIdMedicion('', false)).toBeNull()
-  })
-
-  it('la variable manda si trae un ID válido, en cualquier entorno', () => {
-    expect(resolverIdMedicion('G-OTRA1234', true)).toBe('G-OTRA1234')
-    expect(resolverIdMedicion(' g-otra1234 ', false)).toBe('G-OTRA1234')
-  })
-
-  it('"off" apaga la medición también en producción', () => {
-    expect(resolverIdMedicion('off', true)).toBeNull()
-    expect(resolverIdMedicion('OFF', true)).toBeNull()
+  it('"off" apaga la medición', () => {
+    expect(resolverIdMedicion('off')).toBeNull()
+    expect(resolverIdMedicion('OFF')).toBeNull()
     expect(idEntornoInvalido('off')).toBe(false)
   })
 
   it('un valor mal escrito (p. ej. el contenedor de Tag Manager) se ignora', () => {
-    expect(resolverIdMedicion('GTM-K642HXJ3', true)).toBe(GA_ID_POR_DEFECTO)
-    expect(resolverIdMedicion('GTM-K642HXJ3', false)).toBeNull()
+    expect(resolverIdMedicion('GTM-K642HXJ3')).toBeNull()
     expect(idEntornoInvalido('GTM-K642HXJ3')).toBe(true)
     expect(idEntornoInvalido('')).toBe(false)
     expect(idEntornoInvalido('G-OTRA1234')).toBe(false)
