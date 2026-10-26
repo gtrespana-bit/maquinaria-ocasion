@@ -248,7 +248,7 @@ export default async function MarcasPage({ params }: { params: Promise<{ locale:
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                   {grupos.map(g => {
-                    // Entrada "solo fabricante" (Benimar, Hymer…): el nombre ya
+                    // Entrada "solo fabricante" (GEA, Kuhn…): el nombre ya
                     // está en la cabecera de la tarjeta, así que dentro solo va
                     // la nota y el acceso a sus anuncios.
                     const soloFabricante = g.modelos.length === 1 && !g.modelos[0].modelo

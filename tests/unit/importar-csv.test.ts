@@ -12,7 +12,7 @@ import {
   validarImportacion,
 } from '@/lib/importar-csv'
 
-const CABECERAS = 'Titulo;Precio;Tipo;Comunidad;Ciudad;Marca;Modelo;Estado;Año;Kilómetros;Fotos;Descripción'
+const CABECERAS = 'Titulo;Precio;Tipo;Comunidad;Ciudad;Marca;Modelo;Estado;Año;Horas de uso;Fotos;Descripción'
 const FILA_OK =
   'Kubota M7 tractor;48.500;Tractores;Comunitat Valenciana;Valencia;Kubota;M7;Usado;2019;4.500;https://cdn.x.com/a.jpg|https://cdn.x.com/b.jpg;Tractor agrícola'
 
@@ -31,8 +31,8 @@ describe('importar-csv - parser', () => {
   })
 
   test('respeta los separadores dentro de comillas', () => {
-    const csv = parseCsv('titulo;precio\n"Camper, la buena; 4 plazas";38500')
-    expect(csv.filas[0][0]).toBe('Camper, la buena; 4 plazas')
+    const csv = parseCsv('titulo;precio\n"Excavadora, la buena; con martillo";38500')
+    expect(csv.filas[0][0]).toBe('Excavadora, la buena; con martillo')
     expect(csv.filas[0][1]).toBe('38500')
   })
 
@@ -108,7 +108,7 @@ describe('importar-csv - valores', () => {
     expect(parsearPrecio('-100')).toBeNull()
   })
 
-  test('estado del vehículo normalizado a la forma de la base', () => {
+  test('estado del producto normalizado a la forma de la base', () => {
     expect(normalizarEstado('nuevo')).toBe('Nuevo')
     expect(normalizarEstado('COMO NUEVO')).toBe('Como nuevo')
     expect(normalizarEstado('seminuevo')).toBe('Como nuevo')
@@ -165,7 +165,7 @@ describe('importar-csv - validación de filas', () => {
     expect(fila.estado).toBe('Usado')
     expect(fila.imagenes).toHaveLength(2)
     expect(fila.especificaciones['Año']).toBe('2019')
-    expect(fila.especificaciones['Kilómetros']).toBe('4500')
+    expect(fila.especificaciones['Horas de uso']).toBe('4500')
   })
 
   test('la línea del error es la del archivo, no la del índice', () => {

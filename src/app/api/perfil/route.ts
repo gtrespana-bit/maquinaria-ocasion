@@ -21,7 +21,7 @@ const PROFILE_COLUMNS = [
   'email_avisos_mensajes',
 ].join(', ')
 
-const TIPOS_VENDEDOR = ['particular', 'camperizador', 'profesional'] as const
+const TIPOS_VENDEDOR = ['particular', 'taller', 'profesional'] as const
 
 function getAdminClient() {
   return createClient(

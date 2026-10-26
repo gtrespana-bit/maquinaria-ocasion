@@ -30,7 +30,7 @@ const haceDias = (d: number) => new Date(AHORA - d * 864e5).toISOString()
 const anuncio = (over: Partial<AnuncioParaAviso> = {}): AnuncioParaAviso => ({
   id: 'p1',
   user_id: 'u1',
-  titulo: 'Fiat Ducato camper 2018',
+  titulo: 'Kubota M7 2018',
   visitas: 50,
   creado_en: haceDias(30),
   boosteado_en: haceDias(BOOST_DIAS + 2),
@@ -142,7 +142,7 @@ describe('textoAviso', () => {
     const a = evaluarAviso(anuncio(), AHORA)!
     const { titulo, cuerpo } = textoAviso(a)
     expect(titulo.length).toBeGreaterThan(10)
-    expect(cuerpo).toContain('Fiat Ducato camper 2018')
+    expect(cuerpo).toContain('Kubota M7 2018')
     expect(cuerpo).toContain('50 visitas')
     expect(cuerpo).toContain('1 crédito')
   })

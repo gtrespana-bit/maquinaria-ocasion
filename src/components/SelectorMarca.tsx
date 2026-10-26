@@ -56,7 +56,7 @@ export function SelectorMarca({
     >
       <option value="">{allLabel}</option>
       {grupos.map(g => {
-        // Un fabricante con una única entrada sin modelo propio ('Benimar')
+        // Un fabricante con una única entrada sin modelo propio (p. ej. 'GEA')
         // se muestra como opción directa: el optgroup no aportaría nada.
         if (g.modelos.length === 1 && !g.modelos[0].modelo) {
           const m = g.modelos[0]

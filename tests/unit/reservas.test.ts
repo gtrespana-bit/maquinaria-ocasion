@@ -10,7 +10,7 @@
  *     solicitada → activa, rechazada, cancelada o expirada; activa → completada,
  *     cancelada o expirada; y ningún estado terminal reabre.
  *  4. Que la señal sea pequeña de verdad (importe acotado).
- *  5. Que nadie reserve su propio anuncio ni un vehículo vendido.
+ *  5. Que nadie reserve su propio anuncio ni una máquina vendida.
  *  6. Que el conjunto de estados vivos coincida con el índice único de la
  *     migración: si alguien añade un estado y no lo actualiza, el test cae.
  */
@@ -160,7 +160,7 @@ describe('puedeReservar', () => {
     expect(r.motivo).toMatch(/inicia sesión/i)
   })
 
-  test('un vehículo vendido no se reserva', () => {
+  test('una máquina vendida no se reserva', () => {
     expect(puedeReservar({ ...PRODUCTO, vendido: true }, null, 'comprador').ok).toBe(false)
   })
 

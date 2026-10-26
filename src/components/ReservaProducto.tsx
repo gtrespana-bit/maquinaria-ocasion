@@ -70,7 +70,7 @@ export function AvisoReservado({ hasta }: { hasta?: string | null }) {
       <div className="text-sm text-amber-900">
         <p className="font-bold">Reservado con señal</p>
         <p className="text-xs mt-0.5">
-          Otro comprador ha pagado una señal por este vehículo{fecha ? ` y lo tiene reservado hasta el ${fecha}` : ''}.
+          Otro comprador ha pagado una señal por este anuncio{fecha ? ` y lo tiene reservado hasta el ${fecha}` : ''}.
           Si la operación no se cierra, el anuncio volverá a estar disponible.
         </p>
       </div>
@@ -285,7 +285,7 @@ export default function BotonReservar({
               maxLength={500}
               value={mensaje}
               onChange={e => setMensaje(e.target.value)}
-              placeholder="Cuándo podrías ver el vehículo, dudas sobre la documentación…"
+              placeholder="Cuándo podrías ver la máquina, dudas sobre la documentación…"
               className="w-full rounded-xl border border-gray-300 px-3 py-2.5 text-sm mb-4"
             />
 

@@ -183,12 +183,12 @@ export default function EditarPage() {
       return
     }
     if (!subcategoria) {
-      setError('Selecciona el tipo de vehículo')
+      setError('Selecciona el tipo de maquinaria')
       setGuardando(false)
       return
     }
     if (!estadoProd) {
-      setError('Selecciona la condición del vehículo')
+      setError('Selecciona el estado del anuncio')
       setGuardando(false)
       return
     }
@@ -406,9 +406,9 @@ export default function EditarPage() {
           </div>
         </div>
 
-        {/* Tipo de vehículo */}
+        {/* Tipo de maquinaria */}
         <div>
-          <label className="block text-sm font-semibold text-gray-900 mb-1.5">Tipo de vehículo</label>
+          <label className="block text-sm font-semibold text-gray-900 mb-1.5">Tipo de maquinaria</label>
           <select value={subcategoria} onChange={e => handleSubcategoriaChange(e.target.value)} className="w-full border rounded-lg px-4 py-3 bg-white">
             <option value="">Seleccionar tipo...</option>
             {FAMILIAS.map((f: any) => (

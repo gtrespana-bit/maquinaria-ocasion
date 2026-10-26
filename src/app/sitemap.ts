@@ -150,6 +150,51 @@ async function getIndexableLandings(supabase: any): Promise<IndexableLandings> {
   return { cities, cityCategories }
 }
 
+type StockMarcasModelos = {
+  fabricantes: Set<string>
+  modelos: Set<string>
+}
+
+function emptyStock(): StockMarcasModelos {
+  return { fabricantes: new Set(), modelos: new Set() }
+}
+
+/**
+ * Marcas/modelos con al menos un anuncio visible. Las páginas sin stock
+ * quedan enlazables desde el directorio, pero fuera del sitemap y con
+ * `noindex, follow` en su metadata: no aportan contenido único todavía.
+ */
+async function getMarcasModelosConStock(supabase: any): Promise<StockMarcasModelos> {
+  if (!supabase) return emptyStock()
+
+  const porValor = new Map(MARCAS_MODELOS.map((modelo) => [modelo.valor, modelo]))
+  const stock = emptyStock()
+  const moderacion = 'estado_moderacion.is.null,estado_moderacion.eq.aprobado'
+
+  for (let offset = 0; ; offset += PAGE_SIZE) {
+    const { data, error } = await supabase
+      .from('productos')
+      .select('id, marca')
+      .eq('activo', true)
+      .or(moderacion)
+      .order('id', { ascending: true })
+      .range(offset, offset + PAGE_SIZE - 1)
+
+    if (error) return emptyStock()
+
+    for (const producto of data || []) {
+      const modelo = porValor.get(producto.marca)
+      if (!modelo) continue
+      stock.fabricantes.add(slugFabricante(modelo.fabricante))
+      stock.modelos.add(slugModelo(modelo))
+    }
+
+    if (!data || data.length < PAGE_SIZE) break
+  }
+
+  return stock
+}
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const supabase = getSupabaseServerClient()
 
@@ -302,17 +347,21 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }
   }
 
-  const marcaUrls: MetadataRoute.Sitemap = fabricantesUnicos(MARCAS_MODELOS).map((f) => ({
-    url: `${BASE_URL}/marca/${slugFabricante(f)}`,
-    lastModified: new Date(),
-    changeFrequency: 'weekly',
-    priority: 0.7,
-  }))
-  const modeloUrls: MetadataRoute.Sitemap = MARCAS_MODELOS.map((model) => ({
-    url: `${BASE_URL}/modelo/${slugModelo(model)}`,
-    changeFrequency: 'daily',
-    priority: 0.8,
-  }))
+  const stockMarcasModelos = await getMarcasModelosConStock(supabase)
+  const marcaUrls: MetadataRoute.Sitemap = fabricantesUnicos(MARCAS_MODELOS)
+    .filter((f) => stockMarcasModelos.fabricantes.has(slugFabricante(f)))
+    .map((f) => ({
+      url: `${BASE_URL}/marca/${slugFabricante(f)}`,
+      changeFrequency: 'weekly',
+      priority: 0.7,
+    }))
+  const modeloUrls: MetadataRoute.Sitemap = MARCAS_MODELOS
+    .filter((model) => stockMarcasModelos.modelos.has(slugModelo(model)))
+    .map((model) => ({
+      url: `${BASE_URL}/modelo/${slugModelo(model)}`,
+      changeFrequency: 'daily',
+      priority: 0.8,
+    }))
 
   return [
     ...staticUrls,

@@ -35,7 +35,7 @@ describe('prueba con fechas reales', () => {
 
   test('los perfiles antiguos siguen calculando desde el alta', () => {
     const estado = estadoTrial({
-      tipo: 'camperizador',
+      tipo: 'taller',
       creadoEn: '2026-10-02T10:00:00Z',
       mesGratisActivo: true,
       diasGratis: 30,
@@ -45,7 +45,7 @@ describe('prueba con fechas reales', () => {
     expect(estado.diasRestantes).toBe(10)
 
     const apagada = estadoTrial({
-      tipo: 'camperizador',
+      tipo: 'taller',
       creadoEn: '2026-10-02T10:00:00Z',
       mesGratisActivo: false,
       ahora: AHORA,

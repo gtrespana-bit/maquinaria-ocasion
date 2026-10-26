@@ -170,7 +170,7 @@ export const CONDICIONES_SEÑAL: string[] = [
   'Pagas la señal directamente al vendedor (Bizum, transferencia o en mano). MaquinariaOcasión no toca ni custodia el dinero en ningún momento.',
   'Al recibir el pago, el vendedor confirma la reserva y el anuncio queda reservado para ti hasta la fecha indicada.',
   'La señal se descuenta del precio acordado el día de la entrega: no es un pago extra.',
-  'Si el vendedor cancela o el vehículo no se corresponde con lo anunciado, debe devolverte la señal íntegra.',
+  'Si el vendedor cancela o el bien no se corresponde con lo anunciado, debe devolverte la señal íntegra.',
   'Si no te presentas a la cita o te echas atrás sin motivo, la señal queda en manos del vendedor.',
   'Mientras la reserva esté activa, el anuncio deja de mostrarse como disponible para el resto.',
 ]
@@ -211,12 +211,12 @@ export function puedeReservar(
   ahora: Date = new Date()
 ): VeredictoReserva {
   if (!producto) return { ok: false, motivo: 'El anuncio no existe' }
-  if (producto.es_demo) return { ok: false, motivo: 'Este vehículo es ficticio y no está disponible para compra' }
+  if (producto.es_demo) return { ok: false, motivo: 'Este anuncio no está disponible para reserva' }
   if (!userId) return { ok: false, motivo: 'Inicia sesión para reservar' }
   if (producto.user_id && producto.user_id === userId) {
     return { ok: false, motivo: 'No puedes reservar tu propio anuncio' }
   }
-  if (producto.vendido) return { ok: false, motivo: 'El vehículo ya está vendido' }
+  if (producto.vendido) return { ok: false, motivo: 'Este anuncio ya está vendido' }
   if (producto.activo === false) return { ok: false, motivo: 'El anuncio no está disponible' }
   if (producto.estado_moderacion && !['aprobado', 'pendiente'].includes(producto.estado_moderacion)) {
     return { ok: false, motivo: 'El anuncio está en revisión' }

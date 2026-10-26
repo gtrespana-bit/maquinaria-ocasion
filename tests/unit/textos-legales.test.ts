@@ -85,7 +85,7 @@ describe('contenido que la normativa obliga a publicar', () => {
     expect(es).toContain('7 días')
   })
 
-  it('el aviso legal avisa de que la plataforma no vende los vehículos', () => {
+  it('el aviso legal avisa de que la plataforma no vende la maquinaria anunciada', () => {
     const es = JSON.stringify(AVISO_LEGAL.es)
     expect(es).toContain('no es el vendedor')
     expect(es).toContain('intermediario')

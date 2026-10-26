@@ -197,8 +197,8 @@ export const FILTROS_POR_PARAM: Record<string, FiltroTecnico> = Object.fromEntri
 // Si la migración aún no está aplicada, la query falla con "column ... does
 // not exist" y `quitarRangos()` + un reintento (en los cargadores) deja el
 // catálogo funcionando SOLO con los filtros que no dependen de esa columna.
-// Las columnas legadas (`espec_km`, `espec_placa_w`, `espec_inversor_w`)
-// siguen en la base de datos por si quedan anuncios antiguos que las usen.
+// La taxonomía actual solo filtra por `espec_horas` y `espec_anio`; cualquier
+// columna histórica que quede en la base no forma parte de la búsqueda.
 
 export type OperadorRango = 'gte' | 'lte'
 
@@ -290,7 +290,7 @@ export function parsearNumeroEs(v: unknown): number | null {
 /** Filtros técnicos activos por opción: `{ combustible: 'Diésel', traccion: 'Oruga' }`. */
 export type FiltrosTecnicos = Record<string, string>
 
-/** Filtros de rango activos: `{ kmMax: 150000, anioMin: 2019 }`. */
+/** Filtros de rango activos: `{ horasMax: 5000, anioMin: 2019 }`. */
 export type FiltrosRango = Record<string, number>
 
 type EntradaParams =

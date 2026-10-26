@@ -145,7 +145,7 @@ export default function RegalarPlanModal({
             {diasRestantes ? ` · quedan ${diasRestantes} días (hasta ${formatDate(usuario.plan_hasta)})` : ''}
           </span>
           <span className="rounded-full bg-white px-2 py-0.5 font-semibold text-gray-500">
-            {usuario.tipo_vendedor === 'camperizador' ? 'Taller' : usuario.tipo_vendedor === 'profesional' ? 'Profesional' : 'Particular'}
+            {usuario.tipo_vendedor === 'taller' ? 'Taller' : usuario.tipo_vendedor === 'profesional' ? 'Profesional' : 'Particular'}
           </span>
         </div>
 

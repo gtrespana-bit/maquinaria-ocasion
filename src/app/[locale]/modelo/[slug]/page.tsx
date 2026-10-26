@@ -60,11 +60,11 @@ async function getDatosModelo(slug: string) {
       `id, slug, titulo, ${COLUMNAS_PRECIO}, imagen_url, subcategoria, ` +
         'ubicacion_ciudad, ubicacion_estado, estado, boosteado_en, destacado, destacado_hasta, ' +
         'vendedor_verificado, vendedor_tipo, reservado, es_demo, ' +
-        'espec_km, espec_anio'
+        'espec_horas, espec_anio'
     )
     .eq('marca', modelo.valor)
     .eq('activo', true)
-    .or('estado_moderacion.is.null,estado_moderacion.eq.aprobado,estado_moderacion.eq.pendiente')
+    .or('estado_moderacion.is.null,estado_moderacion.eq.aprobado')
     .order('creado_en', { ascending: false })
     .limit(200)
 
@@ -73,7 +73,7 @@ async function getDatosModelo(slug: string) {
   const paraEstadistica = anuncios.map(a => ({
     precio: getPrecioEur(a),
     anio: a.espec_anio != null ? Number(a.espec_anio) : null,
-    km: a.espec_km != null ? Number(a.espec_km) : null,
+    horas: a.espec_horas != null ? Number(a.espec_horas) : null,
     es_demo: a.es_demo,
   }))
 
@@ -93,7 +93,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     return { title: 'Modelo no encontrado', robots: { index: false, follow: false } }
   }
 
-  const { modelo, est } = datos
+  const { modelo, anuncios, est } = datos
   const nombre = modelo.valor
   const anio = new Date().getFullYear()
 
@@ -114,6 +114,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: tituloSeo(title),
     description,
     alternates: alternatesSeo(`/modelo/${slug}`),
+    // La página de modelo solo se indexa con stock visible; sin anuncios ni
+    // muestra de precios sería una plantilla casi duplicada.
+    robots: anuncios.length > 0 ? { index: true, follow: true } : { index: false, follow: true },
     openGraph: { title, description, url, siteName: 'MaquinariaOcasión', locale: 'es_ES', images: [{ url: `https://maquinaria.click/api/og/catalog?categoria=${ogParam}`, width: 1200, height: 630, alt: title }] },
     twitter: { card: 'summary_large_image', title, description, images: [`https://maquinaria.click/api/og/catalog?categoria=${ogParam}`] },
   }
@@ -150,7 +153,7 @@ export default async function ModeloPage({ params }: Props) {
   faqs.push({
     pregunta: `¿Cuántos ${nombre} hay en venta ahora mismo?`,
     respuesta: anuncios.length > 0
-      ? `Hay ${anuncios.length} anuncios activos de ${nombre} en MaquinariaOcasión, de toda España. Puedes filtrarlos por precio, kilómetros y año en el catálogo filtrado por ${nombre}.`
+      ? `Hay ${anuncios.length} anuncios activos de ${nombre} en MaquinariaOcasión, de toda España. Puedes filtrarlos por precio, horas de uso y año en el catálogo filtrado por ${nombre}.`
       : `Ahora mismo no hay anuncios activos de ${nombre}, pero puedes publicar el tuyo gratis o filtrar el catálogo por la marca ${modelo.fabricante} para ver modelos cercanos.`,
   })
   faqs.push({
@@ -158,8 +161,8 @@ export default async function ModeloPage({ params }: Props) {
     respuesta: `Antes de pagar: la documentación (factura, ficha técnica y manual), las horas certificadas de uso, el motor y el sistema hidráulico, el estado general y el mantenimiento reciente. Conviene probar la máquina en funcionamiento y llevar la factura y la transferencia en regla.`,
   })
   faqs.push({
-    pregunta: `¿Se puede conducir un ${nombre} con el permiso B?`,
-    respuesta: `Sí, mientras la MMA (peso máximo autorizado) no supere los 3.500 kg, lo habitual en un ${nombre}. Versiones muy cargadas o con célula pueden superar ese límite y exigir B+E o C1: comprueba siempre la MMA en la ficha técnica antes de comprar.`,
+    pregunta: `¿Cómo se transporta un ${nombre} tras la compra?`,
+    respuesta: `Depende del peso y las dimensiones: la herramienta ligera viaja en furgoneta o paletizada; la maquinaria pesada suele necesitar camión rígido o góndola. Acuerda por escrito quién paga la carga, el transporte y el seguro, y comprueba medidas y peso en la ficha antes de cerrar el precio.`,
   })
 
   const faqJsonLd = {
@@ -184,11 +187,10 @@ export default async function ModeloPage({ params }: Props) {
     ],
   }
 
-  // Schema principal: ProductModel + AggregateOffer mejorado
-  // ProductModel es más preciso que Product para una página de modelo con estadísticas
+  // Schema principal: Product + AggregateOffer con el rango real observado.
   const productModelJsonLd: Record<string, unknown> = {
     '@context': 'https://schema.org',
-    '@type': 'Vehicle',
+    '@type': 'Product',
     name: modelo.valor + ' de ocasión',
     model: modelo.valor,
     brand: { '@type': 'Brand', name: modelo.fabricante },
@@ -200,15 +202,11 @@ export default async function ModeloPage({ params }: Props) {
           offers: {
             '@type': 'AggregateOffer',
             priceCurrency: 'EUR',
-            lowPrice: est.p25,
-            highPrice: est.p75,
+            lowPrice: est.minimo,
+            highPrice: est.maximo,
             offerCount: est.muestra,
             availability: 'https://schema.org/InStock',
-            // Mediana como high/low auxiliar para rich results
-            ...(est.mediana ? { median: est.mediana } : {}),
           },
-          // Estadística adicional como QuantitativeValue para P25-P75
-          aggregateRating: undefined,
         }
       : {}),
   }
@@ -236,8 +234,7 @@ export default async function ModeloPage({ params }: Props) {
     })),
   } : null
 
-  // Fallback Product para compatibilidad (Google entiende Vehicle pero Product es más broadly supported)
-  // Mantenemos Product + AggregateOffer como segunda entidad en @graph
+  // Grafo único: migas de pan, producto/modelo, listado y FAQ.
   const graphJsonLd = {
     '@context': 'https://schema.org',
     '@graph': [

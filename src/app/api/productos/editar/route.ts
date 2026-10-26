@@ -177,11 +177,10 @@ export async function PATCH(request: NextRequest) {
   }
 
   // La categoría es la familia elegida (agrícola / obra / herramientas).
-  // Si la categoría viene vacía o con un valor heredado, se normaliza a la
-  // legada 'camper' (fila histórica) y se resuelve/asegura su ID en la base
-  // de datos sin fallar.
+  // Si viene vacía o desconocida, `resolveCategoryId` la normaliza a la
+  // familia por defecto y asegura su ID en la base de datos sin fallar.
   let categoriaId = current.categoria_id
-  const resolved = await resolveCategoryId(sb, body.categoria || 'camper')
+  const resolved = await resolveCategoryId(sb, body.categoria)
   if (resolved !== null) {
     categoriaId = resolved
   }

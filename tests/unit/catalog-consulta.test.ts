@@ -79,9 +79,9 @@ describe('aplicarFiltrosCatalogo', () => {
 
   test('el filtro de tipo de vendedor usa la columna denormalizada', () => {
     const query = crearQuery()
-    aplicarFiltrosCatalogo(query, { [FILTRO_VENDEDOR_PARAM]: 'camperizador' })
+    aplicarFiltrosCatalogo(query, { [FILTRO_VENDEDOR_PARAM]: 'taller' })
 
-    expect(query.llamadas).toEqual([['eq', 'vendedor_tipo', 'camperizador']])
+    expect(query.llamadas).toEqual([['eq', 'vendedor_tipo', 'taller']])
   })
 
   test('un tipo de vendedor inventado en la URL no toca la consulta', () => {
@@ -94,7 +94,7 @@ describe('aplicarFiltrosCatalogo', () => {
 
   test('tipoVendedorFiltro solo acepta los tres tipos válidos', () => {
     expect(tipoVendedorFiltro('particular')).toBe('particular')
-    expect(tipoVendedorFiltro('camperizador')).toBe('camperizador')
+    expect(tipoVendedorFiltro('taller')).toBe('taller')
     expect(tipoVendedorFiltro('profesional')).toBe('profesional')
     expect(tipoVendedorFiltro('profesionales')).toBeNull()
     expect(tipoVendedorFiltro('')).toBeNull()
@@ -132,7 +132,7 @@ describe('aplicarFiltrosCatalogo', () => {
 describe('orden del catálogo', () => {
   const producto = (over: Record<string, unknown> = {}) => ({
     id: String(Math.random()),
-    titulo: 'Fiat Ducato',
+    titulo: 'Kubota M7',
     precio_usd: 38500,
     estado: 'Usado',
     imagen_url: null,

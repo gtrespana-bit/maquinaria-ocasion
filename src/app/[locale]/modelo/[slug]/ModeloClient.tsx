@@ -83,10 +83,10 @@ export default function ModeloClient({
               etiqueta="Rango habitual"
               nota="Lo que se paga normalmente"
             />
-            {est.kmMediana != null && (
+            {est.horasMediana != null && (
               <Tarjeta
-                valor={`${est.kmMediana.toLocaleString('es-ES')} km`}
-                etiqueta="Kilometraje mediano"
+                valor={`${est.horasMediana.toLocaleString('es-ES')} h`}
+                etiqueta="Horas medianas"
                 icono={<Gauge size={15} />}
               />
             )}
@@ -128,7 +128,7 @@ export default function ModeloClient({
                       <th className="px-4 py-3 font-semibold">Antigüedad</th>
                       <th className="px-4 py-3 font-semibold">Precio mediano</th>
                       <th className="px-4 py-3 font-semibold">Rango habitual</th>
-                      <th className="px-4 py-3 font-semibold">Km mediano</th>
+                      <th className="px-4 py-3 font-semibold">Horas medianas</th>
                       <th className="px-4 py-3 font-semibold text-right">Anuncios</th>
                     </tr>
                   </thead>
@@ -141,7 +141,7 @@ export default function ModeloClient({
                           {fmt(t.p25)} – {fmt(t.p75)}
                         </td>
                         <td className="px-4 py-3 text-gray-600">
-                          {t.kmMediana != null ? `${t.kmMediana.toLocaleString('es-ES')} km` : '—'}
+                          {t.horasMediana != null ? `${t.horasMediana.toLocaleString('es-ES')} h` : '—'}
                         </td>
                         <td className="px-4 py-3 text-right text-gray-500">{t.muestra}</td>
                       </tr>

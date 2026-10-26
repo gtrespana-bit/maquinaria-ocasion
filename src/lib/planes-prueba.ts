@@ -90,7 +90,7 @@ export function estadoTrial(opts: {
   const pago = Boolean(opts.planPagoVigente)
   // La prueba es una ventaja de las cuentas profesionales; un particular que
   // vuelve a serlo no sigue «en prueba» aunque conserve fechas antiguas.
-  const profesional = opts.tipo === 'camperizador' || opts.tipo === 'profesional'
+  const profesional = opts.tipo === 'taller' || opts.tipo === 'profesional'
   const enPrueba = Boolean(
     profesional && !pago && hasta && hasta.getTime() >= ahora.getTime(),
   )

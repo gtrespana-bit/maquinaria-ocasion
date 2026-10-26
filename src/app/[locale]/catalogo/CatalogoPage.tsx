@@ -21,6 +21,7 @@ import { useProductPagination } from '@/hooks/useProductPagination'
 import { useProductLoader } from '@/hooks/useProductLoader'
 import { CATALOG_PAGE_SIZE } from '@/lib/catalog-pagination'
 import {
+  PARAMETROS_RANGO,
   firmaFiltrosTecnicos,
   firmaFiltrosRango,
   hayFiltrosTecnicos,
@@ -193,7 +194,7 @@ export default function CatalogoClient({ initialProducts = [], initialCount = 0 
   const ubicacionEstado = searchParams.get('estado') || ''
   const ubicacionCiudad = searchParams.get('ciudad') || ''
 
-  // Filtros técnicos (ficha técnica): plazas, baño, autonomía, medidas…
+  // Filtros técnicos (ficha técnica): año, horas, combustible, tracción…
   // Todos se leen de una vez desde el registro
   // @/lib/filtros-tecnicos, que también decide las opciones que ofrece la barra
   // lateral.
@@ -208,7 +209,7 @@ export default function CatalogoClient({ initialProducts = [], initialCount = 0 
   const filtrosTecnicos = useMemo(() => leerFiltrosTecnicos(new URLSearchParams(queryString)), [queryString])
   const firmaTecnica = firmaFiltrosTecnicos(filtrosTecnicos)
 
-  // Rangos numéricos del catálogo (km máximos, año mínimo, watios): se leen
+  // Rangos numéricos del catálogo (horas máximas y año mínimo): se leen
   // como número para la query, pero el input los conserva como texto de forma
   // directa desde la URL para poder editar sin volver a parsear.
   const filtrosRango = useMemo(() => leerFiltrosRango(new URLSearchParams(queryString)), [queryString])
@@ -216,7 +217,7 @@ export default function CatalogoClient({ initialProducts = [], initialCount = 0 
   const rangosEnBruto = useMemo(() => {
     const enBruto: Record<string, string> = {}
     const sp = new URLSearchParams(queryString)
-    for (const k of ['kmMax', 'anioMin', 'placaWatiosMin', 'inversorWatiosMin']) {
+    for (const k of PARAMETROS_RANGO) {
       const v = sp.get(k)
       if (v) enBruto[k] = v
     }

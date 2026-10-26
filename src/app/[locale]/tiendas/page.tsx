@@ -11,7 +11,7 @@ import { Store, MapPin } from 'lucide-react'
  * Directorio de talleres y vendedores profesionales.
  *
  * Doble función: al comprador le da una vía de entrada distinta a la del
- * catálogo (buscar por taller, no por vehículo) y al profesional le da un
+ * catálogo (buscar por taller, no por máquina) y al profesional le da un
  * motivo para abrir tienda, porque aparecer aquí es tráfico gratis.
  */
 
@@ -152,7 +152,7 @@ export default async function TiendasPage({ params }: { params: Promise<{ locale
                       {t.verificado && <BadgeVerificado size="sm" />}
                     </div>
                     <p className="text-xs text-gray-500 mb-1">
-                      {t.tipo_vendedor === 'camperizador' ? 'Taller' : 'Profesional'}
+                      {t.tipo_vendedor === 'taller' ? 'Taller' : 'Profesional'}
                     </p>
                     {ubicacion && (
                       <p className="text-sm text-gray-600 inline-flex items-center gap-1">

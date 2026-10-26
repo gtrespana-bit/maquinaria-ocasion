@@ -60,9 +60,9 @@ describe('GET /sitemap-images.xml', () => {
         data: [
           {
             id: 'product-id',
-            slug: 'camper-uno',
-            titulo: 'Camper & más',
-            imagen_url: 'https://images.example/camper.jpg?x=1&y=2',
+            slug: 'tractor-uno',
+            titulo: 'Tractor & más',
+            imagen_url: 'https://images.example/tractor.jpg?x=1&y=2',
             imagenes: [],
           },
         ],
@@ -74,9 +74,9 @@ describe('GET /sitemap-images.xml', () => {
     const xml = await response.text()
 
     expect(response.status).toBe(200)
-    expect(xml).toContain('<loc>https://maquinaria.click/producto/camper-uno</loc>')
-    expect(xml).toContain('<image:loc>https://images.example/camper.jpg?x=1&amp;y=2</image:loc>')
-    expect(xml).toContain('<image:title>Camper &amp; más</image:title>')
+    expect(xml).toContain('<loc>https://maquinaria.click/producto/tractor-uno</loc>')
+    expect(xml).toContain('<image:loc>https://images.example/tractor.jpg?x=1&amp;y=2</image:loc>')
+    expect(xml).toContain('<image:title>Tractor &amp; más</image:title>')
     expect(xml).not.toContain('https://maquinaria.click/</loc>')
   })
 })

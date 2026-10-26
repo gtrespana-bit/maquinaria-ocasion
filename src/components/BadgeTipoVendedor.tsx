@@ -1,12 +1,12 @@
 'use client'
 import { useTranslations } from 'next-intl'
 
-export type TipoVendedor = 'particular' | 'camperizador' | 'profesional'
+export type TipoVendedor = 'particular' | 'taller' | 'profesional'
 
-export const TIPOS_VENDEDOR: TipoVendedor[] = ['particular', 'camperizador', 'profesional']
+export const TIPOS_VENDEDOR: TipoVendedor[] = ['particular', 'taller', 'profesional']
 
 export function esTipoVendedor(valor: unknown): valor is TipoVendedor {
-  return valor === 'particular' || valor === 'camperizador' || valor === 'profesional'
+  return valor === 'particular' || valor === 'taller' || valor === 'profesional'
 }
 
 /**
@@ -26,12 +26,12 @@ export default function BadgeTipoVendedor({
 
   const estilos: Record<TipoVendedor, string> = {
     particular: 'text-slate-700 bg-slate-100 border-slate-200',
-    camperizador: 'text-orange-700 bg-orange-50 border-orange-200',
+    taller: 'text-orange-700 bg-orange-50 border-orange-200',
     profesional: 'text-indigo-700 bg-indigo-50 border-indigo-200',
   }
   const iconos: Record<TipoVendedor, string> = {
     particular: '👤',
-    camperizador: '🔧',
+    taller: '🔧',
     profesional: '🏢',
   }
 

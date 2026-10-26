@@ -36,9 +36,9 @@ beforeEach(() => {
 
 describe('POST /api/register con tipo de vendedor', () => {
   test('un tipo válido llega a enviarConfirmacion', async () => {
-    const res = await POST(request({ ...valido, tipo: 'camperizador' }))
+    const res = await POST(request({ ...valido, tipo: 'taller' }))
     expect(res.status).toBe(200)
-    expect(mockEnviar).toHaveBeenCalledWith(valido.email, valido.nombre, valido.password, 'camperizador')
+    expect(mockEnviar).toHaveBeenCalledWith(valido.email, valido.nombre, valido.password, 'taller')
   })
 
   test('sin tipo, enviarConfirmacion recibe undefined (la BD aplica "particular")', async () => {
@@ -59,7 +59,7 @@ describe('POST /api/register con tipo de vendedor', () => {
   )
 
   test('los tres tipos oficiales se aceptan', async () => {
-    for (const tipo of ['particular', 'camperizador', 'profesional']) {
+    for (const tipo of ['particular', 'taller', 'profesional']) {
       const res = await POST(request({ ...valido, email: `${tipo}@test.com`, tipo }))
       expect(res.status).toBe(200)
     }

@@ -134,15 +134,12 @@ export function validateSpecifications(value: unknown): Record<string, unknown> 
 
 export async function resolveCategoryId(sb: any, categoria: unknown): Promise<number | null> {
   // La categoría es la familia elegida (agrícola / obra / herramientas).
-  // `camper` se sigue aceptando para anuncios legados cuyo valor heredado
-  // viva en la BD, y el resto de entradas desconocidas caen en la categoría
-  // por defecto para no crear filas basura.
+  // Cualquier entrada vacía o desconocida cae en la categoría por defecto
+  // para no crear filas basura en `categorias`.
   const nombre = typeof categoria === 'string' && categoria.trim() ? categoria.trim().toLowerCase() : CATEGORIA_DEFAULT
   const key = Object.prototype.hasOwnProperty.call(categoriasData, nombre)
     ? nombre
-    : nombre === 'camper'
-      ? 'camper'
-      : CATEGORIA_DEFAULT
+    : CATEGORIA_DEFAULT
 
   try {
     const { data: existente } = await sb
@@ -153,7 +150,7 @@ export async function resolveCategoryId(sb: any, categoria: unknown): Promise<nu
 
     if (existente?.id != null) return Number(existente.id)
 
-    // Crear la categoría 'camper' si no existe aún en la tabla (mismo flujo que api/publicar)
+    // Crear la familia si no existe aún en la tabla (mismo flujo que api/publicar)
     const { data: creada } = await sb
       .from('categorias')
       .insert({ nombre: key })

@@ -66,7 +66,7 @@ async function getDatosFabricante(slug: string) {
     )
     .in('marca', valoresUnicos(modelos))
     .eq('activo', true)
-    .or('estado_moderacion.is.null,estado_moderacion.eq.aprobado,estado_moderacion.eq.pendiente')
+    .or('estado_moderacion.is.null,estado_moderacion.eq.aprobado')
     .order('boosteado_en', { ascending: false, nullsFirst: false })
     .order('creado_en', { ascending: false })
     .limit(100)
@@ -126,6 +126,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: tituloSeo(title),
     description,
     alternates: alternatesSeo(`/marca/${slug}`),
+    // Sin stock visible, la ficha de fabricante es un hub enlazable pero no
+    // una página que merezca índice: entra cuando haya anuncios reales.
+    robots: anuncios.length > 0 ? { index: true, follow: true } : { index: false, follow: true },
     openGraph: {
       title: titleOg,
       description,
@@ -199,8 +202,8 @@ export default async function MarcaPage({ params }: Props) {
           offers: {
             '@type': 'AggregateOffer',
             priceCurrency: 'EUR',
-            lowPrice: est.p25,
-            highPrice: est.p75,
+            lowPrice: est.minimo,
+            highPrice: est.maximo,
             offerCount: est.muestra,
           },
         }

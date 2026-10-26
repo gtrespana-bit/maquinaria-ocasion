@@ -38,7 +38,6 @@ export type CampoImport =
   | 'ubicacion_ciudad'
   | 'imagenes'
   | 'anio'
-  | 'km'
   | 'horas'
 
 interface DefinicionCampo {
@@ -65,18 +64,17 @@ export const CAMPOS: DefinicionCampo[] = [
   { campo: 'ubicacion_ciudad', etiqueta: 'Ciudad', alias: ['ciudad', 'municipio', 'localidad', 'city'] },
   { campo: 'marca', etiqueta: 'Marca', alias: ['marca', 'brand', 'fabricante'] },
   { campo: 'modelo', etiqueta: 'Modelo', alias: ['modelo', 'model'] },
-  // «Estado» es la condición del vehículo, no la comunidad: en un CSV de
+  // «Estado» es la condición del bien, no la comunidad: en un CSV de
   // compraventa es lo que significa el 95 % de las veces.
-  { campo: 'estado', etiqueta: 'Estado', alias: ['estado', 'estado-vehiculo', 'condicion', 'condition', 'estado-producto'] },
+  { campo: 'estado', etiqueta: 'Estado', alias: ['estado', 'condicion', 'condition', 'estado-producto'] },
   { campo: 'anio', etiqueta: 'Año', alias: ['ano', 'año', 'anio-matriculacion', 'year', 'matriculacion'] },
-  { campo: 'km', etiqueta: 'Kilómetros', alias: ['km', 'kilometros', 'kilometraje', 'kms', 'mileage'] },
   { campo: 'horas', etiqueta: 'Horas de uso', alias: ['horas', 'horas-de-uso', 'hours', 'horas-maquina'] },
   { campo: 'descripcion', etiqueta: 'Descripción', alias: ['descripcion', 'description', 'detalles', 'observaciones'] },
   { campo: 'imagenes', etiqueta: 'Fotos', alias: ['imagenes', 'fotos', 'images', 'urls', 'foto-1'] },
 ]
 
-/** Estados de vehículo que acepta la columna `estado` de `productos`. */
-export const ESTADOS_VEHICULO = ['Nuevo', 'Como nuevo', 'Bueno', 'Usado', 'Para repuestos'] as const
+/** Estados que acepta la columna `estado` de `productos`. */
+export const ESTADOS_PRODUCTO = ['Nuevo', 'Como nuevo', 'Bueno', 'Usado', 'Para repuestos'] as const
 
 /**
  * Tipos válidos de la taxonomía de maquinaria: cada subcategoría acepta su
@@ -299,7 +297,7 @@ export function parsearPrecio(valor: string | number | null | undefined): number
   return Math.round(n * 100) / 100
 }
 
-/** Normaliza el estado del vehículo a la forma que guarda la base de datos. */
+/** Normaliza el estado del bien a la forma que guarda la base de datos. */
 export function normalizarEstado(valor: string | null | undefined): string | null {
   const v = sinAcentos(String(valor ?? ''))
   if (!v) return null
@@ -443,10 +441,6 @@ export function validarImportacion(
       avisos.push(`Año ${anio} fuera de rango: no se guarda.`)
     }
 
-    const kmBruto = valor('km').replace(/[^\d]/g, '')
-    const km = kmBruto ? Number(kmBruto) : null
-    if (km != null && km > 2_000_000) avisos.push('Kilometraje poco creíble: no se guarda.')
-
     const horasBruto = valor('horas').replace(/[^\d]/g, '')
     const horas = horasBruto ? Number(horasBruto) : null
     if (horas != null && horas > 1_000_000) avisos.push('Horas de uso poco creíbles: no se guardan.')
@@ -468,7 +462,6 @@ export function validarImportacion(
       // 'Año' y las claves legadas vía COALESCE).
       especificaciones['Año'] = String(anio)
     }
-    if (km != null && km <= 2_000_000) especificaciones['Kilómetros'] = String(km)
     if (horas != null && horas <= 1_000_000) especificaciones['Horas de uso'] = String(horas)
 
     filas.push({

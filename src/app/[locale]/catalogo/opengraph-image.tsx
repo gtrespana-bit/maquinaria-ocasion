@@ -10,8 +10,7 @@ export const contentType = 'image/png'
 /**
  * Imagen Open Graph de /catalogo (y de sus vistas filtradas).
  *
- * Antes este fichero pintaba las categorías del marketplace generalista del que
- * nace el proyecto (Vehículos, Tecnología, Moda, Hogar, Herramientas): al
+ * Antes este fichero pintaba categorías de una taxonomía anterior: al
  * compartir el catálogo en WhatsApp o redes se veía una imagen con categorías
  * que no existen en MaquinariaOcasión. Ahora los tipos salen del registro real
  * (todos los subs de la taxonomía), así que la imagen no puede

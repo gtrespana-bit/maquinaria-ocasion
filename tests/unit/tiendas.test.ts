@@ -25,8 +25,8 @@ import {
 } from '@/lib/tiendas'
 
 describe('quién puede abrir tienda', () => {
-  it('camperizadores y profesionales sí', () => {
-    expect(puedeTenerTienda('camperizador')).toBe(true)
+  it('talleres y profesionales sí', () => {
+    expect(puedeTenerTienda('taller')).toBe(true)
     expect(puedeTenerTienda('profesional')).toBe(true)
   })
 
@@ -42,27 +42,27 @@ describe('quién puede abrir tienda', () => {
   })
 
   it('la lista coincide con la del check de la migración', () => {
-    expect([...TIPOS_CON_TIENDA].sort()).toEqual(['camperizador', 'profesional'])
+    expect([...TIPOS_CON_TIENDA].sort()).toEqual(['profesional', 'taller'])
   })
 })
 
 describe('slugify (debe igualar a fn_slugify en SQL)', () => {
   it('quita acentos y pasa a minúsculas', () => {
-    expect(slugify('Camperización Martín')).toBe('camperizacion-martin')
+    expect(slugify('Mecanización Martín')).toBe('mecanizacion-martin')
   })
 
   it('colapsa separadores y recorta guiones', () => {
-    expect(slugify('  Furgo   Camper &  Co.  ')).toBe('furgo-camper-co')
+    expect(slugify('  Agro   Taller &  Co.  ')).toBe('agro-taller-co')
     expect(slugify('---Taller---')).toBe('taller')
   })
 
   it('trata la ñ y la ç como en SQL', () => {
-    expect(slugify('Peñíscola Camper')).toBe('peniscola-camper')
-    expect(slugify('Provença Vans')).toBe('provenca-vans')
+    expect(slugify('Peñíscola Agrícola')).toBe('peniscola-agricola')
+    expect(slugify('Provença Maquinària')).toBe('provenca-maquinaria')
   })
 
   it('es idempotente: slugificar un slug lo deja igual', () => {
-    const s = slugify('Autocaravanas del Sur, S.L.')
+    const s = slugify('Tractores del Sur, S.L.')
     expect(slugify(s)).toBe(s)
   })
 
@@ -74,8 +74,8 @@ describe('slugify (debe igualar a fn_slugify en SQL)', () => {
 
 describe('slugs válidos y reservados', () => {
   it('acepta slugs normales', () => {
-    expect(slugValido('furgocamper-valencia')).toBe(true)
-    expect(slugValido('vans4x4')).toBe(true)
+    expect(slugValido('agromartin-valencia')).toBe(true)
+    expect(slugValido('agro4x4')).toBe(true)
   })
 
   it('rechaza guiones al borde o dobles', () => {
@@ -106,7 +106,7 @@ describe('slugs válidos y reservados', () => {
 
 describe('normalizarWeb', () => {
   it('añade https a un dominio suelto', () => {
-    expect(normalizarWeb('furgocamper.es')).toBe('https://furgocamper.es/')
+    expect(normalizarWeb('agromartin.es')).toBe('https://agromartin.es/')
   })
 
   it('conserva una URL completa', () => {
@@ -134,12 +134,12 @@ describe('validarTienda', () => {
   it('acepta una tienda completa', () => {
     expect(
       validarTienda({
-        nombre: 'Furgocamper Valencia',
-        descripcion: 'Camperizamos furgonetas desde 2011.',
-        web: 'furgocamper.es',
+        nombre: 'AgroMartín Valencia',
+        descripcion: 'Reparamos tractores y cosechadoras desde 2011.',
+        web: 'agromartin.es',
         horario: 'L-V 9:00-18:00',
         direccion: 'Pol. Ind. Norte, nave 4',
-        slug: 'furgocamper-valencia',
+        slug: 'agromartin-valencia',
       })
     ).toEqual({})
   })
@@ -166,6 +166,6 @@ describe('validarTienda', () => {
 
 describe('urlTienda', () => {
   it('construye la ruta pública', () => {
-    expect(urlTienda('furgocamper-valencia')).toBe('/tienda/furgocamper-valencia')
+    expect(urlTienda('agromartin-valencia')).toBe('/tienda/agromartin-valencia')
   })
 })

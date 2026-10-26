@@ -138,7 +138,7 @@ describe('catálogo maestro de marcas y modelos', () => {
     expect(modeloPorValor('John Deere 6M')).toBeDefined()
     expect(modeloPorValor('Caterpillar 320')).toBeDefined()
     expect(modeloPorValor('Makita')).toBeDefined()
-    expect(modeloPorValor('Fiat Ducato')).toBeUndefined()
+    expect(modeloPorValor('Acme X9')).toBeUndefined()
   })
 
   test('categoriasData expone las marcas estructuradas de cada subcategoría', () => {

@@ -52,10 +52,10 @@
       "priceMin": "Mínimo (€)",
       "priceMax": "Máximo (€)",
       "audiencePrivate": "👤 Particulares",
-      "audienceCamperizers": "🔧 Talleres",
+      "audienceWorkshops": "🔧 Talleres",
       "audiencePro": "🏢 Profesionales y concesionarios",
       "audienceBuyers": "🧭 Compradores",
-      "findCamper": "Encontrar mi maquinaria",
+      "findMachinery": "Encontrar mi maquinaria",
       "sellFree": "Vender gratis",
       "heroImageAlt": "Excavadora trabajando en una obra al atardecer"
     },
@@ -68,8 +68,8 @@
       "rangeDesc": "El rango habitual de maquinaria de ocasión",
       "free": "0% comisiones",
       "freeDesc": "Publicar y vender es gratis",
-      "homologation": "Documentación revisada",
-      "homologationDesc": "Expediente del vehículo revisado por el equipo",
+      "documentation": "Documentación revisada",
+      "documentationDesc": "Factura, ficha técnica y manual revisados",
       "listings": "{count} anuncios activos",
       "verifiedCount": "{count} vendedores verificados"
     },
@@ -147,7 +147,7 @@
         "title": "Particulares",
         "desc": "Vende tu maquinaria sin comisiones ni intermediarios. Publica gratis en 5 minutos con ficha técnica completa y fotos."
       },
-      "camperizer": {
+      "workshop": {
         "title": "Talleres y reparadores",
         "desc": "Muestra tu reparación y reacondicionamiento de maquinaria ante compradores cualificados de toda España."
       },
@@ -405,9 +405,6 @@
     "filtersTitle": "Filtros",
     "filters": {
       "groups": {
-        "mechanics": "Mecánica del vehículo",
-        "liveability": "Habitabilidad",
-        "autonomy": "Autonomía y equipamiento",
         "technique": "Ficha técnica",
         "docs": "Documentación",
         "logistics": "Logística"
@@ -427,7 +424,7 @@
       "batteryIncluded": "Batería incluida",
       "hoursMax": "Horas de uso máximas"
     },
-    "typeLabel": "Tipo de vehículo",
+    "typeLabel": "Tipo de maquinaria",
     "allTypes": "Todos los tipos"
   },
   "productCard": {
@@ -438,13 +435,13 @@
   },
   "tiposVendedor": {
     "particular": "Particular",
-    "camperizador": "Taller",
+    "taller": "Taller",
     "profesional": "Profesional",
     "particularDesc": "Vendo mi maquinaria o equipo",
-    "camperizadorDesc": "Reparo y revendo maquinaria",
+    "tallerDesc": "Reparo y revendo maquinaria",
     "profesionalDesc": "Empresa o concesionario",
     "particulares": "Particulares",
-    "camperizadores": "Talleres",
+    "talleres": "Talleres",
     "profesionales": "Profesionales"
   },
   "vendedorLanding": {
@@ -512,7 +509,7 @@
     "catCatalog": "Ver catálogo completo",
     "catPublish": "Publicar gratis",
     "catSafeBuy": "Compra segura",
-    "catItp": "Calculadora de ITP"
+    "catTasador": "Estimar precio"
   },
   "productDetail": {
     "notFound": "Producto no encontrado",
@@ -522,10 +519,10 @@
     "breadcrumbHome": "Inicio",
     "breadcrumbCatalog": "Catálogo",
     "buySafe": "Compra seguro",
-    "safeTip1": "Revisa la documentación: ITV, permiso de circulación y factura de venta.",
-    "safeTip2": "Comprueba el estado del equipo: calefacción, agua, batería auxiliar y placa solar.",
-    "safeTip3": "Pide ver el historial de mantenimiento y los impuestos al día.",
-    "safeTip4": "Haz una prueba de conducción y revisa el estado de la carrocería y el aislamiento.",
+    "safeTip1": "Revisa la documentación: factura, ficha técnica o declaración CE, manual y, si está matriculada, ITP e inscripción al día.",
+    "safeTip2": "Prueba la máquina en funcionamiento: motor en frío, hidráulica, toma de fuerza, transmisión y posibles fugas.",
+    "safeTip3": "Pide el historial de mantenimiento, las horas reales y las facturas de reparaciones importantes.",
+    "safeTip4": "Inspecciona desgastes y holguras: cadenas o neumáticos, bulones, implementos, baterías y consumibles.",
     "published": "Publicado",
     "views": "vistas",
     "priceHistory": "Historial de precios",
@@ -558,9 +555,9 @@
     "specsTitle": "Otros detalles",
     "sellerPro": "Profesional / Taller",
     "sellerPrivate": "Particular",
-    "expedienteTitle": "Expediente del vehículo",
+    "expedienteTitle": "Documentación de la máquina",
     "expedienteIntroVerificada": "Hemos revisado la documentación de esta máquina: factura, ficha técnica y manual de instrucciones.",
-    "expedienteIntroPendiente": "El vendedor ha subido documentación del vehículo y está en revisión por nuestro equipo.",
+    "expedienteIntroPendiente": "El vendedor ha subido la documentación de la máquina y está en revisión por nuestro equipo.",
     "expedienteAvisoVivienda": "El anuncio declara máquina matriculada y pendiente de verificar la documentación del titular.",
     "expedienteNotaComprador": "Antes de cerrar la compra, pide al vendedor que te muestre los documentos originales.",
     "expedienteCta": "Sube la documentación y consigue el sello de documentación verificada",
@@ -654,7 +651,7 @@
     "titleField": "Título del anuncio",
     "titlePlaceholder": "Ej: Excavadora CAT 320 2019, 8.500 horas, incluye transporte",
     "specs": "Especificaciones",
-    "specsHint": "Los campos que rellenes se usan como filtros del catálogo: plazas, calefacción, baño, autonomía (batería, placa solar, inversor), tracción, MMA, longitud y altura exterior.",
+    "specsHint": "Los campos que rellenes se usan como filtros del catálogo: año, horas de uso, combustible, potencia, tracción, documentación, peso y medidas de transporte.",
     "description": "Descripción",
     "descPlaceholder": "Describe el estado, características, accesorios incluidos...",
     "condition": "Estado",
@@ -699,7 +696,7 @@
     "conditionUsed": "Usado",
     "optimizing": "Optimizando imágenes…",
     "priceEur": "Precio (€)",
-    "family": "Familia de vehículo",
+    "family": "Familia de maquinaria",
     "asLabel": "Publicando como",
     "changeTipo": "Cambiar",
     "videoLabel": "Vídeo del anuncio (opcional)",
@@ -898,7 +895,7 @@
     "a8": "Los precios se publican en euros (€).",
     "q9": "¿Cómo contacto a un vendedor?",
     "a9": "Cada publicación tiene un botón de mensaje directo, WhatsApp y teléfono (si el vendedor lo habilitó). También puedes usar el chat integrado de MaquinariaOcasión.",
-    "q10": "¿Puedo vender otros vehículos en MaquinariaOcasión?",
+    "q10": "¿Puedo vender productos que no sean maquinaria en MaquinariaOcasión?",
     "a10": "No. MaquinariaOcasión es un marketplace vertical especializado exclusivamente en maquinaria y herramienta de ocasión: agrícola, obra y herramienta profesional.",
     "q11": "¿Es gratis publicar en MaquinariaOcasión?",
     "a11": "Sí, publicar es 100% gratuito. Los créditos son opcionales y solo sirven para destacar tu anuncio y llegar a más compradores.",
@@ -1086,7 +1083,7 @@
     "title2": "Título",
     "description": "Descripción",
     "specs": "Especificaciones",
-    "specsHint": "Los campos que rellenes se usan como filtros del catálogo: plazas, calefacción, baño, autonomía (batería, placa solar, inversor), tracción, MMA, longitud y altura exterior.",
+    "specsHint": "Los campos que rellenes se usan como filtros del catálogo: año, horas de uso, combustible, potencia, tracción, documentación, peso y medidas de transporte.",
     "state": "Estado",
     "municipality": "Municipio",
     "currentPhotos": "Fotos actuales",
@@ -1169,24 +1166,6 @@
     "iosDone": "Entendido",
     "closeBanner": "Cerrar banner",
     "close": "Cerrar"
-  },
-  "inspeccion": {
-    "ctaTitulo": "Inspección precompra",
-    "ctaLogin": "Pide una revisión por un taller colaborador antes de viajar ({min}-{max} €)",
-    "ctaDesc": "Un taller colaborador revisa el vehículo y te manda el informe ({min}-{max} €)",
-    "estadoTitulo": "Tu inspección",
-    "modalTitulo": "Inspección precompra",
-    "cerrar": "Cerrar",
-    "modalPaso1": "Pides la inspección aquí y te contactamos con el presupuesto exacto (orientativo {min}-{max} €).",
-    "modalPaso2": "Un taller colaborador revisa el vehículo (motor, humedades, gas, 12V/220V, documentación) y te entrega un informe.",
-    "modalPaso3": "Pagas directamente al taller; la plataforma no mueve dinero en ningún momento.",
-    "modalPaso4": "Con el informe en la mano, viajas solo si el vehículo está como decía el anuncio.",
-    "notaReservado": "El anuncio está reservado, pero la inspección sigue siendo buena idea: si la operación cae, el anuncio se libera.",
-    "notasLabel": "Nota para el equipo (opcional)",
-    "notasPlaceholder": "Ciudad, disponibilidad, teléfono de contacto…",
-    "confirmar": "Solicitar inspección",
-    "avisoSinPago": "No pagas nada ahora: primero te llega el presupuesto.",
-    "errorGenerico": "No se pudo enviar la solicitud. Inténtalo de nuevo."
   },
   "comparar": {
     "title": "Comparar anuncios",

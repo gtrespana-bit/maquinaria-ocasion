@@ -28,9 +28,9 @@ function generateItemListSchema(products: any[], baseUrl: string) {
   // Los anuncios sembrados por la plataforma siguen visibles en las tarjetas
   // (sin ninguna etiqueta que los distinga), pero sus fichas llevan noindex y
   // no deben declararse como ofertas reales en datos estructurados: describir
-  // un vehículo que no está en venta como una oferta en Stock en el JSON-LD sí
+  // una máquina que no está en venta como una oferta en Stock en el JSON-LD sí
   // sería un problema.
-  const indexableProducts = (products || []).filter((product) => product.es_demo !== true)
+  const indexableProducts = (products || []).filter((product) => product.es_demo !== true && product.vendido !== true)
   if (indexableProducts.length === 0) return null
 
   const itemListElements = indexableProducts.map((product, index) => ({
@@ -44,11 +44,7 @@ function generateItemListSchema(products: any[], baseUrl: string) {
       '@type': 'Offer',
       price: product.precio_usd || 0,
       priceCurrency: 'EUR',
-      availability: product.activo ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
-      seller: {
-        '@type': 'Organization',
-        name: 'MaquinariaOcasión',
-      },
+      availability: product.reservado ? 'https://schema.org/LimitedAvailability' : 'https://schema.org/InStock',
     },
   }))
 
@@ -111,7 +107,7 @@ export const revalidate = 600
 // ── Datos ─────────────────────────────────────────────────────────────────
 
 const MODERACION = 'estado_moderacion.is.null,estado_moderacion.eq.aprobado'
-const PRODUCT_COLS = 'id, slug, titulo, precio_usd, estado, imagen_url, ubicacion_ciudad, subcategoria, creado_en, boosteado_en, destacado, destacado_hasta, vendedor_tipo, es_demo'
+const PRODUCT_COLS = 'id, slug, titulo, precio_usd, estado, imagen_url, ubicacion_ciudad, subcategoria, creado_en, boosteado_en, destacado, destacado_hasta, vendedor_tipo, es_demo, vendido, reservado'
 
 async function getProductos(limit = 8, subcategorias?: string[], categoria?: string) {
   if (!supabase) return []
@@ -473,7 +469,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
   const beneficios = [
     { icon: ShieldCheck, label: t('home.stats.verified'), desc: t('home.stats.verifiedDesc') },
     { icon: MapPin, label: t('home.stats.allSpain'), desc: t('home.stats.allSpainDesc') },
-    { icon: FileCheck, label: t('home.stats.homologation'), desc: t('home.stats.homologationDesc') },
+    { icon: FileCheck, label: t('home.stats.documentation'), desc: t('home.stats.documentationDesc') },
     { icon: Zap, label: t('home.stats.free'), desc: t('home.stats.freeDesc') },
   ]
 
@@ -526,7 +522,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
               <div className="mt-5 flex flex-wrap gap-2">
                 {[
                   t('home.hero.audiencePrivate'),
-                  t('home.hero.audienceCamperizers'),
+                  t('home.hero.audienceWorkshops'),
                   t('home.hero.audiencePro'),
                   t('home.hero.audienceBuyers'),
                 ].map(a => (
@@ -545,7 +541,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
                   href="/catalogo"
                   className="btn-signal inline-flex items-center gap-2 px-7 py-3.5 text-base"
                 >
-                  <Search size={18} /> {t('home.hero.findCamper')}
+                  <Search size={18} /> {t('home.hero.findMachinery')}
                 </LocalLink>
                 <LocalLink
                   href="/publicar"
@@ -783,7 +779,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
               desc: t('home.recent.subtitle'),
             },
             { icon: MapPin, label: t('home.stats.allSpain'), desc: t('home.stats.allSpainDesc') },
-            { icon: FileCheck, label: t('home.stats.homologation'), desc: t('home.stats.homologationDesc') },
+            { icon: FileCheck, label: t('home.stats.documentation'), desc: t('home.stats.documentationDesc') },
             { icon: Zap, label: t('home.stats.free'), desc: t('home.stats.freeDesc') },
             { icon: Gauge, label: t('home.stats.range'), desc: t('home.stats.rangeDesc') },
           ].map(s => (
@@ -890,7 +886,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-5">
             {[
               { icon: '👤', key: 'private', vendedor: 'particular', plural: 'particulares' },
-              { icon: '🔧', key: 'camperizer', vendedor: 'camperizador', plural: 'camperizadores' },
+              { icon: '🔧', key: 'workshop', vendedor: 'taller', plural: 'talleres' },
               { icon: '🏢', key: 'pro', vendedor: 'profesional', plural: 'profesionales' },
             ].map(a => (
               <div

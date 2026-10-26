@@ -31,7 +31,7 @@ const TRANSLATIONS: Record<string, string> = {
   'productCard.boost': 'Boost',
   'productCard.verified': 'Verificado',
   'tiposVendedor.particular': 'Particular',
-  'tiposVendedor.camperizador': 'Camperizador',
+  'tiposVendedor.taller': 'Taller',
   'tiposVendedor.profesional': 'Pro',
 };
 
@@ -92,7 +92,7 @@ describe('ProductCard', () => {
   });
 
   it('muestra chip de tipo de vendedor cuando el anuncio trae vendedor_tipo', () => {
-    render(<ProductCard p={{ ...mockProduct, vendedor_tipo: 'camperizador' }} />);
+    render(<ProductCard p={{ ...mockProduct, vendedor_tipo: 'taller' }} />);
     expect(screen.getByText('Taller')).toBeInTheDocument();
   });
 

@@ -339,7 +339,7 @@ export default function AdminCupones({ notify }: { notify: (msg: string) => void
                       {p.diasRestantes != null ? `${p.diasRestantes} días` : '—'}
                     </td>
                     <td className="text-xs text-gray-500">
-                      {p.tipoVendedor === 'camperizador' ? 'Taller' : p.tipoVendedor === 'profesional' ? 'Profesional' : 'Particular'}
+                      {p.tipoVendedor === 'taller' ? 'Taller' : p.tipoVendedor === 'profesional' ? 'Profesional' : 'Particular'}
                     </td>
                     <td className="text-right">
                       <Button

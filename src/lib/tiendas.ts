@@ -8,7 +8,7 @@
  */
 
 /** Tipos de vendedor que pueden abrir escaparate. Un particular, no. */
-export const TIPOS_CON_TIENDA = ['camperizador', 'profesional'] as const
+export const TIPOS_CON_TIENDA = ['taller', 'profesional'] as const
 export type TipoConTienda = (typeof TIPOS_CON_TIENDA)[number]
 
 export const LIMITES_TIENDA = {

@@ -55,7 +55,7 @@ interface ProductoPageClientProps {
    * Anuncio sembrado por la plataforma (columna `es_demo`). No se marca en la
    * interfaz —la ficha debe leerse como cualquier otra— pero mantiene dos
    * límites que no dependen del aspecto: no se ofrecen contactos inventados y
-   * no se habilita el pago con señal sobre un vehículo
+   * no se habilita el pago con señal sobre una máquina
    * que no existe. Las consultas de estos anuncios llegan al equipo.
    */
   esDemo?: boolean
@@ -525,7 +525,7 @@ function ProductoPageClientInner({
 
             {/* Reserva con señal: el comprador solicita, el vendedor confirma la
                 señal al recibirla y entonces el anuncio queda reservado. No se
-                ofrece en anuncios sembrados: cobrar una señal por un vehículo
+                ofrece en anuncios sembrados: cobrar una señal por una máquina
                 que no existe no es una decisión de diseño. */}
             {!producto.vendido && !esDemo && (
               <BotonReservar

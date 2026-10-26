@@ -21,7 +21,7 @@ jest.mock('@/lib/supabase', () => ({ supabase: {
   from: (table: string) => {
     const q: any = {}
     for (const name of ['select', 'or', 'eq', 'in', 'order']) q[name] = () => q
-    q.then = (fn: any) => Promise.resolve({ data: table === 'conversaciones' ? mockConvs : table === 'productos' ? [{ id: PRODUCT, titulo: 'Camper' }] : [], error: null }).then(fn)
+    q.then = (fn: any) => Promise.resolve({ data: table === 'conversaciones' ? mockConvs : table === 'productos' ? [{ id: PRODUCT, titulo: 'Tractor Kubota' }] : [], error: null }).then(fn)
     return q
   },
   channel: (name: string) => {
@@ -85,11 +85,11 @@ test('error de red conserva el borrador y desbloquea el envío', async () => {
   mockConvs = [conv]
   render(<ChatPage />)
   const input = await screen.findByPlaceholderText('typeMessage')
-  fireEvent.change(input, { target: { value: 'Quiero una camper' } })
+  fireEvent.change(input, { target: { value: 'Quiero un tractor' } })
   const original = fetchMock.getMockImplementation()!
   fetchMock.mockImplementation((url: string, ...args: any[]) => url === '/api/enviar-mensaje' ? Promise.reject(new Error('offline')) : original(url, ...args))
   fireEvent.keyDown(input, { key: 'Enter' })
   await screen.findByText('No hay conexión. Tu mensaje no se ha borrado; puedes reintentarlo.')
-  expect(input).toHaveValue('Quiero una camper')
+  expect(input).toHaveValue('Quiero un tractor')
   expect(screen.queryByText('Enviando...')).not.toBeInTheDocument()
 })

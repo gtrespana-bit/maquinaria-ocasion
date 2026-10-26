@@ -9,7 +9,7 @@
  *  2. Un outlier absurdo no puede mover la cifra principal (por eso mediana).
  *  3. Los anuncios de demostración no son mercado y quedan fuera.
  *  4. Los percentiles coinciden con los de una hoja de cálculo.
- *  5. Los tramos de antigüedad no se solapan ni pierden vehículos.
+ *  5. Los tramos de antigüedad no se solapan ni pierden anuncios.
  */
 import {
   MIN_MUESTRA,
@@ -114,20 +114,20 @@ describe('calcularEstadisticas', () => {
       .toBeNull()
   })
 
-  it('el km y el año medianos requieren datos propios', () => {
-    const sinKm = calcularEstadisticas(anuncios([20000, 21000, 22000, 23000, 24000]))!
-    expect(sinKm.kmMediana).toBeNull()
-    expect(sinKm.anioMediano).toBeNull()
+  it('las horas y el año medianos requieren datos propios', () => {
+    const sinHoras = calcularEstadisticas(anuncios([20000, 21000, 22000, 23000, 24000]))!
+    expect(sinHoras.horasMediana).toBeNull()
+    expect(sinHoras.anioMediano).toBeNull()
 
-    const conKm = calcularEstadisticas([
-      { precio: 20000, km: 100000, anio: 2015 },
-      { precio: 21000, km: 120000, anio: 2016 },
-      { precio: 22000, km: 140000, anio: 2017 },
-      { precio: 23000, km: 160000, anio: 2018 },
-      { precio: 24000, km: 180000, anio: 2019 },
+    const conHoras = calcularEstadisticas([
+      { precio: 20000, horas: 4000, anio: 2015 },
+      { precio: 21000, horas: 5000, anio: 2016 },
+      { precio: 22000, horas: 6000, anio: 2017 },
+      { precio: 23000, horas: 7000, anio: 2018 },
+      { precio: 24000, horas: 8000, anio: 2019 },
     ])!
-    expect(conKm.kmMediana).toBe(140000)
-    expect(conKm.anioMediano).toBe(2017)
+    expect(conHoras.horasMediana).toBe(6000)
+    expect(conHoras.anioMediano).toBe(2017)
   })
 })
 
@@ -171,7 +171,7 @@ describe('estadisticasPorTramo', () => {
     expect(MIN_MUESTRA_TRAMO).toBeGreaterThan(1)
   })
 
-  it('los tramos cubren toda la vida del vehículo', () => {
+  it('los tramos cubren toda la vida útil de la máquina', () => {
     expect(TRAMOS_ANTIGUEDAD[TRAMOS_ANTIGUEDAD.length - 1].maxEdad).toBe(Infinity)
   })
 })
@@ -201,14 +201,14 @@ describe('valorarPrecio', () => {
 
 describe('resumenMercado', () => {
   it('no promete cifras cuando no las hay', () => {
-    const texto = resumenMercado('Fiat Ducato', null)
-    expect(texto).toContain('Fiat Ducato')
+    const texto = resumenMercado('Kubota M7', null)
+    expect(texto).toContain('Kubota M7')
     expect(texto).not.toMatch(/\d+\s*€/)
   })
 
   it('usa los mismos números que la tabla', () => {
     const est = calcularEstadisticas(anuncios([20000, 25000, 30000, 35000, 40000]))!
-    const texto = resumenMercado('Fiat Ducato', est)
+    const texto = resumenMercado('Kubota M7', est)
     expect(texto).toContain('30.000 €')
     expect(texto).toContain('5 anuncios')
   })

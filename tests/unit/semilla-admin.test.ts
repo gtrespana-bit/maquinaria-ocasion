@@ -61,7 +61,7 @@ test('falla cerrado si no hay perfil real de atención', async () => {
   await expect(destinatarioSemilla(sb as any, 'seed')).rejects.toThrow('perfil real')
 })
 
-test('sin reservas de vehículos ficticios aunque se invoque la API directamente', () => {
+test('sin reservas de anuncios sembrados aunque se invoque la API directamente', () => {
   const product = { id: 'p', user_id: 'seed', activo: true, es_demo: true }
   expect(puedeReservar(product, null, 'buyer').ok).toBe(false)
 })
