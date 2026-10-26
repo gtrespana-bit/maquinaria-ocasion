@@ -23,7 +23,7 @@ function crearQuery(resultado: { count: number | null }) {
 
 describe('landings locales indexables', () => {
   test('la landing de ciudad solo cuenta anuncios visibles y aprobados', async () => {
-    const query = crearQuery({ count: 1 })
+    const query = crearQuery({ count: 3 })
     const supabase = { from: jest.fn(() => query) }
 
     await expect(hayAnunciosEnCiudad(supabase, 'Madrid', 'Madrid')).resolves.toBe(true)
@@ -37,8 +37,15 @@ describe('landings locales indexables', () => {
     ])
   })
 
-  test('la combinación ciudad/categoría resuelve el slug a la etiqueta guardada', async () => {
+  test('por debajo del umbral de inventario la landing no se indexa', async () => {
     const query = crearQuery({ count: 2 })
+    const supabase = { from: jest.fn(() => query) }
+
+    await expect(hayAnunciosEnCiudad(supabase, 'Madrid', 'Madrid')).resolves.toBe(false)
+  })
+
+  test('la combinación ciudad/categoría resuelve el slug a la etiqueta guardada', async () => {
+    const query = crearQuery({ count: 3 })
     const supabase = { from: jest.fn(() => query) }
     const subcategoria = getSubcategoriaSEO('tractores')?.categoria
 

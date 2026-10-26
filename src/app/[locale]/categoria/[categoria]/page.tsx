@@ -5,7 +5,13 @@ import { notFound } from 'next/navigation'
 import LocalLink from '@/components/LocalLink'
 import { getSupabaseServerClient } from '@/lib/supabase-server-client'
 import { aplicarOrdenCatalogo } from '@/lib/catalog-consulta'
-import { CATEGORIAS_SEO_LIST, getCategoriaSEO } from '@/lib/categorias-seo'
+import {
+  LANDINGS_CATEGORIA_LIST,
+  SUBCATEGORIAS_SEO,
+  getLandingCategoriaSEO,
+  type LandingCategoriaSEO,
+} from '@/lib/categorias-seo'
+import { FAMILIAS, familiaDeSub } from '@/lib/categorias'
 import { productUrl } from '@/lib/product-url'
 import { formatPrecio } from '@/lib/precio'
 import { alternatesSeo, descripcionSeo, tituloSeo } from '@/lib/seo'
@@ -31,12 +37,13 @@ type ProductoCategoria = {
 }
 
 export function generateStaticParams() {
-  return CATEGORIAS_SEO_LIST.map((categoria) => ({ categoria: categoria.slug }))
+  // Familias (3) + subcategorías (12): las landings nacionales indexables.
+  return LANDINGS_CATEGORIA_LIST.map((categoria) => ({ categoria: categoria.slug }))
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { categoria: slug, locale } = await params
-  const categoria = getCategoriaSEO(slug)
+  const categoria = getLandingCategoriaSEO(slug)
 
   if (!categoria) {
     return { title: 'Categoría no encontrada', robots: { index: false, follow: false } }
@@ -68,28 +75,34 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 }
 
-async function getProductos(categoriaSlug: string): Promise<{ productos: ProductoCategoria[]; total: number }> {
+async function getProductos(categoria: LandingCategoriaSEO): Promise<{ productos: ProductoCategoria[]; total: number }> {
   const supabase = getSupabaseServerClient()
   if (!supabase) return { productos: [], total: 0 }
 
   try {
-    const { data: categoria } = await supabase
-      .from('categorias')
-      .select('id')
-      .eq('nombre', categoriaSlug)
-      .maybeSingle()
+    // Familia → categoria_id (fila de `categorias`); subcategoría → la
+    // etiqueta visible guardada en productos.subcategoria.
+    let query = supabase
+      .from('productos')
+      .select('id, slug, titulo, precio_usd, estado, imagen_url, ubicacion_ciudad, ubicacion_estado, subcategoria, creado_en', { count: 'exact' })
+      .eq('activo', true)
+      .or('estado_moderacion.is.null,estado_moderacion.eq.aprobado')
 
-    if (!categoria?.id) return { productos: [], total: 0 }
+    if (categoria.tipo === 'subcategoria') {
+      query = query.eq('subcategoria', categoria.subEtiqueta ?? categoria.nombre)
+    } else {
+      const { data: fila } = await supabase
+        .from('categorias')
+        .select('id')
+        .eq('nombre', categoria.slug)
+        .maybeSingle()
+
+      if (!fila?.id) return { productos: [], total: 0 }
+      query = query.eq('categoria_id', fila.id)
+    }
 
     // Mismo ORDER BY compartido que el catálogo: prioridad pagada primero.
-    const { data, count, error } = await aplicarOrdenCatalogo(
-      supabase
-        .from('productos')
-        .select('id, slug, titulo, precio_usd, estado, imagen_url, ubicacion_ciudad, ubicacion_estado, subcategoria, creado_en', { count: 'exact' })
-        .eq('activo', true)
-        .eq('categoria_id', categoria.id)
-        .or('estado_moderacion.is.null,estado_moderacion.eq.aprobado'),
-    ).limit(PRODUCT_LIMIT)
+    const { data, count, error } = await aplicarOrdenCatalogo(query).limit(PRODUCT_LIMIT)
 
     if (error) return { productos: [], total: 0 }
     return { productos: (data || []) as ProductoCategoria[], total: count || 0 }
@@ -104,12 +117,46 @@ function jsonLd(value: unknown) {
 
 export default async function CategoriaPage({ params }: Props) {
   const { categoria: slug } = await params
-  const categoria = getCategoriaSEO(slug)
+  const categoria = getLandingCategoriaSEO(slug)
   if (!categoria) notFound()
 
-  const { productos, total } = await getProductos(categoria.slug)
-  const relacionadas = CATEGORIAS_SEO_LIST.filter((item) => item.slug !== categoria.slug)
+  const { productos, total } = await getProductos(categoria)
   const canonical = `${BASE_URL}/categoria/${categoria.slug}`
+
+  // Enlace al catálogo ya filtrado (la landing posiciona; el catálogo filtra).
+  const hrefCatalogo = categoria.tipo === 'subcategoria'
+    ? `/catalogo?subcategoria=${encodeURIComponent(categoria.subEtiqueta ?? categoria.nombre)}`
+    : `/catalogo?categoria=${categoria.slug}`
+
+  // Relacionadas: una familia enlaza a sus subcategorías (las landings con
+  // volumen); una subcategoría enlaza a su familia y a sus hermanas.
+  const subsDeFamilia = SUBCATEGORIAS_SEO
+    .filter((s) => familiaDeSub(s.slug)?.key === categoria.familiaSlug)
+    .map((s) => ({ slug: s.slug, nombre: s.nombre, icono: s.icono }))
+  const relacionadas = categoria.tipo === 'familia'
+    ? subsDeFamilia
+    : [
+        {
+          slug: categoria.familiaSlug,
+          nombre: categoria.familiaNombre,
+          icono: FAMILIAS.find((f) => f.key === categoria.familiaSlug)?.icon ?? '',
+        },
+        ...subsDeFamilia.filter((s) => s.slug !== categoria.slug),
+      ]
+
+  const breadcrumbJsonLd: Record<string, unknown>[] = [
+    { '@type': 'ListItem', position: 1, name: 'Inicio', item: BASE_URL },
+    { '@type': 'ListItem', position: 2, name: 'Catálogo', item: `${BASE_URL}/catalogo` },
+    ...(categoria.tipo === 'subcategoria'
+      ? [{ '@type': 'ListItem', position: 3, name: categoria.familiaNombre, item: `${BASE_URL}/categoria/${categoria.familiaSlug}` }]
+      : []),
+    {
+      '@type': 'ListItem',
+      position: categoria.tipo === 'subcategoria' ? 4 : 3,
+      name: categoria.nombre,
+      item: canonical,
+    },
+  ]
 
   const structuredData = {
     '@context': 'https://schema.org',
@@ -125,11 +172,7 @@ export default async function CategoriaPage({ params }: Props) {
       },
       {
         '@type': 'BreadcrumbList',
-        itemListElement: [
-          { '@type': 'ListItem', position: 1, name: 'Inicio', item: BASE_URL },
-          { '@type': 'ListItem', position: 2, name: 'Catálogo', item: `${BASE_URL}/catalogo` },
-          { '@type': 'ListItem', position: 3, name: categoria.nombre, item: canonical },
-        ],
+        itemListElement: breadcrumbJsonLd,
       },
       {
         '@type': 'ItemList',
@@ -175,6 +218,12 @@ export default async function CategoriaPage({ params }: Props) {
             <span aria-hidden="true" className="mx-2">/</span>
             <LocalLink href="/catalogo" className="hover:text-white">Catálogo</LocalLink>
             <span aria-hidden="true" className="mx-2">/</span>
+            {categoria.tipo === 'subcategoria' && (
+              <>
+                <LocalLink href={`/categoria/${categoria.familiaSlug}`} className="hover:text-white">{categoria.familiaNombre}</LocalLink>
+                <span aria-hidden="true" className="mx-2">/</span>
+              </>
+            )}
             <span aria-current="page">{categoria.nombre}</span>
           </nav>
 
@@ -188,7 +237,7 @@ export default async function CategoriaPage({ params }: Props) {
             </p>
             <div className="flex flex-wrap gap-3 mt-7">
               <LocalLink
-                href={`/catalogo?categoria=${categoria.slug}`}
+                href={hrefCatalogo}
                 className="bg-brand-accent text-brand-dark px-5 py-3 rounded-xl font-bold hover:brightness-105 transition"
               >
                 Explorar y filtrar anuncios
@@ -216,7 +265,7 @@ export default async function CategoriaPage({ params }: Props) {
               </p>
             </div>
             {total > PRODUCT_LIMIT && (
-              <LocalLink href={`/catalogo?categoria=${categoria.slug}`} className="font-bold text-brand-primary hover:underline">
+              <LocalLink href={hrefCatalogo} className="font-bold text-brand-primary hover:underline">
                 Ver todos los anuncios →
               </LocalLink>
             )}

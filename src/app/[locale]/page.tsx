@@ -645,7 +645,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
                   {subs.map(s => (
                     <LocalLink
                       key={s.slug}
-                      href={`/catalogo?subcategoria=${encodeURIComponent(s.label)}`}
+                      href={`/categoria/${s.slug}`}
                       className="text-xs font-bold bg-gray-100 hover:bg-brand-signal hover:text-brand-darkNav border border-gray-200 rounded-full px-3 py-1.5 transition"
                     >
                       {s.icon} {s.label}
@@ -674,7 +674,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
               return (
                 <LocalLink
                   key={f.key}
-                  href={`/catalogo?categoria=${f.key}`}
+                  href={`/categoria/${f.key}`}
                   className="group relative rounded-3xl overflow-hidden h-72 md:h-80 shadow-card hover:shadow-card-hover transition-all duration-300 hover:-translate-y-1.5 block border border-brand-darkNav/10"
                 >
                   <Image
@@ -833,7 +833,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
             <SectionHeader
               title={t(`familias.${f.key}.label`)}
               subtitle={t(`familias.${f.key}.desc`)}
-              href={`/catalogo?categoria=${f.key}`}
+              href={`/categoria/${f.key}`}
               viewAll={t('home.viewAll')}
               kicker={t('home.kicker.market')}
             />

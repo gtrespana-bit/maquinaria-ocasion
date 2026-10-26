@@ -17,7 +17,7 @@ const FAMILIAS_FOOTER = FAMILIAS.map(f => ({
     .filter((s): s is NonNullable<typeof s> => Boolean(s))
     .map(s => ({
       label: s.label,
-      href: `/catalogo?subcategoria=${encodeURIComponent(s.label)}`,
+      href: `/categoria/${s.slug}`,
     })),
 }))
 

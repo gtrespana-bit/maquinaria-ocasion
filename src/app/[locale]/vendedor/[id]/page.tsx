@@ -53,10 +53,10 @@ async function getVendedor(id: string) {
   // Productos activos del vendedor (con slug para URLs canónicas)
   const { data: prods } = await supabase
     .from('productos')
-    .select('id, slug, titulo, precio_usd, imagen_url, categoria_id, subcategoria')
+    .select('id, slug, titulo, precio_usd, imagen_url, categoria_id, subcategoria, es_demo')
     .eq('user_id', id)
     .eq('activo', true)
-    .or('estado_moderacion.is.null,estado_moderacion.eq.aprobado,estado_moderacion.eq.pendiente')
+    .or('estado_moderacion.is.null,estado_moderacion.eq.aprobado')
     .order('creado_en', { ascending: false })
     .limit(12)
 
@@ -65,7 +65,7 @@ async function getVendedor(id: string) {
   if (prods === null) {
     const { data: legacy } = await supabase
       .from('productos')
-      .select('id, titulo, precio_usd, imagen_url, categoria_id, subcategoria')
+      .select('id, titulo, precio_usd, imagen_url, categoria_id, subcategoria, es_demo')
       .eq('user_id', id)
       .eq('activo', true)
       .order('creado_en', { ascending: false })
@@ -88,6 +88,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 
   const { perfil, resenas, promedio, productos } = data
+  // Un perfil sin anuncios reales ni reseñas es una página fina: enlazable
+  // (follow) pero fuera del índice hasta que tenga actividad, igual que
+  // marca/modelo sin stock. Los anuncios sembrados no cuentan como actividad.
+  const tieneActividad =
+    resenas.length > 0 || productos.some((p: any) => p.es_demo !== true)
   const nombre = perfil.nombre || 'Vendedor'
   const ubicacion = [perfil.ciudad, perfil.estado].filter(Boolean).join(', ')
 
@@ -128,6 +133,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description,
       images,
     },
+    robots: tieneActividad
+      ? { index: true, follow: true }
+      : { index: false, follow: true },
   }
 }
 
