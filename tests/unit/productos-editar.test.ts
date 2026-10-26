@@ -62,7 +62,7 @@ describe('resolveSubcategory', () => {
     expect(resolveSubcategory(null)).toBeNull()
     // Anuncios legados (demo antigua): el tipo se conserva para no perder datos.
     expect(resolveSubcategory('Gran Volumen')).toBe('Gran Volumen')
-    expect(resolveSubcategory('Minicamper')).toBe('Minicamper')
+    expect(resolveSubcategory('Formato antiguo')).toBe('Formato antiguo')
     expect(resolveSubcategory('algo_desconocido')).toBe('algo_desconocido')
   })
 })
@@ -163,18 +163,18 @@ describe('normalizeContactMethods', () => {
 })
 
 describe('resolveCategoryId', () => {
-  it('resuelve la categoría legada camper existente (compatibilidad)', async () => {
+  it('normaliza categorías desconocidas a la familia por defecto', async () => {
+    const eq = jest.fn().mockReturnValue({
+      maybeSingle: jest.fn().mockResolvedValue({ data: { id: 42 }, error: null }),
+    })
     const sbMock = {
       from: jest.fn().mockReturnValue({
-        select: jest.fn().mockReturnValue({
-          eq: jest.fn().mockReturnValue({
-            maybeSingle: jest.fn().mockResolvedValue({ data: { id: 42 }, error: null }),
-          }),
-        }),
+        select: jest.fn().mockReturnValue({ eq }),
       }),
     }
-    const id = await resolveCategoryId(sbMock, 'camper')
+    const id = await resolveCategoryId(sbMock, 'categoria-inexistente')
     expect(id).toBe(42)
+    expect(eq).toHaveBeenCalledWith('nombre', 'agricola')
   })
 
   it('con categoría vacía usa la categoría por defecto y la crea si falta', async () => {
@@ -200,8 +200,8 @@ describe('resolveCategoryId', () => {
 describe('validateSpecifications', () => {
   it('limpia y acepta especificaciones válidas', () => {
     const input = {
-      'Año de matriculación': '2021',
-      Kilómetros: '45000',
+      Año: '2021',
+      'Horas de uso': '4500',
       Combustible: 'Diésel',
     }
     expect(validateSpecifications(input)).toEqual(input)

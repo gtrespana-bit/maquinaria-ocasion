@@ -10,7 +10,7 @@ export type Perfil = {
   nivel_confianza?: number | null
   creado_en?: string | null
   ultima_actividad?: string | null
-  /** particular | camperizador | profesional */
+  /** particular | taller | profesional */
   tipo_vendedor?: string | null
   /** gratis | starter | plus | unlimited */
   plan_anuncios?: string | null

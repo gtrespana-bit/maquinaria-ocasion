@@ -331,21 +331,18 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const canonicalSlug = producto.slug || slug
   const esDemo = await getEsDemo(producto.id)
 
-  // Año y kilometraje del JSONB (claves canónicas o históricas):
-  // enriquecen el título para CTR en SERP. El usuario busca
-  // "CAT 320 2019 9.800 horas", no solo "CAT 320".
+  // Año y horas de uso del JSONB: enriquecen el título para CTR en SERP.
+  // El usuario busca "CAT 320 2019 9.800 horas", no solo "CAT 320".
   const specs = (producto.especificaciones || {}) as Record<string, unknown>
-  const anioTexto = String(
-    specs['Año de matriculación'] || specs['Año'] || specs['Ano de matriculación'] || '',
+  const anioTexto = String(specs['Año'] || '').trim()
+  const horasTexto = String(
+    specs['Horas de uso'] || specs['Horas'] || specs['Horas de uso (h)'] || '',
   ).trim()
-  const kmTexto = String(
-    specs['Kilómetros'] || specs['Kilometraje (km)'] || specs['Kilometraje'] || '',
-  ).trim()
-  const anioKm = [anioTexto, kmTexto ? `${kmTexto} km` : ''].filter(Boolean).join(' · ')
+  const anioHoras = [anioTexto, horasTexto ? `${horasTexto} horas` : ''].filter(Boolean).join(' · ')
 
   const parts = [producto.titulo]
-  if (anioKm) {
-    parts.push(anioKm)
+  if (anioHoras) {
+    parts.push(anioHoras)
   }
   if (producto.precio_usd) {
     parts.push(formatPrecio(producto.precio_usd))
@@ -385,7 +382,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     // Vendido: la URL sigue viva (llega tráfico de WhatsApp/Google y hay
     // similares que mostrar) pero fuera del índice: contenido agotado.
     // Sembrado: la ficha se ve como cualquier otra, pero no se indexa ni se
-    // declara como oferta: no hay un vehículo real detrás y no debe competir en
+    // declara como oferta: no debe competir en
     // Google con anuncios de verdad.
     robots: producto.vendido || esDemo
       ? { index: false, follow: true }
@@ -581,7 +578,7 @@ export default async function ProductoPage({ params }: Props) {
           modelo. */}
       <section className="max-w-7xl mx-auto px-4 py-8 border-t border-gray-100 mt-8">
         <h2 className="text-lg font-black text-gray-900 mb-3">
-          Explora más sobre este vehículo
+          Explora más maquinaria relacionada
         </h2>
         <ul className="space-y-2 text-sm">
           {ciudadSEO && (

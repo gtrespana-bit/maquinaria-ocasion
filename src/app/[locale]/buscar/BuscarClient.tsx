@@ -387,7 +387,7 @@ export default function BuscarClient({ searchParams: searchParamsPromise }: { se
             </h1>
             <p className="text-gray-600">
               Explora {cat?.label || categoria.toLowerCase()} de segunda mano en toda España, con ficha técnica completa
-              (kilómetros, año, plazas y autonomía). Publicar tu anuncio es gratis.
+              (año, horas de uso, potencia y documentación). Publicar tu anuncio es gratis.
             </p>
           </>
         ) : ubicacionCiudad || ubicacionEstado ? (

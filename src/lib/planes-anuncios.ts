@@ -6,7 +6,7 @@
  * encendido.
  */
 
-export type TipoVendedor = 'particular' | 'camperizador' | 'profesional'
+export type TipoVendedor = 'particular' | 'taller' | 'profesional'
 export type PlanAnuncios = 'gratis' | 'starter' | 'unlimited'
 /** Periodicidad de cobro de un pack. El anual equivale a 10 mensualidades. */
 export type Periodicidad = 'mensual' | 'anual'
@@ -143,7 +143,7 @@ export function diasRestantesTrial(opts: {
 }
 
 export function esTipoVendedor(v: unknown): v is TipoVendedor {
-  return v === 'particular' || v === 'camperizador' || v === 'profesional'
+  return v === 'particular' || v === 'taller' || v === 'profesional'
 }
 
 export function esPlanAnuncios(v: unknown): v is PlanAnuncios {
@@ -174,7 +174,7 @@ export function puedeImportarCsv(plan: string | null | undefined): boolean {
 }
 
 export function esProfesional(tipo: string | null | undefined): boolean {
-  return tipo === 'camperizador' || tipo === 'profesional'
+  return tipo === 'taller' || tipo === 'profesional'
 }
 
 export function getPlanDef(id: string | null | undefined) {

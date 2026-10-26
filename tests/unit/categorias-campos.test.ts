@@ -90,7 +90,7 @@ describe('resolverCampos: campos técnicos de maquinaria', () => {
     expect(obra!.options).toEqual(['Oruga', 'Ruedas 4x2', 'Ruedas 4x4'])
   })
 
-  test('Documentación ofrece la documentación de maquinaria (no homologación camper)', () => {
+  test('Documentación ofrece la documentación de maquinaria (CE y factura)', () => {
     const campos = resolverCampos(getSubConfig('obra', 'Excavadoras'))
     const doc = campos.find(c => c.label === 'Documentación')
     expect(doc!.options).toEqual([

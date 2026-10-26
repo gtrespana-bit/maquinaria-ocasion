@@ -30,7 +30,7 @@ import {
  */
 export const FILTRO_VENDEDOR_PARAM = 'vendedor'
 
-const TIPOS_VENDEDOR_FILTRO = ['particular', 'camperizador', 'profesional'] as const
+const TIPOS_VENDEDOR_FILTRO = ['particular', 'taller', 'profesional'] as const
 
 export function tipoVendedorFiltro(valor: unknown): string | null {
   return typeof valor === 'string' &&
@@ -210,7 +210,7 @@ export interface ProductoCatalogo {
   destacado: boolean
   destacado_hasta: string | null
   vendedor_verificado: boolean | null
-  /** Tipo del vendedor: particular, camperizador o profesional (Fase 2). */
+  /** Tipo del vendedor: particular, taller o profesional (Fase 2). */
   vendedor_tipo?: string | null
   /** Reserva con señal vigente (Fase 1.2): el anuncio está comprometido. */
   reservado?: boolean | null

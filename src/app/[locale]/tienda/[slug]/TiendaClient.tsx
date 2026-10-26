@@ -43,7 +43,7 @@ export default function TiendaClient({
   const [copiado, setCopiado] = useState(false)
 
   const ubicacion = [perfil.ciudad, perfil.estado].filter(Boolean).join(', ')
-  const esCamperizador = perfil.tipo_vendedor === 'camperizador'
+  const esTaller = perfil.tipo_vendedor === 'taller'
 
   // Rango de precios: al comprador le dice de un vistazo si esta tienda juega
   // en su presupuesto antes de recorrer 40 anuncios.
@@ -122,7 +122,7 @@ export default function TiendaClient({
               </div>
 
               <p className="text-sm text-gray-500 mb-3">
-                {esCamperizador ? 'Taller de maquinaria' : 'Vendedor profesional'}
+                {esTaller ? 'Taller de maquinaria' : 'Vendedor profesional'}
                 {anoAlta ? ` · En MaquinariaOcasión desde ${anoAlta}` : ''}
               </p>
 
@@ -188,7 +188,7 @@ export default function TiendaClient({
 
         {/* Resumen del stock */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-          <Dato valor={String(productos.length)} etiqueta={productos.length === 1 ? 'vehículo en stock' : 'vehículos en stock'} />
+          <Dato valor={String(productos.length)} etiqueta={productos.length === 1 ? 'anuncio en stock' : 'anuncios en stock'} />
           {minimo > 0 && <Dato valor={formatPrecio(minimo)} etiqueta="desde" />}
           {maximo > 0 && <Dato valor={formatPrecio(maximo)} etiqueta="hasta" />}
           {totalResenas > 0 && <Dato valor={`${promedio}★`} etiqueta={`${totalResenas} valoraciones`} />}
@@ -219,8 +219,8 @@ export default function TiendaClient({
             <Store size={36} className="mx-auto text-gray-300 mb-3" />
             <p className="text-gray-600 font-medium">
               {productos.length === 0
-                ? 'Esta tienda todavía no tiene vehículos publicados.'
-                : 'Ningún vehículo coincide con tu búsqueda.'}
+                ? 'Esta tienda todavía no tiene anuncios publicados.'
+                : 'Ningún anuncio coincide con tu búsqueda.'}
             </p>
             {productos.length > 0 && (
               <button onClick={() => setBusqueda('')} className="text-brand-primary font-semibold text-sm mt-2 hover:underline">

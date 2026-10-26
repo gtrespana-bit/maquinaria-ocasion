@@ -5,7 +5,7 @@
  * URL firmada. Un fallo aquí es una fuga de documentos privados (cédulas,
  * fichas técnicas), así que se prueba explícitamente el escape de carpeta.
  */
-import { rutaStorageValida, rutaDocumentoVehiculoValida } from '@/lib/storage-paths'
+import { rutaStorageValida, rutaDocumentoAnuncioValida } from '@/lib/storage-paths'
 
 const UUID_A = '11111111-1111-4111-8111-111111111111'
 const UUID_B = '22222222-2222-4222-8222-222222222222'
@@ -44,18 +44,18 @@ describe('rutaStorageValida', () => {
   })
 })
 
-describe('rutaDocumentoVehiculoValida', () => {
+describe('rutaDocumentoAnuncioValida', () => {
   test('exige <user_id>/<producto_id>/<archivo> con ambos uuid', () => {
-    expect(rutaDocumentoVehiculoValida(`${UUID_A}/${UUID_B}/itv-2026.pdf`)).toBe(`${UUID_A}/${UUID_B}/itv-2026.pdf`)
+    expect(rutaDocumentoAnuncioValida(`${UUID_A}/${UUID_B}/itv-2026.pdf`)).toBe(`${UUID_A}/${UUID_B}/itv-2026.pdf`)
     // Sin la carpeta del producto no se acepta: la política de Storage y el
     // expediente se apoyan en esa estructura.
-    expect(rutaDocumentoVehiculoValida(`${UUID_A}/itv-2026.pdf`)).toBeNull()
-    expect(rutaDocumentoVehiculoValida(`producto/${UUID_B}/itv.pdf`)).toBeNull()
+    expect(rutaDocumentoAnuncioValida(`${UUID_A}/itv-2026.pdf`)).toBeNull()
+    expect(rutaDocumentoAnuncioValida(`producto/${UUID_B}/itv.pdf`)).toBeNull()
   })
 
   test('no admite subcarpetas arbitrarias ni escapes', () => {
-    expect(rutaDocumentoVehiculoValida(`${UUID_A}/${UUID_B}/sub/itv.pdf`)).toBe(`${UUID_A}/${UUID_B}/sub/itv.pdf`)
-    expect(rutaDocumentoVehiculoValida(`${UUID_A}/${UUID_B}/sub/mas/itv.pdf`)).toBeNull()
-    expect(rutaDocumentoVehiculoValida(`${UUID_A}/${UUID_B}/../../secreto.pdf`)).toBeNull()
+    expect(rutaDocumentoAnuncioValida(`${UUID_A}/${UUID_B}/sub/itv.pdf`)).toBe(`${UUID_A}/${UUID_B}/sub/itv.pdf`)
+    expect(rutaDocumentoAnuncioValida(`${UUID_A}/${UUID_B}/sub/mas/itv.pdf`)).toBeNull()
+    expect(rutaDocumentoAnuncioValida(`${UUID_A}/${UUID_B}/../../secreto.pdf`)).toBeNull()
   })
 })

@@ -116,7 +116,7 @@ test('dos peticiones concurrentes recuperan la conversación ganadora', async ()
 test.each([[BUYER, ADMIN], [ADMIN, BUYER]])('mensajes y respuestas van al participante real %s → %s', async (sender, recipient) => {
   ;(requireUser as jest.Mock).mockResolvedValue({ user: { id: sender } })
   results.conversaciones = [{ data: { user1_id: BUYER, user2_id: ADMIN, producto_id: PRODUCT, productos: { user_id: SELLER, es_demo: true } } }]
-  const response = await enviar(req({ conversacion_id: CONV, destinatario_id: recipient, contenido: 'Hola, busco una camper' }))
+  const response = await enviar(req({ conversacion_id: CONV, destinatario_id: recipient, contenido: 'Hola, busco un tractor' }))
   expect(response.status).toBe(200)
   expect(tables.mensajes.insert).toHaveBeenCalledWith(expect.objectContaining({ remitente_id: sender, destinatario_id: recipient, producto_id: PRODUCT }))
   expect(notifyUser).toHaveBeenCalledWith(expect.anything(), recipient, expect.objectContaining({ click_url: `/chat?conversation=${CONV}` }))

@@ -24,7 +24,7 @@ import { verificarContenido } from '@/lib/moderacion'
 import { revalidarListadosPublicos } from '@/lib/revalidar'
 import { cupoDeUsuario, estadoPlanUsuario, sbAdmin } from '@/lib/planes-servidor'
 import { parseCsv, validarImportacion, MAX_FILAS } from '@/lib/importar-csv'
-import { categoriaDeSubcategoria } from '@/lib/categorias'
+import { CATEGORIA_DEFAULT, categoriaDeSubcategoria } from '@/lib/categorias'
 
 export const dynamic = 'force-dynamic'
 export const maxDuration = 60
@@ -161,10 +161,8 @@ export async function POST(req: NextRequest) {
   }
 
   const sb = sbAdmin()
-  // Fase 4: la categoría se deriva de la subcategoría (columna Tipo) del CSV
-  // con la taxonomía de familias; lo que no encaje cae en la categoría
-  // histórica 'camper' (compatibilidad con CSV antiguos).
-  const idLegacyCamper = await resolverCategoriaId(sb, 'camper')
+  // La categoría se deriva de la subcategoría (columna Tipo) del CSV con la
+  // taxonomía de familias; lo que no encaje cae en la familia por defecto.
   const idsPorFamilia: Record<string, number | null> = {}
   for (const nombreFamilia of ['agricola', 'obra', 'herramientas']) {
     idsPorFamilia[nombreFamilia] = await resolverCategoriaId(sb, nombreFamilia)
@@ -198,7 +196,7 @@ export async function POST(req: NextRequest) {
           especificaciones: f.especificaciones,
           categoria_id:
             idsPorFamilia[categoriaDeSubcategoria(f.subcategoria ?? '') ?? ''] ??
-            idLegacyCamper,
+            idsPorFamilia[CATEGORIA_DEFAULT],
           metodos_contacto: {},
           activo: true,
           destacado: false,

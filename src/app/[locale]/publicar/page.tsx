@@ -331,8 +331,8 @@ export default function PublicarPage() {
           .filter(([, v]) => v)
       ) as Record<string, string>
 
-      // La marca específica del paso 2 (p. ej. la marca del vehículo del
-      // repuesto) tiene prioridad sobre la marca genérica del paso 1.
+      // La marca específica del paso 2 (p. ej. la de la máquina a la que va
+      // destinado un repuesto) tiene prioridad sobre la marca genérica del paso 1.
       const campoMarca = camposEspeciales.find(esCampoMarca)
       const marcaSpec = campoMarca ? limpiarValor(specs[campoMarca.label] || '') : ''
       const marcaFinal = marcaSpec || limpiarValor(marca) || null

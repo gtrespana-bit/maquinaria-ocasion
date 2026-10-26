@@ -165,7 +165,7 @@ const SUBS_BASE: Record<string, InfoSubSEO> = {
     faq: [
       {
         pregunta: '¿Cuántas horas puede durar un tractor de ocasión?',
-        respuesta: 'Un tractor bien mantenido supera con frecuencia las 8.000–12.000 horas de trabajo antes de una reparación mayor de motor o transmisión. Clave: historial de cambios de aceite, estado del turbo (si lleva) y desgaste de embrague. Exige las horas en diagnóstico, no solo el cuentakilómetros.',
+        respuesta: 'Un tractor bien mantenido supera con frecuencia las 8.000–12.000 horas de trabajo antes de una reparación mayor de motor o transmisión. Clave: historial de cambios de aceite, estado del turbo (si lleva) y desgaste de embrague. Contrasta el horómetro con el historial de mantenimiento.',
       },
       {
         pregunta: '¿Qué potencia (CV) necesito para mi finca?',

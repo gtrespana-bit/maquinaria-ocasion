@@ -24,7 +24,7 @@ import { descripcionSeo, tituloSeo } from '@/lib/seo'
 
 export type SlugTipo = 'particulares' | 'profesionales'
 
-export const SLUG_A_TIPO: Record<SlugTipo, 'particular' | 'camperizador' | 'profesional'> = {
+export const SLUG_A_TIPO: Record<SlugTipo, 'particular' | 'taller' | 'profesional'> = {
   particulares: 'particular',
   profesionales: 'profesional',
 }

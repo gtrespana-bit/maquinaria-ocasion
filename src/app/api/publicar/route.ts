@@ -66,7 +66,7 @@ export async function POST(req: NextRequest) {
     // sesión verificada arriba. Si los dejáramos pasar, 'userId' (columna que
     // no existe en 'productos') se colaría en el INSERT y PostgREST fallaría con
     // "Could not find the 'userId' column of 'productos' in the schema cache".
-    // `categoria` es la CLAVE de categoriasData ('repuestos', 'vehiculos'...),
+    // `categoria` es la CLAVE de categoriasData ('agricola', 'obra'...),
     // no una columna de `productos`: se extrae aquí y se traduce a categoria_id
     // más abajo. Si se colara en el INSERT, PostgREST fallaría con
     // "Could not find the 'categoria' column of 'productos'".

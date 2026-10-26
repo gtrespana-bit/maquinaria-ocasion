@@ -87,15 +87,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { perfil, productos, totalResenas, promedio } = data
   const nombre = perfil.nombre || 'Tienda'
   const ubicacion = [perfil.ciudad, perfil.estado].filter(Boolean).join(', ')
-  const esCamperizador = perfil.tipo_vendedor === 'camperizador'
+  const esTaller = perfil.tipo_vendedor === 'taller'
 
   const title = ubicacion
-    ? `${nombre} — ${esCamperizador ? 'Taller' : 'Concesionario'} en ${ubicacion}`
-    : `${nombre} — ${esCamperizador ? 'Taller' : 'Profesional'}`
+    ? `${nombre} — ${esTaller ? 'Taller' : 'Concesionario'} en ${ubicacion}`
+    : `${nombre} — ${esTaller ? 'Taller' : 'Profesional'}`
 
   const partes: string[] = []
   if (productos.length > 0) {
-    partes.push(`${productos.length} ${productos.length === 1 ? 'vehículo' : 'vehículos'} en stock`)
+    partes.push(`${productos.length} ${productos.length === 1 ? 'anuncio' : 'anuncios'} en stock`)
   }
   if (perfil.verificado) partes.push('vendedor verificado')
   if (totalResenas > 0) partes.push(`${promedio}★ (${totalResenas})`)

@@ -87,7 +87,6 @@ export const metadata: Metadata = {
     title: 'Maquinaria agrícola, de obra y herramientas de ocasión',
     description: 'Marketplace especializado en maquinaria agrícola, de obra y herramientas de segunda mano en España. Publica gratis.',
     images: ['/og-image.webp'],
-    creator: '@maquinariaocasion',
   },
   robots: {
     index: true,
@@ -171,12 +170,7 @@ export default async function RootLayout({
                     availableLanguage: ['Spanish', 'English'],
                     areaServed: 'ES'
                   },
-                  areaServed: { '@type': 'Country', name: 'España' },
-                  sameAs: [
-                    'https://twitter.com/maquinariaocasion',
-                    'https://facebook.com/maquinariaocasion',
-                    'https://instagram.com/maquinariaocasion'
-                  ]
+                  areaServed: { '@type': 'Country', name: 'España' }
                 },
                 {
                   '@type': 'WebSite',

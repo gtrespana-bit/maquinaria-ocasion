@@ -133,8 +133,8 @@ export default async function LandingCategoria({ ciudadSlug, ciudadNombre, ciuda
       pregunta: `¿Cuánto cuesta una ${categoriaNombre.toLowerCase()} en ${ciudadNombre}?`,
       respuesta:
         precioTexto && rangoTexto
-          ? `En ${ciudadNombre} (${estado}) el precio medio de una ${categoriaNombre.toLowerCase()} de ocasión es ${precioTexto}, con anuncios que van ${rangoTexto} según año, kilometraje y equipamiento. Filtra el catálogo por rango de precio para ajustar la búsqueda y calcula el ITP de tu comunidad antes de comprar.`
-          : `El precio de una ${categoriaNombre.toLowerCase()} de ocasión en ${ciudadNombre} depende del año, los kilómetros y el equipamiento. Filtra el catálogo por rango de precio para ajustar la búsqueda y calcula el ITP de tu comunidad antes de comprar.`,
+          ? `En ${ciudadNombre} (${estado}) el precio medio de una ${categoriaNombre.toLowerCase()} de ocasión es ${precioTexto}, con anuncios que van ${rangoTexto} según año, horas de uso y equipamiento. Filtra el catálogo por rango de precio para ajustar la búsqueda y, si la máquina está matriculada, comprueba el ITP de tu comunidad antes de comprar.`
+          : `El precio de una ${categoriaNombre.toLowerCase()} de ocasión en ${ciudadNombre} depende del año, las horas de uso y el equipamiento. Filtra el catálogo por rango de precio para ajustar la búsqueda y, si está matriculada, comprueba el ITP de tu comunidad antes de comprar.`,
     },
     {
       pregunta: `¿Dónde veo todas las ${categoriaNombre.toLowerCase()} de ${ciudadNombre}?`,

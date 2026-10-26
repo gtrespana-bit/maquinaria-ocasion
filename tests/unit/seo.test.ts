@@ -28,12 +28,12 @@ describe('utilidades SEO', () => {
   })
 
   it('deja que la plantilla añada la marca cuando el título cabe', () => {
-    expect(tituloSeo('Camper de ocasión en Madrid')).toBe('Camper de ocasión en Madrid')
+    expect(tituloSeo('Tractores de ocasión en Madrid')).toBe('Tractores de ocasión en Madrid')
   })
 
   it('evita títulos largos y no parte palabras al recortar', () => {
     const resultado = tituloSeo(
-      'Furgonetas camper y autocaravanas de ocasión con muchísimo equipamiento en Santa Cruz de Tenerife',
+      'Tractores y excavadoras de ocasión con muchísimo equipamiento en Santa Cruz de Tenerife',
     )
     expect(typeof resultado).toBe('object')
     if (typeof resultado === 'object') {
@@ -43,7 +43,7 @@ describe('utilidades SEO', () => {
   })
 
   it('limpia comillas del frontmatter y normaliza descripciones', () => {
-    expect(limpiarComillas('"Camper o autocaravana"')).toBe('Camper o autocaravana')
+    expect(limpiarComillas('"Tractor o excavadora"')).toBe('Tractor o excavadora')
     expect(descripcionSeo('  Una   descripción\ncon espacios  ')).toBe('Una descripción con espacios')
     const larga = descripcionSeo('palabra '.repeat(80))
     expect(larga.length).toBeLessThanOrEqual(MAX_DESCRIPCION)

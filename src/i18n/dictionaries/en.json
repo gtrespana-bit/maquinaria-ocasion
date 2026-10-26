@@ -52,10 +52,10 @@
       "priceMin": "Min (€)",
       "priceMax": "Max (€)",
       "audiencePrivate": "👤 Private sellers",
-      "audienceCamperizers": "🔧 Workshops",
+      "audienceWorkshops": "🔧 Workshops",
       "audiencePro": "🏢 Dealers & professionals",
       "audienceBuyers": "🧭 Buyers",
-      "findCamper": "Find my machinery",
+      "findMachinery": "Find my machinery",
       "sellFree": "Sell for free",
       "heroImageAlt": "Excavator working on a site at sunset"
     },
@@ -68,8 +68,8 @@
       "rangeDesc": "The typical used-machinery price range",
       "free": "0% commissions",
       "freeDesc": "Listing and selling are free",
-      "homologation": "Reviewed paperwork",
-      "homologationDesc": "Vehicle file checked by our team",
+      "documentation": "Reviewed paperwork",
+      "documentationDesc": "Invoice, spec sheet and manual checked",
       "listings": "{count} active listings",
       "verifiedCount": "{count} verified sellers"
     },
@@ -147,7 +147,7 @@
         "title": "Private sellers",
         "desc": "Sell your machinery with no commissions and no middlemen. List for free in 5 minutes with full specs and photos."
       },
-      "camperizer": {
+      "workshop": {
         "title": "Workshops & mechanics",
         "desc": "Show your machinery repairs and rebuilds to qualified buyers across Spain."
       },
@@ -405,9 +405,6 @@
     "filtersTitle": "Filters",
     "filters": {
       "groups": {
-        "mechanics": "Vehicle mechanics",
-        "liveability": "Liveability",
-        "autonomy": "Power & equipment",
         "technique": "Technical specs",
         "docs": "Documentation",
         "logistics": "Logistics"
@@ -427,7 +424,7 @@
       "batteryIncluded": "Battery included",
       "hoursMax": "Max operating hours"
     },
-    "typeLabel": "Vehicle type",
+    "typeLabel": "Machinery type",
     "allTypes": "All types"
   },
   "productCard": {
@@ -438,13 +435,13 @@
   },
   "tiposVendedor": {
     "particular": "Private seller",
-    "camperizador": "Workshop",
+    "taller": "Workshop",
     "profesional": "Professional",
     "particularDesc": "Selling my machinery or equipment",
-    "camperizadorDesc": "I repair and resell machinery",
+    "tallerDesc": "I repair and resell machinery",
     "profesionalDesc": "Company or dealer",
     "particulares": "Private sellers",
-    "camperizadores": "Workshops",
+    "talleres": "Workshops",
     "profesionales": "Pros"
   },
   "vendedorLanding": {
@@ -512,7 +509,7 @@
     "catCatalog": "View full catalog",
     "catPublish": "Post for free",
     "catSafeBuy": "Safe buying",
-    "catItp": "ITP calculator"
+    "catTasador": "Estimate price"
   },
   "productDetail": {
     "notFound": "Product not found",
@@ -522,10 +519,10 @@
     "breadcrumbHome": "Home",
     "breadcrumbCatalog": "Catalog",
     "buySafe": "Buy safely",
-    "safeTip1": "Check the paperwork: MOT (ITV), registration and sales invoice.",
-    "safeTip2": "Test the equipment: heater, water, aux battery and solar panel.",
-    "safeTip3": "Ask for maintenance history and confirm taxes are up to date.",
-    "safeTip4": "Do a test drive and inspect bodywork and insulation.",
+    "safeTip1": "Check the paperwork: invoice, spec sheet or CE declaration, manual and, if registered, up-to-date inspection and registration.",
+    "safeTip2": "See the machine running: cold start, hydraulics, PTO, transmission and any leaks.",
+    "safeTip3": "Ask for service history, true operating hours and invoices for major repairs.",
+    "safeTip4": "Inspect wear and play: tracks or tyres, pins, attachments, batteries and consumables.",
     "published": "Published",
     "views": "views",
     "priceHistory": "Price history",
@@ -558,9 +555,9 @@
     "specsTitle": "Other details",
     "sellerPro": "Pro / Workshop",
     "sellerPrivate": "Private seller",
-    "expedienteTitle": "Vehicle documentation file",
+    "expedienteTitle": "Machine paperwork",
     "expedienteIntroVerificada": "We have reviewed this machine’s paperwork: invoice, technical sheet and owner’s manual.",
-    "expedienteIntroPendiente": "The seller has uploaded vehicle documents and our team is reviewing them.",
+    "expedienteIntroPendiente": "The seller has uploaded the machine documents and our team is reviewing them.",
     "expedienteAvisoVivienda": "This listing declares a registered machine with ownership documents pending verification.",
     "expedienteNotaComprador": "Before closing the deal, ask the seller to show you the original documents.",
     "expedienteCta": "Upload the documents and get the verified-docs badge",
@@ -654,7 +651,7 @@
     "titleField": "Title",
     "titlePlaceholder": "e.g. CAT 320 excavator 2019, 8,500 hours, delivery included",
     "specs": "Specifications",
-    "specsHint": "The fields you fill in become catalogue filters: berths, heating, bathroom, off-grid kit (battery, solar panel, inverter), drivetrain, MAM, exterior length and height.",
+    "specsHint": "The fields you fill in become catalogue filters: year, operating hours, fuel, power, drive, paperwork, weight and transport dimensions.",
     "description": "Description",
     "descPlaceholder": "Describe the condition, features, included accessories...",
     "condition": "Condition",
@@ -699,7 +696,7 @@
     "conditionUsed": "Used",
     "optimizing": "Optimizing images…",
     "priceEur": "Price (€)",
-    "family": "Vehicle family",
+    "family": "Machinery family",
     "asLabel": "Listing as",
     "changeTipo": "Change",
     "videoLabel": "Listing video (optional)",
@@ -898,7 +895,7 @@
     "a8": "Prices are listed in euros (€).",
     "q9": "How do I contact a seller?",
     "a9": "Each listing has a direct message button, WhatsApp and phone (if the seller enabled it). You can also use MaquinariaOcasión's built-in chat.",
-    "q10": "Can I sell other vehicles on MaquinariaOcasión?",
+    "q10": "Can I sell items other than machinery on MaquinariaOcasión?",
     "a10": "No. MaquinariaOcasión is a vertical marketplace specialised exclusively in second-hand machinery and tools: farm, construction and professional tools.",
     "q11": "Is it free to post on MaquinariaOcasión?",
     "a11": "Yes, posting is 100% free. Credits are optional and only serve to feature your listing and reach more buyers.",
@@ -1086,7 +1083,7 @@
     "title2": "Title",
     "description": "Description",
     "specs": "Specifications",
-    "specsHint": "The fields you fill in become catalogue filters: berths, heating, bathroom, off-grid kit (battery, solar panel, inverter), drivetrain, MAM, exterior length and height.",
+    "specsHint": "The fields you fill in become catalogue filters: year, operating hours, fuel, power, drive, paperwork, weight and transport dimensions.",
     "state": "State",
     "municipality": "City",
     "currentPhotos": "Current photos",
@@ -1169,24 +1166,6 @@
     "iosDone": "Got it",
     "closeBanner": "Close banner",
     "close": "Close"
-  },
-  "inspeccion": {
-    "ctaTitulo": "Pre-purchase inspection",
-    "ctaLogin": "Get it checked by a partner workshop before you travel ({min}-{max} €)",
-    "ctaDesc": "A partner workshop inspects the van and sends you the report ({min}-{max} €)",
-    "estadoTitulo": "Your inspection",
-    "modalTitulo": "Pre-purchase inspection",
-    "cerrar": "Close",
-    "modalPaso1": "Request it here and we’ll get back to you with an exact quote (approx. {min}-{max} €).",
-    "modalPaso2": "A partner workshop checks the van (engine, damp, gas, 12V/220V, paperwork) and delivers a report.",
-    "modalPaso3": "You pay the workshop directly; the platform never handles money.",
-    "modalPaso4": "With the report in hand, you only travel if the van is as advertised.",
-    "notaReservado": "The van is reserved, but the inspection is still a good idea: if the deal falls through, the listing is released.",
-    "notasLabel": "Note for the team (optional)",
-    "notasPlaceholder": "City, availability, contact phone…",
-    "confirmar": "Request inspection",
-    "avisoSinPago": "You pay nothing now: you’ll get a quote first.",
-    "errorGenerico": "The request could not be sent. Please try again."
   },
   "comparar": {
     "title": "Compare listings",

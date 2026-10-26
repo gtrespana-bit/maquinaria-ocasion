@@ -426,7 +426,7 @@ export default async function BlogPost(props: { params: Promise<{ locale: string
                   return { label: `📋 ${t('catSafeBuy')}`, href: '/catalogo' }
                 }
                 if (/compra|checklist|segunda mano|consejo|ocasi[oó]n|usado|revisi[oó]n|iva|impuesto|tasa|matriculaci[oó]n|precio|coste|presupuesto|horas de uso/.test(tag)) {
-                  return { label: `🏷️ ${t('catItp')}`, href: '/catalogo' }
+                  return { label: `🏷️ ${t('catTasador')}`, href: '/tasador' }
                 }
                 return null
               })

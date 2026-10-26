@@ -11,7 +11,7 @@ import { TIPOS_VENDEDOR, type TipoVendedor } from '@/components/BadgeTipoVendedo
 
 const ICONOS_TIPO: Record<TipoVendedor, string> = {
   particular: '👤',
-  camperizador: '🔧',
+  taller: '🔧',
   profesional: '🏢',
 }
 

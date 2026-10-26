@@ -4,7 +4,7 @@ import ProductCard, { type ProductCardData } from '@/components/ProductCard'
 
 // Los anuncios sembrados por la plataforma (`es_demo`) no deben distinguirse a
 // simple vista de los publicados por un usuario: ni etiquetas, ni avisos de
-// «muestra», ni textos de «vehículo ficticio». Esta prueba fija esa regla.
+// «muestra», ni textos de «anuncio ficticio». Esta prueba fija esa regla.
 
 jest.mock('next/image', () => {
   function MockImage({ src, alt, className }: { src: unknown; alt: string; className?: string }) {
@@ -22,7 +22,7 @@ jest.mock('next-intl', () => ({
       'productCard.boost': 'Boost',
       'productCard.verified': 'Verificado',
       'tiposVendedor.particular': 'Particular',
-      'tiposVendedor.camperizador': 'Camperizador',
+      'tiposVendedor.taller': 'Taller',
       'tiposVendedor.profesional': 'Pro',
     }
     return traducciones[key] ?? key
@@ -39,8 +39,8 @@ jest.mock('@/components/LocalLink', () => {
 
 const anuncio: ProductCardData = {
   id: '11111111-1111-4111-8111-111111111111',
-  slug: 'ducato-camper-2019',
-  titulo: 'Fiat Ducato camper 2019',
+  slug: 'kubota-m7-2019',
+  titulo: 'Kubota M7 2019',
   precio_usd: 42000,
   imagen_url: 'https://example.supabase.co/foto.webp',
   ubicacion_ciudad: 'Madrid',

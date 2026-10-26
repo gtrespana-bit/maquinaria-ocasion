@@ -231,10 +231,10 @@ build time). Sin esa variable —o con el valor `off`— la web no carga Analyti
 ni envía dato alguno a Google. La resolución del ID vive en
 `src/lib/google-analytics.ts` (`resolverIdMedicion`).
 
-**Estado (2026-10-26):** propiedad GA4 propia de MaquinariaOcasión
-configurada en Vercel (`NEXT_PUBLIC_GA_MEASUREMENT_ID=G-QJNP2W8ZJG`, solo
-Production) y producción redesplegada: la web ya mide en ella, siempre tras
-el «Aceptar» del aviso de cookies.
+**Estado (2026-10-26):** flujo GA4 propio de MaquinariaOcasión cambiado a
+`G-876P1T3RK2`, configurado en Vercel (`NEXT_PUBLIC_GA_MEASUREMENT_ID`, solo
+Production) y producción redesplegada (`dpl_8D3zqQaLrZV6oPrgQNZB66f3uC63`):
+la web ya mide en ese flujo, siempre tras el «Aceptar» del aviso de cookies.
 
 `src/components/GoogleAnalyticsScript.tsx` publica el **snippet propio en el
 `<head>` del HTML inicial**. Ya no depende de un chunk dinámico, de la hidratación

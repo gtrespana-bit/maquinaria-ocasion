@@ -1,7 +1,7 @@
 /**
  * Validación de rutas de objetos en Supabase Storage.
  *
- * Los documentos privados (cédulas de vendedores, expediente del vehículo) se
+ * Los documentos privados (cédulas de vendedores, documentación del anuncio) se
  * guardan como RUTA dentro de un bucket privado, nunca como URL pública. El
  * servidor las convierte en URL firmada de vida corta cuando el admin (o el
  * propietario) quiere abrirlas.
@@ -60,10 +60,10 @@ export function rutaStorageValida(value: string | null | undefined, opciones: Op
 }
 
 /**
- * Ruta del expediente del vehículo: `<user_id>/<producto_id>/<archivo>`.
+ * Ruta de la documentación del anuncio: `<user_id>/<producto_id>/<archivo>`.
  * Las dos primeras carpetas son uuid porque la política de Storage comprueba
  * que la primera sea la del usuario que sube.
  */
-export function rutaDocumentoVehiculoValida(value: string | null | undefined): string | null {
+export function rutaDocumentoAnuncioValida(value: string | null | undefined): string | null {
   return rutaStorageValida(value, { minPartes: 3, maxPartes: 4, carpetasUuid: 2 })
 }

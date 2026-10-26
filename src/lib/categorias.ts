@@ -121,7 +121,7 @@ export const OPCIONES_COMBUSTIBLE = [
 
 export const OPCIONES_SI_NO = ['Sí', 'No'] as const
 
-/** Documentación: sustituye al antiguo sello de homologación. */
+/** Documentación disponible de la máquina o herramienta. */
 export const OPCIONES_DOCUMENTACION = [
   'Factura y libro de instrucciones',
   'Declaración CE / ficha técnica',
@@ -443,9 +443,9 @@ export function resolverCampos(sub: CatSub | undefined): CatField[] {
 
 /**
  * Bloques de la ficha técnica de la página de producto. Cuatro bloques:
- * técnica, estado, documentación y logística. Las claves legadas
- * siguen listadas para que los anuncios demo antiguos mantengan su ficha
- * agrupada (la demo se elimina en la Fase 4).
+ * técnica, estado, documentación y logística. Solo se agrupan claves de la
+ * taxonomía actual de maquinaria; cualquier otra especificación se muestra
+ * en el bloque de detalles extra.
  */
 export const GRUPOS_FICHA_TECNICA: { titulo: string; icon: string; campos: string[] }[] = [
   {
@@ -475,28 +475,6 @@ export const GRUPOS_FICHA_TECNICA: { titulo: string; icon: string; campos: strin
       'Altura máx. trabajo (m)',
       'Largo de espada (cm)',
       'Número de puestos',
-      // Claves legadas de anuncios antiguos (demo)
-      'Kilómetros',
-      'Kilometraje (km)',
-      'Año de matriculación',
-      'MMA / Peso máximo autorizado',
-      'Longitud exterior',
-      'Altura exterior',
-      'Tamaño chasis',
-      'Plazas homologadas para viajar',
-      'Plazas para dormir',
-      'Calefacción estacionaria',
-      'Agua caliente',
-      'Baño / Ducha',
-      'Depósito agua limpia (litros)',
-      'Batería auxiliar',
-      'Placa solar',
-      'Placa solar (watios)',
-      'Inversor 220V',
-      'Inversor 220V (watios)',
-      'Nevera',
-      'Distintivo Ambiental DGT',
-      'Homologación',
     ],
   },
   {

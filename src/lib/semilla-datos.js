@@ -70,19 +70,19 @@ function specs(s) {
 }
 
 // ── Vendedores (10) ────────────────────────────────────────────────────────
-// Tipo: `particular` (dueño de la máquina), `camperizador` = etiqueta
+// Tipo: `particular` (dueño de la máquina), `taller` = etiqueta
 // «Taller» en la UI (reparación/venta de maquinaria), `profesional` =
 // concesionario o distribuidor. Sin teléfono: la semilla nunca expone
 // contactos (migración 202609180003).
 const VENDEDORES = [
   { slug: 'agrodeal-castilla', nombre: 'AgroDeal Castilla', estado: 'Castilla y León', ciudad: 'Valladolid', telefono: null, verificado: false, tipo: 'profesional' },
-  { slug: 'taller-el-palmar', nombre: 'Talleres El Palmar', estado: 'Andalucía', ciudad: 'Sevilla', telefono: null, verificado: false, tipo: 'camperizador' },
+  { slug: 'taller-el-palmar', nombre: 'Talleres El Palmar', estado: 'Andalucía', ciudad: 'Sevilla', telefono: null, verificado: false, tipo: 'taller' },
   { slug: 'grupo-ibermaq', nombre: 'Grupo Ibermaq', estado: 'Cataluña', ciudad: 'Barcelona', telefono: null, verificado: false, tipo: 'profesional' },
-  { slug: 'campo-verde-servicios', nombre: 'Campo Verde Servicios', estado: 'Murcia', ciudad: 'Murcia', telefono: null, verificado: false, tipo: 'camperizador' },
-  { slug: 'excava-norte', nombre: 'Excava Norte', estado: 'País Vasco', ciudad: 'Vizcaya', telefono: null, verificado: false, tipo: 'camperizador' },
+  { slug: 'campo-verde-servicios', nombre: 'Campo Verde Servicios', estado: 'Murcia', ciudad: 'Murcia', telefono: null, verificado: false, tipo: 'taller' },
+  { slug: 'excava-norte', nombre: 'Excava Norte', estado: 'País Vasco', ciudad: 'Vizcaya', telefono: null, verificado: false, tipo: 'taller' },
   { slug: 'levante-obra', nombre: 'Levante Obra y Maquinaria', estado: 'Comunitat Valenciana', ciudad: 'Alicante', telefono: null, verificado: false, tipo: 'profesional' },
-  { slug: 'taller-maquinaria-albacete', nombre: 'Taller Maquinaria Albacete', estado: 'Castilla-La Mancha', ciudad: 'Albacete', telefono: null, verificado: false, tipo: 'camperizador' },
-  { slug: 'eolo-generadores', nombre: 'Eolo Generadores y Motores', estado: 'Aragón', ciudad: 'Zaragoza', telefono: null, verificado: false, tipo: 'camperizador' },
+  { slug: 'taller-maquinaria-albacete', nombre: 'Taller Maquinaria Albacete', estado: 'Castilla-La Mancha', ciudad: 'Albacete', telefono: null, verificado: false, tipo: 'taller' },
+  { slug: 'eolo-generadores', nombre: 'Eolo Generadores y Motores', estado: 'Aragón', ciudad: 'Zaragoza', telefono: null, verificado: false, tipo: 'taller' },
   { slug: 'maria-laura-benitez', nombre: 'María Laura Benítez', estado: 'Comunitat Valenciana', ciudad: 'Valencia', telefono: null, verificado: false, tipo: 'particular' },
   { slug: 'juan-ramon-estevez', nombre: 'Juan Ramón Estévez', estado: 'Galicia', ciudad: 'Lugo', telefono: null, verificado: false, tipo: 'particular' },
 ]
@@ -290,7 +290,7 @@ const ANUNCIOS = [
     verificacion: 'sin_verificar',
     fotos: ['/images/anuncios/r215-9-1.webp','/images/anuncios/r215-9-2.webp','/images/anuncios/r215-9-3.webp'],
     ficha: specs({ familia: 'obra', anio: 2019, horas: 6900, cv: 174, peso: 21400, transporte: 'Sí', docs: 'Factura y libro de instrucciones', traccion: 'Oruga', medidas: 'Más de 4 m' }),
-    descripcion: 'Hyundai R215-9 de 2019 con 6.900 horas, una de las 20 t con mejor relación prestaciones-precio del mercado europeo. Vehiculo de flota propia, con historial completo.\n\nRevisión de 1.000 h realizada en nuestro taller: filtros, aceites, pruebas de presión y rectificación de ruedas de rodadura incluidas. Se entrega con GARANTÍA de taller de 6 meses en bombas y motores hidráulicos.\n\nCámara trasera, A/C, bloque de calentador y silla con suspensión. Tren al 75% y pintura original en cuerpo principal.\n\nFactura, libro sellado, CE y ITP en vigor. Financiación disponible a través de nuestra entidad (sujeta a aprobación). Uno de los anuncios más completos de nuestro catálogo.',
+    descripcion: 'Hyundai R215-9 de 2019 con 6.900 horas, una de las 20 t con mejor relación prestaciones-precio del mercado europeo. Máquina de flota propia, con historial completo.\n\nRevisión de 1.000 h realizada en nuestro taller: filtros, aceites, pruebas de presión y rectificación de ruedas de rodadura incluidas. Se entrega con GARANTÍA de taller de 6 meses en bombas y motores hidráulicos.\n\nCámara trasera, A/C, bloque de calentador y silla con suspensión. Tren al 75% y pintura original en cuerpo principal.\n\nFactura, libro sellado, CE y ITP en vigor. Financiación disponible a través de nuestra entidad (sujeta a aprobación). Uno de los anuncios más completos de nuestro catálogo.',
   },
 
   // ──────────────────────── OBRA · Cargadoras ────────────────────────

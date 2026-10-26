@@ -70,8 +70,8 @@ export const AVISO_LEGAL: Record<IdiomaLegal, DocumentoLegal> = {
       {
         titulo: '3. Condición de intermediario',
         parrafos: [
-          'MaquinariaOcasión no es el vendedor de los vehículos anunciados ni forma parte de la compraventa: no fija los precios, no cobra el importe del vehículo, no lo entrega y no responde de su estado, cargas o documentación. El contrato de compraventa se celebra directamente entre el vendedor y el comprador.',
-          'Los servicios de pago que se ofrecen en la web (destacar un anuncio o subirlo al primer puesto) son servicios de visibilidad que contrata el propio vendedor con la plataforma y no tienen relación con el precio del vehículo.',
+          'MaquinariaOcasión no es el vendedor de la maquinaria y herramientas anunciadas ni forma parte de la compraventa: no fija los precios, no cobra el importe de la operación, no entrega los bienes y no responde de su estado, cargas o documentación. El contrato de compraventa se celebra directamente entre el vendedor y el comprador.',
+          'Los servicios de pago que se ofrecen en la web (destacar un anuncio o subirlo al primer puesto) son servicios de visibilidad que contrata el propio vendedor con la plataforma y no tienen relación con el precio del bien anunciado.',
           'Los vendedores profesionales y los talleres son los únicos responsables de cumplir las obligaciones que les correspondan como empresarios, incluida la garantía legal frente a consumidores; identificarse como profesionales es obligatorio al publicar.',
         ],
       },
@@ -131,9 +131,9 @@ export const AVISO_LEGAL: Record<IdiomaLegal, DocumentoLegal> = {
       {
         titulo: '3. Intermediary status',
         parrafos: [
-          'MaquinariaOcasión is not the seller of the advertised vehicles and is not part of the sale: it does not set prices, does not collect the vehicle price, does not deliver the vehicle and is not responsible for its condition, charges or paperwork. The sale contract is entered into directly between the seller and the buyer.',
-          'The paid services offered on the site (featuring a listing or moving it to the top) are visibility services that the seller contracts with the platform and have no relation to the price of the vehicle.',
-          'Professional sellers and converters are solely responsible for complying with their obligations as businesses, including the legal guarantee owed to consumers; identifying themselves as professionals when publishing is mandatory.',
+          'MaquinariaOcasión is not the seller of the advertised machinery and tools and is not part of the sale: it does not set prices, does not collect the purchase price, does not deliver the goods and is not responsible for their condition, charges or paperwork. The sale contract is entered into directly between the seller and the buyer.',
+          'The paid services offered on the site (featuring a listing or moving it to the top) are visibility services that the seller contracts with the platform and have no relation to the price of the advertised item.',
+          'Professional sellers and workshops are solely responsible for complying with their obligations as businesses, including the legal guarantee owed to consumers; identifying themselves as professionals when publishing is mandatory.',
         ],
       },
       {
@@ -193,10 +193,10 @@ export const POLITICA_PRIVACIDAD: Record<IdiomaLegal, DocumentoLegal> = {
         titulo: '2. Qué datos tratamos',
         lista: [
           'Cuenta: nombre, correo electrónico, contraseña (almacenada cifrada, nunca la vemos) y, si lo indicas, teléfono y provincia.',
-          'Anuncios: título, descripción, fotos, precio, características del vehículo y ubicación.',
+          'Anuncios: título, descripción, fotos, precio, características de la máquina o herramienta y ubicación.',
           'Contacto entre usuarios: los mensajes del chat interno, y los datos que compartes al contactar por teléfono, WhatsApp o email con otro usuario.',
           'Verificación de identidad (voluntaria): si la solicitas para obtener el sello de verificado, se piden DNI/NIE, teléfono, entidad bancaria y fotografías del documento, que se conservan en un almacenamiento privado con acceso restringido.',
-          'Documentación y trámites (voluntarios): documentación de la máquina que subes para el expediente de verificación documental.',
+          'Documentación (voluntaria): documentación de la máquina o herramienta que subes para su revisión documental.',
           'Reservas: datos necesarios para gestionar una reserva con señal.',
           'Créditos: saldo, movimientos y la referencia del pago. No tratamos números de tarjeta: los pagos con tarjeta se realizan en la pasarela del proveedor de pago.',
           'Datos técnicos: dirección IP, tipo de dispositivo y navegador, y páginas visitadas, con la finalidad de seguridad, prevención de abuso y medición agregada del servicio.',
@@ -295,10 +295,10 @@ export const POLITICA_PRIVACIDAD: Record<IdiomaLegal, DocumentoLegal> = {
         titulo: '2. What data we process',
         lista: [
           'Account: name, email address, password (stored encrypted — we never see it) and, if you provide them, phone number and region.',
-          'Listings: title, description, photos, price, vehicle features and location.',
+          'Listings: title, description, photos, price, machine or tool features and location.',
           'Contact between users: messages in the internal chat, and the details you share when you contact another user by phone, WhatsApp or email.',
           'Identity verification (optional): if you request it to get the verified badge, you are asked for your ID number, phone, bank and photographs of your ID document, kept in private storage with restricted access.',
-          'Homologation and paperwork (optional): vehicle documents you upload for the homologation file or the registration service.',
+          'Paperwork (optional): machine or tool documents you upload for document review.',
           'Reservations: data needed to manage a reservation with a deposit.',
           'Credits: balance, transactions and the payment reference. We do not process card numbers: card payments are made on the payment provider’s checkout.',
           'Technical data: IP address, device and browser type, and pages visited, for security, abuse prevention and aggregate measurement of the service.',
@@ -309,7 +309,7 @@ export const POLITICA_PRIVACIDAD: Record<IdiomaLegal, DocumentoLegal> = {
         lista: [
           'Providing the service (account, publishing listings, chat, reservations): performance of the contract or terms of use.',
           'Moderation, security, fraud prevention and usage limits: legitimate interest in protecting the platform and its users.',
-          'Identity verification, homologation and paperwork: consent and, where applicable, performance of the contracted service.',
+          'Identity and document verification: consent and, where applicable, performance of the contracted service.',
           'Traffic measurement and push notifications: consent, which you can withdraw at any time (see the cookie policy).',
           'Invoicing and tax obligations for paid services: compliance with legal obligations.',
           'Essential service emails (account confirmation, security alerts): performance of the contract; they are not marketing.',
@@ -496,10 +496,10 @@ export const TERMINOS: Record<IdiomaLegal, DocumentoLegal> = {
           'Publicar es gratuito. Al publicar declaras que:',
         ],
         lista: [
-          'El vehículo es tuyo y puedes venderlo legalmente.',
-          'Las fotos y la descripción son veraces, actuales y corresponden al vehículo real.',
+          'La máquina o herramienta es tuya y puedes venderla legalmente.',
+          'Las fotos y la descripción son veraces, actuales y corresponden al bien real anunciado.',
           'Si eres taller o profesional, indicas tu condición de empresario y cumples tus obligaciones (facturación, garantía legal y demás normativa aplicable).',
-          'No publicas vehículos robados, siniestrados sin declararlo, con cargas no comunicadas, ni anuncios duplicados o engañosos.',
+          'No publicas maquinaria o herramientas robadas, con daños relevantes o cargas no comunicadas, ni anuncios duplicados o engañosos.',
         ],
       },
       {
@@ -512,14 +512,14 @@ export const TERMINOS: Record<IdiomaLegal, DocumentoLegal> = {
       {
         titulo: '4. Verificación documental',
         parrafos: [
-          'El sello de verificado indica que hemos comprobado la identidad del vendedor con la documentación aportada, y el sello de documentación verificada, que existe un expediente documental revisado (factura, ficha técnica y manual). Son comprobaciones documentales: no equivalen a una tasación ni garantizan el estado mecánico de la máquina.',
+          'El sello de verificado indica que hemos comprobado la identidad del vendedor con la documentación aportada, y el sello de documentación verificada, que la documentación del anuncio ha sido revisada (factura, ficha técnica y manual). Son comprobaciones documentales: no equivalen a una tasación ni garantizan el estado mecánico de la máquina.',
           'Las transacciones se realizan directamente entre las partes: MaquinariaOcasión no custodia fondos ni participa en la compraventa.',
         ],
       },
       {
         titulo: '5. Reservas con señal',
         parrafos: [
-          'Una reserva con señal es un acuerdo entre comprador y vendedor: el comprador ingresa una cantidad para bloquear el vehículo y el vendedor debe confirmarla. MaquinariaOcasión facilita el acuerdo y deja constancia de él, pero no custodia el dinero de la señal ni del vehículo. Si surge un conflicto, se puede cancelar la reserva desde la plataforma y reclamar a la otra parte.',
+          'Una reserva con señal es un acuerdo entre comprador y vendedor: el comprador ingresa una cantidad para bloquear el anuncio y el vendedor debe confirmarla. MaquinariaOcasión facilita el acuerdo y deja constancia de él, pero no custodia el dinero de la señal ni el precio de compra. Si surge un conflicto, se puede cancelar la reserva desde la plataforma y reclamar a la otra parte.',
         ],
       },
       {
@@ -549,7 +549,7 @@ export const TERMINOS: Record<IdiomaLegal, DocumentoLegal> = {
       {
         titulo: '9. Responsabilidad',
         parrafos: [
-          'MaquinariaOcasión no garantiza la veracidad de los anuncios de los usuarios ni el estado de los vehículos, y no responde de los acuerdos entre usuarios. Como servicio de intermediación, responde de sus propios servicios (por ejemplo, las herramientas de verificación y las promociones de pago) conforme a la ley, y no del contenido ajeno del que no tenga conocimiento efectivo.',
+          'MaquinariaOcasión no garantiza la veracidad de los anuncios de los usuarios ni el estado de la maquinaria y herramientas anunciadas, y no responde de los acuerdos entre usuarios. Como servicio de intermediación, responde de sus propios servicios (por ejemplo, las herramientas de verificación y las promociones de pago) conforme a la ley, y no del contenido ajeno del que no tenga conocimiento efectivo.',
         ],
       },
       {
@@ -584,10 +584,10 @@ export const TERMINOS: Record<IdiomaLegal, DocumentoLegal> = {
         titulo: '2. Publishing listings',
         parrafos: ['Publishing is free. By publishing you declare that:'],
         lista: [
-          'The vehicle is yours and you can legally sell it.',
-          'The photos and description are truthful, current and match the real vehicle.',
-          'If you are a converter or dealer, you state that you are a business and comply with your obligations (invoicing, legal guarantee and other applicable rules).',
-          'You are not publishing stolen vehicles, damaged vehicles without saying so, vehicles with undisclosed charges, or duplicate or misleading listings.',
+          'The machine or tool is yours and you can legally sell it.',
+          'The photos and description are truthful, current and match the actual advertised item.',
+          'If you are a workshop or dealer, you state that you are a business and comply with your obligations (invoicing, legal guarantee and other applicable rules).',
+          'You are not publishing stolen machinery or tools, items with undisclosed serious damage or charges, or duplicate or misleading listings.',
         ],
       },
       {
@@ -600,14 +600,14 @@ export const TERMINOS: Record<IdiomaLegal, DocumentoLegal> = {
       {
         titulo: '4. Document verification',
         parrafos: [
-          'The verified badge means we have checked the seller’s identity against the documents provided, and the homologation badge means a documentary file has been reviewed. These are documentary checks: they are not a valuation and do not guarantee the mechanical condition of the vehicle.',
+          'The verified badge means we have checked the seller’s identity against the documents provided, and the verified-documents badge means the listing paperwork has been reviewed. These are documentary checks: they are not a valuation and do not guarantee the mechanical or operating condition of the machine or tool.',
           'Transactions happen directly between the parties: MaquinariaOcasión does not hold funds and takes no part in the sale.',
         ],
       },
       {
         titulo: '5. Reservations with a deposit',
         parrafos: [
-          'A reservation with a deposit is an agreement between buyer and seller: the buyer pays a deposit to hold the vehicle and the seller must confirm it. MaquinariaOcasión facilitates the agreement and records it, but does not hold the deposit money or the price of the vehicle. If a conflict arises, the reservation can be cancelled from the platform and you can claim against the other party.',
+          'A reservation with a deposit is an agreement between buyer and seller: the buyer pays a deposit to hold the listing and the seller must confirm it. MaquinariaOcasión facilitates the agreement and records it, but does not hold the deposit money or the purchase price. If a conflict arises, the reservation can be cancelled from the platform and you can claim against the other party.',
         ],
       },
       {
@@ -637,7 +637,7 @@ export const TERMINOS: Record<IdiomaLegal, DocumentoLegal> = {
       {
         titulo: '9. Liability',
         parrafos: [
-          'MaquinariaOcasión does not guarantee the truthfulness of users’ listings or the condition of the vehicles, and is not responsible for agreements between users. As an intermediary service, it is liable for its own services (for example, the verification tools and paid promotions) under the law, and not for third-party content of which it has no actual knowledge.',
+          'MaquinariaOcasión does not guarantee the truthfulness of users’ listings or the condition of the items listed, and is not responsible for agreements between users. As an intermediary service, it is liable for its own services (for example, the verification tools and paid promotions) under the law, and not for third-party content of which it has no actual knowledge.',
         ],
       },
       {

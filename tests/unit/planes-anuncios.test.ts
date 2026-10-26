@@ -27,7 +27,7 @@ describe('planes profesionales', () => {
     expect(puedePublicarMas(4, 5)).toBe(true)
     expect(puedePublicarMas(5, 5)).toBe(false)
     expect(destacadosIncluidosMes('starter', 'profesional')).toBe(3)
-    expect(fotosMaximas('starter', 'camperizador')).toBe(20)
+    expect(fotosMaximas('starter', 'taller')).toBe(20)
   })
 
   test('Profesional: sin cupo, 30 fotos y 15 destacados', () => {

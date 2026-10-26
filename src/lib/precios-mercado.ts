@@ -34,7 +34,7 @@ export const PRECIO_MAXIMO_VALIDO = 400_000
 export interface AnuncioMercado {
   precio: number
   anio?: number | null
-  km?: number | null
+  horas?: number | null
   es_demo?: boolean | null
 }
 
@@ -43,13 +43,13 @@ export interface Estadisticas {
   minimo: number
   maximo: number
   mediana: number
-  /** Percentil 25: por debajo están las gangas (y los vehículos con pegas). */
+  /** Percentil 25: por debajo están las gangas (y las máquinas con pegas). */
   p25: number
   /** Percentil 75: por encima, lo premium. */
   p75: number
-  /** Kilometraje mediano, cuando hay datos suficientes. */
-  kmMediana: number | null
-  /** Año de matriculación mediano, cuando hay datos suficientes. */
+  /** Horas de uso medianas, cuando hay datos suficientes. */
+  horasMediana: number | null
+  /** Año mediano, cuando hay datos suficientes. */
   anioMediano: number | null
 }
 
@@ -108,7 +108,7 @@ export function calcularEstadisticas(
   if (utiles.length < minimo) return null
 
   const precios = utiles.map(a => Number(a.precio)).sort((a, b) => a - b)
-  const kms = utiles.map(a => Number(a.km)).filter(k => Number.isFinite(k) && k > 0)
+  const horas = utiles.map(a => Number(a.horas)).filter(h => Number.isFinite(h) && h > 0)
   const anios = utiles.map(a => Number(a.anio)).filter(a => Number.isFinite(a) && a > 1950)
 
   return {
@@ -118,7 +118,7 @@ export function calcularEstadisticas(
     mediana: Math.round(percentil(precios, 0.5)),
     p25: Math.round(percentil(precios, 0.25)),
     p75: Math.round(percentil(precios, 0.75)),
-    kmMediana: kms.length >= MIN_MUESTRA_TRAMO ? medianaDe(kms) : null,
+    horasMediana: horas.length >= MIN_MUESTRA_TRAMO ? medianaDe(horas) : null,
     anioMediano: anios.length >= MIN_MUESTRA_TRAMO ? medianaDe(anios) : null,
   }
 }
@@ -195,8 +195,8 @@ export function valorarPrecio(precio: number, est: Estadisticas): Valoracion {
  */
 export function resumenMercado(nombre: string, est: Estadisticas | null): string {
   if (!est) {
-    return `Anuncios de ${nombre} de ocasión en España. Precios, kilometraje y equipamiento de cada unidad en venta.`
+    return `Anuncios de ${nombre} de ocasión en España. Precios, horas de uso y equipamiento de cada unidad en venta.`
   }
   const fmt = (n: number) => `${n.toLocaleString('es-ES')} €`
-  return `Una ${nombre} de ocasión cuesta ${fmt(est.mediana)} de media en España (${est.muestra} anuncios analizados). Lo habitual es pagar entre ${fmt(est.p25)} y ${fmt(est.p75)}.`
+  return `El precio mediano de una ${nombre} de ocasión es ${fmt(est.mediana)} en España (${est.muestra} anuncios analizados). Lo habitual es pagar entre ${fmt(est.p25)} y ${fmt(est.p75)}.`
 }

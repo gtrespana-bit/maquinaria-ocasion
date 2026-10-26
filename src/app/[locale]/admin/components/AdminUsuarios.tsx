@@ -306,7 +306,7 @@ export default function AdminUsuarios({ notify }: { notify: (msg: string) => voi
               <div><span className="text-gray-400">Registro</span><p className="font-semibold">{formatDateTime(detail.creado_en)}</p></div>
               <div><span className="text-gray-400">Verificado</span><p className="font-semibold">{detail.verificado ? 'Sí' : 'No'}</p></div>
               <div><span className="text-gray-400">Plan</span><p className="font-semibold"><PackBadge perfil={detail} /></p></div>
-              <div><span className="text-gray-400">Tipo de cuenta</span><p className="font-semibold">{detail.tipo_vendedor === 'camperizador' ? 'Taller' : detail.tipo_vendedor === 'profesional' ? 'Profesional' : 'Particular'}</p></div>
+              <div><span className="text-gray-400">Tipo de cuenta</span><p className="font-semibold">{detail.tipo_vendedor === 'taller' ? 'Taller' : detail.tipo_vendedor === 'profesional' ? 'Profesional' : 'Particular'}</p></div>
             </div>
             <div className="flex flex-wrap gap-2">
               <Button size="sm" variant={detail.verificado ? 'outline' : 'success'} disabled={busyId === detail.id} onClick={() => { toggleVerificado(detail, !detail.verificado); setDetail(null) }}>{detail.verificado ? <><ShieldOff size={14} /> Quitar verificación</> : <><ShieldCheck size={14} /> Verificar</>}</Button>

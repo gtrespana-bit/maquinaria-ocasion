@@ -34,7 +34,7 @@ interface CatalogFiltersProps {
   filtrosTecnicos: FiltrosTecnicos;
   /** Rangos numéricos activos tal como están en la URL (param → "5000"). */
   rangos: Record<string, string>;
-  /** Tipo de vendedor activo ('particular' | 'camperizador' | 'profesional'). */
+  /** Tipo de vendedor activo ('particular' | 'taller' | 'profesional'). */
   vendedor: string;
   t: (key: string, vars?: Record<string, string | number>) => string;
 }
@@ -64,7 +64,7 @@ export const CatalogFilters = ({
   // familias → tipos → marca/modelo (los tipos de TODAS las familias).
   const subs = TODAS_LAS_SUBS;
   // Con subcategoría elegida solo se ofrecen los modelos aptos para ella:
-  // una Benimar no tiene sentido filtrando furgones de Gran Volumen.
+  // una marca de ordeño no tiene sentido filtrando excavadoras.
   const subActiva = subcategoria ? subs.find(s => s.label === subcategoria) : undefined;
   const modelosMarca = subActiva ? subActiva.marcas : subs.flatMap(s => s.marcas || []);
 
