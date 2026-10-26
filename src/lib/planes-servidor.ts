@@ -5,6 +5,7 @@ import {
   diasRestantesTrial,
   esPlanPago,
   esProfesional,
+  normalizarPlanContratado,
   resumenCupo,
   type PlanPago,
 } from '@/lib/planes-anuncios'
@@ -129,7 +130,8 @@ export async function reactivarPausadosPorPlan(
   sb = sbAdmin(),
 ): Promise<number> {
   try {
-    const cupo = esPlanPago(plan) ? cupoMaximo(plan, 'profesional') : 1
+    const planNorm = normalizarPlanContratado(plan)
+    const cupo = planNorm ? cupoMaximo(planNorm, 'profesional') : 1
     const activos = await contarActivos(sb, userId)
     const espacio = cupo == null ? 9999 : Math.max(0, cupo - activos)
     if (espacio <= 0) return 0
@@ -174,8 +176,8 @@ export async function reactivarPausadosPorPlan(
  *
  * `promoverAProfesional` existe por un caso real: un particular puede
  * contratar un pack desde la página de precios sin haber cambiado antes su
- * tipo de vendedor. Sin promoverlo, pagaría 19 € y seguiría con el cupo de 1
- * anuncio. Al contratar, el perfil pasa a «profesional» (la identidad es
+ * tipo de vendedor. Sin promoverlo, pagaría el pack y seguiría con el cupo de
+ * 1 anuncio. Al contratar, el perfil pasa a «profesional» (la identidad es
  * gratuita) y recibe el cupo que acaba de pagar.
  */
 export async function aplicarPlanPerfil(
@@ -189,14 +191,17 @@ export async function aplicarPlanPerfil(
   },
 ) {
   const sb = sbAdmin()
+  // El plan provisional `plus` nunca debe volver a guardarse: se equipara a
+  // Profesional (unlimited) si algún origen antiguo aún lo enviara.
+  const plan = normalizarPlanContratado(opts.plan) ?? opts.plan
   const updates: Record<string, unknown> = {
-    plan_anuncios: opts.plan,
+    plan_anuncios: plan,
     plan_hasta: opts.hasta ?? null,
   }
   if (opts.stripeCustomerId) updates.stripe_customer_id = opts.stripeCustomerId
   if (opts.stripeSubscriptionId) updates.stripe_subscription_id = opts.stripeSubscriptionId
 
-  if (opts.promoverAProfesional && esPlanPago(opts.plan)) {
+  if (opts.promoverAProfesional && esPlanPago(plan)) {
     const { data } = await sb
       .from('perfiles')
       .select('tipo_vendedor')
@@ -218,8 +223,8 @@ export async function aplicarPlanPerfil(
   }
 
   // Quien amplía el pack recupera los anuncios que se pausaron por cupo.
-  if (esPlanPago(opts.plan)) {
-    await reactivarPausadosPorPlan(userId, opts.plan, sb)
+  if (esPlanPago(plan)) {
+    await reactivarPausadosPorPlan(userId, plan, sb)
   }
 }
 
@@ -268,7 +273,7 @@ export type ResultadoInicioTrial =
  *
  * Se comprueba todo otra vez en el servidor: el navegador solo dice «quiero
  * probar». Si el usuario es particular, se le promociona a profesional para
- * que reciba de verdad el cupo de Plus; la identidad no se cobra y se explica
+ * que reciba de verdad el cupo de Básico; la identidad no se cobra y se explica
  * en la UI.
  */
 export async function iniciarTrialPerfil(userId: string): Promise<ResultadoInicioTrial> {
@@ -278,7 +283,7 @@ export async function iniciarTrialPerfil(userId: string): Promise<ResultadoInici
     return {
       ok: false,
       codigo: 'NO_DISPONIBLE',
-      error: 'La prueba gratuita no está disponible ahora mismo. Puedes contratar el plan Profesional por 19 €/mes.',
+      error: 'La prueba gratuita no está disponible ahora mismo. Puedes contratar el plan Básico por 19 €/mes.',
     }
   }
 
@@ -288,7 +293,7 @@ export async function iniciarTrialPerfil(userId: string): Promise<ResultadoInici
   }
 
   const planPagoVigente =
-    esPlanPago(perfil.plan_anuncios) &&
+    normalizarPlanContratado(perfil.plan_anuncios) != null &&
     (!perfil.plan_hasta || new Date(perfil.plan_hasta).getTime() >= Date.now())
   if (planPagoVigente) {
     return { ok: false, codigo: 'YA_ACTIVO', error: 'Ya tienes un pack activo.' }
@@ -307,7 +312,7 @@ export async function iniciarTrialPerfil(userId: string): Promise<ResultadoInici
     return {
       ok: false,
       codigo: 'YA_USADA',
-      error: 'Ya has usado tu prueba. Puedes contratar el plan Profesional por 19 €/mes.',
+      error: 'Ya has usado tu prueba. Puedes contratar el plan Básico por 19 €/mes.',
     }
   }
 
@@ -317,7 +322,7 @@ export async function iniciarTrialPerfil(userId: string): Promise<ResultadoInici
     trial_hasta: trial.hasta.toISOString(),
     trial_plan: trial.plan,
   }
-  // La prueba da cupo de profesional: sin esto un particular probaría Plus y
+  // La prueba da cupo de profesional: sin esto un particular probaría Básico y
   // seguiría viendo el límite de 1 anuncio.
   if (!esProfesional(perfil.tipo_vendedor)) updates.tipo_vendedor = 'profesional'
 
@@ -362,7 +367,7 @@ export async function estadoPlanUsuario(userId: string) {
   const ahora = new Date()
   const planHasta = perfil?.plan_hasta ? new Date(perfil.plan_hasta) : null
   const planPagoVigente =
-    esPlanPago(perfil?.plan_anuncios) &&
+    normalizarPlanContratado(perfil?.plan_anuncios) != null &&
     (!planHasta || planHasta.getTime() >= ahora.getTime())
 
   const resumen = resumenCupo({
@@ -425,6 +430,19 @@ export async function estadoPlanUsuario(userId: string) {
     planPagoVigente,
     suscripcionStripe: Boolean(planPagoVigente && perfil?.stripe_subscription_id),
     gestionable: Boolean(perfil?.stripe_customer_id && process.env.STRIPE_SECRET_KEY),
+    trial: trial.enPrueba,
+    trialHasta: trial.hasta ? trial.hasta.toISOString() : null,
+    trialInicio: trial.inicio ? trial.inicio.toISOString() : null,
+    diasTrial: trial.diasRestantes,
+    diasTrialTotal: ajustes.diasGratis,
+    trialElegible,
+    trialUsado: trial.iniciado && !trial.enPrueba && !trial.enGracia,
+    trialGracia: trial.enGracia,
+    diasGracia: trial.diasGraciaRestantes,
+    graciaHasta: trial.graciaHasta ? trial.graciaHasta.toISOString() : null,
+    pagoFallido: Boolean(perfil?.pago_pendiente_desde),
+    pagoPendienteDesde: perfil?.pago_pendiente_desde || null,
+    pausadosPorPlan,
     creditos: Number(perfil?.credito_balance || 0),
     cupo: resumen,
   }

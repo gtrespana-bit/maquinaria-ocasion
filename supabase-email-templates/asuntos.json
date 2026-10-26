@@ -1,0 +1,15 @@
+{
+  "mailer_subjects_confirmation": "Confirma tu cuenta en MaquinariaOcasión",
+  "mailer_subjects_recovery": "Restablece tu contraseña de MaquinariaOcasión",
+  "mailer_subjects_magic_link": "Tu enlace de acceso a MaquinariaOcasión",
+  "mailer_subjects_invite": "Te han invitado a MaquinariaOcasión",
+  "mailer_subjects_email_change": "Confirma tu nueva dirección de correo",
+  "mailer_subjects_reauthentication": "{{ .Token }} es tu código de verificación de MaquinariaOcasión",
+  "mailer_subjects_password_changed_notification": "Tu contraseña de MaquinariaOcasión ha cambiado",
+  "mailer_subjects_email_changed_notification": "La dirección de correo de tu cuenta ha cambiado",
+  "mailer_subjects_phone_changed_notification": "El teléfono de tu cuenta ha cambiado",
+  "mailer_subjects_mfa_factor_enrolled_notification": "Nuevo método de verificación añadido a tu cuenta",
+  "mailer_subjects_mfa_factor_unenrolled_notification": "Se ha eliminado un método de verificación de tu cuenta",
+  "mailer_subjects_identity_linked_notification": "Nuevo método de acceso vinculado a tu cuenta",
+  "mailer_subjects_identity_unlinked_notification": "Se ha eliminado un método de acceso de tu cuenta"
+}

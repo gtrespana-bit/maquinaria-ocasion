@@ -1,4 +1,4 @@
-import { esPlanPago, type PlanPago } from '@/lib/planes-anuncios'
+import { normalizarPlanContratado, type PlanPago } from '@/lib/planes-anuncios'
 
 export type TipoCupon = 'regalo_dias' | 'descuento'
 
@@ -47,7 +47,7 @@ export function cuponAplicable(cupon: CuponDatos, ahora: Date = new Date()): { o
     if (!Number.isInteger(dias) || dias < 1 || dias > 365) {
       return { ok: false, error: 'Cupón de regalo mal configurado.' }
     }
-    if (cupon.plan && !esPlanPago(cupon.plan)) {
+    if (cupon.plan && !normalizarPlanContratado(cupon.plan)) {
       return { ok: false, error: 'El pack del cupón no es válido.' }
     }
   }
@@ -65,5 +65,7 @@ export function cuponAplicable(cupon: CuponDatos, ahora: Date = new Date()): { o
 }
 
 export function planRegalo(cupon: CuponDatos): PlanPago {
-  return esPlanPago(cupon.plan) ? cupon.plan : 'plus'
+  // Un cupón antiguo del plan `plus` se canjea como Profesional; sin plan
+  // indicado, el regalo por defecto es Básico.
+  return normalizarPlanContratado(cupon.plan) ?? 'starter'
 }

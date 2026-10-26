@@ -17,17 +17,24 @@ const DIA_40 = new Date('2026-11-10T10:00:00+01:00')
 
 describe('planes profesionales', () => {
   test('particular siempre 1 anuncio, aunque pague', () => {
-    expect(cupoMaximo('plus', 'particular')).toBe(1)
-    expect(fotosMaximas('plus', 'particular')).toBe(10)
-    expect(destacadosIncluidosMes('plus', 'particular')).toBe(0)
+    expect(cupoMaximo('unlimited', 'particular')).toBe(1)
+    expect(fotosMaximas('unlimited', 'particular')).toBe(10)
+    expect(destacadosIncluidosMes('unlimited', 'particular')).toBe(0)
   })
 
-  test('un solo plan: 15 anuncios, 20 fotos y 5 destacados', () => {
-    expect(cupoMaximo('plus', 'profesional')).toBe(15)
-    expect(puedePublicarMas(14, 15)).toBe(true)
-    expect(puedePublicarMas(15, 15)).toBe(false)
-    expect(destacadosIncluidosMes('plus', 'profesional')).toBe(5)
-    expect(fotosMaximas('plus', 'camperizador')).toBe(20)
+  test('Básico: 5 anuncios, 20 fotos y 3 destacados', () => {
+    expect(cupoMaximo('starter', 'profesional')).toBe(5)
+    expect(puedePublicarMas(4, 5)).toBe(true)
+    expect(puedePublicarMas(5, 5)).toBe(false)
+    expect(destacadosIncluidosMes('starter', 'profesional')).toBe(3)
+    expect(fotosMaximas('starter', 'camperizador')).toBe(20)
+  })
+
+  test('Profesional: sin cupo, 30 fotos y 15 destacados', () => {
+    expect(cupoMaximo('unlimited', 'profesional')).toBeNull()
+    expect(puedePublicarMas(500, null)).toBe(true)
+    expect(destacadosIncluidosMes('unlimited', 'profesional')).toBe(15)
+    expect(fotosMaximas('unlimited', 'profesional')).toBe(30)
   })
 
   test('mes gratis: 30 días desde el alta, solo si el admin lo deja activo', () => {
@@ -65,7 +72,7 @@ describe('planes profesionales', () => {
     ).toBe(false)
   })
 
-  test('en prueba el plan efectivo es Profesional; si hay suscripción, gana el plan pagado', () => {
+  test('en prueba el plan efectivo es Básico; si hay suscripción, gana el plan pagado', () => {
     expect(
       planEfectivo({
         tipo: 'profesional',
@@ -78,13 +85,24 @@ describe('planes profesionales', () => {
     expect(
       planEfectivo({
         tipo: 'profesional',
+        plan: 'unlimited',
+        planHasta: '2027-01-01',
+        creadoEn: REGISTRO,
+        mesGratisActivo: true,
+        ahora: DIA_10,
+      }),
+    ).toBe('unlimited')
+    // El plan provisional `plus` se equipara a Profesional si quedara alguna fila.
+    expect(
+      planEfectivo({
+        tipo: 'profesional',
         plan: 'plus',
         planHasta: '2027-01-01',
         creadoEn: REGISTRO,
         mesGratisActivo: true,
         ahora: DIA_10,
       }),
-    ).toBe('plus')
+    ).toBe('unlimited')
   })
 
   test('pro sin prueba ni pack queda en 1 anuncio', () => {
@@ -98,7 +116,7 @@ describe('planes profesionales', () => {
     })
     expect(r.max).toBe(1)
     expect(r.puedePublicar).toBe(false)
-    expect(mensajeCupoLleno(r)).toMatch(/plan Profesional/i)
+    expect(mensajeCupoLleno(r)).toMatch(/plan Básico/i)
   })
 })
 

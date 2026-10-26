@@ -13,9 +13,11 @@ describe('precios de los packs', () => {
       expect(precioPlan(plan.id, 'anual')).toBe(plan.precioMes * 10)
       expect(precioPlan(plan.id, 'mensual')).toBe(plan.precioMes)
     }
-    expect(PLANES_PRO).toHaveLength(1)
-    expect(precioPlan('plus', 'mensual')).toBe(19)
-    expect(precioPlan('plus', 'anual')).toBe(190)
+    expect(PLANES_PRO).toHaveLength(2)
+    expect(precioPlan('starter', 'mensual')).toBe(19)
+    expect(precioPlan('starter', 'anual')).toBe(190)
+    expect(precioPlan('unlimited', 'mensual')).toBe(49)
+    expect(precioPlan('unlimited', 'anual')).toBe(490)
   })
 
   test('el descuento anual es el real, no uno inventado', () => {
@@ -29,16 +31,17 @@ describe('precios de los packs', () => {
   })
 
   test('el equivalente mensual no redondea a la baja el precio', () => {
-    expect(precioMensualEquivalente('plus')).toBeCloseTo(15.83, 2)
+    expect(precioMensualEquivalente('starter')).toBeCloseTo(15.83, 2)
+    expect(precioMensualEquivalente('unlimited')).toBeCloseTo(40.83, 2)
   })
 
   test('etiqueta del plan siempre tiene un nombre humano', () => {
-    expect(etiquetaPlan('plus')).toBe('Profesional')
+    expect(etiquetaPlan('starter')).toBe('Básico')
+    expect(etiquetaPlan('unlimited')).toBe('Profesional')
     expect(etiquetaPlan('gratis')).toBe('Gratis')
     expect(etiquetaPlan(null)).toBe('Gratis')
-    // Valores de la escalera antigua: se nombran como heredados, no se mienten.
-    expect(etiquetaPlan('starter')).toBe('Starter (heredado)')
-    expect(etiquetaPlan('unlimited')).toBe('Unlimited Flota (heredado)')
+    // El plan provisional anterior se nombra como tal, no se confunde con el actual.
+    expect(etiquetaPlan('plus')).toBe('Profesional (anterior)')
   })
 })
 

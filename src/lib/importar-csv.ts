@@ -3,7 +3,7 @@
  *
  * El caso real: un compraventa tiene el stock en su DMS o en un Excel y
  * publicar 14 máquinas a mano son 14 formularios de cuatro pasos. Esto es lo
- * que convierte un pack de 19 € al mes en algo que se paga solo.
+ * que convierte el plan Profesional en algo que se paga solo.
  *
  * El módulo es puro a propósito: parsear un CSV y decidir si una fila es
  * válida son las dos cosas donde un error cuesta caro (un anuncio con el

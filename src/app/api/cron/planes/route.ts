@@ -118,7 +118,7 @@ function textoEmail(
   perfil: PerfilCronConEmail,
   trial: ReturnType<typeof estadoTrial>,
 ) {
-  const plan = etiquetaPlan(perfil.trial_plan || 'plus')
+  const plan = etiquetaPlan(perfil.trial_plan || 'starter')
   switch (tipo) {
     case 'trial_10d':
     case 'trial_3d':
@@ -136,7 +136,7 @@ function textoEmail(
       })
     case 'winback':
       return enviarEmailWinback(perfil.email, perfil.nombre || '', {
-        plan: etiquetaPlan(perfil.trial_plan || perfil.plan_anuncios || 'plus'),
+        plan: etiquetaPlan(perfil.trial_plan || perfil.plan_anuncios || 'starter'),
         fechaFin: trial.hasta ? trial.hasta.toISOString() : null,
       })
     default:
@@ -228,7 +228,7 @@ export async function GET(request: NextRequest) {
     for (const aviso of pendientes) {
       avisos++
       const mensaje = mensajeAvisoPlan(aviso.tipo, {
-        plan: etiquetaPlan(perfil.plan_anuncios || perfil.trial_plan || 'plus'),
+        plan: etiquetaPlan(perfil.plan_anuncios || perfil.trial_plan || 'starter'),
         dias: trial.diasRestantes || trial.diasGraciaRestantes,
       })
 

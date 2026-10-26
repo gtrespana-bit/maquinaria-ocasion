@@ -15,7 +15,7 @@ const USUARIO = {
   nombre: 'Taller Norte',
   email: 'taller@example.com',
   tipo_vendedor: 'profesional',
-  plan_anuncios: 'plus',
+  plan_anuncios: 'starter',
   plan_hasta: '2026-10-29T10:00:00.000Z',
 }
 
@@ -33,8 +33,8 @@ describe('RegalarPlanModal', () => {
   it('previsualiza la fecha de fin sumando los días al pack vigente', () => {
     render(<RegalarPlanModal usuario={USUARIO} onClose={() => {}} notify={() => {}} />)
 
-    // 30 días de Profesional sumados al final del plan que ya tenía.
-    expect(screen.getByText(/Profesional hasta el/i)).toBeInTheDocument()
+    // 30 días de Básico sumados al final del plan que ya tenía.
+    expect(screen.getByText(/Básico hasta el/i)).toBeInTheDocument()
     expect(screen.getByText(/Se suman 30 días al final/i)).toBeInTheDocument()
     expect(screen.getByText(/quedan \d+ días/)).toBeInTheDocument()
   })
@@ -65,6 +65,8 @@ describe('RegalarPlanModal', () => {
 
     render(<RegalarPlanModal usuario={USUARIO} onClose={onClose} notify={notify} />)
 
+    // Se elige Profesional (Programa Fundadores: 90 días gratis).
+    await user.click(screen.getByRole('button', { name: /Sin límite/i }))
     await user.click(screen.getByRole('button', { name: /90/i }))
     await user.type(screen.getByPlaceholderText(/acuerdo de colaboración/i), 'colaboración')
     await user.click(screen.getByRole('button', { name: /Regalar 90 días de Profesional/i }))
@@ -75,7 +77,7 @@ describe('RegalarPlanModal', () => {
     const cuerpo = JSON.parse(String((opciones as RequestInit).body))
     expect(cuerpo).toMatchObject({
       userId: USUARIO.id,
-      plan: 'plus',
+      plan: 'unlimited',
       dias: 90,
       modo: 'extender',
       motivo: 'colaboración',

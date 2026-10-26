@@ -18,8 +18,8 @@ const dias = (fecha: Date | null) =>
 
 describe('regalo de pack desde el admin', () => {
   test('sin pack previo: cuenta desde ahora', () => {
-    const res = calcularRegaloPlan({ plan: 'plus', dias: 30, modo: 'extender', ahora: AHORA })
-    expect(res.plan).toBe('plus')
+    const res = calcularRegaloPlan({ plan: 'unlimited', dias: 30, modo: 'extender', ahora: AHORA })
+    expect(res.plan).toBe('unlimited')
     expect(dias(res.planHasta)).toBe(30)
     expect(res.extendido).toBe(false)
     expect(res.diasSumados).toBe(0)
@@ -27,9 +27,9 @@ describe('regalo de pack desde el admin', () => {
 
   test('con el mismo pack vigente y «extender»: suma al final', () => {
     const res = calcularRegaloPlan({
-      planActual: 'plus',
+      planActual: 'unlimited',
       hastaActual: EN_UN_MES,
-      plan: 'plus',
+      plan: 'unlimited',
       dias: 15,
       modo: 'extender',
       ahora: AHORA,
@@ -41,9 +41,9 @@ describe('regalo de pack desde el admin', () => {
 
   test('«reemplazar» ignora el tiempo que le quedaba', () => {
     const res = calcularRegaloPlan({
-      planActual: 'plus',
+      planActual: 'unlimited',
       hastaActual: EN_UN_MES,
-      plan: 'plus',
+      plan: 'unlimited',
       dias: 7,
       modo: 'reemplazar',
       ahora: AHORA,
@@ -56,21 +56,21 @@ describe('regalo de pack desde el admin', () => {
     const res = calcularRegaloPlan({
       planActual: null,
       hastaActual: null,
-      plan: 'plus',
+      plan: 'unlimited',
       dias: 60,
       modo: 'extender',
       ahora: AHORA,
     })
-    expect(res.plan).toBe('plus')
+    expect(res.plan).toBe('unlimited')
     expect(dias(res.planHasta)).toBe(60)
     expect(res.extendido).toBe(false)
   })
 
   test('un pack caducado no se extiende: arranca de cero', () => {
     const res = calcularRegaloPlan({
-      planActual: 'plus',
+      planActual: 'unlimited',
       hastaActual: new Date('2026-09-01T10:00:00Z'),
-      plan: 'plus',
+      plan: 'unlimited',
       dias: 30,
       modo: 'extender',
       ahora: AHORA,
@@ -94,13 +94,13 @@ describe('regalo de pack desde el admin', () => {
   })
 
   test('los días se acotan entre 1 y 3650', () => {
-    expect(diasRegaloValidos(0, 'plus')).toBe(0)
-    expect(diasRegaloValidos(-5, 'plus')).toBe(0)
-    expect(diasRegaloValidos('30', 'plus')).toBe(30)
-    expect(diasRegaloValidos(99999, 'plus')).toBe(DIAS_REGALO_MAX)
+    expect(diasRegaloValidos(0, 'unlimited')).toBe(0)
+    expect(diasRegaloValidos(-5, 'unlimited')).toBe(0)
+    expect(diasRegaloValidos('30', 'unlimited')).toBe(30)
+    expect(diasRegaloValidos(99999, 'unlimited')).toBe(DIAS_REGALO_MAX)
     expect(diasRegaloValidos(30, 'gratis')).toBe(0)
     // Con días inválidos no se regala nada: no se toca la fecha.
-    const res = calcularRegaloPlan({ plan: 'plus', dias: 0, modo: 'extender', ahora: AHORA })
+    const res = calcularRegaloPlan({ plan: 'unlimited', dias: 0, modo: 'extender', ahora: AHORA })
     expect(res.planHasta).toBeNull()
     expect(textoResumenRegalo(res)).toContain('Profesional')
   })
@@ -121,11 +121,15 @@ describe('estado del pack', () => {
   })
 
   test('etiquetas y validadores', () => {
-    expect(etiquetaPlan('starter')).toBe('Starter (heredado)')
-    expect(etiquetaPlan('unlimited')).toBe('Unlimited (heredado)')
+    expect(etiquetaPlan('starter')).toBe('Básico')
+    expect(etiquetaPlan('unlimited')).toBe('Profesional')
+    expect(etiquetaPlan('plus')).toBe('Profesional (anterior)')
     expect(etiquetaPlan(null)).toBe('Sin plan')
     expect(esPlanRegalable('gratis')).toBe(true)
-    expect(esPlanRegalable('plus')).toBe(true)
+    expect(esPlanRegalable('starter')).toBe(true)
+    expect(esPlanRegalable('unlimited')).toBe(true)
+    // El plan provisional ya no se puede regalar.
+    expect(esPlanRegalable('plus')).toBe(false)
     expect(esPlanRegalable('oro')).toBe(false)
     expect(esModoRegalo('extender')).toBe(true)
     expect(esModoRegalo('reemplazar')).toBe(true)
@@ -134,9 +138,9 @@ describe('estado del pack', () => {
 
   test('el resumen explica lo que ha pasado', () => {
     const res = calcularRegaloPlan({
-      planActual: 'plus',
+      planActual: 'unlimited',
       hastaActual: EN_UN_MES,
-      plan: 'plus',
+      plan: 'unlimited',
       dias: 15,
       modo: 'extender',
       ahora: AHORA,

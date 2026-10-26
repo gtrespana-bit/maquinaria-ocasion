@@ -208,11 +208,12 @@ describe('rendimiento - textos', () => {
     expect(antiguedad(12)).toBe('hace 12 días')
   })
 
-  test('cada bloqueo explica qué desbloquea, siempre con Profesional', () => {
+  test('cada bloqueo explica qué plan lo desbloquea', () => {
     for (const capacidad of ['porAnuncio', 'serie', 'mercado', 'exportar', 'periodo90'] as const) {
       const { titulo, detalle } = motivoUpsell(capacidad)
       expect(titulo.length).toBeGreaterThan(0)
-      expect(detalle).toContain('Profesional')
+      // El detalle por anuncio es de Básico; el resto necesita Profesional.
+      expect(detalle).toContain(capacidad === 'porAnuncio' ? 'Básico' : 'Profesional')
     }
   })
 })

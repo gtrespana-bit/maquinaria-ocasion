@@ -442,7 +442,8 @@ export default function CreditosPage() {
         <div>
           <p className="font-bold text-gray-900">¿Tienes varias máquinas a la venta?</p>
           <p className="text-sm text-gray-600">
-            El plan Profesional (19 €/mes) incluye 5 destacados al mes, 15 anuncios y
+            Los planes de pago ya incluyen destacados cada mes: Básico (19 €/mes, 3 destacados
+            y 5 anuncios) o Profesional (49 €/mes, 15 destacados y anuncios sin límite), con
             escaparate propio. Suele salir más barato que comprar créditos sueltos.
           </p>
         </div>

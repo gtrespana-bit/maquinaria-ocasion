@@ -124,9 +124,10 @@ export function diasRestantesDePlan(
 }
 
 export function etiquetaPlan(plan: string | null | undefined): string {
-  if (plan === 'plus') return 'Profesional'
-  if (plan === 'starter') return 'Starter (heredado)'
-  if (plan === 'unlimited') return 'Unlimited (heredado)'
+  if (plan === 'starter') return 'Básico'
+  if (plan === 'unlimited') return 'Profesional'
+  // Plan provisional anterior a la escalera Básico/Profesional.
+  if (plan === 'plus') return 'Profesional (anterior)'
   return 'Sin plan'
 }
 
@@ -136,7 +137,7 @@ export function planVigente(
   planHasta: string | Date | null | undefined,
   ahora: Date = new Date(),
 ): boolean {
-  if (!esPlanPago(plan)) return false
+  if (!esPlanPago(plan) && plan !== 'plus') return false
   if (!planHasta) return true
   const hasta = new Date(planHasta)
   return !Number.isNaN(hasta.getTime()) && hasta.getTime() > ahora.getTime()

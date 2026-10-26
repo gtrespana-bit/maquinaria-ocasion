@@ -322,8 +322,8 @@ export async function emailSubidaNivel(
 
 // ─── 6. Plan regalado por el equipo ────────────────────────
 // El admin puede regalar días de plan desde /admin → Planes y cupones o desde
-// la ficha de un usuario. Avisar por email evita el «¿por qué tengo 15
-// anuncios si yo no he pagado nada?».
+// la ficha de un usuario. Avisar por email evita el «¿por qué tengo más
+// cupo si yo no he pagado nada?».
 export async function emailPlanRegalado(
   email: string,
   nombre: string,

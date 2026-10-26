@@ -87,7 +87,7 @@ export default function TabImportar() {
       .finally(() => setCargandoPlan(false))
   }, [])
 
-  const permitido = plan === 'plus'
+  const permitido = plan === 'unlimited'
 
   const analizar = useCallback(async () => {
     setError('')
@@ -209,14 +209,15 @@ export default function TabImportar() {
               <div>
                 <p className="font-bold text-slate-800">Disponible en el plan Profesional</p>
                 <p className="mt-1 text-sm text-slate-600">
-                  Con 15 anuncios activos, subir el stock a mano son 15 formularios. La importación
-                  desde CSV los publica de una vez, con vista previa y errores por línea.
+                  Si tienes decenas de máquinas, subir el stock a mano es un formulario tras otro.
+                  La importación desde CSV del plan Profesional los publica de una vez (hasta 100
+                  filas por archivo), con vista previa y errores por línea.
                 </p>
                 <LocalLink
                   href="/para-profesionales"
                   className="mt-3 inline-flex items-center gap-1.5 rounded-xl bg-brand-primary px-4 py-2 text-sm font-bold text-white hover:bg-brand-dark"
                 >
-                  Ver Profesional, 19 €/mes <ArrowRight size={14} />
+                  Ver Profesional, 49 €/mes <ArrowRight size={14} />
                 </LocalLink>
               </div>
             </div>

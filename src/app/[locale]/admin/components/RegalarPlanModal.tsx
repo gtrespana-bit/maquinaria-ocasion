@@ -23,7 +23,8 @@ export interface UsuarioRegalable {
 }
 
 const PACKS: { id: PlanRegalable; nombre: string; detalle: string; emoji: string }[] = [
-  { id: 'plus', nombre: 'Profesional', detalle: '15 anuncios · 5 destacados', emoji: '⭐' },
+  { id: 'starter', nombre: 'Básico', detalle: '5 anuncios · 3 destacados', emoji: '🌱' },
+  { id: 'unlimited', nombre: 'Profesional', detalle: 'Sin límite · 15 destacados · CSV', emoji: '⭐' },
   { id: 'gratis', nombre: 'Sin plan', detalle: 'quitar el plan regalado', emoji: '↩️' },
 ]
 
@@ -46,7 +47,7 @@ export default function RegalarPlanModal({
   onDone?: (mensaje: string) => void
   notify: (msg: string) => void
 }) {
-  const [plan, setPlan] = useState<PlanRegalable>('plus')
+  const [plan, setPlan] = useState<PlanRegalable>('starter')
   const [dias, setDias] = useState(30)
   const [modo, setModo] = useState<ModoRegalo>('extender')
   const [motivo, setMotivo] = useState('')
@@ -55,7 +56,7 @@ export default function RegalarPlanModal({
 
   useEffect(() => {
     if (!usuario) return
-    setPlan('plus')
+    setPlan('starter')
     setDias(30)
     setModo('extender')
     setMotivo('')
@@ -150,7 +151,7 @@ export default function RegalarPlanModal({
 
         <div>
           <label className="mb-2 block text-xs font-bold uppercase tracking-wide text-gray-500">Plan</label>
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
             {PACKS.map((p) => (
               <button
                 key={p.id}
@@ -242,7 +243,7 @@ export default function RegalarPlanModal({
             />
             <span>
               Marcar la cuenta como <strong>profesional</strong> si ahora es particular. Un particular tiene 1 anuncio
-              activo aunque se le regale un plan: sin este cambio, los 5/15/ilimitados no sirven de nada.
+              activo aunque se le regale un plan: sin este cambio, los 5 anuncios o el ilimitado no sirven de nada.
             </span>
           </label>
         )}

@@ -45,7 +45,7 @@ Se pasa de un único plan de pago a dos:
 Siguen aplicando moderación, prohibición de duplicados/spam y el límite
 técnico actual de 100 filas por importación (se pueden subir varios archivos).
 
-### Correspondencia interna propuesta
+### Correspondencia interna (implementada)
 
 No hacen falta IDs nuevos: la base ya acepta la escalera antigua.
 
@@ -327,7 +327,17 @@ nuestras fixtures de desarrollo.
    comercial. No hace falta diseñar migraciones pensando en conservar los
    planes asignados a usuarios ficticios.
 
-### Fase B — implementación en una sola rama/PR
+### Fase B — implementación en una sola rama/PR ✅ (2026-10-26)
+
+> **Hecho (2026-10-26):** implementada en código y con la migración SQL
+> `202610260001` aplicada a producción. Básico (`starter`, 19 €) y Profesional
+> (`unlimited`, 49 €) son los planes vendibles; la prueba de 30 días es de
+> Básico; el CSV queda solo en Profesional, el escaparate en cualquier plan
+> de pago/prueba y las estadísticas por nivel 0/1/3. El cobro sigue pendiente
+> de activar Stripe (sin claves reales el checkout responde 503): regalos,
+> cupones y prueba ya funcionan sin Stripe, así que las fases C (Fundadores)
+> y D pueden arrancar cuando se decida el lanzamiento.
+
 
 1. `src/lib/planes-anuncios.ts`: dos planes vendibles (`starter`,
    `unlimited`), precios 19/190 y 49/490, etiquetas y recomendación por

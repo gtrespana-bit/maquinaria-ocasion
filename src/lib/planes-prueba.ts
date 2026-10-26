@@ -311,7 +311,7 @@ export function mensajeAvisoPlan(
     case 'winback':
       return {
         titulo: 'Tu pack terminó hace unos días',
-        cuerpo: 'Tus anuncios siguen ahí. Vuelve por 19 €/mes y recupera el cupo cuando quieras.',
+        cuerpo: 'Tus anuncios siguen ahí. Vuelve desde 19 €/mes y recupera el cupo cuando quieras.',
         url: '/para-profesionales',
       }
   }

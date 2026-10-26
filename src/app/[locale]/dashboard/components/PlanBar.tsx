@@ -15,7 +15,7 @@ type Estado = {
   diasGracia?: number
   pagoFallido?: boolean
   pausadosPorPlan?: number
-  cupo: { usados: number; max: number | null; restantes: number | null }
+  cupo: { usados: number; max: number | null; restantes: number | null; plan?: string }
 }
 
 /**
@@ -54,7 +54,7 @@ export default function PlanBar({ onAbrirPlan }: { onAbrirPlan: (tab: DashboardT
 
   const cupo = estado.cupo
   const nombre = estado.trial
-    ? 'Prueba Profesional'
+    ? `Prueba ${etiquetaPlan(estado.cupo.plan || 'starter')}`
     : estado.trialGracia
       ? 'Prueba terminada (gracia)'
       : etiquetaPlan(estado.planPagoVigente ? estado.planContratado : estado.plan)
@@ -99,7 +99,7 @@ export default function PlanBar({ onAbrirPlan }: { onAbrirPlan: (tab: DashboardT
             ? 'Activar'
             : estado.planPagoVigente
               ? 'Gestionar'
-              : 'Ver Profesional'}
+              : 'Ver planes'}
         <ArrowRight size={13} aria-hidden="true" />
       </span>
     </button>

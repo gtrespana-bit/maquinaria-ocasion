@@ -75,14 +75,14 @@ export default function TabCreditos({ creditos, refreshCreditos }: { creditos: n
         <div>
           <p className="font-bold text-gray-900">¿Publicas varias máquinas?</p>
           <p className="text-sm text-gray-600">
-            Con el plan Profesional tienes más anuncios y destacados incluidos cada mes. Desde 19 €/mes.
+            Con Básico (19 €/mes) o Profesional (49 €/mes) tienes más anuncios y destacados incluidos cada mes.
           </p>
         </div>
         <LocalLink
           href="/para-profesionales"
           className="inline-flex shrink-0 items-center justify-center gap-1.5 rounded-xl bg-brand-primary px-4 py-2 text-sm font-bold text-white hover:bg-brand-dark"
         >
-          Ver Profesional <ArrowRight size={15} />
+          Ver planes <ArrowRight size={15} />
         </LocalLink>
       </div>
 

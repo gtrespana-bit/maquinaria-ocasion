@@ -996,7 +996,10 @@
     "repeatPwPlaceholder": "Repeat the new password",
     "saving": "Saving...",
     "submit": "Reset password",
-    "backToLogin": "Back to login"
+    "backToLogin": "Back to login",
+    "linkInvalidTitle": "Invalid or expired link",
+    "linkInvalidDesc": "This recovery link has already been used or has expired. Request a new one from the sign-in screen and we will email you a fresh link.",
+    "requestNewLink": "Request a new link"
   },
   "seller": {
     "back": "Back",
