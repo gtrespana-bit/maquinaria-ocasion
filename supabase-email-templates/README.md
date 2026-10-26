@@ -62,14 +62,14 @@ dashboard:
   (sin esto, GoTrue ignora el `redirectTo` de la app y los enlaces de
   correo aterrizarían en la home).
 - **Plantillas aplicadas** (verificado vía API, 2026-10-26): ✅ Confirm
-  signup, ✅ Change Email Address, ✅ Password Changed, ✅ Email Address
-  Changed.
-- **Pendientes de pegar:** ⏳ **Reset Password** (= la solicitud de cambio de
-  contraseña; fichero `recovery.html`) — es la importante de las que faltan,
-  porque es la vía de respaldo si un restablecimiento saliera por GoTrue.
-  Sin uso hoy en la app, pero listas por completitud: Invite User, Magic
-  Link, Reauthentication, Phone Number Changed, MFA Enrolled/Unenrolled e
-  Identity Linked/Unlinked.
+  signup, ✅ Change Email Address, ✅ **Reset Password** (la solicitud de
+  cambio de contraseña; fichero `recovery.html`), ✅ Password Changed,
+  ✅ Email Address Changed. **Correo de recuperación real de prueba enviado
+  al admin vía GoTrue: 200 OK** (plantilla + SMTP verificados de principio
+  a fin).
+- **Sin aplicar, sin uso hoy en la app** (listas por completitud): Invite
+  User, Magic Link, Reauthentication, Phone Number Changed, MFA
+  Enrolled/Unenrolled e Identity Linked/Unlinked.
 - **SMTP de Supabase:** ✅ configurado (Resend, `smtp.resend.com:465`,
   remitente `noreply@maquinaria.click`, límite de Auth 30 correos/hora).
   Aun así, la app **no depende** de él en el día a día: confirmación y
