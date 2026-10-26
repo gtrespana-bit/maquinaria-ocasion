@@ -5,7 +5,8 @@ import { getSupabaseServerClient } from '@/lib/supabase-server-client'
 import fs from 'fs'
 import path from 'path'
 import { CIUDADES_SEO, CATEGORIAS_POPULARES } from '@/lib/ubicaciones-seo'
-import { CATEGORIAS_SEO_LIST, SUBCATEGORIAS_SEO } from '@/lib/categorias-seo'
+import { LANDINGS_CATEGORIA_LIST, SUBCATEGORIAS_SEO } from '@/lib/categorias-seo'
+import { MIN_ANUNCIOS_LANDING_LOCAL } from '@/lib/seo-landings'
 import { limpiarComillas } from '@/lib/seo'
 
 const BASE_URL = 'https://maquinaria.click'
@@ -100,7 +101,9 @@ function emptyLandings(): IndexableLandings {
 }
 
 /**
- * Solo incluye landings locales que tienen al menos un anuncio visible. Se
+ * Solo incluye landings locales con inventario suficiente
+ * (>= MIN_ANUNCIOS_LANDING_LOCAL anuncios visibles, la misma regla que
+ * decide el `robots` de esas páginas en seo-landings.ts). Se
  * consulta paginando para no depender del límite máximo de filas de Supabase.
  * Si la base de datos no está disponible, no se envían URLs locales vacías al
  * sitemap. Los anuncios de muestra siguen contando para la experiencia visual,
@@ -118,8 +121,8 @@ async function getIndexableLandings(supabase: any): Promise<IndexableLandings> {
   const categoryByName = new Map(
     SUBCATEGORIAS_SEO.map((category) => [normalize(category.categoria), category.slug]),
   )
-  const cities = new Set<string>()
-  const cityCategories = new Set<string>()
+  const conteoCiudades = new Map<string, number>()
+  const conteoCombos = new Map<string, number>()
   const moderation = 'estado_moderacion.is.null,estado_moderacion.eq.aprobado'
 
   for (let offset = 0; ; offset += PAGE_SIZE) {
@@ -136,17 +139,24 @@ async function getIndexableLandings(supabase: any): Promise<IndexableLandings> {
     for (const product of data || []) {
       const citySlug = cityByName.get(normalize(product.ubicacion_ciudad))
       if (!citySlug) continue
-      cities.add(citySlug)
+      conteoCiudades.set(citySlug, (conteoCiudades.get(citySlug) || 0) + 1)
 
       const categorySlug = categoryByName.get(normalize(product.subcategoria))
       if (categorySlug && CATEGORIAS_POPULARES.includes(categorySlug)) {
-        cityCategories.add(`${citySlug}/${categorySlug}`)
+        const combo = `${citySlug}/${categorySlug}`
+        conteoCombos.set(combo, (conteoCombos.get(combo) || 0) + 1)
       }
     }
 
     if (!data || data.length < PAGE_SIZE) break
   }
 
+  const cities = new Set(
+    [...conteoCiudades].filter(([, n]) => n >= MIN_ANUNCIOS_LANDING_LOCAL).map(([slug]) => slug),
+  )
+  const cityCategories = new Set(
+    [...conteoCombos].filter(([, n]) => n >= MIN_ANUNCIOS_LANDING_LOCAL).map(([combo]) => combo),
+  )
   return { cities, cityCategories }
 }
 
@@ -221,6 +231,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { path: '/comprar-a-profesionales', changeFrequency: 'daily', priority: 0.8 },
     { path: '/como-funciona', changeFrequency: 'monthly', priority: 0.6 },
     { path: '/para-profesionales', changeFrequency: 'weekly', priority: 0.8 },
+    { path: '/tasador', changeFrequency: 'monthly', priority: 0.6 },
     { path: '/como-instalar-app', changeFrequency: 'monthly', priority: 0.5 },
     { path: '/contacto', changeFrequency: 'monthly', priority: 0.5 },
     { path: '/faq', changeFrequency: 'monthly', priority: 0.5 },
@@ -235,10 +246,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: page.priority,
   }))
 
-  const categoryUrls: MetadataRoute.Sitemap = CATEGORIAS_SEO_LIST.map((category) => ({
+  // Familias (3) + subcategorías (12): las landings nacionales indexables.
+  const categoryUrls: MetadataRoute.Sitemap = LANDINGS_CATEGORIA_LIST.map((category) => ({
     url: `${BASE_URL}/categoria/${category.slug}`,
     changeFrequency: 'daily',
-    priority: 0.9,
+    priority: category.tipo === 'familia' ? 0.9 : 0.8,
   }))
 
   const indexableLandings = await getIndexableLandings(supabase)

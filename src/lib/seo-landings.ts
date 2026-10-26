@@ -1,11 +1,12 @@
 /**
  * Helpers de SEO para las landings programáticas (ciudad y ciudad/categoría).
  *
- * Deciden si una landing se indexa: una página de ciudad SIN anuncios es
- * contenido vacío que diluye la calidad del dominio a ojos de Google
- * (330 ciudades × 8 categorías = ~2.640 URLs potenciales). La regla:
- * con inventario → index; sin inventario → noindex,follow (se rastrea,
- * y se indexa sola cuando aparezca el primer anuncio).
+ * Deciden si una landing se indexa: una página de ciudad casi SIN anuncios
+ * es contenido vacío que diluye la calidad del dominio a ojos de Google
+ * (50 provincias × 12 subcategorías = ~600 combos potenciales). La regla:
+ * con inventario suficiente (>= MIN_ANUNCIOS_LANDING_LOCAL) → index;
+ * por debajo → noindex,follow (se rastrea, y se indexa sola en cuanto
+ * el inventario visible alcanza el umbral).
  *
  * Fail-open: si Supabase falla o no está configurado, se indexa (mejor
  * una página vacía de más que desindexar el sitio entero por un timeout).
@@ -16,7 +17,14 @@ import { getPrecioEur } from './precio'
 
 const MODERACION = 'estado_moderacion.is.null,estado_moderacion.eq.aprobado'
 
-/** ¿Hay al menos un anuncio activo en esta ciudad (o su municipio)? */
+/**
+ * Anuncios visibles mínimos para que una landing local (ciudad o
+ * ciudad×subcategoría) merezca índice y sitemap. Con 1 anuncio la página
+ * es una plantilla casi vacía; con 3 ya hay comparación real que ofrecer.
+ */
+export const MIN_ANUNCIOS_LANDING_LOCAL = 3
+
+/** ¿Hay inventario suficiente (>= umbral) en esta ciudad (o su municipio)? */
 export const hayAnunciosEnCiudad = cache(
   async (supabase: any, nombre: string, municipio?: string): Promise<boolean> => {
     if (!supabase || !nombre) return true
@@ -32,14 +40,14 @@ export const hayAnunciosEnCiudad = cache(
         : q.eq('ubicacion_ciudad', nombre)
 
       const { count } = await q
-      return (count || 0) > 0
+      return (count || 0) >= MIN_ANUNCIOS_LANDING_LOCAL
     } catch {
       return true
     }
   },
 )
 
-/** ¿Hay anuncios de esta categoría (slug de categorias o subcategoría) en la ciudad? */
+/** ¿Hay inventario suficiente (>= umbral) de esta subcategoría en la ciudad? */
 export const hayAnunciosEnCiudadCategoria = cache(
   async (
     supabase: any,
@@ -65,7 +73,7 @@ export const hayAnunciosEnCiudadCategoria = cache(
       q = q.eq('subcategoria', subcategoria)
 
       const { count } = await q
-      return (count || 0) > 0
+      return (count || 0) >= MIN_ANUNCIOS_LANDING_LOCAL
     } catch {
       return true
     }
@@ -111,7 +119,7 @@ export const estadisticasCiudad = cache(
     supabase: any,
     nombre: string,
     municipio?: string,
-    /** Etiqueta visible de subcategoría (p. ej. "Gran Volumen").
+    /** Etiqueta visible de subcategoría (p. ej. "Tractores").
      *  Si se pasa, los agregados se calculan solo para esa
      *  categoría en la provincia (landings /[ciudad]/[categoria]). */
     subcategoria?: string,

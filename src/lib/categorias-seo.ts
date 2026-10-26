@@ -4,7 +4,7 @@
  * claves de `CATEGORIAS_SEO` con las claves de `categoriasData`.
  */
 
-import { categoriasData } from './categorias'
+import { categoriasData, familiaDeSub } from './categorias'
 
 export type CategoriaSEO = {
   slug: string
@@ -405,4 +405,60 @@ export const SUBCATEGORIAS_SEO_MAP: Record<string, SubcategoriaSEO> = Object.fro
 
 export function getSubcategoriaSEO(slug: string): SubcategoriaSEO | undefined {
   return SUBCATEGORIAS_SEO_MAP[slug]
+}
+
+// ── Landings nacionales indexables de /categoria/[slug] ──────────────────
+//
+// Las búsquedas con volumen del sector son por subcategoría («tractores de
+// segunda mano», «excavadoras de ocasión»…), no por familia. Hasta ahora
+// solo las 3 familias tenían landing y las subcategorías vivían como filtro
+// del catálogo (?subcategoria=), que canonicaliza a /catalogo: para Google
+// no existía ninguna página de tractores/excavadoras/etc. Esta lista une
+// familias y subcategorías en las landings que sirve /categoria/[slug],
+// reutilizando el contenido editorial ya existente de cada subcategoría.
+
+export type LandingCategoriaSEO = CategoriaSEO & {
+  tipo: 'familia' | 'subcategoria'
+  /** Slug de la familia (clave de categoriasData); en familias, el propio slug. */
+  familiaSlug: string
+  familiaNombre: string
+  /** Etiqueta guardada en productos.subcategoria; null en landings de familia. */
+  subEtiqueta: string | null
+}
+
+function landingDeFamilia(cat: CategoriaSEO): LandingCategoriaSEO {
+  return { ...cat, tipo: 'familia', familiaSlug: cat.slug, familiaNombre: cat.nombre, subEtiqueta: null }
+}
+
+function landingDeSub(sub: SubcategoriaSEO): LandingCategoriaSEO | undefined {
+  const familia = familiaDeSub(sub.slug)
+  if (!familia) return undefined
+  return {
+    slug: sub.slug,
+    nombre: sub.nombre,
+    icono: sub.icono,
+    titulo: sub.titulo,
+    descripcion: sub.descripcion,
+    introduccion: sub.introduccion,
+    terminos: sub.terminos,
+    faq: sub.faq,
+    tipo: 'subcategoria',
+    familiaSlug: familia.key,
+    familiaNombre: familia.label,
+    subEtiqueta: sub.categoria,
+  }
+}
+
+export const LANDINGS_CATEGORIA_LIST: LandingCategoriaSEO[] = [
+  ...CATEGORIAS_SEO_LIST.map(landingDeFamilia),
+  ...SUBS.map(landingDeSub).filter((l): l is LandingCategoriaSEO => Boolean(l)),
+]
+
+const LANDINGS_CATEGORIA_MAP: Record<string, LandingCategoriaSEO> = Object.fromEntries(
+  LANDINGS_CATEGORIA_LIST.map((l) => [l.slug, l]),
+)
+
+/** Landing nacional (familia o subcategoría) por slug de /categoria/[slug]. */
+export function getLandingCategoriaSEO(slug: string): LandingCategoriaSEO | undefined {
+  return LANDINGS_CATEGORIA_MAP[slug]
 }

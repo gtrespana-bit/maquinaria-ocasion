@@ -40,7 +40,7 @@ export function Header() {
         id: s.slug,
         nombre: s.label,
         icon: s.icon,
-        href: `/catalogo?subcategoria=${encodeURIComponent(s.label)}`,
+        href: `/categoria/${s.slug}`,
       })),
   }))
 
