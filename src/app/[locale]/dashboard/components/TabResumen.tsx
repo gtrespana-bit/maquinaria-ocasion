@@ -139,7 +139,7 @@ export default function TabResumen({
         <div className="mt-3 flex items-center justify-between gap-4 border border-line bg-[#FBFAF5] px-4 py-3">
           <div className="min-w-0">
             <p className="text-[13px] font-medium text-ink">Avisarme por email de mensajes nuevos</p>
-            <p className="mt-0.5 text-[11.5px] leading-relaxed text-ink/50">
+            <p className="mt-0.5 text-[12.5px] leading-relaxed text-ink/50">
               Solo si no los has leído en unos minutos. Quien responde antes, vende.
             </p>
           </div>
@@ -159,7 +159,7 @@ export default function TabResumen({
       {stats.vendidos > 0 && (
         <div className="mt-3 flex items-center gap-2.5 border border-moss/30 bg-moss-soft px-4 py-3">
           <span className="h-1.5 w-1.5 shrink-0 bg-moss" aria-hidden="true" />
-          <p className="text-[12.5px] text-moss">
+          <p className="text-[13px] text-moss">
             <strong className="font-semibold">{stats.vendidos}</strong> {stats.vendidos === 1 ? 'anuncio vendido' : 'anuncios vendidos'}
           </p>
         </div>

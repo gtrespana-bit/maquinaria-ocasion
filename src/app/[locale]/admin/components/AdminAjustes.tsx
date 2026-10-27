@@ -84,7 +84,7 @@ export default function AdminAjustes({ notify }: { notify: (msg: string) => void
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h2 className="text-xl font-semibold text-ink">Ajustes y salud</h2>
-          <p className="text-[12.5px] leading-relaxed text-ink/55">Estado de los canales de la plataforma</p>
+          <p className="text-[13px] leading-relaxed text-ink/55">Estado de los canales de la plataforma</p>
         </div>
         <RefreshButton onClick={() => load(true)} loading={refreshing} />
       </div>
@@ -102,7 +102,7 @@ export default function AdminAjustes({ notify }: { notify: (msg: string) => void
                 </div>
               </div>
               <p className="mt-3 text-[13px] font-medium text-ink">{c.label}</p>
-              <p className="text-[11.5px] text-ink/45">{c.desc}</p>
+              <p className="text-[12.5px] text-ink/45">{c.desc}</p>
             </Card>
           )
         })}
@@ -110,7 +110,7 @@ export default function AdminAjustes({ notify }: { notify: (msg: string) => void
 
       {status?.anuncios === false && (
         <Card title="Activar anuncios globales" subtitle="El banner público necesita una tabla pequeña en Supabase" bodyClassName="p-4">
-          <p className="mb-3 flex items-start gap-2 text-[12.5px] leading-relaxed text-ink/55">
+          <p className="mb-3 flex items-start gap-2 text-[13px] leading-relaxed text-ink/55">
             <ShieldCheck size={16} className="mt-0.5 flex-shrink-0 text-ink" />
             Ejecuta la migración incluida en <code className="rounded bg-paper-2 px-1.5 py-0.5 text-xs">supabase/migrations/202608010007_anuncios_globales.sql</code> para crear la tabla <code className="rounded bg-paper-2 px-1.5 py-0.5 text-xs">anuncios_globales</code> y que el banner aparezca en el sitio.
           </p>
@@ -134,11 +134,11 @@ export default function AdminAjustes({ notify }: { notify: (msg: string) => void
             <div className="flex flex-wrap items-center gap-2 text-sm">
               <Badge tone={emailDiag.resend ? 'green' : 'gray'}>Resend API: {emailDiag.resend ? 'configurado' : 'no'}</Badge>
               <Badge tone={emailDiag.smtp ? 'green' : 'gray'}>SMTP: {emailDiag.smtp ? 'configurado' : 'no'}</Badge>
-              <span className="text-[11.5px] text-ink/45">Remitente: <code className="rounded bg-paper-2 px-1.5 py-0.5">{emailDiag.from}</code></span>
-              <p className="w-full text-[11.5px] text-ink/45">{emailDiag.hint}</p>
+              <span className="text-[12.5px] text-ink/45">Remitente: <code className="rounded bg-paper-2 px-1.5 py-0.5">{emailDiag.from}</code></span>
+              <p className="w-full text-[12.5px] text-ink/45">{emailDiag.hint}</p>
             </div>
           ) : (
-            <p className="text-[11.5px] text-ink/45">No se pudo cargar el diagnóstico del canal.</p>
+            <p className="text-[12.5px] text-ink/45">No se pudo cargar el diagnóstico del canal.</p>
           )}
           <div className="flex flex-col gap-2 sm:flex-row">
             <input
@@ -162,7 +162,7 @@ export default function AdminAjustes({ notify }: { notify: (msg: string) => void
       </Card>
 
       <Card title="Responsabilidades del panel" subtitle="Todo queda registrado en auditoría" bodyClassName="p-4">
-        <div className="grid gap-2 text-[12.5px] leading-relaxed text-ink/55 md:grid-cols-2">
+        <div className="grid gap-2 text-[13px] leading-relaxed text-ink/55 md:grid-cols-2">
           <p>- Aprobación manual de pagos con doble verificación (Bizum/transferencia/PayPal).</p>
           <p>- Verificación de vendedores con DNI/NIE y contraste de datos de pago.</p>
           <p>- Reservas con señal y verificación de vendedores.</p>

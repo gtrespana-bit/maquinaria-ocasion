@@ -614,7 +614,10 @@
     "reservarCta": "Reservar con señal",
     "reservadoBadge": "Reservado",
     "contratoCtaTitulo": "Contrato de compraventa",
-    "contratoCtaDesc": "Modelo listo para imprimir con los datos de esta máquina"
+    "contratoCtaDesc": "Modelo listo para imprimir con los datos de esta máquina",
+    "comparar": {
+      "cta": "Comparar"
+    }
   },
   "creditos": {
     "title1": "Compra créditos y",
@@ -833,7 +836,11 @@
     "tabReservations": "Reservas",
     "tabInspecciones": "Inspecciones",
     "sellerTypeLabel": "¿Cómo vas a vender?",
-    "sellerTypeHint": "Se muestra junto a tus anuncios para que los compradores sepan quién vende."
+    "sellerTypeHint": "Se muestra junto a tus anuncios para que los compradores sepan quién vende.",
+    "publishNew": "Publicar anuncio",
+    "buyCredits": "Comprar créditos",
+    "yourPanel": "Tu panel",
+    "greeting": "Hola, {name}"
   },
   "contact": {
     "title": "Contáctanos",

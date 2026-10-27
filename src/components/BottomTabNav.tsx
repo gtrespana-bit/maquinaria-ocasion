@@ -60,7 +60,7 @@ export default function BottomTabNav() {
             >
               <Icon size={19} strokeWidth={active ? 1.9 : 1.5} className={active ? 'text-ink' : 'text-ink/45'} />
               <span
-                className={`text-[9.5px] font-medium uppercase tracking-[0.12em] ${
+                className={`text-[10.5px] font-medium uppercase tracking-[0.12em] ${
                   active ? 'text-ink' : 'text-ink/40'
                 }`}
               >

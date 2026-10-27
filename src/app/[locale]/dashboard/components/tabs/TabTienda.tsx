@@ -132,7 +132,7 @@ export default function TabTienda() {
       <div className="border border-line bg-[#FBFAF5] p-8 text-center">
         <Store size={36} className="mx-auto text-ink/40 mb-3" />
         <h3 className="font-semibold text-ink mb-1">La tienda es para vendedores profesionales</h3>
-        <p className="text-[12.5px] text-ink/55 max-w-md mx-auto mb-4">
+        <p className="text-[13px] text-ink/55 max-w-md mx-auto mb-4">
           Si eres taller o vendes maquinaria de forma profesional, cambia tu tipo de vendedor
           en tu perfil y podrás abrir una página propia con todo tu stock.
         </p>
@@ -151,7 +151,7 @@ export default function TabTienda() {
       <div className="border border-line bg-[#FBFAF5] p-8 text-center">
         <Store size={36} className="mx-auto text-ink/40 mb-3" />
         <h3 className="font-semibold text-ink mb-1">Tu escaparate, con un pack</h3>
-        <p className="text-[12.5px] text-ink/55 max-w-md mx-auto mb-4">
+        <p className="text-[13px] text-ink/55 max-w-md mx-auto mb-4">
           El escaparate con URL propia (<strong>/tienda/tu-taller</strong>) está incluido en los
           planes Básico y Profesional. Tus anuncios ya publicados siguen visibles: solo falta la
           página de tienda.
@@ -186,7 +186,7 @@ export default function TabTienda() {
             <h3 className="font-semibold text-ink flex items-center gap-2">
               <Store size={18} className="text-ink" /> Mi tienda
             </h3>
-            <p className="text-[12.5px] text-ink/55">
+            <p className="text-[13px] text-ink/55">
               Una página propia con tu logo, tu stock y tu dirección web.
             </p>
           </div>
@@ -231,7 +231,7 @@ export default function TabTienda() {
               </LocalLink>
             )}
           </div>
-          <p className="text-[11.5px] text-ink/45 mt-2">
+          <p className="text-[12.5px] text-ink/45 mt-2">
             Pégala en tu web o en la biografía de tu Instagram: lleva directo a todo tu stock.
           </p>
         </div>
@@ -371,7 +371,7 @@ function Campo({
       {error ? (
         <p className="text-xs text-clay mt-1">{error}</p>
       ) : hint ? (
-        <p className="text-[11.5px] text-ink/45 mt-1">{hint}</p>
+        <p className="text-[12.5px] text-ink/45 mt-1">{hint}</p>
       ) : null}
     </div>
   )

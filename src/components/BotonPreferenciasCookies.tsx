@@ -21,7 +21,7 @@ export default function BotonPreferenciasCookies({ locale = 'es' }: { locale?: s
       >
         {esIngles ? 'Change my choice' : 'Cambiar mi decisión'}
       </button>
-      <p className="mt-2 text-[12.5px] text-muted">
+      <p className="mt-2 text-[13px] text-muted">
         {esIngles
           ? 'The cookie notice will be shown again so you can accept or reject again.'
           : 'Volverás a ver el aviso de cookies para aceptar o rechazar de nuevo.'}

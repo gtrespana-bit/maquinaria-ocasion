@@ -121,7 +121,7 @@ module.exports = {
       fontFamily: {
         display: ['var(--font-archivo)', 'system-ui', 'sans-serif'],
         sans: ['var(--font-archivo)', 'system-ui', 'sans-serif'],
-        serif: ['var(--font-serif)', 'Georgia', 'serif'],
+        serif: ['var(--font-archivo)', 'system-ui', 'sans-serif'],
         mono: ['var(--font-jetbrains)', 'ui-monospace', 'monospace'],
       },
       // Esquinas: casi rectas. `rounded-xl` y `rounded-2xl` se redefinen a

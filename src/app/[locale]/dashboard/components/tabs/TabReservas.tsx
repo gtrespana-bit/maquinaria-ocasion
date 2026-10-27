@@ -140,7 +140,7 @@ export default function TabReservas({ userId }: { userId: string }) {
           <h3 className="text-[14px] font-semibold text-ink mb-1">
             {vista === 'comprador' ? 'Todavía no has reservado nada' : 'Nadie ha reservado tus anuncios'}
           </h3>
-          <p className="text-[12.5px] text-ink/55">
+          <p className="text-[13px] text-ink/55">
             {vista === 'comprador'
               ? 'Cuando solicites una reserva con señal, el vendedor la confirmará al recibir el pago y la verás aquí.'
               : 'Cuando un comprador solicite reservar uno de tus anuncios, lo verás aquí para confirmar la señal cuando te llegue el pago.'}
@@ -168,7 +168,7 @@ export default function TabReservas({ userId }: { userId: string }) {
                       <LocalLink href={`/producto/${p?.id || r.producto_id}`} className="font-semibold text-ink hover:text-ink line-clamp-2">
                         {p?.titulo || 'Anuncio'}
                       </LocalLink>
-                      <span className={`text-[11px] font-semibold px-2 py-1 rounded-full border whitespace-nowrap ${etiqueta?.tono || 'bg-paper-2 border-line'}`}>
+                      <span className={`text-[12px] font-semibold px-2 py-1 rounded-full border whitespace-nowrap ${etiqueta?.tono || 'bg-paper-2 border-line'}`}>
                         {etiqueta?.label || r.estado}
                       </span>
                     </div>
@@ -177,13 +177,13 @@ export default function TabReservas({ userId }: { userId: string }) {
                       <strong>{formatPrecio(r.importe)}</strong> de señal · {r.metodo_pago}
                       {p?.precio_usd ? <span className="text-ink/60"> · precio {formatPrecio(p.precio_usd)}</span> : null}
                     </p>
-                    <p className="text-[11.5px] text-ink/45 mt-0.5">
+                    <p className="text-[12.5px] text-ink/45 mt-0.5">
                       {vista === 'vendedor' && r.perfiles ? `${r.perfiles.nombre || r.perfiles.email || 'Comprador'} · ` : ''}
                       Del {fecha(r.created_at)} · {estado === 'activa' ? `válida hasta ${fecha(r.expira_en)}` : 'a la espera de confirmación'}
                     </p>
-                    {etiqueta?.descripcion && <p className="text-[11.5px] text-ink/45 mt-1">{etiqueta.descripcion}</p>}
+                    {etiqueta?.descripcion && <p className="text-[12.5px] text-ink/45 mt-1">{etiqueta.descripcion}</p>}
                     {r.motivo_cancelacion && <p className="text-xs text-clay mt-1">Motivo: {r.motivo_cancelacion}</p>}
-                    {r.mensaje && <p className="text-[11.5px] text-ink/45 mt-1 italic">“{r.mensaje}”</p>}
+                    {r.mensaje && <p className="text-[12.5px] text-ink/45 mt-1 italic">“{r.mensaje}”</p>}
 
                     <div className="flex flex-wrap gap-2 mt-3">
                       {estado === 'solicitada' && vista === 'vendedor' && (

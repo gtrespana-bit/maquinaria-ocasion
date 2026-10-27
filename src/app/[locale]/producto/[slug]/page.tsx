@@ -551,7 +551,7 @@ export default async function ProductoPage({ params }: Props) {
                     {formatPrecio(p.precio_usd || 0)}
                   </p>
                   {p.ubicacion_ciudad && (
-                    <p className="text-[11px] text-muted truncate">{p.ubicacion_ciudad}</p>
+                    <p className="text-[12px] text-muted truncate">{p.ubicacion_ciudad}</p>
                   )}
                 </div>
               </LocalLink>

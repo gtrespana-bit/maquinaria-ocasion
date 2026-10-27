@@ -199,7 +199,7 @@ export default function PushNotificationBanner() {
               <p className="text-xs text-clay mt-2 text-center">{error}</p>
             )}
 
-            <p className="text-[10px] text-muted text-center mt-2">
+            <p className="text-[11.5px] text-muted text-center mt-2">
               Puedes desactivarlas cuando quieras
             </p>
           </div>

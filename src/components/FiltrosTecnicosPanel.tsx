@@ -97,7 +97,7 @@ export const FiltrosTecnicosPanel = ({
                   placeholder={rango.operador === 'lte' ? t('catalog.max') : t('catalog.min')}
                   className={`${inputClass} pr-12`}
                 />
-                <span className="pointer-events-none absolute right-0 top-1/2 -translate-y-1/2 text-[11px] text-ink/40">
+                <span className="pointer-events-none absolute right-0 top-1/2 -translate-y-1/2 text-[12px] text-ink/40">
                   {rango.unidad}
                 </span>
               </div>

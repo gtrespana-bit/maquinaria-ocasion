@@ -78,7 +78,7 @@ export default function VendedorClient({
               {vendedor.tienda_activa && vendedor.slug && (
                 <LocalLink
                   href={`/tienda/${vendedor.slug}`}
-                  className="mt-3 inline-flex items-center gap-2 border border-line px-2.5 py-1.5 text-[12px] font-medium text-ink transition-colors hover:border-ink"
+                  className="mt-3 inline-flex items-center gap-2 border border-line px-2.5 py-1.5 text-[13px] font-medium text-ink transition-colors hover:border-ink"
                 >
                   <Store size={13} strokeWidth={1.6} /> Ver la tienda completa
                 </LocalLink>
@@ -194,7 +194,7 @@ export default function VendedorClient({
                         decoding="async"
                       />
                     ) : (
-                      <div className="grid h-full w-full place-items-center text-[11px] text-ink/30">{t('noPhoto')}</div>
+                      <div className="grid h-full w-full place-items-center text-[12px] text-ink/30">{t('noPhoto')}</div>
                     )}
                   </div>
                   <div className="p-4">

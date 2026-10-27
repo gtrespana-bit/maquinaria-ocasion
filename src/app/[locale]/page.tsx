@@ -563,14 +563,14 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
                       <LocalLink
                         key={s.slug}
                         href={`/categoria/${s.slug}`}
-                        className="text-[12px] text-ink/55 underline decoration-line-strong underline-offset-4 transition-colors hover:text-ink hover:decoration-ink"
+                        className="text-[13px] text-ink/55 underline decoration-line-strong underline-offset-4 transition-colors hover:text-ink hover:decoration-ink"
                       >
                         {s.label}
                       </LocalLink>
                     ))}
                     <LocalLink
                       href="/catalogo"
-                      className="text-[12px] font-semibold text-ink underline decoration-signal decoration-2 underline-offset-4"
+                      className="text-[13px] font-semibold text-ink underline decoration-signal decoration-2 underline-offset-4"
                     >
                       {t('home.hero.seeAll')}
                     </LocalLink>
@@ -833,7 +833,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
                         <span className="t-display t-num text-[1.15rem] text-ink">
                           {formatPrecio(r.p.precio_usd || 0)}
                         </span>
-                        <span className="t-num text-[12px] text-muted line-through">
+                        <span className="t-num text-[13px] text-muted line-through">
                           {formatPrecio(r.precioAnterior)}
                         </span>
                       </div>

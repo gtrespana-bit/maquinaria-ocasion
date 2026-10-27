@@ -176,7 +176,7 @@ export default function AdminDashboard({
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h2 className="text-xl font-semibold text-ink">Centro de operaciones</h2>
-          <p className="text-[12.5px] leading-relaxed text-ink/55">
+          <p className="text-[13px] leading-relaxed text-ink/55">
             Vista en vivo del marketplace. Última actualización: {lastRefreshed.current.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' })}
           </p>
         </div>
@@ -202,7 +202,7 @@ export default function AdminDashboard({
             <div className="flex flex-col items-center justify-center gap-2 py-10 text-center">
               <CheckCircle2 className="h-10 w-10 text-emerald-500" />
               <p className="text-[13px] font-medium text-ink">Todo bajo control</p>
-              <p className="text-[11.5px] text-ink/45">No hay tareas pendientes de moderación.</p>
+              <p className="text-[12.5px] text-ink/45">No hay tareas pendientes de moderación.</p>
             </div>
           ) : (
             <div className="space-y-2">
@@ -248,7 +248,7 @@ export default function AdminDashboard({
                 {data.last7Products.map((v, i) => (
                   <div key={i} className="flex flex-1 flex-col items-center gap-1">
                     <div className="w-full rounded-t-lg bg-ink" style={{ height: `${Math.max(4, (v / maxProductsTrend) * 76)}px` }} />
-                    <span className="text-[10px] text-ink/35">{new Date(Date.now() - (6 - i) * 86400000).toLocaleDateString('es-ES', { weekday: 'short' })}</span>
+                    <span className="text-[11.5px] text-ink/35">{new Date(Date.now() - (6 - i) * 86400000).toLocaleDateString('es-ES', { weekday: 'short' })}</span>
                   </div>
                 ))}
               </div>
@@ -264,7 +264,7 @@ export default function AdminDashboard({
                 {data.last7Transactions.map((v, i) => (
                   <div key={i} className="flex flex-1 flex-col items-center gap-1">
                     <div className="w-full rounded-t-lg bg-ink/80" style={{ height: `${Math.max(4, (v / maxTxTrend) * 76)}px` }} />
-                    <span className="text-[10px] text-ink/35">{new Date(Date.now() - (6 - i) * 86400000).toLocaleDateString('es-ES', { weekday: 'short' })}</span>
+                    <span className="text-[11.5px] text-ink/35">{new Date(Date.now() - (6 - i) * 86400000).toLocaleDateString('es-ES', { weekday: 'short' })}</span>
                   </div>
                 ))}
               </div>
@@ -290,7 +290,7 @@ export default function AdminDashboard({
               </span>
               <div>
                 <p className="text-[13px] font-medium text-ink">{s.label}</p>
-                <p className="text-[11.5px] text-ink/45">{s.hint}</p>
+                <p className="text-[12.5px] text-ink/45">{s.hint}</p>
               </div>
               <span className={`ml-auto mt-1 h-2 w-2 rounded-full ${s.ok ? 'bg-emerald-500' : 'bg-red-500'}`} title={s.ok ? 'OK' : 'No configurado'} />
             </div>
@@ -312,7 +312,7 @@ export default function AdminDashboard({
                   <LocalLink href={productUrl(p)} className="block truncate text-[13px] font-medium text-ink hover:text-ink">
                     {p.titulo}
                   </LocalLink>
-                  <div className="mt-0.5 flex flex-wrap items-center gap-2 text-[11.5px] text-ink/45">
+                  <div className="mt-0.5 flex flex-wrap items-center gap-2 text-[12.5px] text-ink/45">
                     <span className="font-semibold text-ink">{formatMoney(p.precio_usd)}</span>
                     <span>·</span>
                     <span>{timeAgo(p.creado_en)}</span>
@@ -339,7 +339,7 @@ export default function AdminDashboard({
                 </span>
                 <div className="min-w-0 flex-1">
                   <p className="truncate text-[13px] font-medium text-ink">{u.nombre || 'Sin nombre'}</p>
-                  <p className="text-[11.5px] text-ink/45">{u.ciudad || u.estado || '—'} · {timeAgo(u.creado_en)}</p>
+                  <p className="text-[12.5px] text-ink/45">{u.ciudad || u.estado || '—'} · {timeAgo(u.creado_en)}</p>
                 </div>
                 {u.verificado && <Badge tone="green">Verificado</Badge>}
               </div>
@@ -358,7 +358,7 @@ export default function AdminDashboard({
                 <span className="flex h-7 w-7 items-center justify-center rounded-full bg-paper-2 t-label text-ink/45/55">{i + 1}</span>
                 <div className="min-w-0 flex-1">
                   <LocalLink href={productUrl(p)} className="block truncate text-[13px] font-medium text-ink hover:text-ink">{p.titulo}</LocalLink>
-                  <p className="text-[11.5px] text-ink/45">{formatMoney(p.precio_usd)}</p>
+                  <p className="text-[12.5px] text-ink/45">{formatMoney(p.precio_usd)}</p>
                 </div>
                 <span className="inline-flex items-center gap-1 text-[13px] font-medium text-ink"><Eye size={13} /> {formatNumber(p.visitas)}</span>
               </div>
@@ -374,7 +374,7 @@ export default function AdminDashboard({
                 <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-moss/10 text-moss"><CreditCard size={16} /></span>
                 <div className="min-w-0 flex-1">
                   <p className="text-[13px] font-medium text-ink">{formatNumber(t.monto)} créditos</p>
-                  <p className="text-[11.5px] text-ink/45">{t.metodo_pago || 'Pago'} · {timeAgo(t.creado_en)}</p>
+                  <p className="text-[12.5px] text-ink/45">{t.metodo_pago || 'Pago'} · {timeAgo(t.creado_en)}</p>
                 </div>
                 <span className="text-sm font-bold text-moss">+{formatMoney(t.precio_usd)}</span>
               </div>

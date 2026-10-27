@@ -35,7 +35,7 @@ function PackBadge({ perfil }: { perfil: Perfil }) {
   return (
     <span className="inline-flex flex-col items-start gap-0.5">
       <Badge tone={TONO_PACK[perfil.plan_anuncios || ''] || 'gray'}>{etiquetaPlan(perfil.plan_anuncios)}</Badge>
-      <span className="text-[10px] text-ink/35">{dias != null ? `${dias} días` : 'sin caducidad'}</span>
+      <span className="text-[11.5px] text-ink/35">{dias != null ? `${dias} días` : 'sin caducidad'}</span>
     </span>
   )
 }
@@ -177,7 +177,7 @@ export default function AdminUsuarios({ notify }: { notify: (msg: string) => voi
       <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
         <div>
           <h2 className="text-xl font-semibold text-ink">Usuarios</h2>
-          <p className="text-[12.5px] leading-relaxed text-ink/55">{formatNumber(filtered.length)} mostrados · {formatNumber(users.length)} registrados · {formatNumber(totalCredits)} créditos emitidos</p>
+          <p className="text-[13px] leading-relaxed text-ink/55">{formatNumber(filtered.length)} mostrados · {formatNumber(users.length)} registrados · {formatNumber(totalCredits)} créditos emitidos</p>
         </div>
         <div className="flex items-center gap-2">
           {selected.size > 0 && (
@@ -230,11 +230,11 @@ export default function AdminUsuarios({ notify }: { notify: (msg: string) => voi
                       </span>
                     </button>
                   </td>
-                  <td className="px-3 py-3 text-[11.5px] text-ink/45">
+                  <td className="px-3 py-3 text-[12.5px] text-ink/45">
                     <p>{u.telefono || '—'}</p>
                     {u.verificado && <Badge tone="blue" className="mt-1">Verified</Badge>}
                   </td>
-                  <td className="whitespace-nowrap px-3 py-3 text-[11.5px] text-ink/45">{[u.ciudad, u.estado].filter(Boolean).join(', ') || '—'}</td>
+                  <td className="whitespace-nowrap px-3 py-3 text-[12.5px] text-ink/45">{[u.ciudad, u.estado].filter(Boolean).join(', ') || '—'}</td>
                   <td className="whitespace-nowrap px-3 py-3 text-right font-semibold text-ink">{formatNumber(u.credito_balance)}</td>
                   <td className="px-3 py-3 text-center">
                     <button disabled={busyId === u.id} onClick={() => toggleVerificado(u, !u.verificado)} className={`rounded-full px-2 py-1 text-xs font-bold transition ${u.verificado ? 'bg-paper-2 text-ink hover:bg-blue-200' : 'bg-paper-2 text-ink/55 hover:bg-blue-50 hover:text-ink'}`}>
@@ -245,7 +245,7 @@ export default function AdminUsuarios({ notify }: { notify: (msg: string) => voi
                     <PackBadge perfil={u} />
                   </td>
                   <td className="px-3 py-3 text-center text-lg">{NIVELES[u.nivel_confianza ?? 0] || '—'}</td>
-                  <td className="whitespace-nowrap px-3 py-3 text-[11.5px] text-ink/45">{formatDate(u.creado_en)}</td>
+                  <td className="whitespace-nowrap px-3 py-3 text-[12.5px] text-ink/45">{formatDate(u.creado_en)}</td>
                   <td className="whitespace-nowrap px-3 py-3 text-right">
                     <div className="flex justify-end gap-1">
                       <button onClick={() => setRegaloModal(u)} title="Regalar plan" className="rounded-lg p-1.5 text-ink/35 transition hover:bg-ink/10 hover:text-ink"><Gift size={15} /></button>
@@ -269,12 +269,12 @@ export default function AdminUsuarios({ notify }: { notify: (msg: string) => voi
                 <span className={`flex h-10 w-10 items-center justify-center rounded-full text-sm font-bold ${u.verificado ? 'bg-blue-50 text-ink' : 'bg-paper-2 text-ink/55'}`}>{u.nombre?.slice(0, 1) || '?'}</span>
                 <div className="min-w-0 flex-1">
                   <button onClick={() => setDetail(u)} className="block w-full truncate text-left font-semibold text-ink">{u.nombre || 'Sin nombre'}</button>
-                  <p className="truncate text-[11.5px] text-ink/45">{u.email || u.telefono || '—'}</p>
+                  <p className="truncate text-[12.5px] text-ink/45">{u.email || u.telefono || '—'}</p>
                 </div>
                 <span className="text-lg font-semibold text-ink">{formatNumber(u.credito_balance)}</span>
               </div>
               <div className="flex items-center justify-between">
-                <div className="text-[11.5px] text-ink/45">{formatDate(u.creado_en)} · {NIVELES[u.nivel_confianza ?? 0]}</div>
+                <div className="text-[12.5px] text-ink/45">{formatDate(u.creado_en)} · {NIVELES[u.nivel_confianza ?? 0]}</div>
                 <div className="flex gap-1">
                   <button onClick={() => setRegaloModal(u)} title="Regalar plan" className="rounded-lg p-2 text-ink/35 hover:bg-ink/10 hover:text-ink"><Gift size={16} /></button>
                   <button onClick={() => toggleVerificado(u, !u.verificado)} disabled={busyId === u.id} className="rounded-lg p-2 text-ink/35 hover:bg-blue-50 hover:text-ink">{u.verificado ? <ShieldOff size={16} /> : <ShieldCheck size={16} />}</button>
@@ -290,7 +290,7 @@ export default function AdminUsuarios({ notify }: { notify: (msg: string) => voi
 
       {filtered.length > PAGE_SIZE && (
         <div className="flex items-center justify-between rounded-2xl border border-line bg-[#FBFAF5] px-4 py-3">
-          <p className="text-[11.5px] text-ink/45">Página {page} de {totalPages}</p>
+          <p className="text-[12.5px] text-ink/45">Página {page} de {totalPages}</p>
           <div className="flex gap-1">
             <Button size="sm" variant="outline" disabled={page <= 1} onClick={() => setPage((p) => p - 1)}><ChevronLeft size={14} /> Anterior</Button>
             <Button size="sm" variant="outline" disabled={page >= totalPages} onClick={() => setPage((p) => p + 1)}>Siguiente <ChevronRight size={14} /></Button>

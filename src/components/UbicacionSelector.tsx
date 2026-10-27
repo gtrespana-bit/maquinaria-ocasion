@@ -32,7 +32,7 @@ export default function UbicacionSelector({ estado, ciudad, onChange, showCapita
             id="ubicacion-estado"
             value={estado}
             onChange={(e) => { onChange(e.target.value, '') }}
-            className="field text-[12.5px]"
+            className="field text-[13px]"
           >
             <option value="">Toda España</option>
             {ESTADOS.map((e) => (
@@ -51,7 +51,7 @@ export default function UbicacionSelector({ estado, ciudad, onChange, showCapita
             value={ciudad}
             onChange={(e) => { onChange(estado, e.target.value) }}
             disabled={!estado}
-            className="field text-[12.5px] disabled:opacity-45"
+            className="field text-[13px] disabled:opacity-45"
           >
             <option value="">Todas las provincias</option>
             {municipios.map((m) => (

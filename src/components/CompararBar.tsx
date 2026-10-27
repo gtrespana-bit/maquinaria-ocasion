@@ -34,7 +34,7 @@ export default function CompararBar() {
               {i.imagen_url ? (
                 <Image src={i.imagen_url} alt="" fill sizes="36px" className="object-cover" />
               ) : (
-                <span className="w-full h-full flex items-center justify-center text-[10px] text-paper/60">🔧</span>
+                <span className="w-full h-full flex items-center justify-center text-[11.5px] text-paper/60">🔧</span>
               )}
             </span>
           ))}

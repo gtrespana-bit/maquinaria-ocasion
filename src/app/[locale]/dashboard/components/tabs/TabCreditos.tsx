@@ -62,12 +62,12 @@ export default function TabCreditos({ creditos, refreshCreditos }: { creditos: n
           <div className="bg-[#FBFAF5] p-5">
             <Zap size={16} strokeWidth={1.6} className="text-ink" aria-hidden="true" />
             <p className="mt-3 text-[13.5px] font-semibold text-ink">Subida al nº 1 · 1 crédito</p>
-            <p className="mt-1 text-[12.5px] leading-relaxed text-ink/55">Sube tu publicación al primer puesto del listado.</p>
+            <p className="mt-1 text-[13px] leading-relaxed text-ink/55">Sube tu publicación al primer puesto del listado.</p>
           </div>
           <div className="bg-[#FBFAF5] p-5">
             <Star size={16} strokeWidth={1.6} className="text-ink" aria-hidden="true" />
             <p className="mt-3 text-[13.5px] font-semibold text-ink">Destacado</p>
-            <p className="t-num mt-1 text-[12.5px] leading-relaxed text-ink/55">4 cr/12 h · 6 cr/24 h · 10 cr/48 h</p>
+            <p className="t-num mt-1 text-[13px] leading-relaxed text-ink/55">4 cr/12 h · 6 cr/24 h · 10 cr/48 h</p>
           </div>
         </div>
       </section>
@@ -75,7 +75,7 @@ export default function TabCreditos({ creditos, refreshCreditos }: { creditos: n
       <section className="flex flex-col gap-4 border border-line bg-[#FBFAF5] p-5 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <p className="text-[13.5px] font-semibold text-ink">¿Publicas varias máquinas?</p>
-          <p className="mt-1 max-w-lg text-[12.5px] leading-relaxed text-ink/55">
+          <p className="mt-1 max-w-lg text-[13px] leading-relaxed text-ink/55">
             Con Básico (19 €/mes) o Profesional (49 €/mes) tienes más anuncios y destacados incluidos cada mes.
           </p>
         </div>
@@ -101,7 +101,7 @@ export default function TabCreditos({ creditos, refreshCreditos }: { creditos: n
                 <div className="flex-1 px-5 py-5">
                   <p className="t-display t-num text-[2rem] leading-none text-ink">{formatPrecio(pkg.precio)}</p>
                   <p className="t-label mt-2 text-ink/40">{formatPrecio(porCredito)} por crédito</p>
-                  <ul className="mt-5 space-y-2 border-t border-line pt-4 text-[12.5px] text-ink/65">
+                  <ul className="mt-5 space-y-2 border-t border-line pt-4 text-[13px] text-ink/65">
                     <li className="flex items-start gap-2">
                       <CheckCircle size={12} strokeWidth={2} className="mt-0.5 shrink-0 text-moss" aria-hidden="true" />
                       <span><strong className="font-semibold text-ink">{pkg.creditos}</strong> subidas al nº 1</span>
@@ -280,7 +280,7 @@ function ModalCompraCreditos({
           <div>
             <h4 className="t-label mb-3 text-ink/50">01 · Elige cómo vas a pagar</h4>
             {configurado && metodosPago.length === 0 && (
-              <div className="border border-signal-deep/40 bg-signal/15 p-4 text-[12.5px] leading-relaxed text-ink/70">
+              <div className="border border-signal-deep/40 bg-signal/15 p-4 text-[13px] leading-relaxed text-ink/70">
                 Estamos terminando de configurar los pagos con Bizum, transferencia y PayPal.
                 Escríbenos desde{' '}
                 <LocalLink href="/contacto" className="font-semibold underline">contacto</LocalLink> y te
@@ -292,7 +292,7 @@ function ModalCompraCreditos({
                 <button key={m.id} onClick={() => setMetodo(m.id)}
                   className={`border p-3 text-center transition-colors ${metodo === m.id ? 'border-ink bg-signal' : 'border-line bg-paper hover:border-ink'}`}>
                   <span className="t-label block text-ink/45">{m.nombre.slice(0, 2).toUpperCase()}</span>
-                  <span className="mt-1 block text-[12.5px] font-medium text-ink">{m.nombre}</span>
+                  <span className="mt-1 block text-[13px] font-medium text-ink">{m.nombre}</span>
                 </button>
               ))}
             </div>

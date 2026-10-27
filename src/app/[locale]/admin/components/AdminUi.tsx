@@ -150,7 +150,7 @@ export function Card({
         <header className="flex flex-col gap-2 border-b border-ink px-4 py-3 sm:flex-row sm:items-end sm:justify-between md:px-5">
           <div>
             {title && <h3 className="t-eyebrow text-ink">{title}</h3>}
-            {subtitle && <p className="mt-1.5 text-[11.5px] leading-relaxed text-ink/45">{subtitle}</p>}
+            {subtitle && <p className="mt-1.5 text-[12.5px] leading-relaxed text-ink/45">{subtitle}</p>}
           </div>
           {actions && <div className="flex flex-wrap items-center gap-2">{actions}</div>}
         </header>
@@ -204,7 +204,7 @@ export function StatCard({
       <div className="mt-4">
         <div className="t-display t-num text-[1.6rem] leading-none text-ink">{loading ? '—' : value}</div>
         <div className="t-label mt-2 text-ink/45">{label}</div>
-        {helper && <div className="mt-1.5 text-[11px] leading-snug text-ink/35">{helper}</div>}
+        {helper && <div className="mt-1.5 text-[12px] leading-snug text-ink/35">{helper}</div>}
       </div>
     </Comp>
   )
@@ -265,7 +265,7 @@ export function Empty({
         return <div className="mb-1 text-ink/25">{icon}</div>
       })()}
       <p className="text-[14px] font-semibold tracking-[-0.015em] text-ink">{title}</p>
-      {subtitle && <p className="max-w-md text-[12.5px] leading-relaxed text-ink/50">{subtitle}</p>}
+      {subtitle && <p className="max-w-md text-[13px] leading-relaxed text-ink/50">{subtitle}</p>}
       {action && <div className="mt-4">{action}</div>}
     </div>
   )
@@ -415,7 +415,7 @@ export function Modal({
         <div className="flex items-start justify-between gap-4 border-b border-ink px-4 py-3 md:px-5">
           <div>
             <h2 className="text-[14px] font-semibold tracking-[-0.015em] text-ink">{title}</h2>
-            {subtitle && <p className="mt-1 text-[11.5px] text-ink/45">{subtitle}</p>}
+            {subtitle && <p className="mt-1 text-[12.5px] text-ink/45">{subtitle}</p>}
           </div>
           <button
             type="button"
@@ -485,7 +485,7 @@ export function Confirm({
 export function TableShell({ children, className }: { children: ReactNode; className?: string }) {
   return (
     <div className={clsx('overflow-x-auto border border-line bg-[#FBFAF5]', className)}>
-      <table className="w-full min-w-[720px] text-left text-[12.5px]">{children}</table>
+      <table className="w-full min-w-[720px] text-left text-[13px]">{children}</table>
     </div>
   )
 }
@@ -567,9 +567,9 @@ export function Button({
     success: 'border border-moss bg-moss text-paper hover:opacity-90',
     outline: 'btn-outline' }
   const sizes = {
-    xs: 'h-6 px-2 text-[10.5px]',
-    sm: 'h-7 px-2.5 text-[11px]',
-    md: 'h-9 px-3.5 text-[12.5px]' }
+    xs: 'h-6 px-2 text-[12px]',
+    sm: 'h-7 px-2.5 text-[12px]',
+    md: 'h-9 px-3.5 text-[13px]' }
   return (
     <button
       className={clsx('inline-flex items-center justify-center gap-1.5 font-medium tracking-[0.02em] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-1 focus-visible:ring-offset-paper disabled:cursor-not-allowed disabled:opacity-50', sizes[size], variants[variant], className)}

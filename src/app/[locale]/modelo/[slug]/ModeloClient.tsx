@@ -111,7 +111,7 @@ export default function ModeloClient({
 
             <div className="mt-5 flex gap-3 border border-line bg-paper-2/50 p-4">
               <Info size={15} strokeWidth={1.6} className="mt-0.5 shrink-0 text-ink/40" aria-hidden="true" />
-              <p className="text-[12.5px] leading-relaxed text-ink/60">
+              <p className="text-[13px] leading-relaxed text-ink/60">
                 Usamos la <strong className="font-semibold text-ink">mediana</strong> y no la media
                 porque un solo anuncio muy caro distorsionaría el resultado. El{' '}
                 <strong className="font-semibold text-ink">rango habitual</strong> deja fuera el 25 %
@@ -293,7 +293,7 @@ function Metrica({
     <div className={`p-5 ${destacada ? 'bg-signal' : 'bg-[#FBFAF5]'}`}>
       <dt className="t-label text-ink/45">{etiqueta}</dt>
       <dd className="t-display t-num mt-3 text-[1.55rem] leading-none text-ink md:text-[1.9rem]">{valor}</dd>
-      {nota && <p className="mt-2 text-[11.5px] leading-snug text-ink/45">{nota}</p>}
+      {nota && <p className="mt-2 text-[12.5px] leading-snug text-ink/45">{nota}</p>}
     </div>
   )
 }

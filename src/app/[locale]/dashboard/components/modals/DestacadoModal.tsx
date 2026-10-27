@@ -68,7 +68,7 @@ export default function DestacadoModal({
           <strong>{titulo}</strong>
         </p>
         <p className="mb-3 text-[13px] leading-relaxed text-ink/65">Tu publicación aparecerá:</p>
-        <ul className="mb-6 space-y-1.5 text-[12.5px] text-ink/65" role="list">
+        <ul className="mb-6 space-y-1.5 text-[13px] text-ink/65" role="list">
           <li className="flex items-start gap-2">
             <Star size={11} strokeWidth={2} className="mt-1 shrink-0 text-ink/40" aria-hidden="true" />
             <span>En la <strong className="font-semibold text-ink">página principal</strong> como destacado</span>
@@ -85,7 +85,7 @@ export default function DestacadoModal({
             className="mb-4 w-full border border-moss/35 bg-moss-soft p-3 text-left transition-colors hover:border-moss"
           >
             <span className="block text-[13px] font-semibold text-moss">Usar destacado del plan · 7 días</span>
-            <span className="mt-0.5 block text-[11.5px] text-moss/80">Te quedan {restantes} este mes. No gasta créditos.</span>
+            <span className="mt-0.5 block text-[12.5px] text-moss/80">Te quedan {restantes} este mes. No gasta créditos.</span>
           </button>
         )}
         <div className="space-y-2 mb-6">
@@ -106,7 +106,7 @@ export default function DestacadoModal({
               aria-label={`Destacar ${op.horas} horas por ${op.creditos} créditos`}
             >
               <span className="t-num text-[13px] font-semibold text-ink">{op.horas} h</span>
-              <span className="t-num text-[12.5px] text-ink/60">{op.creditos} créditos</span>
+              <span className="t-num text-[13px] text-ink/60">{op.creditos} créditos</span>
               {creditos < op.creditos && <span className="t-label text-clay">insuficiente</span>}
             </button>
           ))}

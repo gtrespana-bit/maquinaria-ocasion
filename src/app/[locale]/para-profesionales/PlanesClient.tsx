@@ -330,7 +330,7 @@ export default function PlanesClient() {
                 type="button"
                 onClick={() => setPeriodicidad('mensual')}
                 aria-pressed={periodicidad === 'mensual'}
-                className={`px-4 py-1.5 text-[12px] font-semibold transition-colors ${
+                className={`px-4 py-1.5 text-[13px] font-semibold transition-colors ${
                   periodicidad === 'mensual' ? 'bg-ink text-paper' : 'text-ink/60 hover:text-ink'
                 }`}
               >
@@ -340,7 +340,7 @@ export default function PlanesClient() {
                 type="button"
                 onClick={() => setPeriodicidad('anual')}
                 aria-pressed={periodicidad === 'anual'}
-                className={`px-4 py-1.5 text-[12px] font-semibold transition-colors ${
+                className={`px-4 py-1.5 text-[13px] font-semibold transition-colors ${
                   periodicidad === 'anual' ? 'bg-ink text-paper' : 'text-ink/60 hover:text-ink'
                 }`}
               >
@@ -357,9 +357,6 @@ export default function PlanesClient() {
           const esActual = planActual === p.id
           const precio = precioPlan(p.id, periodicidad)
           const ahorro = descuentoAnualPct(p.id)
-          const porAnuncio = p.cupo
-            ? (periodicidad === 'anual' ? precioMensualEquivalente(p.id) : precio) / p.cupo
-            : null
           return (
             <div
               key={p.id}
@@ -401,11 +398,6 @@ export default function PlanesClient() {
                   </p>
                 ) : (
                   <p className="t-label mt-2 text-ink/45">Facturado mes a mes · sin permanencia</p>
-                )}
-                {porAnuncio != null && (
-                  <p className="t-label mt-1 font-semibold text-moss">
-                    {formatPrecio(porAnuncio)} por anuncio al mes
-                  </p>
                 )}
               </div>
 
@@ -479,21 +471,21 @@ export default function PlanesClient() {
           <ShieldCheck size={18} className="mt-0.5 shrink-0 text-moss" />
           <div>
             <p className="text-[13px] font-semibold text-ink">Sin permanencia</p>
-            <p className="mt-0.5 text-[11.5px] leading-relaxed text-ink/55">Cancela cuando quieras desde tu panel.</p>
+            <p className="mt-0.5 text-[12.5px] leading-relaxed text-ink/55">Cancela cuando quieras desde tu panel.</p>
           </div>
         </div>
         <div className="flex items-start gap-2 border border-line bg-[#FBFAF5] p-3">
           <CreditCard size={18} className="mt-0.5 shrink-0 text-moss" />
           <div>
             <p className="text-[13px] font-semibold text-ink">Factura con IVA</p>
-            <p className="mt-0.5 text-[11.5px] leading-relaxed text-ink/55">Añade tu NIF/CIF en el pago. Tarjeta, Apple Pay y Google Pay.</p>
+            <p className="mt-0.5 text-[12.5px] leading-relaxed text-ink/55">Añade tu NIF/CIF en el pago. Tarjeta, Apple Pay y Google Pay.</p>
           </div>
         </div>
         <div className="flex items-start gap-2 border border-line bg-[#FBFAF5] p-3">
           <Lock size={18} className="mt-0.5 shrink-0 text-moss" />
           <div>
             <p className="text-[13px] font-semibold text-ink">Pago seguro con Stripe</p>
-            <p className="mt-0.5 text-[11.5px] leading-relaxed text-ink/55">No vemos ni guardamos los datos de tu tarjeta.</p>
+            <p className="mt-0.5 text-[12.5px] leading-relaxed text-ink/55">No vemos ni guardamos los datos de tu tarjeta.</p>
           </div>
         </div>
       </div>
@@ -502,7 +494,7 @@ export default function PlanesClient() {
         <div className="mt-4 flex flex-col justify-between gap-3 border border-line bg-[#FBFAF5] p-4 sm:flex-row sm:items-center">
           <div>
             <p className="text-[14px] font-semibold text-ink">Gestionar mi suscripción</p>
-            <p className="mt-0.5 text-[11.5px] leading-relaxed text-ink/55">
+            <p className="mt-0.5 text-[12.5px] leading-relaxed text-ink/55">
               Cambia la tarjeta, descarga facturas o date de baja.
               {estado.planHasta ? ` Próxima renovación: ${fechaCorta(estado.planHasta)}.` : ''}
             </p>
@@ -529,7 +521,7 @@ export default function PlanesClient() {
         >
           <span>
             <span className="block text-[13.5px] font-semibold text-ink">¿Tienes un cupón?</span>
-            <span className="mt-0.5 block text-[12px] text-ink/50">Descuento en la cuota o días de regalo.</span>
+            <span className="mt-0.5 block text-[13px] text-ink/50">Descuento en la cuota o días de regalo.</span>
           </span>
           <span className="t-label text-ink/55">{mostrarCupon ? 'Ocultar' : 'Añadir'}</span>
         </button>
@@ -569,7 +561,7 @@ export default function PlanesClient() {
             </button>
           </div>
         )}
-        <p className="mt-3 text-[12px] text-ink/50">
+        <p className="mt-3 text-[13px] text-ink/50">
           El descuento se aplica al elegir un plan. Los cupones de días se canjean aquí sin pasar por el pago.
         </p>
       </div>
@@ -597,14 +589,14 @@ export default function PlanesClient() {
       )}
 
       {session && estado?.tipo === 'particular' && (
-        <p className="mt-4 border border-line bg-paper-2/60 p-3 text-[12px] text-ink/60">
+        <p className="mt-4 border border-line bg-paper-2/60 p-3 text-[13px] text-ink/60">
           Al contratar un plan, tu perfil pasa a <strong>profesional</strong> automáticamente (es gratis). Así
           recibes el cupo que pagas en lugar de quedarte en el límite de 1 anuncio.
         </p>
       )}
 
       {user?.email && !estado && !authLoading && (
-        <p className="mt-4 text-center text-[11.5px] text-ink/40">
+        <p className="mt-4 text-center text-[12.5px] text-ink/40">
           Sesión iniciada como {user.email}
         </p>
       )}

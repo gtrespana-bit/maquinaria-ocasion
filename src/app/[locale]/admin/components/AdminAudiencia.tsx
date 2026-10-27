@@ -68,7 +68,7 @@ function Barras({
             className={`w-full rounded-t ${color}`}
             style={{ height: `${Math.max(3, (d.valor / maximo) * altura)}px` }}
           />
-          <span className="text-[9px] leading-tight text-ink/35">{datos.length <= 32 ? d.corta : ''}</span>
+          <span className="text-[10px] leading-tight text-ink/35">{datos.length <= 32 ? d.corta : ''}</span>
         </div>
       ))}
     </div>
@@ -94,7 +94,7 @@ function ListaRanking({
         {icono} {titulo}
       </h4>
       {filas.length === 0 ? (
-        <p className="text-[12.5px] leading-relaxed text-ink/55">{vacio}</p>
+        <p className="text-[13px] leading-relaxed text-ink/55">{vacio}</p>
       ) : (
         <div className="space-y-2">
           {filas.map((f, i) => (
@@ -112,7 +112,7 @@ function ListaRanking({
               <div className="h-1.5 w-full overflow-hidden rounded-full bg-paper-2">
                 <div className="h-full rounded-full bg-ink/70" style={{ width: `${(f.visitas / maximo) * 100}%` }} />
               </div>
-              <p className="text-[10px] text-ink/35">
+              <p className="text-[11.5px] text-ink/35">
                 {formatNumber(f.visitas)} {sufijo} · {formatNumber(f.visitantes)} visitantes únicos
               </p>
             </div>
@@ -249,7 +249,7 @@ export default function AdminAudiencia({ notify }: { notify: (msg: string) => vo
         <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
           <div>
             <h2 className="text-xl font-semibold text-ink">Audiencia y actividad</h2>
-            <p className="text-[12.5px] leading-relaxed text-ink/55">
+            <p className="text-[13px] leading-relaxed text-ink/55">
               {informe.rango.etiqueta} · {informe.rango.dias} días ·{' '}
               {informe.rango.granularidad === 'dia' ? 'por día' : informe.rango.granularidad === 'semana' ? 'por semana' : 'por mes'}
             </p>
@@ -447,7 +447,7 @@ export default function AdminAudiencia({ notify }: { notify: (msg: string) => vo
                 </div>
               )
             })}
-            {(data?.fuentesAgrupadas || []).length === 0 && <p className="text-[12.5px] leading-relaxed text-ink/55">Sin datos de origen todavía.</p>}
+            {(data?.fuentesAgrupadas || []).length === 0 && <p className="text-[13px] leading-relaxed text-ink/55">Sin datos de origen todavía.</p>}
           </div>
         </Card>
       </div>
@@ -579,7 +579,7 @@ export default function AdminAudiencia({ notify }: { notify: (msg: string) => vo
                   )
                 })}
               </div>
-              <div className="mt-1 flex justify-between text-[9px] text-ink/35">
+              <div className="mt-1 flex justify-between text-[10px] text-ink/35">
                 <span>00h</span><span>12h</span><span>23h</span>
               </div>
             </div>
@@ -590,7 +590,7 @@ export default function AdminAudiencia({ notify }: { notify: (msg: string) => vo
                 {visitas.diasSemana.map((d) => {
                   const maximo = Math.max(1, ...visitas.diasSemana.map((x) => x.visitas))
                   return (
-                    <div key={d.dow} className="flex items-center gap-2 text-[11px]">
+                    <div key={d.dow} className="flex items-center gap-2 text-[12px]">
                       <span className="w-16 text-ink/55">{NOMBRE_DIA[d.dow - 1] || d.dow}</span>
                       <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-paper-2">
                         <div className="h-full rounded-full bg-ink/70" style={{ width: `${(d.visitas / maximo) * 100}%` }} />
@@ -624,11 +624,11 @@ export default function AdminAudiencia({ notify }: { notify: (msg: string) => vo
             ].map((k) => (
               <div key={k.label} className="rounded-xl border border-line bg-paper-2/60 px-3 py-2.5">
                 <p className="text-lg font-semibold text-ink">{formatNumber(k.valor)}</p>
-                <p className="text-[11px] text-ink/55">{k.label}</p>
+                <p className="text-[12px] text-ink/55">{k.label}</p>
               </div>
             ))}
           </div>
-          <div className="mt-4 flex flex-wrap items-center gap-2 text-[11.5px] text-ink/45">
+          <div className="mt-4 flex flex-wrap items-center gap-2 text-[12.5px] text-ink/45">
             <span className="font-semibold">Planes activos:</span>
             {estado.packsPorPlan.map((p) => (
               <Badge key={p.plan} tone={p.plan === 'unlimited' ? 'brand' : p.plan === 'starter' ? 'blue' : 'gray'}>
@@ -661,7 +661,7 @@ export default function AdminAudiencia({ notify }: { notify: (msg: string) => vo
                   <LocalLink href={productUrl({ id: p.id, slug: p.slug })} className="block truncate text-[13px] font-medium text-ink hover:text-ink">
                     {p.titulo}
                   </LocalLink>
-                  <p className="text-[11.5px] text-ink/45">Publicado {timeAgo(p.creadoEn)} · sin visitas en el periodo</p>
+                  <p className="text-[12.5px] text-ink/45">Publicado {timeAgo(p.creadoEn)} · sin visitas en el periodo</p>
                 </div>
                 <Badge tone="gray">{formatDate(p.creadoEn)}</Badge>
               </div>
@@ -673,7 +673,7 @@ export default function AdminAudiencia({ notify }: { notify: (msg: string) => vo
         </Card>
       </div>
 
-      <div className="flex flex-wrap items-center gap-3 rounded-2xl border border-line bg-[#FBFAF5] px-4 py-3 text-[11.5px] text-ink/45">
+      <div className="flex flex-wrap items-center gap-3 rounded-2xl border border-line bg-[#FBFAF5] px-4 py-3 text-[12.5px] text-ink/45">
         <BarChart3 size={14} className="text-ink" />
         <span>
           Informe generado {timeAgo(informe.generadoEn)} · periodo anterior: registros {formatNumber(comparativa.registros)},

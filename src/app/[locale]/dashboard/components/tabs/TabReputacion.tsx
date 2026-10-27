@@ -79,11 +79,11 @@ export default function TabReputacion({
                     {estrellasRender(r.puntuacion, 14)}
                     <span className="text-sm font-medium ml-2">{r.puntuacion}/5</span>
                   </div>
-                  <span className="text-[11.5px] text-ink/45">
+                  <span className="text-[12.5px] text-ink/45">
                     {new Date(r.creado_en).toLocaleDateString('es-ES', { day: '2-digit', month: 'short', year: 'numeric' })}
                   </span>
                 </div>
-                {r.comentario && <p className="text-[12.5px] text-ink/55">{r.comentario}</p>}
+                {r.comentario && <p className="text-[13px] text-ink/55">{r.comentario}</p>}
               </div>
             ))}
           </div>
@@ -99,19 +99,19 @@ export default function TabReputacion({
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">
           <div className="bg-paper-2 rounded-xl p-4">
             <p className="text-3xl font-semibold text-ink">{numPubsActivas}</p>
-            <p className="text-[11.5px] text-ink/45 mt-1">{t('activeListings')}</p>
+            <p className="text-[12.5px] text-ink/45 mt-1">{t('activeListings')}</p>
           </div>
           <div className="bg-paper-2 rounded-xl p-4">
             <p className="text-3xl font-semibold text-moss">{numPubsVendidas}</p>
-            <p className="text-[11.5px] text-ink/45 mt-1">{t('soldPaused')}</p>
+            <p className="text-[12.5px] text-ink/45 mt-1">{t('soldPaused')}</p>
           </div>
           <div className="bg-paper-2 rounded-xl p-4">
             <p className="text-3xl font-semibold text-yellow-500">{antiguedadDias}</p>
-            <p className="text-[11.5px] text-ink/45 mt-1">{t('daysOnPlatform')}</p>
+            <p className="text-[12.5px] text-ink/45 mt-1">{t('daysOnPlatform')}</p>
           </div>
           <div className="bg-paper-2 rounded-xl p-4">
             <p className="text-3xl font-semibold text-ink">{verificado ? '✅' : '⏳'}</p>
-            <p className="text-[11.5px] text-ink/45 mt-1">{t('verification')}</p>
+            <p className="text-[12.5px] text-ink/45 mt-1">{t('verification')}</p>
           </div>
         </div>
       </div>

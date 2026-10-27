@@ -120,7 +120,7 @@ export default function AdminComunicacion({ notify }: { notify: (msg: string) =>
           <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-ink/10 text-ink"><Megaphone size={22} /></span>
           <div>
             <h2 className="text-xl font-semibold text-ink">Comunicación</h2>
-            <p className="text-[12.5px] leading-relaxed text-ink/55">Banners del sitio · {items.filter((a) => a.activo).length} activos</p>
+            <p className="text-[13px] leading-relaxed text-ink/55">Banners del sitio · {items.filter((a) => a.activo).length} activos</p>
           </div>
         </div>
         <div className="flex gap-2">
@@ -133,7 +133,7 @@ export default function AdminComunicacion({ notify }: { notify: (msg: string) =>
       <Card title="Vista previa del banner" subtitle="Así lo verán los usuarios en el sitio" bodyClassName="p-4">
         <div className="on-dark flex items-center gap-3 bg-ink px-4 py-2.5 text-paper">
           <span aria-hidden="true" className="h-1.5 w-1.5 shrink-0 bg-signal" />
-          <p className="min-w-0 flex-1 text-[12.5px] leading-snug text-paper/80">
+          <p className="min-w-0 flex-1 text-[13px] leading-snug text-paper/80">
             <span className="t-label mr-2 text-signal">{form.titulo || 'Título del anuncio'}</span>
             {form.mensaje || 'Mensaje que verán los usuarios…'}
             {form.enlace && (
@@ -157,7 +157,7 @@ export default function AdminComunicacion({ notify }: { notify: (msg: string) =>
                     <Badge tone={a.activo ? 'green' : 'gray'}>{a.activo ? 'Activo' : 'Pausado'}</Badge>
                     {a.expira_en && <Badge tone="yellow">expira {formatDate(a.expira_en)}</Badge>}
                   </div>
-                  <p className="mt-1 text-[12.5px] leading-relaxed text-ink/55">{a.mensaje}</p>
+                  <p className="mt-1 text-[13px] leading-relaxed text-ink/55">{a.mensaje}</p>
                   {a.enlace && <a href={a.enlace} target="_blank" rel="noopener noreferrer" className="mt-1 inline-flex items-center gap-1 t-label text-ink/45 hover:underline"><Link2 size={12} /> {a.enlace_texto || a.enlace}</a>}
                   <p className="mt-1 t-label text-ink/35">{formatDateTime(a.creado_en)}</p>
                 </div>
@@ -196,13 +196,13 @@ export default function AdminComunicacion({ notify }: { notify: (msg: string) =>
           </div>
           <label className="flex items-center gap-2 sm:col-span-2">
             <input type="checkbox" checked={form.activo} onChange={(e) => setForm({ ...form, activo: e.target.checked })} className="h-4 w-4 rounded border-line-strong text-ink" />
-            <span className="text-[12.5px] font-medium text-ink">Publicar activo de inmediato</span>
+            <span className="text-[13px] font-medium text-ink">Publicar activo de inmediato</span>
           </label>
         </div>
       </Modal>
 
       <Modal open={!!deleteItem} onClose={() => setDeleteItem(null)} title="Eliminar anuncio" size="sm" footer={<><Button variant="outline" onClick={() => setDeleteItem(null)}>Cancelar</Button><Button variant="danger" onClick={borrar} disabled={busy}><Trash2 size={14} /> Eliminar</Button></>}>
-        <p className="text-[12.5px] leading-relaxed text-ink/55">Se eliminará el anuncio <strong>{deleteItem?.titulo}</strong>. Esta acción no puede deshacerse.</p>
+        <p className="text-[13px] leading-relaxed text-ink/55">Se eliminará el anuncio <strong>{deleteItem?.titulo}</strong>. Esta acción no puede deshacerse.</p>
       </Modal>
     </div>
   )

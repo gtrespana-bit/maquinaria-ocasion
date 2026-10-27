@@ -288,7 +288,7 @@ export default function TabProductos({
       <div className="border border-line bg-[#FBFAF5] px-6 py-14 text-center">
         <Package size={22} strokeWidth={1.3} className="mx-auto mb-4 text-ink/25" aria-hidden="true" />
         <h3 className="text-[15px] font-semibold tracking-[-0.015em] text-ink">Aún no tienes anuncios</h3>
-        <p className="mt-1.5 text-[12.5px] text-ink/55">Publica el primero en un par de minutos. Es gratis.</p>
+        <p className="mt-1.5 text-[13px] text-ink/55">Publica el primero en un par de minutos. Es gratis.</p>
         <LocalLink href="/publicar" className="btn btn-ink mt-6">
           <Plus size={13} aria-hidden="true" /> Publicar ahora
         </LocalLink>
@@ -310,13 +310,13 @@ export default function TabProductos({
       <div className="mb-4 flex flex-col gap-3 border-b border-ink pb-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <h3 className="t-eyebrow text-ink">Anuncios</h3>
-          <p className="text-[12.5px] text-ink/55">
+          <p className="text-[13px] text-ink/55">
             {nActivos} activos · {nVendidos} vendidos
             {cupo ? ` · cupo ${cupo.usados}/${cupo.max == null ? '∞' : cupo.max}` : ''}
             {cupo?.trial && cupo.profesional ? ' · mes de prueba' : ''}
           </p>
           {cupo && !cupo.puedePublicar && (
-            <p className="mt-1 text-[11.5px] text-clay">
+            <p className="mt-1 text-[12.5px] text-clay">
               Cupo lleno.{' '}
               <LocalLink href="/para-profesionales" className="underline font-semibold">
                 Ver planes
@@ -349,7 +349,7 @@ export default function TabProductos({
       </div>
 
       {lista.length === 0 ? (
-        <div className="border border-line bg-[#FBFAF5] px-6 py-10 text-center text-[12.5px] text-ink/50">
+        <div className="border border-line bg-[#FBFAF5] px-6 py-10 text-center text-[13px] text-ink/50">
           No hay anuncios en este filtro.
         </div>
       ) : (
@@ -374,7 +374,7 @@ export default function TabProductos({
                     {p.imagen_url ? (
                       <Image src={p.imagen_url} alt="" className="object-cover" fill sizes="72px" />
                     ) : (
-                      <span className="flex h-full items-center justify-center text-[10px] text-ink/40">Sin foto</span>
+                      <span className="flex h-full items-center justify-center text-[11.5px] text-ink/40">Sin foto</span>
                     )}
                     {isVendido && (
                       <span className="t-label absolute inset-0 flex items-center justify-center bg-ink/80 text-paper">Vendido</span>
@@ -391,7 +391,7 @@ export default function TabProductos({
                       </div>
                       <BadgeEstado vendido={isVendido} activo={!!p.activo} pausadoPorPlan={!!p.pausado_por_plan} />
                     </div>
-                    <div className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-[11.5px] text-ink/50">
+                    <div className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-[12.5px] text-ink/50">
                       <span className="t-num inline-flex items-center gap-1"><Eye size={10} aria-hidden="true" /> {p.visitas || 0}</span>
                       {difVisitas != null && (
                         <span className={difVisitas < 0 ? 'text-amber-700 font-medium' : 'text-moss font-medium'}>
@@ -447,26 +447,26 @@ export default function TabProductos({
                       <div role="menu" className="absolute right-0 top-full z-20 mt-1 w-52 border border-line-strong bg-[#FBFAF5] py-1">
                         {!isVendido && p.activo && (
                           <>
-                            <button type="button" role="menuitem" onClick={() => { onBoost({ productId: p.id, titulo: p.titulo }); cerrarMenus() }} className="flex w-full items-center gap-2 px-3 py-2 text-left text-[12.5px] text-ink/80 hover:bg-paper-2">
+                            <button type="button" role="menuitem" onClick={() => { onBoost({ productId: p.id, titulo: p.titulo }); cerrarMenus() }} className="flex w-full items-center gap-2 px-3 py-2 text-left text-[13px] text-ink/80 hover:bg-paper-2">
                               <Zap size={12} strokeWidth={1.6} className="text-ink/50" /> Subir al nº 1
                             </button>
-                            <button type="button" role="menuitem" onClick={() => abrirVendido(p.id)} className="flex w-full items-center gap-2 px-3 py-2 text-left text-[12.5px] text-ink/80 hover:bg-paper-2">
+                            <button type="button" role="menuitem" onClick={() => abrirVendido(p.id)} className="flex w-full items-center gap-2 px-3 py-2 text-left text-[13px] text-ink/80 hover:bg-paper-2">
                               <CheckCircle2 size={12} strokeWidth={1.6} className="text-moss" /> Marcar vendido
                             </button>
                             {puedeRenovar && (
-                              <button type="button" role="menuitem" onClick={() => renovarProducto(p.id)} className="flex w-full items-center gap-2 px-3 py-2 text-left text-[12.5px] text-ink/80 hover:bg-paper-2">
+                              <button type="button" role="menuitem" onClick={() => renovarProducto(p.id)} className="flex w-full items-center gap-2 px-3 py-2 text-left text-[13px] text-ink/80 hover:bg-paper-2">
                                 <RefreshCw size={12} strokeWidth={1.6} /> Renovar
                               </button>
                             )}
                           </>
                         )}
                         {!isVendido && (
-                          <button type="button" role="menuitem" onClick={() => pausarActivar(p.id, p.activo)} className="flex w-full items-center gap-2 px-3 py-2 text-left text-[12.5px] text-ink/80 hover:bg-paper-2">
+                          <button type="button" role="menuitem" onClick={() => pausarActivar(p.id, p.activo)} className="flex w-full items-center gap-2 px-3 py-2 text-left text-[13px] text-ink/80 hover:bg-paper-2">
                             {p.activo ? <Pause size={12} strokeWidth={1.6} /> : <Play size={12} strokeWidth={1.6} />} {p.activo ? 'Pausar' : 'Activar'}
                           </button>
                         )}
                         {!isVendido && (
-                          <button type="button" role="menuitem" onClick={() => eliminarProducto(p.id)} className="flex w-full items-center gap-2 px-3 py-2 text-left text-[12.5px] text-clay hover:bg-clay/[0.06]">
+                          <button type="button" role="menuitem" onClick={() => eliminarProducto(p.id)} className="flex w-full items-center gap-2 px-3 py-2 text-left text-[13px] text-clay hover:bg-clay/[0.06]">
                             <X size={12} strokeWidth={1.6} /> Eliminar
                           </button>
                         )}
@@ -504,7 +504,7 @@ export default function TabProductos({
             {vendidoPaso === 'tipo' && (
               <>
                 <h3 id="vendido-titulo" className="mb-2 text-[15px] font-semibold tracking-[-0.015em] text-ink">¿Cómo se vendió?</h3>
-                <p className="mb-6 text-[12.5px] leading-relaxed text-ink/55">Esto marca tu anuncio como vendido y ya no aparecerá activo.</p>
+                <p className="mb-6 text-[13px] leading-relaxed text-ink/55">Esto marca tu anuncio como vendido y ya no aparecerá activo.</p>
                 <div className="space-y-3">
                   <button
                     onClick={() => {
@@ -517,7 +517,7 @@ export default function TabProductos({
                     className="w-full border border-moss/30 bg-moss-soft p-4 text-left transition-colors hover:border-moss"
                   >
                     <p className="text-[13px] font-semibold text-moss">Vendido en esta plataforma</p>
-                    <p className="mt-1 text-[11.5px] text-moss/75">
+                    <p className="mt-1 text-[12.5px] text-moss/75">
                       {interesados.length > 0
                         ? `${interesados.length} persona(s) te contactaron por este producto`
                         : 'No hubo mensajes por este producto'
@@ -529,14 +529,14 @@ export default function TabProductos({
                     className="w-full border border-line bg-paper-2 p-4 text-left transition-colors hover:border-ink"
                   >
                     <p className="text-[13px] font-semibold text-ink">Vendido en otro lugar</p>
-                    <p className="mt-1 text-[11.5px] text-ink/45">Facebook, WhatsApp, en persona, etc.</p>
+                    <p className="mt-1 text-[12.5px] text-ink/45">Facebook, WhatsApp, en persona, etc.</p>
                   </button>
                   <button
                     onClick={() => marcarVendidoSimple(vendidoModal, 'no_especificado')}
                     className="w-full border border-line bg-paper-2 p-4 text-left transition-colors hover:border-ink"
                   >
                     <p className="text-[13px] font-semibold text-ink">Prefiero no decir</p>
-                    <p className="mt-1 text-[11.5px] text-ink/45">Solo marca el anuncio como vendido</p>
+                    <p className="mt-1 text-[12.5px] text-ink/45">Solo marca el anuncio como vendido</p>
                   </button>
                 </div>
               </>
@@ -545,12 +545,12 @@ export default function TabProductos({
             {vendidoPaso === 'comprador' && (
               <>
                 <h3 className="mb-2 text-[15px] font-semibold tracking-[-0.015em] text-ink">¿A quién le vendiste?</h3>
-                <p className="mb-4 text-[12.5px] leading-relaxed text-ink/55">Selecciona a la persona que te contactó por este producto.</p>
+                <p className="mb-4 text-[13px] leading-relaxed text-ink/55">Selecciona a la persona que te contactó por este producto.</p>
                 <div className="space-y-2 max-h-64 overflow-y-auto">
                   {cargandoVendidos ? (
                     <p className="t-label py-8 text-center text-ink/35">Cargando…</p>
                   ) : interesados.length === 0 ? (
-                    <p className="py-4 text-center text-[12.5px] text-ink/45">Nadie te contactó por este producto</p>
+                    <p className="py-4 text-center text-[13px] text-ink/45">Nadie te contactó por este producto</p>
                   ) : (
                     <>
                       {interesados.map((inter) => (
@@ -561,7 +561,7 @@ export default function TabProductos({
                         >
                           <p className="text-[13px] font-medium text-ink">{inter.nombre}</p>
                           {inter.ultimoMensaje && (
-                            <p className="mt-0.5 truncate text-[11.5px] text-ink/45">&ldquo;{inter.ultimoMensaje}&rdquo;</p>
+                            <p className="mt-0.5 truncate text-[12.5px] text-ink/45">&ldquo;{inter.ultimoMensaje}&rdquo;</p>
                           )}
                         </button>
                       ))}
@@ -587,7 +587,7 @@ export default function TabProductos({
                   <h3 className="text-[15px] font-semibold tracking-[-0.015em] text-ink">Venta registrada</h3>
                 </div>
                 <div className="mb-4 border border-line bg-paper-2 p-4">
-                  <p className="mb-3 text-[12.5px] text-ink/70">
+                  <p className="mb-3 text-[13px] text-ink/70">
                     ¿Quieres dejarle una reseña a{' '}
                     <span className="text-ink">
                       {compradorInfo && compradorInfo.nombre ? compradorInfo.nombre : 'este comprador'}
@@ -638,7 +638,7 @@ export default function TabProductos({
                   <CheckCircle2 size={22} strokeWidth={1.6} className="text-moss" />
                 </div>
                 <h3 className="mb-2 text-[17px] font-semibold tracking-[-0.02em] text-ink">Anuncio vendido</h3>
-                <p className="mb-6 text-[12.5px] leading-relaxed text-ink/55">Tu anuncio ya está marcado como vendido. El comprador recibió un mensaje.</p>
+                <p className="mb-6 text-[13px] leading-relaxed text-ink/55">Tu anuncio ya está marcado como vendido. El comprador recibió un mensaje.</p>
                 <button
                   onClick={() => { setVendidoModal(null); window.location.reload() }}
                   className="btn btn-ink btn-lg"

@@ -32,7 +32,7 @@ export default function TabCuenta(props: Props) {
             <UserRound size={18} className="text-ink" aria-hidden="true" />
             Tu perfil público
           </h3>
-          <p className="text-[12.5px] text-ink/55 mt-0.5">
+          <p className="text-[13px] text-ink/55 mt-0.5">
             Nombre, foto, teléfono y tipo de vendedor se editan arriba, en la cabecera.
           </p>
         </div>

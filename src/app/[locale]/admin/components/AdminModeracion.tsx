@@ -156,7 +156,7 @@ export default function AdminModeracion({
           <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-paper-2 text-yellow-700"><ShieldAlert size={22} /></span>
           <div>
             <h2 className="text-xl font-semibold text-ink">Moderación</h2>
-            <p className="text-[12.5px] leading-relaxed text-ink/55">{denuncias.length} denuncias activas · {pendientes.length} publicaciones por revisar</p>
+            <p className="text-[13px] leading-relaxed text-ink/55">{denuncias.length} denuncias activas · {pendientes.length} publicaciones por revisar</p>
           </div>
         </div>
         <RefreshButton onClick={() => load(true)} loading={refreshing} />
@@ -183,8 +183,8 @@ export default function AdminModeracion({
                       <button onClick={() => setDetail({ product: null, denuncia: d })} className="font-semibold text-ink hover:text-ink">{d.producto?.titulo || 'Producto desconocido'}</button>
                       <Badge tone="red">{d.motivo || 'Reporte'}</Badge>
                     </div>
-                    <p className="mt-1 text-[11.5px] text-ink/45">{d.reportante?.nombre || 'Desconocido'} reportó {timeAgo(d.creada_en)}</p>
-                    {d.descripcion && <p className="mt-2 text-[12.5px] leading-relaxed text-ink/55">{d.descripcion}</p>}
+                    <p className="mt-1 text-[12.5px] text-ink/45">{d.reportante?.nombre || 'Desconocido'} reportó {timeAgo(d.creada_en)}</p>
+                    {d.descripcion && <p className="mt-2 text-[13px] leading-relaxed text-ink/55">{d.descripcion}</p>}
                   </div>
                 </div>
                 <div className="flex flex-wrap gap-2">
@@ -211,7 +211,7 @@ export default function AdminModeracion({
                   <div className="min-w-0">
                     <p className="font-semibold text-ink hover:text-ink">{p.titulo}</p>
                     <p className="mt-0.5 text-[13px] font-medium text-ink">{formatMoney(p.precio_usd)}</p>
-                    <div className="mt-1 flex flex-wrap gap-2 text-[11.5px] text-ink/45">
+                    <div className="mt-1 flex flex-wrap gap-2 text-[12.5px] text-ink/45">
                       <span>{p.subcategoria || '—'}</span>
                       <span>· {p.ubicacion_ciudad || 'España'}</span>
                       <span>· {formatDate(p.creado_en)}</span>
@@ -234,7 +234,7 @@ export default function AdminModeracion({
       {/* revisadas */}
       <Card title="Denuncias resueltas recientes" subtitle="Historial de moderación" bodyClassName="p-0">
         <div className="divide-y divide-line">
-          {revisados.length === 0 && <p className="px-5 py-8 text-center text-[12.5px] leading-relaxed text-ink/55">Aún no hay denuncias resueltas.</p>}
+          {revisados.length === 0 && <p className="px-5 py-8 text-center text-[13px] leading-relaxed text-ink/55">Aún no hay denuncias resueltas.</p>}
           {revisados.map((d) => (
             <div key={d.id} className="flex items-center justify-between px-5 py-3 text-sm">
               <div className="flex min-w-0 items-center gap-3">
@@ -263,7 +263,7 @@ export default function AdminModeracion({
                   <div><span className="text-ink/35">Ubicación</span><p className="font-semibold">{detail.product.ubicacion_ciudad || '—'}</p></div>
                   <div><span className="text-ink/35">Visitas</span><p className="font-semibold">{detail.product.visitas || 0}</p></div>
                 </div>
-                {detail.product.descripcion && <p className="whitespace-pre-line rounded-xl bg-paper-2 p-4 text-[12.5px] leading-relaxed text-ink/55">{detail.product.descripcion}</p>}
+                {detail.product.descripcion && <p className="whitespace-pre-line rounded-xl bg-paper-2 p-4 text-[13px] leading-relaxed text-ink/55">{detail.product.descripcion}</p>}
                 <div className="flex flex-wrap gap-2">
                   <Button size="sm" variant="success" disabled={busyId === detail.product.id} onClick={() => { aprobarProducto(detail.product!.id); setDetail(null) }}><Check size={14} /> Aprobar</Button>
                   <Button size="sm" variant="danger" disabled={busyId === detail.product.id} onClick={() => { rechazarProducto(detail.product!.id); setDetail(null) }}><X size={14} /> Rechazar</Button>
@@ -278,7 +278,7 @@ export default function AdminModeracion({
                   <div><span className="text-ink/35">Reportante</span><p className="font-semibold">{detail.denuncia.reportante?.nombre || '—'}</p></div>
                   <div className="col-span-2"><span className="text-ink/35">Producto</span><p className="font-semibold">{detail.denuncia.producto?.titulo || '—'}</p></div>
                 </div>
-                {detail.denuncia.descripcion && <p className="rounded-xl bg-paper-2 p-4 text-[12.5px] leading-relaxed text-ink/55">{detail.denuncia.descripcion}</p>}
+                {detail.denuncia.descripcion && <p className="rounded-xl bg-paper-2 p-4 text-[13px] leading-relaxed text-ink/55">{detail.denuncia.descripcion}</p>}
                 <div className="flex flex-wrap gap-2">
                   <Button size="sm" variant="ghost" disabled={busyId === detail.denuncia.id} onClick={() => { ignorarDenuncia(detail.denuncia!.id); setDetail(null) }}><X size={14} /> Ignorar</Button>
                   <Button size="sm" variant="danger" disabled={busyId === detail.denuncia.id} onClick={() => { bloquearDenuncia(detail.denuncia!); setDetail(null) }}><ShieldCheck size={14} /> Bloquear publicación</Button>

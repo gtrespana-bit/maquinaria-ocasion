@@ -131,7 +131,7 @@ export default function AdminReservas({ notify }: { notify: (msg: string) => voi
             { label: 'Total', valor: stats.total, tono: 'text-ink' },
           ].map(c => (
             <div key={c.label} className="rounded-xl border border-line bg-[#FBFAF5] p-3">
-              <p className="text-[11.5px] text-ink/45">{c.label}</p>
+              <p className="text-[12.5px] text-ink/45">{c.label}</p>
               <p className={`text-xl font-semibold ${c.tono}`}>{c.valor}</p>
             </div>
           ))}
@@ -181,12 +181,12 @@ export default function AdminReservas({ notify }: { notify: (msg: string) => voi
                 <div className="flex flex-wrap items-start justify-between gap-2">
                   <div className="min-w-0">
                     <p className="font-semibold text-ink">{r.productos?.titulo || 'Anuncio'}</p>
-                    <p className="text-[11.5px] text-ink/45">
+                    <p className="text-[12.5px] text-ink/45">
                       {r.productos?.precio_usd ? `${r.productos.precio_usd} € de precio · ` : ''}
                       Del {fecha(r.created_at)} · {estado === 'activa' ? `expira ${fecha(r.expira_en)}` : 'sin confirmar'}
                     </p>
                   </div>
-                  <span className={`rounded-full border px-2 py-1 text-[11px] font-bold ${etiqueta?.tono || 'border-line bg-paper-2'}`}>
+                  <span className={`rounded-full border px-2 py-1 text-[12px] font-bold ${etiqueta?.tono || 'border-line bg-paper-2'}`}>
                     {etiqueta?.label || r.estado}
                   </span>
                 </div>

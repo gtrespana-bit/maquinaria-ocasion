@@ -506,7 +506,7 @@ export default function PublicarPage() {
                     ? t('freeBanner')
                     : t('cupoLlenoTitulo')}
           </p>
-          <p className={`mt-1 text-[12.5px] leading-relaxed ${cupo.puedePublicar ? 'text-moss/80' : 'text-ink/70'}`}>
+          <p className={`mt-1 text-[13px] leading-relaxed ${cupo.puedePublicar ? 'text-moss/80' : 'text-ink/70'}`}>
             {t('cupoResumen', {
               usados: cupo.usados,
               max: cupo.max == null ? '∞' : cupo.max,
@@ -546,7 +546,7 @@ export default function PublicarPage() {
       {!cupo && (
         <div className="mt-7 border border-moss/25 bg-moss-soft p-4">
           <p className="text-[13.5px] font-semibold text-moss">{t('freeBanner')}</p>
-          <p className="mt-1 text-[12.5px] text-moss/80">{t('freeBannerDesc')}</p>
+          <p className="mt-1 text-[13px] text-moss/80">{t('freeBannerDesc')}</p>
         </div>
       )}
 
@@ -583,7 +583,7 @@ export default function PublicarPage() {
             <button
               onClick={() => setStep(s.num)}
               aria-current={step === s.num ? 'step' : undefined}
-              className={`t-num flex h-8 w-8 items-center justify-center border text-[12px] font-semibold transition-colors ${
+              className={`t-num flex h-8 w-8 items-center justify-center border text-[13px] font-semibold transition-colors ${
                 step === s.num
                   ? 'border-ink bg-ink text-paper'
                   : step > s.num
@@ -626,7 +626,7 @@ export default function PublicarPage() {
                       }`}>
                       <span className="text-3xl block mb-2">{f.icon}</span>
                       <span className="block text-[13.5px] font-semibold text-ink">{displayLabel}</span>
-                      {displayDesc && <span className="mt-1 block text-[11.5px] leading-snug text-muted line-clamp-2">{displayDesc}</span>}
+                      {displayDesc && <span className="mt-1 block text-[12.5px] leading-snug text-muted line-clamp-2">{displayDesc}</span>}
                     </button>
                   )
                 })}
@@ -698,7 +698,7 @@ export default function PublicarPage() {
             {camposEspeciales.length > 0 && (
               <div className="space-y-4 border border-line bg-paper-2/50 p-5">
                 <h3 className="t-eyebrow text-ink">{t('specs')} — {subcategoria}</h3>
-                <p className="mt-1 text-[12px] text-muted">{t('specsHint')}</p>
+                <p className="mt-1 text-[13px] text-muted">{t('specsHint')}</p>
                 {camposEspeciales.map(campo => {
                   const val = specs[campo.label] || ''
                   const esOtra = val.startsWith('otra:')
@@ -862,7 +862,7 @@ export default function PublicarPage() {
               {imagenes.map((img, i) => (
                 <div key={img.preview} className="group relative aspect-square overflow-hidden border border-line">
                   <Image src={img.preview} alt="" fill unoptimized sizes="200px" className="object-cover" />
-                  {i === 0 && img.uploadedUrl && <span className="absolute top-1 left-1 bg-signal text-ink text-[10px] font-bold px-1.5 py-0.5 rounded">{t('cover')}</span>}
+                  {i === 0 && img.uploadedUrl && <span className="absolute top-1 left-1 bg-signal text-ink text-[11.5px] font-bold px-1.5 py-0.5 rounded">{t('cover')}</span>}
                   {img.uploading && (
                     <div className="absolute inset-0 bg-ink/60 flex items-center justify-center">
                       <div className="w-8 h-8 border-2 border-white border-t-transparent rounded-full animate-spin" />
@@ -904,7 +904,7 @@ export default function PublicarPage() {
                   <AlertCircle size={16} className="mt-0.5 shrink-0 text-ink/60" />
                   <div>
                     <p className="text-[13px] font-semibold text-ink">{t('moderationReview')}</p>
-                    <p className="mt-1 text-[12px] text-ink/65">{t('moderationDesc')}</p>
+                    <p className="mt-1 text-[13px] text-ink/65">{t('moderationDesc')}</p>
                   </div>
                 </div>
               </div>
@@ -962,7 +962,7 @@ export default function PublicarPage() {
                   <AlertCircle size={16} className="mt-0.5 shrink-0 text-ink/60" />
                   <div>
                     <p className="text-[13px] font-semibold text-ink">{t('moderationReview')}</p>
-                    <p className="mt-1 text-[12px] text-ink/65">{t('moderationDesc')}</p>
+                    <p className="mt-1 text-[13px] text-ink/65">{t('moderationDesc')}</p>
                   </div>
                 </div>
               </div>
@@ -981,8 +981,8 @@ export default function PublicarPage() {
             {pubCount > 0 && pubCount < 10 && (
               <div className="mb-4 border border-line bg-paper-2/60 p-3">
                 <div className="flex justify-between text-xs mb-1.5">
-                  <span className="text-[12px] font-semibold text-ink">{t('entrepreneurProgress', { count: pubCount })}</span>
-                  <span className="text-[12px] text-ink/60">{t('entrepreneurRemaining', { remaining: 10 - pubCount })}</span>
+                  <span className="text-[13px] font-semibold text-ink">{t('entrepreneurProgress', { count: pubCount })}</span>
+                  <span className="text-[13px] text-ink/60">{t('entrepreneurRemaining', { remaining: 10 - pubCount })}</span>
                 </div>
                 <div className="mt-1.5 h-1 w-full bg-line">
                   <div className="h-1 bg-ink transition-all" style={{ width: `${(pubCount / 10) * 100}%` }} />

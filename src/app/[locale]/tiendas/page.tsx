@@ -149,13 +149,13 @@ export default async function TiendasPage({ params }: { params: Promise<{ locale
                         {t.tipo_vendedor === 'taller' ? 'Taller' : 'Profesional'}
                       </p>
                       {ubicacion && (
-                        <p className="mt-1.5 inline-flex items-center gap-1 text-[12.5px] text-ink/60">
+                        <p className="mt-1.5 inline-flex items-center gap-1 text-[13px] text-ink/60">
                           <MapPin size={11} strokeWidth={1.7} className="text-ink/35" />
                           {ubicacion}
                         </p>
                       )}
                       {t.descripcion && (
-                        <p className="mt-1.5 line-clamp-2 text-[12px] leading-relaxed text-muted">{t.descripcion}</p>
+                        <p className="mt-1.5 line-clamp-2 text-[13px] leading-relaxed text-muted">{t.descripcion}</p>
                       )}
                     </div>
                   </LocalLink>

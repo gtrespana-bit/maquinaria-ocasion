@@ -49,14 +49,14 @@ export default async function ComoInstalarAppPage({ params }: { params: Promise<
 
         <div className="border border-line bg-[#FBFAF5]">
           <div className="border-b border-line bg-paper-2/70 px-5 py-3">
-            <p className="text-[12.5px] font-medium text-ink/70">{t('androidReq')}</p>
+            <p className="text-[13px] font-medium text-ink/70">{t('androidReq')}</p>
           </div>
 
           <div className="divide-y divide-line">
             {/* Paso 1 */}
             <div className="flex gap-4 py-4">
               <div className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center border border-ink bg-ink">
-                <span className="t-num text-[11px] font-semibold text-paper">1</span>
+                <span className="t-num text-[12px] font-semibold text-paper">1</span>
               </div>
               <div>
                 <p className="text-[14px] font-semibold text-ink">{t('androidStep1Title')}</p>
@@ -67,7 +67,7 @@ export default async function ComoInstalarAppPage({ params }: { params: Promise<
             {/* Paso 2 */}
             <div className="flex gap-4 py-4">
               <div className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center border border-ink bg-ink">
-                <span className="t-num text-[11px] font-semibold text-paper">2</span>
+                <span className="t-num text-[12px] font-semibold text-paper">2</span>
               </div>
               <div>
                 <p className="text-[14px] font-semibold text-ink">{t('androidStep2Title')}</p>
@@ -78,7 +78,7 @@ export default async function ComoInstalarAppPage({ params }: { params: Promise<
             {/* Paso 3 */}
             <div className="flex gap-4 py-4">
               <div className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center border border-ink bg-ink">
-                <span className="t-num text-[11px] font-semibold text-paper">3</span>
+                <span className="t-num text-[12px] font-semibold text-paper">3</span>
               </div>
               <div>
                 <p className="text-[14px] font-semibold text-ink">{t('androidStep3Title')}</p>
@@ -115,14 +115,14 @@ export default async function ComoInstalarAppPage({ params }: { params: Promise<
 
         <div className="border border-line bg-[#FBFAF5]">
           <div className="border-b border-line bg-paper-2/70 px-5 py-3">
-            <p className="text-[12.5px] font-medium text-ink/70">{t('iosReq')}</p>
+            <p className="text-[13px] font-medium text-ink/70">{t('iosReq')}</p>
           </div>
 
           <div className="divide-y divide-line">
             {/* Paso 1 */}
             <div className="flex gap-4 py-4">
               <div className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center border border-ink bg-ink">
-                <span className="t-num text-[11px] font-semibold text-paper">1</span>
+                <span className="t-num text-[12px] font-semibold text-paper">1</span>
               </div>
               <div>
                 <p className="text-[14px] font-semibold text-ink">{t('iosStep1Title')}</p>
@@ -135,7 +135,7 @@ export default async function ComoInstalarAppPage({ params }: { params: Promise<
             {/* Paso 2 */}
             <div className="flex gap-4 py-4">
               <div className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center border border-ink bg-ink">
-                <span className="t-num text-[11px] font-semibold text-paper">2</span>
+                <span className="t-num text-[12px] font-semibold text-paper">2</span>
               </div>
               <div>
                 <p className="text-[14px] font-semibold text-ink">{t('iosStep2Title')}</p>
@@ -148,7 +148,7 @@ export default async function ComoInstalarAppPage({ params }: { params: Promise<
             {/* Paso 3 */}
             <div className="flex gap-4 py-4">
               <div className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center border border-ink bg-ink">
-                <span className="t-num text-[11px] font-semibold text-paper">3</span>
+                <span className="t-num text-[12px] font-semibold text-paper">3</span>
               </div>
               <div>
                 <p className="text-[14px] font-semibold text-ink">{t('iosStep3Title')}</p>
@@ -181,22 +181,22 @@ export default async function ComoInstalarAppPage({ params }: { params: Promise<
           <div className="bg-[#FBFAF5] p-5">
             <Smartphone size={18} strokeWidth={1.4} className="mb-4 text-ink" />
             <p className="text-[14px] font-semibold text-ink">{t('why1')}</p>
-            <p className="mt-1.5 text-[12.5px] leading-relaxed text-muted">{t('why1desc')}</p>
+            <p className="mt-1.5 text-[13px] leading-relaxed text-muted">{t('why1desc')}</p>
           </div>
           <div className="bg-[#FBFAF5] p-5">
             <Download size={18} strokeWidth={1.4} className="mb-4 text-ink" />
             <p className="text-[14px] font-semibold text-ink">{t('why2')}</p>
-            <p className="mt-1.5 text-[12.5px] leading-relaxed text-muted">{t('why2desc')}</p>
+            <p className="mt-1.5 text-[13px] leading-relaxed text-muted">{t('why2desc')}</p>
           </div>
           <div className="bg-[#FBFAF5] p-5">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" className="mb-4 text-ink"><path d="M22 17H2a3 3 0 0 0 3-3V9a7 7 0 0 1 14 0v5a3 3 0 0 0 3 3zm-8.27 4a2 2 0 0 1-3.46 0"/></svg>
             <p className="text-[14px] font-semibold text-ink">{t('why3')}</p>
-            <p className="mt-1.5 text-[12.5px] leading-relaxed text-muted">{t('why3desc')}</p>
+            <p className="mt-1.5 text-[13px] leading-relaxed text-muted">{t('why3desc')}</p>
           </div>
           <div className="bg-[#FBFAF5] p-5">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" className="mb-4 text-ink"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
             <p className="text-[14px] font-semibold text-ink">{t('why4')}</p>
-            <p className="mt-1.5 text-[12.5px] leading-relaxed text-muted">{t('why4desc')}</p>
+            <p className="mt-1.5 text-[13px] leading-relaxed text-muted">{t('why4desc')}</p>
           </div>
         </div>
       </section>

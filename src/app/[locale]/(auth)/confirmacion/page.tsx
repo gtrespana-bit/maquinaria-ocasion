@@ -72,8 +72,8 @@ function ConfirmacionContent() {
           </div>
 
           <div className="border-t border-line px-5 py-5">
-            <p className="text-[12.5px] font-semibold text-ink">{t('confirmacion.not_received')}</p>
-            <p className="mt-1 text-[11.5px] leading-relaxed text-ink/45">{t('confirmacion.resend_hint')}</p>
+            <p className="text-[13px] font-semibold text-ink">{t('confirmacion.not_received')}</p>
+            <p className="mt-1 text-[12.5px] leading-relaxed text-ink/45">{t('confirmacion.resend_hint')}</p>
             <button
               onClick={handleResend}
               disabled={resending || !email || email === 'tu correo electrónico'}
@@ -97,7 +97,7 @@ function ConfirmacionContent() {
               )}
             </button>
             {resendStatus === 'error' && (
-              <p className="mt-2 text-[11.5px] text-clay">Error al reenviar. Verifica que el email sea correcto.</p>
+              <p className="mt-2 text-[12.5px] text-clay">Error al reenviar. Verifica que el email sea correcto.</p>
             )}
           </div>
         </div>

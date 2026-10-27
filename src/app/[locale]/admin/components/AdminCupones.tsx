@@ -197,7 +197,7 @@ export default function AdminCupones({ notify }: { notify: (msg: string) => void
       <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
         <div>
           <h2 className="text-xl font-semibold text-ink">Planes, regalos y cupones</h2>
-          <p className="text-[12.5px] leading-relaxed text-ink/55">
+          <p className="text-[13px] leading-relaxed text-ink/55">
             Planes de pago, prueba gratuita, cupones y regalos directos de tiempo gratis a un usuario.
           </p>
         </div>
@@ -206,7 +206,7 @@ export default function AdminCupones({ notify }: { notify: (msg: string) => void
 
       <Card>
         <h3 className="font-semibold text-ink mb-1">Prueba gratuita (nuevas altas)</h3>
-        <p className="text-[12.5px] leading-relaxed text-ink/55 mb-4">
+        <p className="text-[13px] leading-relaxed text-ink/55 mb-4">
           Si está activo, cada profesional o taller nuevo tiene {diasGratis} días con el plan Profesional
           desde el alta (o desde que un particular se pasa a profesional). Apagarlo deja de conceder
           pruebas nuevas, pero <strong>no corta</strong> las que ya están en curso: sus fechas están
@@ -237,7 +237,7 @@ export default function AdminCupones({ notify }: { notify: (msg: string) => void
         <h3 className="mb-1 flex items-center gap-2 font-semibold text-ink">
           <Gift size={18} className="text-ink" /> Regalar plan a un usuario
         </h3>
-        <p className="mb-4 text-[12.5px] leading-relaxed text-ink/55">
+        <p className="mb-4 text-[13px] leading-relaxed text-ink/55">
           Días de Profesional gratis para una cuenta concreta, sin cupón y sin Stripe. El usuario recibe
           un email de aviso y el regalo queda anotado en la bitácora de abajo.
         </p>
@@ -251,7 +251,7 @@ export default function AdminCupones({ notify }: { notify: (msg: string) => void
 
         <div className="mt-3 divide-y divide-line">
           {usuariosFiltrados.length === 0 && (
-            <p className="py-4 text-[12.5px] leading-relaxed text-ink/55">
+            <p className="py-4 text-[13px] leading-relaxed text-ink/55">
               {usuarios.length === 0 ? 'No se pudo cargar la lista de usuarios.' : 'Sin resultados para esa búsqueda.'}
             </p>
           )}
@@ -265,7 +265,7 @@ export default function AdminCupones({ notify }: { notify: (msg: string) => void
                 </span>
                 <div className="min-w-0 flex-1">
                   <p className="truncate text-[13px] font-medium text-ink">{u.nombre || 'Sin nombre'}</p>
-                  <p className="truncate text-[11.5px] text-ink/45">{u.email || u.telefono || '—'}</p>
+                  <p className="truncate text-[12.5px] text-ink/45">{u.email || u.telefono || '—'}</p>
                 </div>
                 {vigente ? (
                   <Badge tone={TONO_PACK[u.plan_anuncios || ''] || 'gray'}>
@@ -329,11 +329,11 @@ export default function AdminCupones({ notify }: { notify: (msg: string) => void
                       <p className="t-label text-ink/35">{p.email || '—'}</p>
                     </td>
                     <td><Badge tone={TONO_PACK[p.plan] || 'gray'}>{p.planEtiqueta}</Badge></td>
-                    <td className="text-[11.5px] text-ink/45">{formatDate(p.planHasta)}</td>
+                    <td className="text-[12.5px] text-ink/45">{formatDate(p.planHasta)}</td>
                     <td className="t-label text-ink/45">
                       {p.diasRestantes != null ? `${p.diasRestantes} días` : '—'}
                     </td>
-                    <td className="text-[11.5px] text-ink/45">
+                    <td className="text-[12.5px] text-ink/45">
                       {p.tipoVendedor === 'taller' ? 'Taller' : p.tipoVendedor === 'profesional' ? 'Profesional' : 'Particular'}
                     </td>
                     <td className="text-right">
@@ -358,7 +358,7 @@ export default function AdminCupones({ notify }: { notify: (msg: string) => void
               </tbody>
             </table>
             {packsInfo.packs.length === 0 && (
-              <p className="py-4 text-[12.5px] leading-relaxed text-ink/55">Nadie tiene plan de pago todavía (ni regalado).</p>
+              <p className="py-4 text-[13px] leading-relaxed text-ink/55">Nadie tiene plan de pago todavía (ni regalado).</p>
             )}
           </div>
 
@@ -378,7 +378,7 @@ export default function AdminCupones({ notify }: { notify: (msg: string) => void
               <tbody>
                 {packsInfo.regalos.map((r) => (
                   <tr key={r.id} className="border-b border-line">
-                    <td className="py-2 text-[11.5px] text-ink/45">{formatDateTime(r.creadoEn)}</td>
+                    <td className="py-2 text-[12.5px] text-ink/45">{formatDateTime(r.creadoEn)}</td>
                     <td className="text-xs">
                       <p className="font-semibold text-ink">{r.nombre}</p>
                       <p className="text-ink/35">{r.email || '—'}</p>
@@ -393,8 +393,8 @@ export default function AdminCupones({ notify }: { notify: (msg: string) => void
                         </>
                       )}
                     </td>
-                    <td className="text-[11.5px] text-ink/45">{formatDate(r.planHasta)}</td>
-                    <td className="max-w-[220px] truncate text-[11.5px] text-ink/45" title={r.motivo || ''}>
+                    <td className="text-[12.5px] text-ink/45">{formatDate(r.planHasta)}</td>
+                    <td className="max-w-[220px] truncate text-[12.5px] text-ink/45" title={r.motivo || ''}>
                       {r.motivo || '—'}
                     </td>
                     <td className="t-label text-ink/35">{r.adminEmail || '—'}</td>
@@ -403,7 +403,7 @@ export default function AdminCupones({ notify }: { notify: (msg: string) => void
               </tbody>
             </table>
             {packsInfo.regalos.length === 0 && (
-              <p className="py-4 text-[12.5px] leading-relaxed text-ink/55">Aún no has regalado ningún plan.</p>
+              <p className="py-4 text-[13px] leading-relaxed text-ink/55">Aún no has regalado ningún plan.</p>
             )}
           </div>
         </Card>
@@ -506,7 +506,7 @@ export default function AdminCupones({ notify }: { notify: (msg: string) => void
               ))}
             </tbody>
           </table>
-          {cupones.length === 0 && <p className="text-[12.5px] leading-relaxed text-ink/55 py-4">Aún no hay cupones.</p>}
+          {cupones.length === 0 && <p className="text-[13px] leading-relaxed text-ink/55 py-4">Aún no hay cupones.</p>}
         </div>
       </Card>
 

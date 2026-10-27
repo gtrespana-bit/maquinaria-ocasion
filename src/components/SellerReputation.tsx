@@ -64,7 +64,7 @@ export default function SellerReputation({
             {cfg.nombre} — {cfg.desc}
           </span>
           {nivel > 0 && (
-            <span className={`text-[10px] italic ${cfg.text.replace(/800/g, '500').replace(/700/g, '500').replace(/600/g, '400')}`}>
+            <span className={`text-[11.5px] italic ${cfg.text.replace(/800/g, '500').replace(/700/g, '500').replace(/600/g, '400')}`}>
               · Nivel {nivel}
             </span>
           )}
@@ -86,7 +86,7 @@ export default function SellerReputation({
             return (
               <span
                 key={badge}
-                className={`inline-flex items-center text-[11px] font-medium px-2.5 py-0.5 rounded-full border ${bCfg.color}`}
+                className={`inline-flex items-center text-[12px] font-medium px-2.5 py-0.5 rounded-full border ${bCfg.color}`}
                 title={bCfg.tooltip}
               >
                 {bCfg.label}

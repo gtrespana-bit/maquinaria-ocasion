@@ -131,7 +131,7 @@ export default function TiendaClient({
                 {anoAlta ? ` · Desde ${anoAlta}` : ''}
               </p>
 
-              <div className="mt-4 flex flex-wrap gap-x-5 gap-y-2 text-[12.5px] text-ink/60">
+              <div className="mt-4 flex flex-wrap gap-x-5 gap-y-2 text-[13px] text-ink/60">
                 {ubicacion && (
                   <span className="inline-flex items-center gap-1.5">
                     <MapPin size={12} strokeWidth={1.6} className="text-ink/35" />

@@ -85,8 +85,8 @@ export default function DashboardNav({
         className={`flex w-full items-center gap-2.5 border-l-2 px-3 py-2 text-left text-[13px] font-medium transition-colors
           focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2 focus-visible:ring-offset-paper
           ${on
-            ? 'border-ink bg-[#FBFAF5] text-ink'
-            : 'border-transparent text-ink/55 hover:border-line hover:bg-[#FBFAF5] hover:text-ink'
+            ? 'border-signal bg-ink text-paper'
+            : 'border-transparent text-ink/60 hover:border-line-strong hover:bg-[#FBFAF5] hover:text-ink'
           }`}
       >
         <Icon size={15} strokeWidth={1.6} aria-hidden="true" />
@@ -112,7 +112,7 @@ export default function DashboardNav({
                 type="button"
                 onClick={() => onChange(item.id)}
                 aria-current={on ? 'page' : undefined}
-                className={`inline-flex items-center gap-1.5 whitespace-nowrap border px-3 py-2 text-[12.5px] font-medium transition-colors
+                className={`inline-flex items-center gap-1.5 whitespace-nowrap border px-3 py-2 text-[13px] font-medium transition-colors
                   focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink
                   ${on ? 'border-ink bg-ink text-paper' : 'border-line bg-paper text-ink/60'}`}
               >
@@ -124,7 +124,7 @@ export default function DashboardNav({
           <button
             type="button"
             onClick={onLogout}
-            className="inline-flex items-center gap-1.5 whitespace-nowrap border border-line px-3 py-2 text-[12.5px] font-medium text-ink/45 transition-colors hover:border-clay hover:text-clay"
+            className="inline-flex items-center gap-1.5 whitespace-nowrap border border-line px-3 py-2 text-[13px] font-medium text-ink/45 transition-colors hover:border-clay hover:text-clay"
           >
             <LogOut size={15} aria-hidden="true" />
             Cerrar sesión
@@ -133,7 +133,7 @@ export default function DashboardNav({
       </nav>
 
       {/* Escritorio: menú lateral fijo, el patrón de un panel profesional. */}
-      <aside className="sticky top-24 hidden w-56 shrink-0 self-start lg:flex lg:flex-col">
+      <aside className="sticky top-[var(--header-offset)] hidden w-56 shrink-0 self-start lg:flex lg:flex-col">
         <nav aria-label="Secciones del panel" className="space-y-5">
           {GRUPOS.map((grupo, i) => (
             <div key={grupo.titulo || 'inicio'}>
@@ -150,7 +150,7 @@ export default function DashboardNav({
         <button
           type="button"
           onClick={onLogout}
-          className="mt-8 flex items-center gap-2 border-t border-line px-3 py-3 text-[12.5px] font-medium text-ink/45 transition-colors hover:text-clay"
+          className="mt-8 flex items-center gap-2 border-t border-line px-3 py-3 text-[13px] font-medium text-ink/45 transition-colors hover:text-clay"
         >
           <LogOut size={16} aria-hidden="true" />
           Cerrar sesión

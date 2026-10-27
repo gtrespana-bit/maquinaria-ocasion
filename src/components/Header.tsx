@@ -178,7 +178,7 @@ export function Header() {
     }
   }, [user])
 
-  const navLink = 'group relative flex items-center gap-1.5 px-3 py-2 text-[11px] font-medium uppercase tracking-[0.16em] text-ink/75 transition-colors hover:text-ink'
+  const navLink = 'group relative flex items-center gap-1.5 px-3 py-2 text-[12px] font-medium uppercase tracking-[0.12em] text-ink/75 transition-colors hover:text-ink'
 
   return (
     <>
@@ -226,9 +226,9 @@ export function Header() {
 
         {/* ── Capa 2: barra principal ───────────────────────────────────── */}
         <div
-          className={`border-b border-line transition-colors duration-300 ${
-            scrolled ? 'bg-paper/95 backdrop-blur-md' : 'bg-paper'
-          }`}
+          /* Opaco a propósito: al hacer scroll, las columnas sticky de la
+             página pasan por debajo y no deben transparentarse. */
+          className="border-b border-line bg-paper"
         >
           <div className="shell flex h-[62px] items-center gap-4 md:h-[74px]">
             <button
@@ -282,7 +282,7 @@ export function Header() {
               >
                 <Search size={16} strokeWidth={1.6} />
                 <span className="t-label hidden text-ink/50 xl:block">Buscar</span>
-                <span className="t-label hidden border border-line px-1 py-0.5 text-[9px] text-ink/40 xl:block">
+                <span className="t-label hidden border border-line px-1 py-0.5 text-[10px] text-ink/40 xl:block">
                   ⌘K
                 </span>
               </button>
@@ -296,7 +296,7 @@ export function Header() {
                   >
                     <MessageCircle size={18} strokeWidth={1.6} />
                     {unreadCount > 0 && (
-                      <span className="t-num absolute top-0.5 right-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-signal px-1 text-[9px] font-bold text-ink">
+                      <span className="t-num absolute top-0.5 right-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-signal px-1 text-[10px] font-bold text-ink">
                         {unreadCount > 9 ? '9+' : unreadCount}
                       </span>
                     )}
@@ -349,7 +349,7 @@ export function Header() {
           </div>
 
           {/* ── Capa 3: raíl de taxonomía ──────────────────────────────── */}
-          <div className="hidden border-t border-line/80 md:block">
+          <div className="hidden border-t border-line/80 bg-paper md:block">
             <div className="shell flex h-10 items-center gap-1 overflow-x-auto hide-scrollbar">
               <LocalLink
                 href="/catalogo"
@@ -369,7 +369,7 @@ export function Header() {
                     <LocalLink
                       key={tipo.id}
                       href={tipo.href}
-                      className="shrink-0 px-2 py-2 text-[12.5px] font-medium text-ink/70 transition-colors hover:text-ink"
+                      className="shrink-0 px-2 py-2 text-[13px] font-medium text-ink/70 transition-colors hover:text-ink"
                     >
                       {tipo.nombre}
                     </LocalLink>
@@ -486,7 +486,7 @@ export function Header() {
                   <LocalLink
                     key={q}
                     href={`/buscar?q=${encodeURIComponent(q)}`}
-                    className="border border-line px-2.5 py-1.5 text-[12px] text-ink/70 transition-colors hover:border-ink hover:text-ink"
+                    className="border border-line px-2.5 py-1.5 text-[13px] text-ink/70 transition-colors hover:border-ink hover:text-ink"
                   >
                     {q}
                   </LocalLink>
@@ -564,7 +564,7 @@ export function Header() {
                   key={f.key}
                   href={`/categoria/${f.key}`}
                   onClick={() => setMobileOpen(false)}
-                  className="border border-line-dark px-3 py-2 text-[12px] text-paper/70"
+                  className="border border-line-dark px-3 py-2 text-[13px] text-paper/70"
                 >
                   {f.nombre}
                 </LocalLink>

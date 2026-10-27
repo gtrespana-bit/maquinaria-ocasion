@@ -180,7 +180,7 @@ export default function TabImportar() {
 
   if (cargandoPlan) {
     return (
-      <div className="flex items-center gap-2 border border-line bg-[#FBFAF5] p-6 text-[12.5px] text-ink/55">
+      <div className="flex items-center gap-2 border border-line bg-[#FBFAF5] p-6 text-[13px] text-ink/55">
         <Loader2 size={18} className="animate-spin" /> Cargando…
       </div>
     )
@@ -193,7 +193,7 @@ export default function TabImportar() {
           <h2 className="flex items-center gap-2 t-display t-display-sm text-ink">
             <FileSpreadsheet size={20} className="text-ink" /> Importar stock desde CSV
           </h2>
-          <p className="mt-2 max-w-2xl text-[12.5px] text-ink/55">
+          <p className="mt-2 max-w-2xl text-[13px] text-ink/55">
             Sube tu Excel o el export de tu DMS y publica todo el stock de una vez. Revisa una
             vista previa antes de crear nada: verás qué filas están bien, cuáles fallan y por qué.
           </p>
@@ -205,7 +205,7 @@ export default function TabImportar() {
               </span>
               <div>
                 <p className="font-semibold text-ink">Disponible en el plan Profesional</p>
-                <p className="mt-1 text-[12.5px] text-ink/55">
+                <p className="mt-1 text-[13px] text-ink/55">
                   Si tienes decenas de máquinas, subir el stock a mano es un formulario tras otro.
                   La importación desde CSV del plan Profesional los publica de una vez (hasta 100
                   filas por archivo), con vista previa y errores por línea.
@@ -224,7 +224,7 @@ export default function TabImportar() {
         {/* Aun sin plan, la plantilla es pública: así se ve el formato exacto. */}
         <div className="border border-line bg-[#FBFAF5] p-5">
           <p className="font-semibold text-ink">El formato que acepta</p>
-          <p className="mt-1 text-[12.5px] text-ink/55">
+          <p className="mt-1 text-[13px] text-ink/55">
             Doce columnas, separadas por punto y coma o coma. Solo son obligatorias el título, el
             precio, el tipo y la comunidad.
           </p>
@@ -247,7 +247,7 @@ export default function TabImportar() {
           <h2 className="flex items-center gap-2 t-display t-display-sm text-ink">
             <FileSpreadsheet size={20} className="text-ink" /> Importar stock
           </h2>
-          <p className="mt-1 text-[12.5px] text-ink/55">
+          <p className="mt-1 text-[13px] text-ink/55">
             Publica todo tu stock de una vez. Primero verás una vista previa; nada se crea hasta que
             confirmes.
           </p>
@@ -271,7 +271,7 @@ export default function TabImportar() {
           >
             <UploadCloud size={15} /> Elegir archivo .csv
           </button>
-          <span className="text-[11.5px] text-ink/45">
+          <span className="text-[12.5px] text-ink/45">
             {nombreArchivo || 'o pega el contenido abajo'}
           </span>
           <input
@@ -311,7 +311,7 @@ export default function TabImportar() {
             {analizando ? <Loader2 size={14} className="animate-spin" /> : <CheckCircle2 size={14} />}
             Analizar sin publicar
           </button>
-          <span className="text-[11.5px] text-ink/45">
+          <span className="text-[12.5px] text-ink/45">
             No se actualizan anuncios existentes: cada fila es un anuncio nuevo.
           </span>
         </div>
@@ -485,12 +485,12 @@ export default function TabImportar() {
           )}
 
           {previa.recortadas > 0 && (
-            <p className="text-[11.5px] text-ink/45">
+            <p className="text-[12.5px] text-ink/45">
               Se han ignorado {previa.recortadas} filas: el máximo por archivo es de 100.
             </p>
           )}
           {previa.desconocidas?.length > 0 && (
-            <p className="text-[11.5px] text-ink/45">
+            <p className="text-[12.5px] text-ink/45">
               Columnas ignoradas: {previa.desconocidas.join(', ')}.
             </p>
           )}

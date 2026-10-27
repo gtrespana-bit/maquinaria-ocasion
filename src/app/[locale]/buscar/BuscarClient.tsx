@@ -301,7 +301,7 @@ export default function BuscarClient({ searchParams: searchParamsPromise }: { se
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-[248px_1fr] lg:gap-10">
           {/* Filtros */}
           <aside className="w-full">
-            <div className="border border-line bg-[#FBFAF5] p-5 lg:sticky lg:top-24">
+            <div className="border border-line bg-[#FBFAF5] p-5 lg:sticky lg:top-[var(--header-offset)] lg:z-10 lg:max-h-[calc(100dvh-var(--header-offset)-1rem)] lg:overflow-y-auto">
               <div className="flex items-baseline justify-between border-b border-ink pb-2.5">
                 <h2 className="t-eyebrow text-ink">{t('filters')}</h2>
                 {searchParams && Object.keys(searchParams).length > 0 && (

@@ -67,7 +67,7 @@ export default function CookieConsent() {
           <span aria-hidden="true" className="h-1.5 w-1.5 bg-signal" />
           <p className="t-label text-ink">{t.titulo}</p>
         </div>
-        <p className="text-[12.5px] leading-relaxed text-ink/70 md:text-[13px]">
+        <p className="text-[13px] leading-relaxed text-ink/70 md:text-[13px]">
           {t.cuerpo} {t.mas}{' '}
           <LocalLink
             href="/politica-de-privacidad"

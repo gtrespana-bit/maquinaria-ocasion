@@ -180,7 +180,7 @@ export default function TabPlan({ onRefresh }: { onRefresh?: () => void }) {
 
   if (loading) {
     return (
-      <div className="flex items-center gap-2 border border-line bg-[#FBFAF5] p-6 text-[12.5px] text-ink/55">
+      <div className="flex items-center gap-2 border border-line bg-[#FBFAF5] p-6 text-[13px] text-ink/55">
         <Loader2 size={18} className="animate-spin" /> Cargando tu plan…
       </div>
     )
@@ -400,7 +400,7 @@ export default function TabPlan({ onRefresh }: { onRefresh?: () => void }) {
           <h3 className="text-[15px] font-semibold tracking-[-0.015em] text-ink">
             {estado.pausadosPorPlan} anuncio{estado.pausadosPorPlan === 1 ? '' : 's'} pausado{estado.pausadosPorPlan === 1 ? '' : 's'} por cupo
           </h3>
-          <p className="mt-1 text-[12.5px] text-ink/55">
+          <p className="mt-1 text-[13px] text-ink/55">
             Los pausamos al bajar el plan, pero no los borramos. Si ahora tienes hueco, puedes volver a
             publicarlos; si no, amplía tu plan o pausa otro anuncio para dejar sitio.
           </p>
@@ -432,7 +432,7 @@ export default function TabPlan({ onRefresh }: { onRefresh?: () => void }) {
             <div className="mt-2">
               <Barra valor={estado.cupo.usados} max={estado.cupo.max} />
             </div>
-            <p className="mt-2 text-[11.5px] text-ink/45">
+            <p className="mt-2 text-[12.5px] text-ink/45">
               {estado.cupo.max == null
                 ? 'Sin límite de anuncios activos.'
                 : estado.cupo.restantes === 0
@@ -447,7 +447,7 @@ export default function TabPlan({ onRefresh }: { onRefresh?: () => void }) {
               <Store size={16} className="text-ink/40" aria-hidden="true" />
             </div>
             <p className="mt-2 t-display t-num text-[1.75rem] leading-none text-ink">{estado.cupo.fotosMax}</p>
-            <p className="mt-2 text-[11.5px] text-ink/45">La ficha se ve más completa con todas las fotos.</p>
+            <p className="mt-2 text-[12.5px] text-ink/45">La ficha se ve más completa con todas las fotos.</p>
           </div>
 
           <div className="border border-line bg-[#FBFAF5] p-4">
@@ -462,7 +462,7 @@ export default function TabPlan({ onRefresh }: { onRefresh?: () => void }) {
             <div className="mt-2">
               <Barra valor={estado.cupo.destacadosUsados} max={estado.cupo.destacadosMes || 1} />
             </div>
-            <p className="mt-2 text-[11.5px] text-ink/45">
+            <p className="mt-2 text-[12.5px] text-ink/45">
               {estado.cupo.destacadosMes === 0 ? 'Tu plan no incluye destacados: usa créditos.' : 'Incluidos en tu plan, sin gastar créditos.'}
             </p>
           </div>
@@ -473,7 +473,7 @@ export default function TabPlan({ onRefresh }: { onRefresh?: () => void }) {
               <TrendingUp size={16} className="text-ink/40" aria-hidden="true" />
             </div>
             <p className="mt-2 t-display t-num text-[1.75rem] leading-none text-ink">{estado.creditos}</p>
-            <p className="mt-2 text-[11.5px] text-ink/45">Para subir al nº 1 o destacar fuera del plan.</p>
+            <p className="mt-2 text-[12.5px] text-ink/45">Para subir al nº 1 o destacar fuera del plan.</p>
             <LocalLink href="/creditos" className="mt-2 inline-flex items-center gap-1 text-xs font-semibold text-ink hover:underline">
               Comprar créditos <ArrowRight size={12} />
             </LocalLink>
@@ -488,7 +488,7 @@ export default function TabPlan({ onRefresh }: { onRefresh?: () => void }) {
             <div>
               <p className="text-xs font-semibold uppercase tracking-wide text-moss">Siguiente paso</p>
               <h3 className="mt-1 text-[15px] font-semibold tracking-[-0.015em] text-ink">{tituloSiguiente}</h3>
-              <p className="mt-1 text-[12.5px] text-ink/55">
+              <p className="mt-1 text-[13px] text-ink/55">
                 {siguiente.cupo == null
                   ? 'Para compraventas con rotación alta. 15 destacados al mes y 30 fotos por anuncio.'
                   : `${siguiente.cupo} anuncios activos, ${siguiente.destacadosMes} destacados al mes y ${siguiente.fotos} fotos por anuncio por ${formatPrecio(siguiente.precioMes)}/mes.`}
@@ -515,7 +515,7 @@ export default function TabPlan({ onRefresh }: { onRefresh?: () => void }) {
       {/* Identidad vs plan */}
       <section className="border border-line bg-[#FBFAF5] p-5">
         <h3 className="font-semibold text-ink">Tu tipo de vendedor no es tu plan</h3>
-        <p className="mt-1 text-[12.5px] text-ink/55">
+        <p className="mt-1 text-[13px] text-ink/55">
           Ahora apareces como <strong>{NOMBRE_TIPO[estado.tipo] || estado.tipo}</strong>. Eso es gratis y define
           tu sello y los filtros del catálogo. El plan solo cambia cuántos anuncios puedes tener
           publicados a la vez y qué extras incluyes.
@@ -531,7 +531,7 @@ export default function TabPlan({ onRefresh }: { onRefresh?: () => void }) {
       </section>
 
       {esGratis && (
-        <p className="text-center text-[11.5px] text-ink/45">
+        <p className="text-center text-[12.5px] text-ink/45">
           Plan gratuito: {PLAN_GRATIS.incluido.join(' · ')}.
         </p>
       )}

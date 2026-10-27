@@ -314,12 +314,12 @@ export default async function BlogPost(props: { params: Promise<{ locale: string
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-12">
           {/* Columna lateral: navegación del artículo */}
           <aside className="lg:col-span-3">
-            <div className="lg:sticky lg:top-28">
+            <div className="lg:sticky lg:top-[var(--header-offset)] lg:z-10">
               <p className="t-label border-b border-line pb-2 text-ink/40">En este artículo</p>
-              <div className="doc-toc mt-3 space-y-1.5 text-[12.5px] leading-snug text-ink/60" dangerouslySetInnerHTML={{ __html: tocHtml }} />
+              <div className="doc-toc mt-3 space-y-1.5 text-[13px] leading-snug text-ink/60" dangerouslySetInnerHTML={{ __html: tocHtml }} />
               <LocalLink
                 href="/blog"
-                className="mt-6 inline-flex items-center gap-2 border-t border-line pt-4 text-[12.5px] font-medium text-ink/60 transition-colors hover:text-ink"
+                className="mt-6 inline-flex items-center gap-2 border-t border-line pt-4 text-[13px] font-medium text-ink/60 transition-colors hover:text-ink"
               >
                 <ArrowLeft size={13} /> {t('backToBlog')}
               </LocalLink>

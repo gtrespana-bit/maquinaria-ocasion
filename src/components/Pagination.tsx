@@ -79,7 +79,7 @@ export const Pagination = ({ currentPage, totalPages, itemsPerPage, totalItems }
             if (currentPage > 1) goToPage(Math.max(1, currentPage - 1))
           }}
           aria-disabled={currentPage <= 1}
-          className={`flex h-9 items-center gap-1 border px-3 text-[12px] font-medium transition-colors ${
+          className={`flex h-9 items-center gap-1 border px-3 text-[13px] font-medium transition-colors ${
             currentPage <= 1
               ? 'pointer-events-none border-line text-ink/25'
               : 'border-line text-ink hover:border-ink'
@@ -94,7 +94,7 @@ export const Pagination = ({ currentPage, totalPages, itemsPerPage, totalItems }
         {pageRange.map((item, index) => {
           if (item === '...') {
             return (
-              <span key={`ellipsis-${index}`} className="px-2 text-[12px] text-ink/35">
+              <span key={`ellipsis-${index}`} className="px-2 text-[13px] text-ink/35">
                 …
               </span>
             )
@@ -107,7 +107,7 @@ export const Pagination = ({ currentPage, totalPages, itemsPerPage, totalItems }
                 e.preventDefault()
                 goToPage(item as number)
               }}
-              className={`t-num flex h-9 min-w-9 items-center justify-center border px-2 text-[12px] transition-colors ${
+              className={`t-num flex h-9 min-w-9 items-center justify-center border px-2 text-[13px] transition-colors ${
                 currentPage === item
                   ? 'border-ink bg-ink font-semibold text-paper'
                   : 'border-line text-ink hover:border-ink'
@@ -127,7 +127,7 @@ export const Pagination = ({ currentPage, totalPages, itemsPerPage, totalItems }
             if (currentPage < totalPages) goToPage(Math.min(totalPages, currentPage + 1))
           }}
           aria-disabled={currentPage >= totalPages}
-          className={`flex h-9 items-center gap-1 border px-3 text-[12px] font-medium transition-colors ${
+          className={`flex h-9 items-center gap-1 border px-3 text-[13px] font-medium transition-colors ${
             currentPage >= totalPages
               ? 'pointer-events-none border-line text-ink/25'
               : 'border-line text-ink hover:border-ink'

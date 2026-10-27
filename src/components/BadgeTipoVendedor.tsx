@@ -36,7 +36,7 @@ export default function BadgeTipoVendedor({
   return (
     <span
       className={`inline-flex items-center gap-1 font-semibold border rounded-full ${estilos[tipo]} ${
-        size === 'md' ? 'text-xs px-2.5 py-1' : 'text-[10px] px-1.5 py-0.5'
+        size === 'md' ? 'text-xs px-2.5 py-1' : 'text-[11.5px] px-1.5 py-0.5'
       }`}
     >
       <span aria-hidden="true">{iconos[tipo]}</span>

@@ -346,7 +346,12 @@ export default function CatalogoClient({ initialProducts = [], initialCount = 0 
                 className={`text-ink/50 transition-transform ${filtrosAbiertos ? 'rotate-90' : ''}`}
               />
             </button>
-            <div className={`${filtrosAbiertos ? 'block' : 'hidden'} lg:block`}>
+            {/* La columna entera (filtros + ubicación) es la que se pega, con
+                scroll propio: así el selector de comunidad/provincia nunca
+                queda debajo de la caja de filtros. */}
+            <div
+              className={`${filtrosAbiertos ? 'block' : 'hidden'} lg:sticky lg:top-[var(--header-offset)] lg:z-10 lg:block lg:max-h-[calc(100dvh-var(--header-offset)-1rem)] lg:overflow-y-auto lg:pr-1`}
+            >
               <CatalogFilters
                 categoria={categoriaFiltros}
                 subcategoria={subcategoria}

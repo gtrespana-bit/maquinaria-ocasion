@@ -218,7 +218,7 @@ function ModalPago({
                   ? <><Loader2 size={18} className="animate-spin" /> Conectando con el pago seguro…</>
                   : <>Pagar {formatPrecio(paquete.precio)} ahora</>}
               </button>
-              <p className="text-[11px] text-muted text-center mt-2">
+              <p className="text-[12px] text-muted text-center mt-2">
                 Pago seguro procesado por Stripe. No guardamos los datos de tu tarjeta.
               </p>
             </div>
@@ -480,7 +480,7 @@ export default function CreditosPage() {
                 <div className="border-b border-line px-6 pb-5 pt-6">
                   <p className="t-display t-num text-[2.6rem] leading-none text-ink">
                     {pkg.creditos}
-                    <span className="ml-2 align-baseline text-[12px] font-medium uppercase tracking-[0.16em] text-ink/45">
+                    <span className="ml-2 align-baseline text-[13px] font-medium uppercase tracking-[0.12em] text-ink/45">
                       {t('credits')}
                     </span>
                   </p>
@@ -490,7 +490,7 @@ export default function CreditosPage() {
                   </p>
                 </div>
                 <div className="flex flex-1 flex-col px-6 py-5">
-                  <ul className="flex-1 space-y-2 text-[12.5px] text-ink/70">
+                  <ul className="flex-1 space-y-2 text-[13px] text-ink/70">
                     <li className="flex items-start gap-2">
                       <CheckCircle size={12} strokeWidth={2.2} className="mt-1 shrink-0 text-moss" />
                       <span><strong className="font-semibold text-ink">{pkg.creditos}</strong> {t('boosts')}</span>

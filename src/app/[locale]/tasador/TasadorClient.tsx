@@ -140,10 +140,10 @@ export default function TasadorClient() {
                 {cargando ? 'Calculando…' : t('tasador.calcular')}
                 <Calculator size={15} strokeWidth={1.8} />
               </button>
-              {error && <p className="border border-clay/40 bg-clay/[0.05] p-2.5 text-[12.5px] text-clay">{error}</p>}
+              {error && <p className="border border-clay/40 bg-clay/[0.05] p-2.5 text-[13px] text-clay">{error}</p>}
             </div>
 
-            <p className="mt-4 text-[12px] leading-relaxed text-ink/45">
+            <p className="mt-4 text-[13px] leading-relaxed text-ink/45">
               Calculamos la horquilla con los anuncios comparables de nuestro inventario. Sin registro y sin coste.
             </p>
           </form>
@@ -201,7 +201,7 @@ export default function TasadorClient() {
                           <p className="text-[13.5px] font-semibold">
                             {veredicto === 'dentro' ? t('tasador.inRange') : veredicto === 'encima' ? t('tasador.above') : t('tasador.below')}
                           </p>
-                          <p className="mt-0.5 text-[12.5px] opacity-80">
+                          <p className="mt-0.5 text-[13px] opacity-80">
                             {t('tasador.yourPriceLabel')}: <strong className="t-num">{formatPrecio(Number(tuPrecio))}</strong>
                             {' · '}p25–p75 {formatPrecio(rango.p25 || 0)} – {formatPrecio(rango.p75 || 0)}
                           </p>

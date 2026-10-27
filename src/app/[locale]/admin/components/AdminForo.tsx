@@ -117,7 +117,7 @@ export default function AdminForo({ notify }: { notify: (msg: string) => void })
           <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-50 text-ink"><MessageSquare size={22} /></span>
           <div>
             <h2 className="text-xl font-semibold text-ink">Foro</h2>
-            <p className="text-[12.5px] leading-relaxed text-ink/55">{pendientes.length} hilos pendientes · {mensajes.length} respuestas pendientes · {hilos.length} hilos en total</p>
+            <p className="text-[13px] leading-relaxed text-ink/55">{pendientes.length} hilos pendientes · {mensajes.length} respuestas pendientes · {hilos.length} hilos en total</p>
           </div>
         </div>
         <RefreshButton onClick={() => load(true)} loading={refreshing} />
@@ -149,8 +149,8 @@ export default function AdminForo({ notify }: { notify: (msg: string) => void })
                     </LocalLink>
                     <Badge tone="yellow">pendiente</Badge>
                   </div>
-                  <p className="mt-1 text-[11.5px] text-ink/45">{m.autor} · {timeAgo(m.creado_en)}</p>
-                  <p className="mt-2 text-[12.5px] leading-relaxed text-ink/55 whitespace-pre-line line-clamp-4">{m.cuerpo}</p>
+                  <p className="mt-1 text-[12.5px] text-ink/45">{m.autor} · {timeAgo(m.creado_en)}</p>
+                  <p className="mt-2 text-[13px] leading-relaxed text-ink/55 whitespace-pre-line line-clamp-4">{m.cuerpo}</p>
                 </div>
                 <div className="flex flex-wrap gap-2">
                   <Button size="sm" variant="success" disabled={busyId === m.id} onClick={() => accion('aprobar-mensaje', m.id, 'Respuesta aprobada')}>
@@ -188,10 +188,10 @@ export default function AdminForo({ notify }: { notify: (msg: string) => void })
                     {h.estado_moderacion === 'aprobado' && <Badge tone="green">aprobado</Badge>}
                     {!!h.cerrado && <Badge tone="gray"><Lock size={11} className="mr-1 inline" />cerrado</Badge>}
                   </div>
-                  <p className="mt-1 text-[11.5px] text-ink/45">
+                  <p className="mt-1 text-[12.5px] text-ink/45">
                     {h.categoria?.nombre_es || '—'} · {h.autor} · {timeAgo(h.actualizado_en || h.creado_en)} · {h.mensajes_count || 0} respuestas
                   </p>
-                  <p className="mt-2 text-[12.5px] leading-relaxed text-ink/55 line-clamp-2">{h.cuerpo}</p>
+                  <p className="mt-2 text-[13px] leading-relaxed text-ink/55 line-clamp-2">{h.cuerpo}</p>
                   {h.motivo_moderacion && h.estado_moderacion === 'pendiente' && (
                     <p className="mt-2 rounded-lg bg-orange-50 px-2.5 py-1.5 text-xs text-orange-700"> {h.motivo_moderacion}</p>
                   )}
