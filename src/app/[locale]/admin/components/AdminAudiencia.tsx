@@ -68,7 +68,7 @@ function Barras({
             className={`w-full rounded-t ${color}`}
             style={{ height: `${Math.max(3, (d.valor / maximo) * altura)}px` }}
           />
-          <span className="text-[9px] leading-tight text-ink/35">{datos.length <= 32 ? d.corta : ''}</span>
+          <span className="text-[10px] leading-tight text-ink/35">{datos.length <= 32 ? d.corta : ''}</span>
         </div>
       ))}
     </div>
@@ -579,7 +579,7 @@ export default function AdminAudiencia({ notify }: { notify: (msg: string) => vo
                   )
                 })}
               </div>
-              <div className="mt-1 flex justify-between text-[9px] text-ink/35">
+              <div className="mt-1 flex justify-between text-[10px] text-ink/35">
                 <span>00h</span><span>12h</span><span>23h</span>
               </div>
             </div>

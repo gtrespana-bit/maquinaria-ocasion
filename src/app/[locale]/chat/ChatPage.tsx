@@ -642,7 +642,7 @@ export default function ChatPageClient() {
                       <div key={m.id} className={`flex ${esMio ? 'justify-end' : 'justify-start'}`}>
                         <div className={`max-w-[78%] px-3.5 py-2.5 ${esMio ? 'bg-ink text-paper' : 'border border-line bg-[#FBFAF5] text-ink'}`}>
                           <p className="whitespace-pre-wrap break-words text-[13.5px] leading-[1.5]">{m.contenido}</p>
-                          <p className={`t-num mt-1 text-[9.5px] ${esMio ? 'text-paper/45' : 'text-ink/35'}`}>
+                          <p className={`t-num mt-1 text-[11px] ${esMio ? 'text-paper/45' : 'text-ink/35'}`}>
                             {formatHora(m.creado_en)}
                           </p>
                         </div>

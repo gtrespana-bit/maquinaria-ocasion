@@ -282,7 +282,7 @@ export function Header() {
               >
                 <Search size={16} strokeWidth={1.6} />
                 <span className="t-label hidden text-ink/50 xl:block">Buscar</span>
-                <span className="t-label hidden border border-line px-1 py-0.5 text-[9px] text-ink/40 xl:block">
+                <span className="t-label hidden border border-line px-1 py-0.5 text-[10px] text-ink/40 xl:block">
                   ⌘K
                 </span>
               </button>
@@ -296,7 +296,7 @@ export function Header() {
                   >
                     <MessageCircle size={18} strokeWidth={1.6} />
                     {unreadCount > 0 && (
-                      <span className="t-num absolute top-0.5 right-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-signal px-1 text-[9px] font-bold text-ink">
+                      <span className="t-num absolute top-0.5 right-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-signal px-1 text-[10px] font-bold text-ink">
                         {unreadCount > 9 ? '9+' : unreadCount}
                       </span>
                     )}
