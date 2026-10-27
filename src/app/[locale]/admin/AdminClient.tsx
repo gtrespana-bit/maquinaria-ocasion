@@ -259,7 +259,7 @@ export default function AdminPage() {
           <div className="mb-6 flex shrink-0 items-center gap-3 px-2">
             <span className="flex h-9 w-9 items-center justify-center bg-ink text-paper"><Sparkles size={15} strokeWidth={1.6} /></span>
             <div>
-              <p className="text-[12.5px] font-semibold tracking-[-0.01em] text-ink">Panel</p>
+              <p className="text-[12.5px] font-semibold tracking-[-0.01em] text-ink">Admin MaquinariaOcasión</p>
               <p className="t-label mt-0.5 text-ink/35">Control total</p>
             </div>
           </div>

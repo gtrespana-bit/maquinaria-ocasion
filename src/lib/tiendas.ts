@@ -33,7 +33,7 @@ export function slugify(texto: string): string {
     .replace(/[\u0300-\u036f]/g, '')
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, '-')
-    .replace(/-{2 }/g, '-')
+    .replace(/-{2,}/g, '-')
     .replace(/^-+|-+$/g, '')
 }
 

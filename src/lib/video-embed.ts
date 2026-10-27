@@ -31,7 +31,7 @@ function idYouTube(u: URL): string | null {
   if (host === 'm.youtube.com') return u.searchParams.get('v')
   if (host === 'youtube.com' || host === 'youtube-nocookie.com') {
     if (u.pathname === '/watch') return u.searchParams.get('v')
-    const m = u.pathname.match(/^\/(shorts|embed|live)\/([\w-]{5 })/)
+    const m = u.pathname.match(/^\/(shorts|embed|live)\/([\w-]{5,})/)
     return m ? m[2] : null
   }
   return null
@@ -48,7 +48,7 @@ export function embedDeVideo(raw: unknown): VideoEmbed {
   }
 
   const yt = idYouTube(u)
-  if (yt && /^[\w-]{5 }$/.test(yt)) {
+  if (yt && /^[\w-]{5,}$/.test(yt)) {
     return { tipo: 'iframe', src: `https://www.youtube-nocookie.com/embed/${yt}` }
   }
 
@@ -59,7 +59,7 @@ export function embedDeVideo(raw: unknown): VideoEmbed {
   }
 
   if (host === 'drive.google.com') {
-    const m = u.pathname.match(/\/file\/d\/([\w-]{10 })/)
+    const m = u.pathname.match(/\/file\/d\/([\w-]{10,})/)
     if (m) return { tipo: 'iframe', src: `https://drive.google.com/file/d/${m[1]}/preview` }
   }
 

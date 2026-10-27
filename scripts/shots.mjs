@@ -1,5 +1,10 @@
 // Capturas por tramos de viewport (fiel a lo que ve el usuario) para revisar
 // el diseño sin navegador. Uso: node scripts/shots.mjs <url> <prefijo> [ancho] [alto] [tramos]
+//
+// Dependencias fuera del package.json (son solo para revisión local):
+//   npm i -D puppeteer-core @sparticuz/chromium
+// En Linux mínimo hace falta además las libs de Chromium; en este entorno:
+//   LD_LIBRARY_PATH=/tmp/al2023:/tmp/al2023/lib node scripts/shots.mjs ...
 import chromium from '@sparticuz/chromium'
 import puppeteer from 'puppeteer-core'
 

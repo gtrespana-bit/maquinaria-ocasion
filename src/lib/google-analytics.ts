@@ -19,7 +19,7 @@
 
 /** Formato de los ID de medición de GA4. Los `UA-…` (Universal Analytics) ya
  *  no existen y los `GTM-…` son de Tag Manager, otro script distinto. */
-const PATRON_ID = /^G-[A-Z0-9]{4 }$/
+const PATRON_ID = /^G-[A-Z0-9]{4,}$/
 
 /** Id del snippet propio, visible en el HTML inicial. */
 export const GA_BOOTSTRAP_ID = 'ga4-bootstrap'
