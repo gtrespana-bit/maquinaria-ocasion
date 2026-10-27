@@ -69,9 +69,7 @@ export async function POST(req: NextRequest) {
       endpoint: process.env.R2_ENDPOINT,
       credentials: {
         accessKeyId: process.env.R2_ACCESS_KEY_ID!,
-        secretAccessKey: process.env.R2_SECRET_ACCESS_KEY!,
-      },
-    })
+        secretAccessKey: process.env.R2_SECRET_ACCESS_KEY! } })
 
     const imagenesUrl = (producto.imagenes as string[]) || []
     const imagenUrl = producto.imagen_url
@@ -84,8 +82,7 @@ export async function POST(req: NextRequest) {
       try {
         await r2Client.send(new DeleteObjectCommand({
           Bucket: R2_BUCKET,
-          Key: key,
-        }))
+          Key: key }))
       } catch (e) {
         console.error('Error deleting R2 image:', key, e)
       }

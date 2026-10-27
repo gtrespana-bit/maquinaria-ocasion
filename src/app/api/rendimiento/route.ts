@@ -28,8 +28,7 @@ import {
   normalizarPeriodo,
   periodoPermitido,
   rellenarSerie,
-  tasaContacto,
-} from '@/lib/rendimiento'
+  tasaContacto } from '@/lib/rendimiento'
 
 export const dynamic = 'force-dynamic'
 
@@ -72,8 +71,7 @@ export async function GET(req: NextRequest) {
   let parcial = false
   const rpc = await sb.rpc('rendimiento_vendedor', {
     p_user_id: userId,
-    p_dias: periodo,
-  })
+    p_dias: periodo })
   if (rpc.error) {
     parcial = true
     console.warn('[rendimiento] RPC no disponible:', rpc.error.message)
@@ -115,8 +113,7 @@ export async function GET(req: NextRequest) {
       diasPublicado: dias,
       activo: p.activo,
       vendido: p.vendido,
-      pausadoPorPlan: p.pausado_por_plan,
-    })
+      pausadoPorPlan: p.pausado_por_plan })
 
     const precio = Number(p.precio ?? p.precio_usd) || null
 
@@ -139,8 +136,7 @@ export async function GET(req: NextRequest) {
       tasaContacto: caps.porAnuncio ? tasaContacto(contactos, visitas) : null,
       /** Visitadísimo y sin consultas: el aviso que de verdad mueve el precio. */
       sinContactos: caps.porAnuncio ? visitas >= 30 && contactos === 0 && !p.vendido && p.activo : false,
-      diagnostico: caps.diagnostico ? diag : null,
-    }
+      diagnostico: caps.diagnostico ? diag : null }
   })
 
   // ── 3. Totales ────────────────────────────────────────────────────────────
@@ -158,8 +154,7 @@ export async function GET(req: NextRequest) {
     vendidos: Number(resumen.vendidos) || 0,
     tasaContacto: caps.porAnuncio
       ? tasaContacto(Number(resumen.contactos) || 0, Number(resumen.visitas) || 0)
-      : null,
-  }
+      : null }
 
   // ── 4. Serie diaria ───────────────────────────────────────────────────────
   const serie = caps.serie
@@ -192,8 +187,7 @@ export async function GET(req: NextRequest) {
     diasMios: ventas.diasMediana,
     diasMercado: caps.mercado ? mercadoPropio?.diasMediana : null,
     ventasPropias: ventas.vendidos,
-    ventasMercado: mercadoPropio?.vendidos,
-  })
+    ventasMercado: mercadoPropio?.vendidos })
 
   const mercado = caps.mercado
     ? {
@@ -203,8 +197,7 @@ export async function GET(req: NextRequest) {
         precioMediana: medianaPrecio,
         diasMediana:
           mercadoPropio?.diasMediana != null ? Math.round(Number(mercadoPropio.diasMediana)) : null,
-        ...comparativa,
-      }
+        ...comparativa }
     : null
 
   // El precio de cada anuncio frente a la mediana de su categoría: es el
@@ -229,6 +222,5 @@ export async function GET(req: NextRequest) {
     serie,
     anuncios,
     mercado,
-    actualizadoEn: ahora.toISOString(),
-  })
+    actualizadoEn: ahora.toISOString() })
 }

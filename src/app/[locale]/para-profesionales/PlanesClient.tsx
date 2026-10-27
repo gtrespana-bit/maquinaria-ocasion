@@ -11,18 +11,13 @@ import {
   Lock,
   ShieldCheck,
   Sparkles,
-  X,
-} from 'lucide-react'
+  X } from 'lucide-react'
 import { useAuth } from '@/components/AuthProvider'
 import LocalLink from '@/components/LocalLink'
-import {
-  PLANES_PRO,
+import { PLANES_PRO,
   descuentoAnualPct,
   precioMensualEquivalente,
-  precioPlan,
-  type Periodicidad,
-  type PlanPago,
-} from '@/lib/planes-anuncios'
+  precioPlan, type Periodicidad, type PlanPago} from '@/lib/planes-anuncios'
 import { formatPrecioObligatorio as formatPrecio } from '@/lib/precio'
 import { routing } from '@/i18n/routing'
 
@@ -147,9 +142,7 @@ export default function PlanesClient() {
         body: JSON.stringify({
           plan,
           periodicidad,
-          cupon: cupon.trim() ? cupon.trim() : undefined,
-        }),
-      })
+          cupon: cupon.trim() ? cupon.trim() : undefined }) })
       const data = await res.json().catch(() => ({}))
       if (!res.ok || (!data.url && !data.actualizado)) {
         setError(data.error || 'No se pudo abrir el pago.')
@@ -222,19 +215,19 @@ export default function PlanesClient() {
     <div>
       {/* Resultado del pago */}
       {pago === 'ok' && (
-        <div className="mb-6 rounded-2xl border border-emerald-200 bg-emerald-50 p-5 flex items-start gap-3">
-          <BadgeCheck className="text-emerald-600 mt-0.5 shrink-0" size={22} />
+        <div className="mb-6 flex items-start gap-3 border border-moss/25 bg-moss-soft p-5">
+          <BadgeCheck className="mt-0.5 shrink-0 text-moss" size={20} strokeWidth={1.8} />
           <div className="flex-1">
-            <p className="font-bold text-emerald-900">¡Plan {nombrePlan(planPagado) || 'de pago'} activado! Gracias por confiar en MaquinariaOcasión.</p>
-            <p className="text-sm text-emerald-800 mt-1">
+            <p className="text-[14px] font-semibold text-moss">¡Plan {nombrePlan(planPagado) || 'de pago'} activado! Gracias por confiar en MaquinariaOcasión.</p>
+            <p className="mt-1 text-[13px] text-moss/80">
               {planPagado ? `Ya tienes el plan ${nombrePlan(planPagado)}. ` : ''}
               Puedes publicar tu siguiente anuncio ahora mismo. La factura llega por email desde Stripe.
             </p>
             <div className="flex flex-wrap gap-3 mt-3">
-              <LocalLink href="/publicar" className="inline-flex items-center gap-1.5 rounded-xl bg-emerald-700 px-4 py-2 text-sm font-bold text-white hover:bg-emerald-800">
+              <LocalLink href="/publicar" className="btn btn-ink btn-sm">
                 Publicar un anuncio <ArrowRight size={15} />
               </LocalLink>
-              <LocalLink href="/dashboard?tab=plan" className="inline-flex items-center gap-1.5 rounded-xl border border-emerald-300 bg-white px-4 py-2 text-sm font-semibold text-emerald-900 hover:bg-emerald-100">
+              <LocalLink href="/dashboard?tab=plan" className="btn btn-outline btn-sm">
                 Ver mi plan
               </LocalLink>
             </div>
@@ -242,49 +235,49 @@ export default function PlanesClient() {
         </div>
       )}
       {pago === 'cancelado' && (
-        <div className="mb-6 rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm text-slate-700">
+        <div className="mb-6 border border-line bg-paper-2/60 p-4 text-[13px] text-ink/70">
           No se ha cobrado nada. Tu plan sigue como estaba y puedes contratarlo cuando quieras.
         </div>
       )}
 
       {/* Prueba activa o gracia */}
       {estado?.trialGracia && (
-        <div className="mb-6 rounded-2xl border border-amber-200 bg-amber-50 p-4 flex flex-col sm:flex-row sm:items-center gap-3 justify-between">
+        <div className="mb-6 flex flex-col justify-between gap-3 border border-signal-deep/40 bg-signal-soft/50 p-4 sm:flex-row sm:items-center">
           <div>
-            <p className="font-bold text-amber-900">
+            <p className="text-[14px] font-semibold text-ink">
               Tu prueba terminó · te quedan {estado.diasGracia} días de gracia
             </p>
-            <p className="text-sm text-amber-800">
+            <p className="mt-1 text-[13px] text-ink/70">
               Hasta el {fechaCorta(estado.graciaHasta)} tus anuncios siguen publicados. Después se pausarán
               los que excedan el cupo gratuito, sin borrar nada.
             </p>
           </div>
           <LocalLink
             href="/dashboard?tab=plan"
-            className="inline-flex shrink-0 items-center gap-1.5 rounded-xl bg-brand-accent px-4 py-2 text-sm font-bold text-white hover:bg-brand-accent-dark"
+            className="btn btn-signal btn-sm shrink-0"
           >
             Activar mi plan <ArrowRight size={14} />
           </LocalLink>
         </div>
       )}
       {estado?.trial && (
-        <div className="mb-6 rounded-2xl border border-amber-200 bg-amber-50 p-4 flex flex-col sm:flex-row sm:items-center gap-3 justify-between">
+        <div className="mb-6 flex flex-col justify-between gap-3 border border-signal-deep/40 bg-signal-soft/50 p-4 sm:flex-row sm:items-center">
           <div>
-            <p className="font-bold text-amber-900">
+            <p className="text-[14px] font-semibold text-ink">
               Estás probando el plan {nombrePlan(estado.plan) || 'Básico'}{estado.diasTrial > 0 ? ` · quedan ${estado.diasTrial} días` : ''}
             </p>
-            <p className="text-sm text-amber-800">
+            <p className="mt-1 text-[13px] text-ink/70">
               Aprovecha para publicar todo tu stock. Al terminar hay 7 días de gracia y después se pausan
               los anuncios que sobren, sin borrarlos. Activa tu plan cuando quieras.
             </p>
           </div>
           <div className="flex shrink-0 flex-wrap items-center gap-2">
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-amber-100 px-3 py-1 text-xs font-bold text-amber-900">
+            <span className="t-label bg-signal px-2 py-1 text-ink">
               <Sparkles size={14} /> Prueba activa
             </span>
             <LocalLink
               href="/dashboard?tab=plan"
-              className="inline-flex items-center gap-1.5 rounded-xl bg-brand-accent px-3 py-1.5 text-xs font-bold text-white hover:bg-brand-accent-dark"
+              className="btn btn-signal btn-sm"
             >
               Activar ahora <ArrowRight size={13} />
             </LocalLink>
@@ -294,14 +287,14 @@ export default function PlanesClient() {
 
       {/* Prueba disponible */}
       {session && estado?.trialElegible && (
-        <div className="mb-6 rounded-2xl border border-emerald-200 bg-emerald-50 p-4 flex flex-col sm:flex-row sm:items-center gap-3 justify-between">
+        <div className="mb-6 flex flex-col justify-between gap-3 border border-moss/25 bg-moss-soft p-4 sm:flex-row sm:items-center">
           <div>
-            <p className="font-bold text-emerald-900">Puedes probar el plan Básico 30 días, gratis</p>
-            <p className="text-sm text-emerald-800">
+            <p className="text-[14px] font-semibold text-moss">Puedes probar el plan Básico 30 días, gratis</p>
+            <p className="mt-1 text-[13px] text-moss/80">
               5 anuncios, 3 destacados al mes, escaparate y vídeo. Sin tarjeta y sin cobro automático.
               Al terminar, 7 días de gracia y no se borra ningún anuncio.
               {estado?.tipo === 'particular' && (
-                <span className="mt-1 block text-xs text-emerald-700">
+                <span className="t-label mt-1 block text-moss/70">
                   Al empezar, tu cuenta pasa a «profesional» (gratis) para recibir el cupo del plan Básico.
                 </span>
               )}
@@ -311,7 +304,7 @@ export default function PlanesClient() {
             type="button"
             onClick={empezarPrueba}
             disabled={pruebaLoading}
-            className="inline-flex shrink-0 items-center justify-center gap-1.5 rounded-xl bg-emerald-700 px-4 py-2 text-sm font-bold text-white hover:bg-emerald-800 disabled:opacity-60"
+            className="btn btn-ink btn-sm shrink-0 justify-center"
           >
             {pruebaLoading ? <Loader2 size={14} className="animate-spin" /> : <Sparkles size={14} />}
             Empezar prueba
@@ -320,25 +313,25 @@ export default function PlanesClient() {
       )}
 
       {/* Periodicidad */}
-      <div className="rounded-2xl border border-slate-200 bg-white p-4 sm:p-5 mb-6">
+      <div className="mb-6 border border-line bg-[#FBFAF5] p-4 sm:p-5">
         <div className="flex flex-col lg:flex-row lg:items-center gap-4 justify-between">
           <div>
-            <p className="text-sm font-bold text-slate-900">Dos planes, según tu stock</p>
-            <p className="text-xs text-slate-500 mt-0.5">
+            <p className="text-[14px] font-semibold text-ink">Dos planes, según tu stock</p>
+            <p className="t-label mt-1 text-ink/45">
               Básico para hasta 5 máquinas a la vez. Profesional, sin límite, para compraventas con rotación.
             </p>
           </div>
 
           <div className="lg:text-right">
-            <p className="text-sm font-bold text-slate-900">Pago</p>
-            <p className="text-xs text-slate-500 mt-0.5">El anual sale como 10 mensualidades: 2 meses gratis.</p>
-            <div className="mt-3 inline-flex rounded-xl bg-slate-100 p-1" role="group" aria-label="Periodicidad">
+            <p className="text-[14px] font-semibold text-ink">Pago</p>
+            <p className="t-label mt-1 text-ink/45">El anual sale como 10 mensualidades: 2 meses gratis.</p>
+            <div className="mt-3 inline-flex border border-line bg-paper p-0.5" role="group" aria-label="Periodicidad">
               <button
                 type="button"
                 onClick={() => setPeriodicidad('mensual')}
                 aria-pressed={periodicidad === 'mensual'}
-                className={`px-4 py-1.5 rounded-lg text-sm font-semibold transition ${
-                  periodicidad === 'mensual' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-600 hover:text-slate-900'
+                className={`px-4 py-1.5 text-[12px] font-semibold transition-colors ${
+                  periodicidad === 'mensual' ? 'bg-ink text-paper' : 'text-ink/60 hover:text-ink'
                 }`}
               >
                 Mensual
@@ -347,11 +340,11 @@ export default function PlanesClient() {
                 type="button"
                 onClick={() => setPeriodicidad('anual')}
                 aria-pressed={periodicidad === 'anual'}
-                className={`px-4 py-1.5 rounded-lg text-sm font-semibold transition ${
-                  periodicidad === 'anual' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-600 hover:text-slate-900'
+                className={`px-4 py-1.5 text-[12px] font-semibold transition-colors ${
+                  periodicidad === 'anual' ? 'bg-ink text-paper' : 'text-ink/60 hover:text-ink'
                 }`}
               >
-                Anual <span className="text-emerald-700">−17 %</span>
+                Anual <span className="text-moss">−17 %</span>
               </button>
             </div>
           </div>
@@ -359,7 +352,7 @@ export default function PlanesClient() {
       </div>
 
       {/* Tarjetas de planes */}
-      <div className="mx-auto grid max-w-3xl gap-4 md:grid-cols-2">
+      <div className="grid gap-px border border-line bg-line md:grid-cols-2">
         {PLANES_PRO.map(p => {
           const esActual = planActual === p.id
           const precio = precioPlan(p.id, periodicidad)
@@ -370,58 +363,56 @@ export default function PlanesClient() {
           return (
             <div
               key={p.id}
-              className={`relative flex flex-col rounded-2xl border bg-white p-5 sm:p-6 ${
-                p.destacado
-                  ? 'border-brand-accent shadow-lg ring-1 ring-brand-accent'
-                  : 'border-slate-200 shadow-sm'
+              className={`relative flex flex-col bg-[#FBFAF5] p-6 sm:p-8 ${
+                p.destacado ? 'ring-1 ring-inset ring-ink' : ''
               }`}
             >
               <div className="flex items-start justify-between gap-2 min-h-[24px]">
                 <span
-                  className={`inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-[11px] font-black uppercase tracking-wide ${
-                    p.destacado ? 'bg-brand-accent text-white' : 'bg-slate-100 text-slate-700'
+                  className={`t-label inline-flex items-center gap-1 px-2 py-1 ${
+                    p.destacado ? 'bg-signal text-ink' : 'bg-paper-2 text-ink/60'
                   }`}
                 >
                   <Sparkles size={12} /> {p.destacado ? 'Recomendado' : 'Para empezar'}
                 </span>
                 {esActual && (
-                  <span className="inline-flex items-center gap-1 rounded-full bg-slate-900 px-2.5 py-1 text-[11px] font-bold text-white">
+                  <span className="t-label inline-flex items-center gap-1 bg-ink px-2 py-1 text-paper">
                     <Check size={12} /> Tu plan
                   </span>
                 )}
                 {!esActual && estado?.trial && estado.plan === p.id && (
-                  <span className="inline-flex items-center gap-1 rounded-full bg-amber-100 px-2.5 py-1 text-[11px] font-bold text-amber-900">
+                  <span className="t-label inline-flex items-center gap-1 bg-signal px-2 py-1 text-ink">
                     En prueba
                   </span>
                 )}
               </div>
 
-              <h2 className="text-xl font-black text-slate-900 mt-3">{p.nombre}</h2>
-              <p className="text-xs text-slate-500 mt-0.5">{p.paraQuien}</p>
+              <h2 className="t-display t-display-sm mt-4 text-ink">{p.nombre}</h2>
+              <p className="t-label mt-1 text-ink/45">{p.paraQuien}</p>
 
               <div className="mt-4">
-                <p className="text-4xl font-black text-slate-900">
+                <p className="t-display t-num text-[2.4rem] leading-none text-ink">
                   {formatPrecio(periodicidad === 'anual' ? precioMensualEquivalente(p.id) : precio)}
-                  <span className="text-sm font-semibold text-slate-500">/mes</span>
+                  <span className="ml-1.5 align-baseline text-[13px] font-medium text-ink/45">/mes</span>
                 </p>
                 {periodicidad === 'anual' ? (
-                  <p className="text-xs text-slate-500 mt-1">
+                  <p className="t-label mt-2 text-ink/45">
                     {formatPrecio(precio)} al año · ahorras {ahorro} %
                   </p>
                 ) : (
-                  <p className="text-xs text-slate-500 mt-1">Facturado mes a mes · sin permanencia</p>
+                  <p className="t-label mt-2 text-ink/45">Facturado mes a mes · sin permanencia</p>
                 )}
                 {porAnuncio != null && (
-                  <p className="text-xs text-emerald-700 font-semibold mt-1">
+                  <p className="t-label mt-1 font-semibold text-moss">
                     {formatPrecio(porAnuncio)} por anuncio al mes
                   </p>
                 )}
               </div>
 
-              <ul className="mt-5 space-y-2 text-sm text-slate-700 flex-1">
+              <ul className="mt-6 grid flex-1 gap-x-8 gap-y-2 text-[13px] text-ink/75 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
                 {p.incluido.map(item => (
                   <li key={item} className="flex gap-2">
-                    <Check size={16} className="mt-0.5 shrink-0 text-emerald-600" aria-hidden="true" />
+                    <Check size={13} strokeWidth={2.4} className="mt-1 shrink-0 text-moss" aria-hidden="true" />
                     <span>{item}</span>
                   </li>
                 ))}
@@ -431,12 +422,12 @@ export default function PlanesClient() {
                 type="button"
                 disabled={loading === p.id || esActual}
                 onClick={() => contratar(p.id)}
-                className={`mt-6 inline-flex w-full items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-bold transition disabled:opacity-70 ${
+                className={`btn mt-6 w-full justify-center disabled:opacity-70 ${
                   esActual
-                    ? 'bg-slate-100 text-slate-500'
+                    ? 'btn-outline opacity-60'
                     : p.destacado
-                      ? 'bg-brand-accent text-white hover:bg-brand-accent-dark'
-                      : 'bg-slate-900 text-white hover:bg-slate-800'
+                      ? 'btn-signal'
+                      : 'btn-ink'
                 }`}
               >
                 {loading === p.id ? (
@@ -471,7 +462,7 @@ export default function PlanesClient() {
                   type="button"
                   onClick={empezarPrueba}
                   disabled={pruebaLoading}
-                  className="mt-2 inline-flex w-full items-center justify-center gap-2 rounded-xl border border-emerald-300 bg-emerald-50 px-4 py-2.5 text-sm font-bold text-emerald-900 hover:bg-emerald-100 disabled:opacity-60"
+                  className="btn btn-outline btn-sm mt-2 w-full justify-center disabled:opacity-60"
                 >
                   {pruebaLoading ? <Loader2 size={15} className="animate-spin" /> : <Sparkles size={15} />}
                   Probar 30 días gratis
@@ -484,34 +475,34 @@ export default function PlanesClient() {
 
       {/* Garantías */}
       <div className="mt-6 grid gap-3 sm:grid-cols-3 text-sm">
-        <div className="flex items-start gap-2 rounded-xl border border-slate-200 bg-white p-3">
-          <ShieldCheck size={18} className="text-emerald-600 mt-0.5 shrink-0" />
+        <div className="flex items-start gap-2 border border-line bg-[#FBFAF5] p-3">
+          <ShieldCheck size={18} className="mt-0.5 shrink-0 text-moss" />
           <div>
-            <p className="font-semibold text-slate-900">Sin permanencia</p>
-            <p className="text-xs text-slate-500">Cancela cuando quieras desde tu panel.</p>
+            <p className="text-[13px] font-semibold text-ink">Sin permanencia</p>
+            <p className="mt-0.5 text-[11.5px] leading-relaxed text-ink/55">Cancela cuando quieras desde tu panel.</p>
           </div>
         </div>
-        <div className="flex items-start gap-2 rounded-xl border border-slate-200 bg-white p-3">
-          <CreditCard size={18} className="text-emerald-600 mt-0.5 shrink-0" />
+        <div className="flex items-start gap-2 border border-line bg-[#FBFAF5] p-3">
+          <CreditCard size={18} className="mt-0.5 shrink-0 text-moss" />
           <div>
-            <p className="font-semibold text-slate-900">Factura con IVA</p>
-            <p className="text-xs text-slate-500">Añade tu NIF/CIF en el pago. Tarjeta, Apple Pay y Google Pay.</p>
+            <p className="text-[13px] font-semibold text-ink">Factura con IVA</p>
+            <p className="mt-0.5 text-[11.5px] leading-relaxed text-ink/55">Añade tu NIF/CIF en el pago. Tarjeta, Apple Pay y Google Pay.</p>
           </div>
         </div>
-        <div className="flex items-start gap-2 rounded-xl border border-slate-200 bg-white p-3">
-          <Lock size={18} className="text-emerald-600 mt-0.5 shrink-0" />
+        <div className="flex items-start gap-2 border border-line bg-[#FBFAF5] p-3">
+          <Lock size={18} className="mt-0.5 shrink-0 text-moss" />
           <div>
-            <p className="font-semibold text-slate-900">Pago seguro con Stripe</p>
-            <p className="text-xs text-slate-500">No vemos ni guardamos los datos de tu tarjeta.</p>
+            <p className="text-[13px] font-semibold text-ink">Pago seguro con Stripe</p>
+            <p className="mt-0.5 text-[11.5px] leading-relaxed text-ink/55">No vemos ni guardamos los datos de tu tarjeta.</p>
           </div>
         </div>
       </div>
 
       {estado?.suscripcionStripe && (
-        <div className="mt-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 rounded-2xl border border-slate-200 bg-white p-4">
+        <div className="mt-4 flex flex-col justify-between gap-3 border border-line bg-[#FBFAF5] p-4 sm:flex-row sm:items-center">
           <div>
-            <p className="text-sm font-bold text-slate-900">Gestionar mi suscripción</p>
-            <p className="text-xs text-slate-500">
+            <p className="text-[14px] font-semibold text-ink">Gestionar mi suscripción</p>
+            <p className="mt-0.5 text-[11.5px] leading-relaxed text-ink/55">
               Cambia la tarjeta, descarga facturas o date de baja.
               {estado.planHasta ? ` Próxima renovación: ${fechaCorta(estado.planHasta)}.` : ''}
             </p>
@@ -520,7 +511,7 @@ export default function PlanesClient() {
             type="button"
             onClick={abrirPortal}
             disabled={portalLoading}
-            className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-800 hover:bg-slate-50 disabled:opacity-60"
+            className="btn btn-outline btn-sm justify-center disabled:opacity-60"
           >
             {portalLoading ? <Loader2 size={15} className="animate-spin" /> : <CreditCard size={15} />}
             Abrir gestión
@@ -529,7 +520,7 @@ export default function PlanesClient() {
       )}
 
       {/* Cupón */}
-      <div className="mt-6 rounded-2xl border border-slate-200 bg-white p-5">
+      <div className="mt-6 border border-line bg-[#FBFAF5] p-5">
         <button
           type="button"
           onClick={() => setMostrarCupon(v => !v)}
@@ -537,10 +528,10 @@ export default function PlanesClient() {
           aria-expanded={mostrarCupon}
         >
           <span>
-            <span className="block text-sm font-bold text-slate-900">¿Tienes un cupón?</span>
-            <span className="block text-xs text-slate-500">Descuento en la cuota o días de regalo.</span>
+            <span className="block text-[13.5px] font-semibold text-ink">¿Tienes un cupón?</span>
+            <span className="mt-0.5 block text-[12px] text-ink/50">Descuento en la cuota o días de regalo.</span>
           </span>
-          <span className="text-xs font-semibold text-slate-500">{mostrarCupon ? 'Ocultar' : 'Añadir'}</span>
+          <span className="t-label text-ink/55">{mostrarCupon ? 'Ocultar' : 'Añadir'}</span>
         </button>
         {mostrarCupon && (
           <div className="mt-4 flex flex-col sm:flex-row gap-2">
@@ -549,7 +540,7 @@ export default function PlanesClient() {
               onChange={e => setCupon(e.target.value.toUpperCase())}
               placeholder="CÓDIGO"
               aria-label="Código de cupón"
-              className="flex-1 rounded-xl border border-slate-300 px-3 py-2 text-sm uppercase text-slate-900 focus:outline-none focus:ring-2 focus:ring-brand-accent"
+              className="field flex-1 uppercase"
             />
             <button
               type="button"
@@ -561,8 +552,7 @@ export default function PlanesClient() {
                 const res = await fetch('/api/planes/canjear', {
                   method: 'POST',
                   headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({ codigo: cupon }),
-                })
+                  body: JSON.stringify({ codigo: cupon }) })
                 const data = await res.json().catch(() => ({}))
                 setLoading(null)
                 if (!res.ok) {
@@ -573,31 +563,31 @@ export default function PlanesClient() {
                 await cargarEstado()
               }}
               disabled={loading === 'cupon'}
-              className="rounded-xl border border-slate-300 px-4 py-2 text-sm font-bold text-slate-900 hover:bg-slate-50 disabled:opacity-60"
+              className="btn btn-ink btn-sm disabled:opacity-60"
             >
               {loading === 'cupon' ? 'Canjeando…' : 'Canjear regalo'}
             </button>
           </div>
         )}
-        <p className="mt-3 text-xs text-slate-500">
+        <p className="mt-3 text-[12px] text-ink/50">
           El descuento se aplica al elegir un plan. Los cupones de días se canjean aquí sin pasar por el pago.
         </p>
       </div>
 
       {msg && (
-        <div className="mt-4 rounded-xl border border-emerald-200 bg-emerald-50 p-3 text-sm font-semibold text-emerald-900">
+        <div className="mt-4 border border-moss/25 bg-moss-soft p-3 text-[13px] font-semibold text-moss">
           {msg}
         </div>
       )}
       {error && (
-        <div className="mt-4 flex items-start gap-2 rounded-xl border border-red-200 bg-red-50 p-3 text-sm text-red-800">
+        <div className="mt-4 flex items-start gap-2 border border-clay/30 bg-clay/[0.05] p-3 text-[13px] text-clay">
           <X size={16} className="mt-0.5 shrink-0" />
           <span>{error}</span>
         </div>
       )}
 
       {!authLoading && !session && (
-        <p className="mt-4 text-center text-sm text-slate-500">
+        <p className="mt-4 text-center text-[13px] text-muted">
           ¿Todavía no tienes cuenta?{' '}
           <LocalLink href="/register" className="font-semibold underline">
             Créala gratis
@@ -607,14 +597,14 @@ export default function PlanesClient() {
       )}
 
       {session && estado?.tipo === 'particular' && (
-        <p className="mt-4 rounded-xl bg-slate-50 p-3 text-xs text-slate-600">
+        <p className="mt-4 border border-line bg-paper-2/60 p-3 text-[12px] text-ink/60">
           Al contratar un plan, tu perfil pasa a <strong>profesional</strong> automáticamente (es gratis). Así
           recibes el cupo que pagas en lugar de quedarte en el límite de 1 anuncio.
         </p>
       )}
 
       {user?.email && !estado && !authLoading && (
-        <p className="mt-4 text-center text-xs text-slate-400">
+        <p className="mt-4 text-center text-[11.5px] text-ink/40">
           Sesión iniciada como {user.email}
         </p>
       )}

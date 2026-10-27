@@ -43,8 +43,7 @@ export function usePushNotification() {
       if (!vapidKey) throw new Error('VAPID public key not configured')
       const subscription = await reg.pushManager.subscribe({
         userVisibleOnly: true,
-        applicationServerKey: urlBase64ToUint8Array(vapidKey) as BufferSource,
-      })
+        applicationServerKey: urlBase64ToUint8Array(vapidKey) as BufferSource })
 
       // 4. Send to backend
       const { data: { session } } = await supabase.auth.getSession()
@@ -54,10 +53,8 @@ export function usePushNotification() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${session.access_token}`,
-        },
-        body: JSON.stringify({ subscription }),
-      })
+          Authorization: `Bearer ${session.access_token}` },
+        body: JSON.stringify({ subscription }) })
 
       if (!res.ok) return false
 

@@ -8,8 +8,7 @@ import {
   getCategoriasForo,
   getHilosForo,
   haceTiempo,
-  nombreCategoria,
-} from '@/lib/foro'
+  nombreCategoria } from '@/lib/foro'
 
 type Props = {
   params: Promise<{ locale: string }>
@@ -27,8 +26,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: t('foro.title'),
     description: t('foro.description'),
     alternates: alternatesSeo('/foro'),
-    robots: { index: true, follow: true },
-  }
+    robots: { index: true, follow: true } }
 }
 
 export default async function ForoPage({ params, searchParams }: Props) {
@@ -44,29 +42,33 @@ export default async function ForoPage({ params, searchParams }: Props) {
   const autores = await autoresForo(hilos.map(h => h.user_id))
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <section className="bg-brand-darkNav text-white">
-        <div className="max-w-5xl mx-auto px-4 py-10 sm:py-14">
-          <p className="text-brand-signal font-black uppercase tracking-wide text-xs mb-3 flex items-center gap-2">
-            <MessagesSquare className="w-4 h-4" aria-hidden="true" /> {t('foro.kicker')}
+    <div className="bg-paper">
+      <header className="on-dark relative overflow-hidden bg-ink text-paper">
+        <div aria-hidden="true" className="blueprint absolute inset-0 opacity-40" />
+        <div className="shell relative pb-12 pt-10 md:pb-16 md:pt-14">
+          <p className="t-eyebrow flex items-center gap-2 text-signal">
+            <MessagesSquare className="h-3 w-3" strokeWidth={1.8} aria-hidden="true" /> {t('foro.kicker')}
           </p>
-          <h1 className="text-3xl sm:text-4xl font-black mb-3">{t('foro.title')}</h1>
-          <p className="text-gray-300 max-w-2xl">{t('foro.subtitle')}</p>
-          <LocalLink
-            href="/foro/nuevo"
-            className="mt-6 inline-flex items-center gap-2 bg-brand-signal text-brand-darkNav font-black px-6 py-3 rounded-xl hover:brightness-110 transition"
-          >
-            <PlusCircle className="w-5 h-5" aria-hidden="true" /> {t('foro.newThread')}
-          </LocalLink>
+          <div className="mt-6 grid grid-cols-1 gap-8 lg:grid-cols-12 lg:items-end">
+            <h1 className="t-display t-display-lg text-paper lg:col-span-7">{t('foro.title')}</h1>
+            <p className="text-[14.5px] leading-relaxed text-paper/60 lg:col-span-5 lg:border-l lg:border-line-dark lg:pl-6">
+              {t('foro.subtitle')}
+            </p>
+          </div>
+          <div className="mt-8">
+            <LocalLink href="/foro/nuevo" className="btn btn-signal">
+              <PlusCircle className="h-4 w-4" strokeWidth={1.8} aria-hidden="true" /> {t('foro.newThread')}
+            </LocalLink>
+          </div>
         </div>
-      </section>
+      </header>
 
-      <div className="max-w-5xl mx-auto px-4 py-8">
-        <nav aria-label={t('foro.categoriesLabel')} className="flex flex-wrap gap-2 mb-8">
+      <div className="shell py-10 md:py-14">
+        <nav aria-label={t('foro.categoriesLabel')} className="hide-scrollbar flex gap-1 overflow-x-auto border-y border-line py-2">
           <LocalLink
             href="/foro"
-            className={`px-4 py-2 rounded-full text-sm font-black transition ${
-              !catSlug ? 'bg-brand-darkNav text-white' : 'bg-white text-gray-700 border border-gray-200 hover:border-brand-signal'
+            className={`t-label shrink-0 whitespace-nowrap px-2.5 py-1.5 transition-colors ${
+              !catSlug ? 'bg-ink text-paper' : 'text-ink/55 hover:bg-paper-2 hover:text-ink'
             }`}
           >
             {t('foro.all')}
@@ -75,30 +77,31 @@ export default async function ForoPage({ params, searchParams }: Props) {
             <LocalLink
               key={cat.id}
               href={`/foro?cat=${cat.slug}`}
-              className={`px-4 py-2 rounded-full text-sm font-bold transition ${
-                catSlug === cat.slug ? 'bg-brand-darkNav text-white' : 'bg-white text-gray-700 border border-gray-200 hover:border-brand-signal'
+              className={`t-label shrink-0 whitespace-nowrap px-2.5 py-1.5 transition-colors ${
+                catSlug === cat.slug ? 'bg-ink text-paper' : 'text-ink/55 hover:bg-paper-2 hover:text-ink'
               }`}
             >
-              <span aria-hidden="true" className="mr-1">{cat.icono || '💬'}</span>
               {nombreCategoria(cat, locale)}
             </LocalLink>
           ))}
         </nav>
 
         {categoriaActiva && (
-          <p className="text-sm text-gray-500 mb-4">{nombreCategoria(categoriaActiva, locale)} — {hilos.length} {hilos.length === 1 ? t('foro.threadOne') : t('foro.threadMany')}</p>
+          <p className="t-label mt-6 text-ink/45">
+            {nombreCategoria(categoriaActiva, locale)} — {hilos.length}{' '}
+            {hilos.length === 1 ? t('foro.threadOne') : t('foro.threadMany')}
+          </p>
         )}
 
         {hilos.length === 0 ? (
-          <div className="bg-white border border-dashed border-gray-300 rounded-2xl p-10 text-center">
-            <MessageSquare className="w-8 h-8 mx-auto text-gray-300 mb-3" aria-hidden="true" />
-            <p className="text-gray-600 font-bold mb-4">{t('foro.empty')}</p>
-            <LocalLink href="/foro/nuevo" className="inline-flex items-center gap-2 bg-brand-signal text-brand-darkNav font-black px-5 py-2.5 rounded-xl hover:brightness-110 transition">
-              <PlusCircle className="w-4 h-4" aria-hidden="true" /> {t('foro.newThread')}
+          <div className="mt-6 border border-line bg-paper-2/40 px-6 py-16 text-center">
+            <p className="t-display t-display-sm text-ink/30">{t('foro.empty')}</p>
+            <LocalLink href="/foro/nuevo" className="btn btn-ink mt-6">
+              <PlusCircle className="h-4 w-4" strokeWidth={1.8} aria-hidden="true" /> {t('foro.newThread')}
             </LocalLink>
           </div>
         ) : (
-          <ul className="space-y-4">
+          <ul className="mt-6 border-t border-line">
             {hilos.map(hilo => {
               const cat = hilo.foro_categorias
               const autor = autores[hilo.user_id]
@@ -107,29 +110,28 @@ export default async function ForoPage({ params, searchParams }: Props) {
                 <li key={hilo.id}>
                   <LocalLink
                     href={`/foro/hilo/${hilo.id}`}
-                    className="block bg-white border border-gray-200 rounded-2xl p-5 hover:border-brand-signal hover:shadow-sm transition group"
+                    className="group/row block border-b border-line py-5"
                   >
-                    <div className="flex items-center gap-2 text-xs font-black uppercase tracking-wide text-gray-500 mb-2">
-                      <span aria-hidden="true">{cat?.icono || '💬'}</span>
-                      {nombreCategoria(cat, locale)}
+                    <div className="flex flex-wrap items-center gap-3">
+                      <span className="t-label text-ink/40">{nombreCategoria(cat, locale)}</span>
                       {hilo.cerrado && (
-                        <span className="ml-1 px-2 py-0.5 rounded-full bg-gray-100 text-gray-500 uppercase">{t('foro.closed')}</span>
+                        <span className="t-label border border-line px-1.5 py-0.5 text-ink/40">{t('foro.closed')}</span>
                       )}
+                      <span className="t-label ml-auto flex items-center gap-1.5 text-ink/35">
+                        <MessageSquare className="h-2.5 w-2.5" aria-hidden="true" />
+                        {hilo.mensajes_count || 0}
+                      </span>
                     </div>
-                    <h2 className="text-lg font-black text-gray-900 group-hover:text-brand-signal transition mb-1">
+                    <h2 className="mt-2 text-[18px] font-semibold leading-snug tracking-[-0.02em] text-ink group-hover/row:underline group-hover/row:underline-offset-4">
                       {hilo.titulo}
                     </h2>
-                    <p className="text-sm text-gray-600 line-clamp-2 mb-3" style={{ whiteSpace: 'pre-line' }}>
+                    <p className="mt-1.5 line-clamp-2 max-w-3xl text-[13.5px] leading-relaxed text-muted" style={{ whiteSpace: 'pre-line' }}>
                       {hilo.cuerpo}
                     </p>
-                    <div className="flex flex-wrap items-center gap-4 text-xs text-gray-500 font-semibold">
-                      <span className="inline-flex items-center gap-1">
-                        <MessageSquare className="w-3.5 h-3.5" aria-hidden="true" />
-                        {hilo.mensajes_count || 0} {t('foro.repliesCount')}
-                      </span>
-                      {autor && <span>{autor}</span>}
+                    <p className="t-label mt-2.5 flex flex-wrap items-center gap-3 text-ink/35">
+                      {autor && <span className="text-ink/55">{autor}</span>}
                       <span>{haceTiempo(fecha, locale)}</span>
-                    </div>
+                    </p>
                   </LocalLink>
                 </li>
               )

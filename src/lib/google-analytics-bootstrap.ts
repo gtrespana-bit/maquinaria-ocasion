@@ -1,15 +1,13 @@
 import {
   CONSENT_EVENT,
   CONSENT_KEY,
-  CONSENT_REOPEN_EVENT,
-} from '@/lib/cookie-consent'
+  CONSENT_REOPEN_EVENT } from '@/lib/cookie-consent'
 import {
   GA_COOKIE_EXPIRES_SECONDS,
   GA_NAVIGATION_EVENT,
   GA_SCRIPT_ID,
   claveDesactivar,
-  normalizarIdMedicion,
-} from '@/lib/google-analytics'
+  normalizarIdMedicion } from '@/lib/google-analytics'
 
 /**
  * Snippet propio, incluido en el HTML inicial del <head>, no en un chunk lazy.

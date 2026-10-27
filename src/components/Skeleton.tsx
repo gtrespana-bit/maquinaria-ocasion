@@ -1,7 +1,5 @@
 'use client'
 
-import { useState } from 'react'
-
 export function SkeletonCard() {
   return (
     <div className="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100">

@@ -18,8 +18,7 @@ import {
   ESTADOS_PENDIENTES,
   ESTADOS_RESERVA,
   ESTADOS_VIVOS,
-  normalizarEstadoReserva,
-} from '@/lib/reservas'
+  normalizarEstadoReserva } from '@/lib/reservas'
 import { notifyUser } from '@/lib/push-notify'
 
 const COLUMNAS = `
@@ -60,8 +59,7 @@ export async function GET(request: NextRequest) {
           ok: true,
           reservas: [],
           stats: { solicitadas: 0, activas: 0, completadas: 0, total: 0 },
-          pendienteMigracion: true,
-        })
+          pendienteMigracion: true })
       }
       return NextResponse.json({ error: error.message }, { status: 500 })
     }
@@ -78,8 +76,7 @@ export async function GET(request: NextRequest) {
       activas: conteos[ESTADOS_RESERVA.indexOf('activa')]?.count || 0,
       completadas: conteos[ESTADOS_RESERVA.indexOf('completada')]?.count || 0,
       vivas: 0,
-      total: 0,
-    }
+      total: 0 }
     stats.vivas = (stats.solicitadas || 0) + (stats.activas || 0)
     stats.total = conteos.reduce((acc, r) => acc + (r.count || 0), 0)
 
@@ -135,8 +132,7 @@ export async function POST(request: NextRequest) {
       revisado_por: auth.user.id,
       revisado_en: ahora.toISOString(),
       actualizado_en: ahora.toISOString(),
-      motivo_cancelacion: String(action) === 'cancelar' ? String(motivo).slice(0, 500) : null,
-    }
+      motivo_cancelacion: String(action) === 'cancelar' ? String(motivo).slice(0, 500) : null }
 
     const { error: updateError } = await sb.from('reservas').update(cambios).eq('id', reservaId)
     if (updateError) {
@@ -153,8 +149,7 @@ export async function POST(request: NextRequest) {
       title: String(action) === 'completar' ? 'Operación completada' : 'Reserva cancelada',
       body: textoNotif,
       tag: `reserva-${reservaId}`,
-      click_url: '/dashboard?tab=reservas',
-    }).catch(() => {})
+      click_url: '/dashboard?tab=reservas' }).catch(() => {})
 
     return NextResponse.json({ ok: true, estado: destino })
   } catch (err: any) {

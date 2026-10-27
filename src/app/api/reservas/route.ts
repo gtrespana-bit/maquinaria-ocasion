@@ -29,8 +29,7 @@ import {
   importeSeñalValido,
   puedeReservar,
   reservaVigente,
-  sugerirImporteSeñal,
-} from '@/lib/reservas'
+  sugerirImporteSeñal } from '@/lib/reservas'
 import { notificarAdminTelegram } from '@/lib/telegram-admin'
 import { notifyUser } from '@/lib/push-notify'
 
@@ -191,8 +190,7 @@ export async function POST(request: NextRequest) {
         metodo_pago: metodo,
         estado: 'solicitada',
         mensaje: mensaje ? String(mensaje).slice(0, 500) : null,
-        expira_en: fechaExpiracion(),
-      })
+        expira_en: fechaExpiracion() })
       .select('id, estado, importe, expira_en')
       .single()
 
@@ -215,15 +213,13 @@ export async function POST(request: NextRequest) {
       title: '🔔 Petición de reserva con señal',
       body: `${producto.titulo}: un comprador quiere reservarlo con ${importeNum} € de señal. Confirma la reserva cuando recibas el pago.`,
       tag: `reserva-${reserva.id}`,
-      click_url: '/dashboard?tab=reservas',
-    }).catch(() => {})
+      click_url: '/dashboard?tab=reservas' }).catch(() => {})
 
     notifyUser(sb, auth.user.id, {
       title: 'Solicitud de reserva enviada',
       body: `${producto.titulo}: paga la señal al vendedor y, cuando la reciba, confirmará la reserva.`,
       tag: `reserva-${reserva.id}`,
-      click_url: '/dashboard?tab=reservas',
-    }).catch(() => {})
+      click_url: '/dashboard?tab=reservas' }).catch(() => {})
 
     notificarAdminTelegram(
       `🔔 Petición de reserva con señal\\n${producto.titulo}\\nImporte: ${importeNum} € · Método: ${metodo}\\n` +

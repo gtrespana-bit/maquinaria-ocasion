@@ -84,8 +84,7 @@ export async function POST(req: NextRequest) {
         ok: false,
         codigo: 'PLAN',
         error:
-          'La importación desde CSV está incluida en el plan Profesional. Con los planes Gratis y Básico puedes publicar tu maquinaria desde el formulario.',
-      },
+          'La importación desde CSV está incluida en el plan Profesional. Con los planes Gratis y Básico puedes publicar tu maquinaria desde el formulario.' },
       { status: 403 },
     )
   }
@@ -105,8 +104,7 @@ export async function POST(req: NextRequest) {
 
   const resultado = validarImportacion(parseado, {
     maxFotos: resumen.fotosMax,
-    maxFilas: MAX_FILAS,
-  })
+    maxFilas: MAX_FILAS })
 
   if (resultado.mapa.faltan.length > 0) {
     return NextResponse.json(
@@ -115,8 +113,7 @@ export async function POST(req: NextRequest) {
         codigo: 'CABECERAS',
         error: `Faltan columnas obligatorias: ${resultado.mapa.faltan.join(', ')}.`,
         cabeceras: parseado.cabeceras,
-        desconocidas: resultado.mapa.desconocidas,
-      },
+        desconocidas: resultado.mapa.desconocidas },
       { status: 400 },
     )
   }
@@ -136,8 +133,7 @@ export async function POST(req: NextRequest) {
     cupo: resumen.max,
     fotosMax: resumen.fotosMax,
     desconocidas: resultado.mapa.desconocidas,
-    filas: resultado.filas,
-  }
+    filas: resultado.filas }
 
   if (!confirmar) {
     return NextResponse.json({ ok: true, previa: true, ...resumenPrevio })
@@ -211,19 +207,16 @@ export async function POST(req: NextRequest) {
           motivo_moderacion:
             moderacion.nivel === 'sospechoso'
               ? `Contenido sospechoso: ${moderacion.palabras.join(', ')}`
-              : null,
-        },
+              : null },
         prohibido: moderacion.nivel === 'prohibido',
-        palabras: moderacion.palabras,
-      }
+        palabras: moderacion.palabras }
     })
 
     const permitidas = filas.filter((f) => {
       if (!f.prohibido) return true
       errores.push({
         linea: f.linea,
-        error: `Contenido no permitido: ${f.palabras.join(', ')}.`,
-      })
+        error: `Contenido no permitido: ${f.palabras.join(', ')}.` })
       return false
     })
     if (permitidas.length === 0) continue
@@ -273,8 +266,7 @@ export async function POST(req: NextRequest) {
     revalidarListadosPublicos({
       ubicacionEstado: [...provincias][0]?.split('|')[0] || null,
       ubicacionCiudad: [...provincias][0]?.split('|')[1] || null,
-      subcategoria: importables[0]?.subcategoria || null,
-    })
+      subcategoria: importables[0]?.subcategoria || null })
   }
 
   return NextResponse.json({
@@ -287,6 +279,5 @@ export async function POST(req: NextRequest) {
     restantes: resumen.restantes == null ? null : Math.max(0, restantes - insertados.length),
     anuncios: insertados,
     errores: errores.slice(0, 20),
-    avisos: resultado.filas.flatMap((f) => f.avisos.map((a) => `Línea ${f.linea}: ${a}`)).slice(0, 20),
-  })
+    avisos: resultado.filas.flatMap((f) => f.avisos.map((a) => `Línea ${f.linea}: ${a}`)).slice(0, 20) })
 }

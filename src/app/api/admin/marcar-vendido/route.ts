@@ -75,8 +75,7 @@ export async function POST(request: NextRequest) {
       vendido: true,
       vendido_en: lugar,
       // Fecha real de venta → alimenta "Vendidos recientemente" en la home
-      vendido_fecha: new Date().toISOString(),
-    }
+      vendido_fecha: new Date().toISOString() }
     if (compradorId) {
       updateData.comprador_id = compradorId
     }
@@ -185,8 +184,7 @@ export async function GET(request: NextRequest) {
     const interesados = (perfiles || []).map((p: any) => ({
       userId: p.id,
       nombre: p.nombre || 'Usuario',
-      ultimoMensaje: ultimoMsgMap.get(conversationByBuyer.get(p.id) || '') || '',
-    }))
+      ultimoMensaje: ultimoMsgMap.get(conversationByBuyer.get(p.id) || '') || '' }))
 
     return NextResponse.json({ ok: true, interesados })
   } catch (err: any) {

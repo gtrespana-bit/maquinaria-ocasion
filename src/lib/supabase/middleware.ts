@@ -1,5 +1,5 @@
 import { createServerClient } from '@supabase/ssr'
-import { NextResponse, type NextRequest } from 'next/server'
+import { NextResponse, type NextRequest} from 'next/server'
 
 /**
  * ⚠️ NO USAR — mantenido solo como referencia.
@@ -17,8 +17,7 @@ import { NextResponse, type NextRequest } from 'next/server'
  */
 export async function updateSession(request: NextRequest, response?: NextResponse) {
   let supabaseResponse = response ?? NextResponse.next({
-    request,
-  })
+    request })
 
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -35,9 +34,7 @@ export async function updateSession(request: NextRequest, response?: NextRespons
           cookiesToSet.forEach(({ name, value, options }) =>
             supabaseResponse.cookies.set(name, value, options)
           )
-        },
-      },
-    }
+        } } }
   )
 
   // Refresh the auth session and fetch user data with timeout to prevent blocking

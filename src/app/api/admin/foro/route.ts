@@ -70,14 +70,11 @@ export async function GET(req: NextRequest) {
       hilos: hilos.map(h => ({
         ...h,
         categoria: h.foro_categorias,
-        autor: nombres[h.user_id] || '—',
-      })),
+        autor: nombres[h.user_id] || '—' })),
       mensajes: mensajes.map(m => ({
         ...m,
         hilo: m.foro_hilos,
-        autor: nombres[m.user_id] || '—',
-      })),
-    })
+        autor: nombres[m.user_id] || '—' })) })
   } catch (e: any) {
     return NextResponse.json({ error: e.message || 'Error desconocido' }, { status: 500 })
   }

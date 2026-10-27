@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { alternatesSeo } from '@/lib/seo'
 import { setRequestLocale } from 'next-intl/server'
 import DocumentoLegal from '@/components/DocumentoLegal'
-import { AVISO_LEGAL, type IdiomaLegal } from '@/lib/textos-legales'
+import {AVISO_LEGAL, type IdiomaLegal } from '@/lib/textos-legales'
 import { datosTitular, hayDatosTitular } from '@/lib/datos-legales'
 
 /**
@@ -22,8 +22,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     title: AVISO_LEGAL[idioma].titulo,
     alternates: alternatesSeo('/aviso-legal'),
     // Sin los datos del titular, esta página no debe aparecer en Google.
-    robots: hayDatosTitular() ? { index: true, follow: true } : { index: false, follow: true },
-  }
+    robots: hayDatosTitular() ? { index: true, follow: true } : { index: false, follow: true } }
 }
 
 export default async function AvisoLegalPage({ params }: { params: Promise<{ locale: string }> }) {
@@ -51,19 +50,20 @@ export default async function AvisoLegalPage({ params }: { params: Promise<{ loc
     <DocumentoLegal
       documento={documento}
       bloqueInicial={
-        <div className="bg-gray-50 border border-gray-200 rounded-2xl p-5 mb-8">
-          <dl className="space-y-2 text-sm">
+        <div className="border border-line bg-[#FBFAF5] p-5">
+          <p className="t-label border-b border-line pb-2 text-ink/40">Titular del sitio</p>
+          <dl className="mt-3 divide-y divide-line/70">
             {filas.map(([etiqueta, valor]) => (
-              <div key={etiqueta} className="flex flex-col sm:flex-row sm:gap-2">
-                <dt className="font-semibold text-gray-700 sm:w-56 shrink-0">{etiqueta}</dt>
-                <dd className="text-gray-700">
-                  {valor || <span className="text-gray-400 italic">{etiquetas.pendiente}</span>}
+              <div key={etiqueta} className="flex flex-col gap-0.5 py-2 sm:flex-row sm:gap-2">
+                <dt className="t-label shrink-0 pt-0.5 text-ink/45 sm:w-52">{etiqueta}</dt>
+                <dd className="text-[13.5px] text-ink/80">
+                  {valor || <span className="italic text-ink/35">{etiquetas.pendiente}</span>}
                 </dd>
               </div>
             ))}
           </dl>
           {!hayDatosTitular() && (
-            <p className="text-xs text-amber-800 bg-amber-50 border border-amber-200 rounded-xl px-3 py-2 mt-4">
+            <p className="mt-4 border border-signal-deep/40 bg-signal-soft/40 px-3 py-2 text-[12px] leading-relaxed text-ink/70">
               {esIngles
                 ? 'This page is not yet linked from the footer or indexed by search engines: the owner’s identification details are being completed.'
                 : 'Esta página aún no se enlaza desde el pie ni se indexa en buscadores: se están completando los datos identificativos del titular.'}

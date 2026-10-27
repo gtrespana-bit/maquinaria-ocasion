@@ -13,8 +13,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     description: t('comparar.subtitle'),
     alternates: alternatesSeo('/comparar'),
     // Página utilitaria con contenido del usuario: no aporta indexación.
-    robots: { index: false, follow: false },
-  }
+    robots: { index: false, follow: false } }
 }
 
 export default async function CompararPage({ params }: { params: Promise<{ locale: string }> }) {

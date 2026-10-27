@@ -73,8 +73,7 @@ export default function ReportarButton({ productoId }: { productoId: string }) {
         producto_id: productoId,
         reportante_id: userId,
         motivo,
-        descripcion: descripcion.trim() || null,
-      })
+        descripcion: descripcion.trim() || null })
 
       if (error?.message?.includes('duplicate')) {
         setYaReportado(true)
@@ -101,8 +100,7 @@ export default function ReportarButton({ productoId }: { productoId: string }) {
     spam: '\u{1F4E2}',
     duplicado: '\u{1F501}',
     categoria_incorrecta: '\u{1F4C2}',
-    otro: '\u{1F4DD}',
-  }
+    otro: '\u{1F4DD}' }
 
   return (
     <>

@@ -61,8 +61,7 @@ export async function POST(req: NextRequest) {
         productoVendido,
         puedeResenar: false,
         yaDejoResena: false,
-        esVendedor,
-      })
+        esVendedor })
     }
 
     const { count } = await sb
@@ -78,8 +77,7 @@ export async function POST(req: NextRequest) {
       productoId: conv.producto_id,
       productoVendido,
       puedeResenar: !yaDejoResena,
-      yaDejoResena,
-    })
+      yaDejoResena })
   } catch {
     return NextResponse.json({ error: 'No se pudo consultar el estado de la reseña' }, { status: 500 })
   }

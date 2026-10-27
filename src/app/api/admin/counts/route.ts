@@ -39,9 +39,7 @@ export async function GET(request: NextRequest) {
         publicaciones: pubs.count || 0,
         denuncias: denies.count || 0,
         verificacion: verif.count || 0,
-        foro: (foroHilos.count || 0) + (foroMensajes.count || 0),
-      },
-    })
+        foro: (foroHilos.count || 0) + (foroMensajes.count || 0) } })
   } catch (err: any) {
     return NextResponse.json({ error: err.message || 'Error desconocido' }, { status: 500 })
   }

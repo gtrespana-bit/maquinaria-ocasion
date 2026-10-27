@@ -1,12 +1,11 @@
-'use client';
+'use client'
 
 import { useState, useCallback } from 'react';
 import { supabase } from '@/lib/supabase';
 import { clientCache } from '@/lib/clientCache';
 import { esErrorDeCredenciales } from '@/lib/supabase-diagnostico';
 import { getCatalogPageRange } from '@/lib/catalog-pagination';
-import {
-  CATALOG_PRODUCT_COLUMNS,
+import { CATALOG_PRODUCT_COLUMNS,
   CATALOG_FILTRO_MODERACION,
   aplicarFiltrosBase,
   aplicarOrdenCatalogo,
@@ -14,9 +13,7 @@ import {
   ProductoCatalogo,
   tieneRangosNumericos,
   quitarRangos,
-  esErrorColumnasRango,
-  type FiltrosCatalogo,
-} from '@/lib/catalog-consulta';
+  esErrorColumnasRango, type FiltrosCatalogo } from '@/lib/catalog-consulta';
 
 interface LoadPageOptions {
   page: number;

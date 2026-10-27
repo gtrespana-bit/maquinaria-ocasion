@@ -37,9 +37,7 @@ export async function POST(req: NextRequest) {
           },
           setAll(cookiesToSet) {
             responseCookies = cookiesToSet
-          },
-        },
-      }
+          } } }
     )
 
     const { data: result, error } = await supabase.auth.signInWithPassword({ email, password })
@@ -53,9 +51,7 @@ export async function POST(req: NextRequest) {
       user: result.user,
       session: {
         access_token: result.session?.access_token,
-        refresh_token: result.session?.refresh_token,
-      },
-    })
+        refresh_token: result.session?.refresh_token } })
 
     responseCookies.forEach(({ name, value, options }) => {
       response.cookies.set(name, value, options)

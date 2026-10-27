@@ -7,8 +7,7 @@ import ComprarATipoPage, { metadataParaTipo } from '../comprar-a/ComprarATipoPag
 export const revalidate = 600
 
 export async function generateMetadata({
-  params,
-}: {
+  params }: {
   params: Promise<{ locale: string }>
 }): Promise<Metadata> {
   const { locale } = await params

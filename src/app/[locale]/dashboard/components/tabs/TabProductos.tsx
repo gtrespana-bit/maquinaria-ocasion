@@ -1,4 +1,5 @@
-"use client"
+'use client'
+
 import { formatPrecio } from '@/lib/precio'
 
 import { useEffect, useRef, useState } from 'react'
@@ -13,37 +14,35 @@ type Filtro = 'activos' | 'pausados' | 'vendidos' | 'todos'
 function BadgeEstado({
   vendido,
   activo,
-  pausadoPorPlan,
-}: {
+  pausadoPorPlan }: {
   vendido: boolean
   activo: boolean
   pausadoPorPlan?: boolean
 }) {
   if (vendido) {
-    return <span className="inline-flex items-center rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 px-2 py-0.5 text-[11px] font-semibold">Vendido</span>
+    return <span className="t-label border border-ink bg-ink px-1.5 py-0.5 text-paper">Vendido</span>
   }
   if (activo) {
-    return <span className="inline-flex items-center rounded-full bg-emerald-50 text-emerald-700 border border-emerald-100 px-2 py-0.5 text-[11px] font-semibold">Activo</span>
+    return <span className="t-label border border-moss/30 bg-moss-soft px-1.5 py-0.5 text-moss">Activo</span>
   }
   if (pausadoPorPlan) {
     return (
       <span
-        className="inline-flex items-center rounded-full bg-amber-50 text-amber-800 border border-amber-200 px-2 py-0.5 text-[11px] font-semibold"
+        className="t-label border border-signal-deep/40 bg-signal/20 px-1.5 py-0.5 text-ink/70"
         title="Lo pausó el sistema al bajar el cupo. No se ha borrado."
       >
         Pausado por cupo
       </span>
     )
   }
-  return <span className="inline-flex items-center rounded-full bg-slate-100 text-slate-600 border border-slate-200 px-2 py-0.5 text-[11px] font-semibold">Pausado</span>
+  return <span className="t-label border border-line bg-paper-2 px-1.5 py-0.5 text-ink/50">Pausado</span>
 }
 
 export default function TabProductos({
   productos,
   onBoost,
   onDestacar,
-  userId,
-}: {
+  userId }: {
   productos: any[]
   onBoost: (m: { productId: string; titulo: string }) => void
   onDestacar: (m: { productId: string; titulo: string }) => void
@@ -126,8 +125,7 @@ export default function TabProductos({
     const res = await fetch('/api/productos/reactivar', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ productoId }),
-    })
+      body: JSON.stringify({ productoId }) })
     if (!res.ok) {
       const result = await res.json().catch(() => ({}))
       alert('Error: ' + (result.error || 'no se pudo reactivar'))
@@ -140,8 +138,7 @@ export default function TabProductos({
     const res = await fetch('/api/admin/marcar-vendido', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ productoId, userId, vendidoEn }),
-    })
+      body: JSON.stringify({ productoId, userId, vendidoEn }) })
     if (!res.ok) {
       const d = await res.json()
       alert('Error: ' + d.error)
@@ -166,9 +163,7 @@ export default function TabProductos({
         productoId: vendidoModal,
         userId,
         vendidoEn: 'plataforma',
-        compradorId: compradorInfo.id,
-      }),
-    })
+        compradorId: compradorInfo.id }) })
 
     if (!res.ok) {
       const d = await res.json()
@@ -192,9 +187,7 @@ export default function TabProductos({
         productoId: vendidoModal,
         userId,
         vendidoEn: 'plataforma',
-        compradorId: compradorInfo.id,
-      }),
-    })
+        compradorId: compradorInfo.id }) })
 
     if (!res1.ok) {
       const d = await res1.json()
@@ -211,9 +204,7 @@ export default function TabProductos({
         evaluador_id: userId,
         evaluado_id: compradorInfo.id,
         puntuacion: rating,
-        comentario: comentarioResena.trim() || null,
-      }),
-    })
+        comentario: comentarioResena.trim() || null }) })
 
     setEnviandoResena(false)
     const data2 = await res2.json()
@@ -231,8 +222,7 @@ export default function TabProductos({
       const convResponse = await fetch('/api/crear-conversacion', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ vendedorId: userId, otroUsuarioId: compradorId, productoId: vendidoModal }),
-      })
+        body: JSON.stringify({ vendedorId: userId, otroUsuarioId: compradorId, productoId: vendidoModal }) })
       const conv = await convResponse.json().catch(() => ({}))
       if (!convResponse.ok || !conv.id) return
 
@@ -242,9 +232,7 @@ export default function TabProductos({
         body: JSON.stringify({
           conversacion_id: conv.id,
           destinatario_id: compradorId,
-          contenido: '✅ ¡Tu compra fue exitosa! El vendedor ha confirmado la venta. ¿Cómo fue tu experiencia? Déjale una reseña para ayudar a la comunidad. ⭐',
-        }),
-      })
+          contenido: '✅ ¡Tu compra fue exitosa! El vendedor ha confirmado la venta. ¿Cómo fue tu experiencia? Déjale una reseña para ayudar a la comunidad. ⭐' }) })
     } catch {
       // La venta ya está guardada; la notificación es secundaria.
     }
@@ -255,8 +243,7 @@ export default function TabProductos({
     const res = await fetch('/api/productos/editar', {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ productId: id, activo: !activoActual }),
-    })
+      body: JSON.stringify({ productId: id, activo: !activoActual }) })
 
     if (!res.ok) {
       const result = await res.json().catch(() => ({}))
@@ -272,8 +259,7 @@ export default function TabProductos({
     const res = await fetch('/api/productos/renovar', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ productId: id }),
-    })
+      body: JSON.stringify({ productId: id }) })
     const result = await res.json().catch(() => ({}))
     if (!res.ok) {
       alert('Error: ' + (result.error || 'No se pudo renovar la publicación'))
@@ -288,8 +274,7 @@ export default function TabProductos({
     const res = await fetch('/api/admin/eliminar-producto', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ productId: id }),
-    })
+      body: JSON.stringify({ productId: id }) })
     const result = await res.json()
     if (!res.ok) {
       alert('Error: ' + (result.error || 'no se pudo eliminar'))
@@ -300,14 +285,12 @@ export default function TabProductos({
 
   if (productos.length === 0) {
     return (
-      <div className="bg-white rounded-2xl border border-slate-200 p-10 text-center">
-        <div className="w-12 h-12 rounded-xl bg-brand-accent/10 flex items-center justify-center mx-auto mb-4">
-          <Package size={22} className="text-brand-accent" aria-hidden="true" />
-        </div>
-        <h3 className="text-lg font-semibold text-slate-900 mb-1">Aún no tienes anuncios</h3>
-        <p className="text-sm text-slate-500 mb-6">Publica el primero en un par de minutos. Es gratis.</p>
-        <LocalLink href="/publicar" className="inline-flex items-center gap-2 bg-brand-accent text-white px-5 py-2.5 rounded-xl text-sm font-semibold hover:bg-brand-accent-dark">
-          <Plus size={16} aria-hidden="true" /> Publicar ahora
+      <div className="border border-line bg-[#FBFAF5] px-6 py-14 text-center">
+        <Package size={22} strokeWidth={1.3} className="mx-auto mb-4 text-ink/25" aria-hidden="true" />
+        <h3 className="text-[15px] font-semibold tracking-[-0.015em] text-ink">Aún no tienes anuncios</h3>
+        <p className="mt-1.5 text-[12.5px] text-ink/55">Publica el primero en un par de minutos. Es gratis.</p>
+        <LocalLink href="/publicar" className="btn btn-ink mt-6">
+          <Plus size={13} aria-hidden="true" /> Publicar ahora
         </LocalLink>
       </div>
     )
@@ -324,16 +307,16 @@ export default function TabProductos({
 
   return (
     <div>
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
+      <div className="mb-4 flex flex-col gap-3 border-b border-ink pb-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h3 className="text-lg font-semibold text-slate-900">Anuncios</h3>
-          <p className="text-sm text-slate-500">
+          <h3 className="t-eyebrow text-ink">Anuncios</h3>
+          <p className="text-[12.5px] text-ink/55">
             {nActivos} activos · {nVendidos} vendidos
             {cupo ? ` · cupo ${cupo.usados}/${cupo.max == null ? '∞' : cupo.max}` : ''}
             {cupo?.trial && cupo.profesional ? ' · mes de prueba' : ''}
           </p>
           {cupo && !cupo.puedePublicar && (
-            <p className="text-xs text-amber-800 mt-1">
+            <p className="mt-1 text-[11.5px] text-clay">
               Cupo lleno.{' '}
               <LocalLink href="/para-profesionales" className="underline font-semibold">
                 Ver planes
@@ -341,15 +324,12 @@ export default function TabProductos({
             </p>
           )}
         </div>
-        <LocalLink
-          href="/publicar"
-          className="inline-flex items-center justify-center gap-2 bg-brand-accent hover:bg-brand-accent-dark text-white text-sm font-semibold px-4 py-2.5 rounded-xl"
-        >
-          <Plus size={16} aria-hidden="true" /> Nuevo anuncio
+        <LocalLink href="/publicar" className="btn btn-ink btn-sm justify-center">
+          <Plus size={12} aria-hidden="true" /> Nuevo anuncio
         </LocalLink>
       </div>
 
-      <div className="flex gap-1.5 overflow-x-auto hide-scrollbar mb-4" role="tablist" aria-label="Filtrar anuncios">
+      <div className="hide-scrollbar mb-4 flex gap-1.5 overflow-x-auto" role="tablist" aria-label="Filtrar anuncios">
         {chips.map(c => (
           <button
             key={c.id}
@@ -357,23 +337,23 @@ export default function TabProductos({
             role="tab"
             aria-selected={filtro === c.id}
             onClick={() => setFiltro(c.id)}
-            className={`whitespace-nowrap px-3 py-1.5 rounded-full text-sm font-medium transition ${
+            className={`t-label whitespace-nowrap border px-2.5 py-1.5 transition-colors ${
               filtro === c.id
-                ? 'bg-brand-primary text-white'
-                : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'
+                ? 'border-ink bg-ink text-paper'
+                : 'border-line bg-[#FBFAF5] text-ink/55 hover:border-ink hover:text-ink'
             }`}
           >
-            {c.label} <span className="opacity-70">{c.n}</span>
+            {c.label} <span className="t-num opacity-60">{c.n}</span>
           </button>
         ))}
       </div>
 
       {lista.length === 0 ? (
-        <div className="bg-white rounded-2xl border border-slate-200 p-8 text-center text-sm text-slate-500">
+        <div className="border border-line bg-[#FBFAF5] px-6 py-10 text-center text-[12.5px] text-ink/50">
           No hay anuncios en este filtro.
         </div>
       ) : (
-        <ul className="bg-white rounded-2xl border border-slate-200 divide-y divide-slate-100 overflow-hidden">
+        <ul className="divide-y divide-line border border-line bg-[#FBFAF5]">
           {lista.map((p) => {
             const isBoosted = boostVigente(p.boosteado_en)
             const isFeatured = p.destacado && p.destacado_hasta && p.destacado_hasta > now
@@ -388,31 +368,31 @@ export default function TabProductos({
             })()
 
             return (
-              <li key={p.id} className="p-3 sm:p-4 hover:bg-slate-50/80 transition">
+              <li key={p.id} className="p-3 transition-colors hover:bg-paper-2/60 sm:p-4">
                 <div className="flex items-center gap-3 sm:gap-4">
-                  <LocalLink href={productUrl(p)} className="relative w-16 h-16 sm:w-[4.5rem] sm:h-[4.5rem] rounded-xl bg-slate-100 overflow-hidden shrink-0">
+                  <LocalLink href={productUrl(p)} className="relative h-16 w-16 shrink-0 overflow-hidden border border-line bg-paper-2 sm:h-[4.5rem] sm:w-[4.5rem]">
                     {p.imagen_url ? (
                       <Image src={p.imagen_url} alt="" className="object-cover" fill sizes="72px" />
                     ) : (
-                      <span className="flex h-full items-center justify-center text-[10px] text-slate-400">Sin foto</span>
+                      <span className="flex h-full items-center justify-center text-[10px] text-ink/40">Sin foto</span>
                     )}
                     {isVendido && (
-                      <span className="absolute inset-0 bg-emerald-800/70 flex items-center justify-center text-white text-[10px] font-bold tracking-wide">VENDIDO</span>
+                      <span className="t-label absolute inset-0 flex items-center justify-center bg-ink/80 text-paper">Vendido</span>
                     )}
                   </LocalLink>
 
                   <div className="flex-1 min-w-0">
                     <div className="flex items-start justify-between gap-2">
                       <div className="min-w-0">
-                        <LocalLink href={productUrl(p)} className="block font-medium text-slate-900 truncate hover:text-brand-accent">
+                        <LocalLink href={productUrl(p)} className="block truncate text-[13px] font-medium text-ink hover:underline hover:underline-offset-4">
                           {p.titulo}
                         </LocalLink>
-                        <p className="text-sm font-semibold text-slate-800 mt-0.5">{formatPrecio(p.precio_usd || 0)}</p>
+                        <p className="t-num mt-0.5 text-[13px] font-semibold text-ink">{formatPrecio(p.precio_usd || 0)}</p>
                       </div>
                       <BadgeEstado vendido={isVendido} activo={!!p.activo} pausadoPorPlan={!!p.pausado_por_plan} />
                     </div>
-                    <div className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-slate-500">
-                      <span className="inline-flex items-center gap-1"><Eye size={12} aria-hidden="true" /> {p.visitas || 0}</span>
+                    <div className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-[11.5px] text-ink/50">
+                      <span className="t-num inline-flex items-center gap-1"><Eye size={10} aria-hidden="true" /> {p.visitas || 0}</span>
                       {difVisitas != null && (
                         <span className={difVisitas < 0 ? 'text-amber-700 font-medium' : 'text-emerald-700 font-medium'}>
                           {difVisitas < 0 ? `${Math.abs(difVisitas)} % menos que tu media` : `${difVisitas} % más que tu media`}
@@ -420,7 +400,7 @@ export default function TabProductos({
                       )}
                       {isBoosted && <span className="text-amber-700 font-medium">En el nº 1</span>}
                       {isFeatured && (
-                        <span className="text-slate-600">Destacado hasta {new Date(p.destacado_hasta).toLocaleDateString('es-ES')}</span>
+                        <span className="text-ink/45">Destacado hasta {new Date(p.destacado_hasta).toLocaleDateString('es-ES')}</span>
                       )}
                     </div>
                   </div>
@@ -429,26 +409,26 @@ export default function TabProductos({
                 <div className="mt-3 flex items-center justify-end gap-2" onClick={e => e.stopPropagation()}>
                   <LocalLink
                     href={`/producto/editar/${p.id}`}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border border-slate-200 text-slate-700 hover:bg-white"
+                    className="t-label inline-flex items-center gap-1.5 border border-line px-2.5 py-1.5 text-ink/70 transition-colors hover:border-ink hover:text-ink"
                   >
-                    <Edit size={13} aria-hidden="true" /> Editar
+                    <Edit size={11} aria-hidden="true" /> Editar
                   </LocalLink>
                   {!isVendido && p.activo && (
                     <button
                       type="button"
                       onClick={() => onDestacar({ productId: p.id, titulo: p.titulo })}
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-brand-primary text-white hover:bg-brand-dark"
+                      className="t-label inline-flex items-center gap-1.5 border border-ink bg-ink px-2.5 py-1.5 text-paper transition-opacity hover:opacity-85"
                     >
-                      <Star size={13} aria-hidden="true" /> Destacar
+                      <Star size={11} aria-hidden="true" /> Destacar
                     </button>
                   )}
                   {isVendido && (
                     <button
                       type="button"
                       onClick={() => reactivarVendido(p.id)}
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border border-slate-200 text-slate-700 hover:bg-white"
+                      className="t-label inline-flex items-center gap-1.5 border border-line px-2.5 py-1.5 text-ink/70 transition-colors hover:border-ink hover:text-ink"
                     >
-                      <Play size={13} aria-hidden="true" /> Reactivar
+                      <Play size={11} aria-hidden="true" /> Reactivar
                     </button>
                   )}
 
@@ -459,35 +439,35 @@ export default function TabProductos({
                       aria-expanded={abierto}
                       aria-label="Más acciones"
                       onClick={() => setMenuAbierto(abierto ? null : p.id)}
-                      className="p-1.5 rounded-lg border border-slate-200 text-slate-600 hover:bg-white"
+                      className="border border-line p-1.5 text-ink/50 transition-colors hover:border-ink hover:text-ink"
                     >
-                      <MoreHorizontal size={16} />
+                      <MoreHorizontal size={14} />
                     </button>
                     {abierto && (
-                      <div role="menu" className="absolute right-0 top-full mt-1 bg-white border border-slate-200 rounded-xl shadow-lg py-1 w-52 z-20">
+                      <div role="menu" className="absolute right-0 top-full z-20 mt-1 w-52 border border-line-strong bg-[#FBFAF5] py-1">
                         {!isVendido && p.activo && (
                           <>
-                            <button type="button" role="menuitem" onClick={() => { onBoost({ productId: p.id, titulo: p.titulo }); cerrarMenus() }} className="flex items-center gap-2 px-3 py-2 text-sm w-full text-left hover:bg-slate-50">
-                              <Zap size={14} className="text-amber-500" /> Subir al nº 1
+                            <button type="button" role="menuitem" onClick={() => { onBoost({ productId: p.id, titulo: p.titulo }); cerrarMenus() }} className="flex w-full items-center gap-2 px-3 py-2 text-left text-[12.5px] text-ink/80 hover:bg-paper-2">
+                              <Zap size={12} strokeWidth={1.6} className="text-ink/50" /> Subir al nº 1
                             </button>
-                            <button type="button" role="menuitem" onClick={() => abrirVendido(p.id)} className="flex items-center gap-2 px-3 py-2 text-sm w-full text-left hover:bg-slate-50">
-                              <CheckCircle2 size={14} className="text-emerald-600" /> Marcar vendido
+                            <button type="button" role="menuitem" onClick={() => abrirVendido(p.id)} className="flex w-full items-center gap-2 px-3 py-2 text-left text-[12.5px] text-ink/80 hover:bg-paper-2">
+                              <CheckCircle2 size={12} strokeWidth={1.6} className="text-moss" /> Marcar vendido
                             </button>
                             {puedeRenovar && (
-                              <button type="button" role="menuitem" onClick={() => renovarProducto(p.id)} className="flex items-center gap-2 px-3 py-2 text-sm w-full text-left hover:bg-slate-50">
-                                <RefreshCw size={14} /> Renovar
+                              <button type="button" role="menuitem" onClick={() => renovarProducto(p.id)} className="flex w-full items-center gap-2 px-3 py-2 text-left text-[12.5px] text-ink/80 hover:bg-paper-2">
+                                <RefreshCw size={12} strokeWidth={1.6} /> Renovar
                               </button>
                             )}
                           </>
                         )}
                         {!isVendido && (
-                          <button type="button" role="menuitem" onClick={() => pausarActivar(p.id, p.activo)} className="flex items-center gap-2 px-3 py-2 text-sm w-full text-left hover:bg-slate-50">
-                            {p.activo ? <Pause size={14} /> : <Play size={14} />} {p.activo ? 'Pausar' : 'Activar'}
+                          <button type="button" role="menuitem" onClick={() => pausarActivar(p.id, p.activo)} className="flex w-full items-center gap-2 px-3 py-2 text-left text-[12.5px] text-ink/80 hover:bg-paper-2">
+                            {p.activo ? <Pause size={12} strokeWidth={1.6} /> : <Play size={12} strokeWidth={1.6} />} {p.activo ? 'Pausar' : 'Activar'}
                           </button>
                         )}
                         {!isVendido && (
-                          <button type="button" role="menuitem" onClick={() => eliminarProducto(p.id)} className="flex items-center gap-2 px-3 py-2 text-sm w-full text-left text-red-600 hover:bg-red-50">
-                            <X size={14} /> Eliminar
+                          <button type="button" role="menuitem" onClick={() => eliminarProducto(p.id)} className="flex w-full items-center gap-2 px-3 py-2 text-left text-[12.5px] text-clay hover:bg-clay/[0.06]">
+                            <X size={12} strokeWidth={1.6} /> Eliminar
                           </button>
                         )}
                       </div>
@@ -502,29 +482,29 @@ export default function TabProductos({
 
       {vendidoModal && (
         <div
-          className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4"
+          className="fixed inset-0 z-50 bg-ink/60 flex items-center justify-center p-4"
           role="dialog"
           aria-modal="true"
           aria-labelledby="vendido-titulo"
           tabIndex={-1}
           onKeyDown={(e) => { if (e.key === 'Escape') setVendidoModal(null) }}
         >
-          <div className="bg-white rounded-2xl shadow-xl max-w-md w-full p-6">
+          <div className="w-full max-w-md border border-line-strong bg-[#FBFAF5] p-6">
             <div className="flex items-center justify-between mb-4">
               {vendidoPaso !== 'tipo' ? (
-                <button onClick={() => setVendidoPaso('tipo')} className="flex items-center gap-1 text-sm text-brand-primary hover:underline">
+                <button onClick={() => setVendidoPaso('tipo')} className="flex items-center gap-1 text-sm text-ink hover:underline">
                   <ArrowLeft size={16} /> Atrás
                 </button>
               ) : <div />}
-              <button onClick={() => setVendidoModal(null)} aria-label="Cerrar modal" className="p-1 hover:bg-gray-100 rounded-full">
-                <X size={20} />
+              <button onClick={() => setVendidoModal(null)} aria-label="Cerrar modal" className="text-ink/40 transition-colors hover:text-ink">
+                <X size={16} />
               </button>
             </div>
 
             {vendidoPaso === 'tipo' && (
               <>
-                <h3 id="vendido-titulo" className="text-lg font-bold mb-2">¿Cómo se vendió?</h3>
-                <p className="text-sm text-gray-500 mb-6">Esto marca tu anuncio como vendido y ya no aparecerá activo.</p>
+                <h3 id="vendido-titulo" className="mb-2 text-[15px] font-semibold tracking-[-0.015em] text-ink">¿Cómo se vendió?</h3>
+                <p className="mb-6 text-[12.5px] leading-relaxed text-ink/55">Esto marca tu anuncio como vendido y ya no aparecerá activo.</p>
                 <div className="space-y-3">
                   <button
                     onClick={() => {
@@ -534,10 +514,10 @@ export default function TabProductos({
                         marcarVendidoSimple(vendidoModal, 'plataforma')
                       }
                     }}
-                    className="w-full text-left p-4 border-2 border-green-200 bg-green-50 rounded-xl hover:bg-green-100 transition"
+                    className="w-full border border-moss/30 bg-moss-soft p-4 text-left transition-colors hover:border-moss"
                   >
-                    <p className="font-bold text-green-800">Vendido en esta plataforma</p>
-                    <p className="text-xs text-green-600 mt-1">
+                    <p className="text-[13px] font-semibold text-moss">Vendido en esta plataforma</p>
+                    <p className="mt-1 text-[11.5px] text-moss/75">
                       {interesados.length > 0
                         ? `${interesados.length} persona(s) te contactaron por este producto`
                         : 'No hubo mensajes por este producto'
@@ -546,17 +526,17 @@ export default function TabProductos({
                   </button>
                   <button
                     onClick={() => marcarVendidoSimple(vendidoModal, 'otra_pagina')}
-                    className="w-full text-left p-4 border-2 border-blue-200 bg-blue-50 rounded-xl hover:bg-blue-100 transition"
+                    className="w-full border border-line bg-paper-2 p-4 text-left transition-colors hover:border-ink"
                   >
-                    <p className="font-bold text-blue-800">Vendido en otro lugar</p>
-                    <p className="text-xs text-blue-600 mt-1">Facebook, WhatsApp, en persona, etc.</p>
+                    <p className="text-[13px] font-semibold text-ink">Vendido en otro lugar</p>
+                    <p className="mt-1 text-[11.5px] text-ink/45">Facebook, WhatsApp, en persona, etc.</p>
                   </button>
                   <button
                     onClick={() => marcarVendidoSimple(vendidoModal, 'no_especificado')}
-                    className="w-full text-left p-4 border-2 border-gray-200 bg-gray-50 rounded-xl hover:bg-gray-100 transition"
+                    className="w-full border border-line bg-paper-2 p-4 text-left transition-colors hover:border-ink"
                   >
-                    <p className="font-bold text-gray-700">Prefiero no decir</p>
-                    <p className="text-xs text-gray-500 mt-1">Solo marca el anuncio como vendido</p>
+                    <p className="text-[13px] font-semibold text-ink">Prefiero no decir</p>
+                    <p className="mt-1 text-[11.5px] text-ink/45">Solo marca el anuncio como vendido</p>
                   </button>
                 </div>
               </>
@@ -564,24 +544,24 @@ export default function TabProductos({
 
             {vendidoPaso === 'comprador' && (
               <>
-                <h3 className="text-lg font-bold mb-2">¿A quién le vendiste?</h3>
-                <p className="text-sm text-gray-500 mb-4">Selecciona a la persona que te contactó por este producto.</p>
+                <h3 className="mb-2 text-[15px] font-semibold tracking-[-0.015em] text-ink">¿A quién le vendiste?</h3>
+                <p className="mb-4 text-[12.5px] leading-relaxed text-ink/55">Selecciona a la persona que te contactó por este producto.</p>
                 <div className="space-y-2 max-h-64 overflow-y-auto">
                   {cargandoVendidos ? (
-                    <p className="text-center text-gray-500 py-8">Cargando...</p>
+                    <p className="t-label py-8 text-center text-ink/35">Cargando…</p>
                   ) : interesados.length === 0 ? (
-                    <p className="text-center text-gray-500 py-4">Nadie te contactó por este producto</p>
+                    <p className="py-4 text-center text-[12.5px] text-ink/45">Nadie te contactó por este producto</p>
                   ) : (
                     <>
                       {interesados.map((inter) => (
                         <button
                           key={inter.userId}
                           onClick={() => seleccionarComprador(inter)}
-                          className="w-full text-left p-3 border rounded-xl hover:bg-green-50 hover:border-green-200 transition"
+                          className="w-full border border-line bg-paper p-3 text-left transition-colors hover:border-ink hover:bg-signal/10"
                         >
-                          <p className="font-semibold text-gray-900">{inter.nombre}</p>
+                          <p className="text-[13px] font-medium text-ink">{inter.nombre}</p>
                           {inter.ultimoMensaje && (
-                            <p className="text-xs text-gray-500 mt-0.5 truncate">&ldquo;{inter.ultimoMensaje}&rdquo;</p>
+                            <p className="mt-0.5 truncate text-[11.5px] text-ink/45">&ldquo;{inter.ultimoMensaje}&rdquo;</p>
                           )}
                         </button>
                       ))}
@@ -590,7 +570,7 @@ export default function TabProductos({
                           setCompradorInfo({ id: '', nombre: '' })
                           setVendidoPaso('reseña')
                         }}
-                        className="w-full text-center p-3 text-sm text-gray-500 hover:text-brand-primary hover:underline"
+                        className="t-label w-full p-3 text-center text-ink/45 hover:text-ink hover:underline"
                       >
                         Omitir (no fue ninguno de estos)
                       </button>
@@ -602,16 +582,14 @@ export default function TabProductos({
 
             {vendidoPaso === 'reseña' && (
               <>
-                <div className="text-center mb-4">
-                  <div className="w-14 h-14 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                    <CheckCircle2 size={28} className="text-green-600" />
-                  </div>
-                  <h3 className="text-lg font-bold">¡Venta registrada!</h3>
+                <div className="mb-4 flex items-center gap-3 border-b border-line pb-3">
+                  <CheckCircle2 size={18} strokeWidth={1.6} className="shrink-0 text-moss" />
+                  <h3 className="text-[15px] font-semibold tracking-[-0.015em] text-ink">Venta registrada</h3>
                 </div>
-                <div className="bg-gray-50 rounded-xl p-4 mb-4">
-                  <p className="text-sm font-semibold text-gray-700 mb-3">
+                <div className="mb-4 border border-line bg-paper-2 p-4">
+                  <p className="mb-3 text-[12.5px] text-ink/70">
                     ¿Quieres dejarle una reseña a{' '}
-                    <span className="text-brand-primary">
+                    <span className="text-ink">
                       {compradorInfo && compradorInfo.nombre ? compradorInfo.nombre : 'este comprador'}
                     </span>
                     ?
@@ -620,33 +598,33 @@ export default function TabProductos({
                     <div className="flex gap-1">
                       {[1, 2, 3, 4, 5].map(i => (
                         <button key={i} onClick={() => setRating(i)} className="hover:scale-110 transition">
-                          <Star size={28} className={i <= rating ? 'fill-yellow-400 text-yellow-400' : 'text-gray-500'} />
+                          <Star size={28} className={i <= rating ? 'fill-signal text-ink' : 'text-line-strong'} />
                         </button>
                       ))}
                     </div>
                   </div>
-                  <p className="text-center text-xs text-gray-500">{['Muy mala', 'Mala', 'Regular', 'Buena', 'Excelente'][rating - 1]}</p>
+                  <p className="t-label text-center text-ink/45">{['Muy mala', 'Mala', 'Regular', 'Buena', 'Excelente'][rating - 1]}</p>
                 </div>
                 <textarea
                   value={comentarioResena}
                   onChange={e => setComentarioResena(e.target.value)}
                   rows={2}
-                  className="w-full border rounded-lg px-3 py-2 text-sm resize-none"
+                  className="field resize-none text-[13.5px]"
                   maxLength={300}
                   placeholder="¿Algo que quieras comentar? (opcional)"
                 />
-                <p className="text-xs text-gray-500 mt-1 text-right">{comentarioResena.length}/300</p>
+                <p className="t-label mt-1 text-right text-ink/35">{comentarioResena.length}/300</p>
                 <div className="flex gap-2 mt-3">
                   <button
                     onClick={venderSinResena}
-                    className="flex-1 px-4 py-2.5 border rounded-lg text-sm font-medium hover:bg-gray-50"
+                    className="btn btn-outline flex-1 justify-center"
                   >
                     Sin reseña
                   </button>
                   <button
                     onClick={enviarResena}
                     disabled={enviandoResena}
-                    className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-brand-primary text-white rounded-lg text-sm font-bold hover:bg-brand-dark transition disabled:opacity-50"
+                    className="btn btn-ink flex-1 justify-center disabled:opacity-50"
                   >
                     <Send size={14} /> {enviandoResena ? 'Enviando...' : 'Enviar reseña'}
                   </button>
@@ -655,15 +633,15 @@ export default function TabProductos({
             )}
 
             {vendidoPaso === 'confirmado' && (
-              <div className="text-center py-6">
-                <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <CheckCircle2 size={32} className="text-green-600" />
+              <div className="py-6 text-center">
+                <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center border border-moss/30 bg-moss-soft">
+                  <CheckCircle2 size={22} strokeWidth={1.6} className="text-moss" />
                 </div>
-                <h3 className="text-xl font-bold text-green-800 mb-2">¡Vendido!</h3>
-                <p className="text-gray-500 mb-6">Tu anuncio ya está marcado como vendido. El comprador recibió un mensaje.</p>
+                <h3 className="mb-2 text-[17px] font-semibold tracking-[-0.02em] text-ink">Anuncio vendido</h3>
+                <p className="mb-6 text-[12.5px] leading-relaxed text-ink/55">Tu anuncio ya está marcado como vendido. El comprador recibió un mensaje.</p>
                 <button
                   onClick={() => { setVendidoModal(null); window.location.reload() }}
-                  className="bg-brand-primary text-white px-8 py-3 rounded-xl font-bold hover:bg-brand-dark transition"
+                  className="btn btn-ink btn-lg"
                 >
                   Cerrar
                 </button>

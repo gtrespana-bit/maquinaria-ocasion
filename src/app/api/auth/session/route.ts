@@ -61,9 +61,7 @@ export async function POST(req: NextRequest) {
           },
           setAll(cookiesToSet) {
             responseCookies = cookiesToSet
-          },
-        },
-      }
+          } } }
     )
 
     // Con un access token fresco, setSession SOLO valida (GET /auth/v1/user)

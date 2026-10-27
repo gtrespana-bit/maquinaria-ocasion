@@ -49,8 +49,7 @@ export async function POST(req: NextRequest) {
   try {
     const sesion = await stripe.billingPortal.sessions.create({
       customer: perfil.stripe_customer_id,
-      return_url: `${getSiteUrl()}/dashboard?tab=plan`,
-    })
+      return_url: `${getSiteUrl()}/dashboard?tab=plan` })
     return NextResponse.json({ ok: true, url: sesion.url })
   } catch (e: any) {
     console.error('[planes/portal]', e?.message || e)
@@ -58,8 +57,7 @@ export async function POST(req: NextRequest) {
       {
         ok: false,
         error:
-          'El portal de suscripción aún no está activado en Stripe. Actívalo en Dashboard → Settings → Billing → Customer portal.',
-      },
+          'El portal de suscripción aún no está activado en Stripe. Actívalo en Dashboard → Settings → Billing → Customer portal.' },
       { status: 502 },
     )
   }

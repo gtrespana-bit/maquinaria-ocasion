@@ -35,8 +35,7 @@ export async function sendPush(
 ) {
   const data = {
     ...payload,
-    timestamp: Date.now(),
-  }
+    timestamp: Date.now() }
 
   try {
     await webpush.sendNotification(
@@ -64,8 +63,7 @@ export async function sendPushToUser(
   for (const sub of userSubscriptions) {
     const webpushSub = {
       endpoint: sub.endpoint,
-      keys: { p256dh: sub.p256dh, auth: sub.auth_key },
-    }
+      keys: { p256dh: sub.p256dh, auth: sub.auth_key } }
     const alive = await sendPush(webpushSub, payload)
     if (!alive) {
       deadSubscriptions.push(sub.endpoint)

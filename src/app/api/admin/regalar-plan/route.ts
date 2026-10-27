@@ -11,8 +11,7 @@ import {
   esPlanRegalable,
   etiquetaPlan,
   planVigente,
-  textoResumenRegalo,
-} from '@/lib/planes-regalo'
+  textoResumenRegalo } from '@/lib/planes-regalo'
 import { emailPlanRegalado } from '@/lib/server-email'
 
 /**
@@ -80,13 +79,11 @@ export async function POST(request: NextRequest) {
       hastaActual: perfil.plan_hasta,
       plan,
       dias,
-      modo,
-    })
+      modo })
 
     const updates: Record<string, unknown> = {
       plan_anuncios: resultado.plan,
-      plan_hasta: resultado.planHasta ? resultado.planHasta.toISOString() : null,
-    }
+      plan_hasta: resultado.planHasta ? resultado.planHasta.toISOString() : null }
     // Un pack solo sirve de algo si la cuenta puede tener stock: si el admin
     // regala uno a un particular, se le pasa a profesional (salvo que lo pida
     // explícitamente sin cambiar el tipo).
@@ -106,8 +103,7 @@ export async function POST(request: NextRequest) {
       modo,
       motivo,
       plan_hasta_resultante: resultado.planHasta ? resultado.planHasta.toISOString() : null,
-      admin_email: auth.user.email || null,
-    })
+      admin_email: auth.user.email || null })
     if (logError) {
       // El regalo ya está aplicado: no se aborta, solo se avisa.
       console.error('[admin/regalar-plan] bitácora:', logError.message)
@@ -143,8 +139,7 @@ export async function POST(request: NextRequest) {
       extendido: resultado.extendido,
       cambiaTipo,
       emailEnviado,
-      resumen: textoResumenRegalo(resultado),
-    })
+      resumen: textoResumenRegalo(resultado) })
   } catch (err: any) {
     return NextResponse.json({ error: err.message || 'Error desconocido' }, { status: 500 })
   }
@@ -191,8 +186,7 @@ export async function GET(request: NextRequest) {
     const resumen = {
       starter: packs.filter((p) => p.plan_anuncios === 'starter').length,
       unlimited: packs.filter((p) => p.plan_anuncios === 'unlimited').length,
-      total: packs.length,
-    }
+      total: packs.length }
 
     return NextResponse.json({
       ok: true,
@@ -206,8 +200,7 @@ export async function GET(request: NextRequest) {
         planHasta: p.plan_hasta,
         diasRestantes: diasRestantesDePlan(p.plan_hasta),
         tipoVendedor: p.tipo_vendedor,
-        creadoEn: p.creado_en,
-      })),
+        creadoEn: p.creado_en })),
       regalos: regalos.map((r: any) => ({
         id: r.id,
         userId: r.user_id,
@@ -220,9 +213,7 @@ export async function GET(request: NextRequest) {
         motivo: r.motivo,
         planHasta: r.plan_hasta_resultante,
         adminEmail: r.admin_email,
-        creadoEn: r.creado_en,
-      })),
-    })
+        creadoEn: r.creado_en })) })
   } catch (err: any) {
     return NextResponse.json({ error: err.message || 'Error desconocido' }, { status: 500 })
   }

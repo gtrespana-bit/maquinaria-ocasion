@@ -305,8 +305,7 @@ export function agruparPorFabricante(modelos: MarcaModelo[]): GrupoFabricante[] 
       fabricante,
       modelos: [...lista].sort((a, b) =>
         etiquetaModelo(a).localeCompare(etiquetaModelo(b), 'es')
-      ),
-    }))
+      ) }))
 }
 
 /**

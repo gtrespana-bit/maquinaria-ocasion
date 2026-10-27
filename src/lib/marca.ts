@@ -39,8 +39,7 @@ export const MARCA = {
       "maquinaria usada España",
       "aperos agrícolas ocasión",
       "maquinaria de construcción usada",
-    ],
-  },
+    ] },
   colores: {
     primary: '#0F172A',
     dark: '#1E293B',
@@ -50,9 +49,7 @@ export const MARCA = {
     orange: '#EA580C',
     orangeDark: '#C2410C',
     gray: '#F5F5F5',
-    darkNav: '#0B1120',
-  },
-} as const
+    darkNav: '#0B1120' } } as const
 
 /** ¿El correo pertenece al dominio de la marca? Útil para filtrar avisos internos. */
 export function esEmailDeLaMarca(email: string): boolean {

@@ -43,8 +43,7 @@ export async function POST(request: NextRequest) {
       const { data: result, error } = await sb.rpc('agregar_creditos_admin', {
         p_user_id: body.userId,
         p_cantidad: cantidad,
-        p_motivo: motivo,
-      })
+        p_motivo: motivo })
       if (error || !result?.ok) {
         return NextResponse.json({ error: result?.error || error?.message || 'No se pudieron agregar créditos' }, { status: 500 })
       }
@@ -82,8 +81,7 @@ export async function POST(request: NextRequest) {
       tipo: 'admin_manual',
       monto: -cantidad,
       estado: 'aprobado',
-      motivo_registro: motivo,
-    })
+      motivo_registro: motivo })
 
     if (txError) {
       return NextResponse.json({ error: txError.message }, { status: 500 })

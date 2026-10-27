@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { History, Plus, Trash2, FileSearch, Settings2 } from 'lucide-react'
-import { Badge, Button, Card, Empty, Loading, Modal, RefreshButton, SearchInput, Segmented, formatDateTime, formatNumber, timeAgo } from './AdminUi'
+import { Badge, Button, Card, Empty, Loading, Modal, RefreshButton, SearchInput, Segmented, formatDateTime, formatNumber } from './AdminUi'
 import { apiJson } from './admin-utils'
 
 type AuditRow = {
@@ -45,7 +45,7 @@ export default function AdminAuditoria({ notify }: { notify: (msg: string) => vo
       setRows(audit.data || [])
       setResumen(summary.porTabla || {})
     } catch (e: any) {
-      notify('❌ ' + e.message)
+      notify( e.message)
     }
     setLoading(false)
     setRefreshing(false)
@@ -67,11 +67,11 @@ export default function AdminAuditoria({ notify }: { notify: (msg: string) => vo
     setCleanupBusy(true)
     try {
       const res = await apiJson<{ ok: boolean; eliminados: number }>('/api/admin/auditoria/limpiar', { method: 'POST' })
-      notify(`🧹 ${res.eliminados} registros antiguos limpiados`)
+      notify(` ${res.eliminados} registros antiguos limpiados`)
       setCleanup(false)
       await load(true)
     } catch (e: any) {
-      notify('❌ ' + e.message)
+      notify( e.message)
     }
     setCleanupBusy(false)
   }
@@ -88,8 +88,8 @@ export default function AdminAuditoria({ notify }: { notify: (msg: string) => vo
         <div className="flex items-center gap-3">
           <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-indigo-50 text-indigo-600"><History size={22} /></span>
           <div>
-            <h2 className="text-xl font-black text-gray-900">Auditoría</h2>
-            <p className="text-sm text-gray-500">{formatNumber(filtered.length)} eventos en los últimos {DIAS} días · {formatNumber(resumenTotal)} esta semana</p>
+            <h2 className="text-xl font-semibold text-ink">Auditoría</h2>
+            <p className="text-[12.5px] leading-relaxed text-ink/55">{formatNumber(filtered.length)} eventos en los últimos {DIAS} días · {formatNumber(resumenTotal)} esta semana</p>
           </div>
         </div>
         <RefreshButton onClick={() => load(true)} loading={refreshing} />
@@ -99,7 +99,7 @@ export default function AdminAuditoria({ notify }: { notify: (msg: string) => vo
       <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
         {['productos', 'perfiles', 'transacciones_creditos', 'mensajes'].map((tablaKey) => (
           <Card key={tablaKey} bodyClassName="p-4">
-            <p className="text-xs font-semibold uppercase tracking-wide text-gray-400">{tablaKey}</p>
+            <p className="text-xs font-semibold uppercase tracking-wide text-ink/35">{tablaKey}</p>
             <div className="mt-2 flex flex-wrap gap-2 text-xs">
               <Badge tone="green">I {formatNumber(resumen[tablaKey]?.INSERT || 0)}</Badge>
               <Badge tone="yellow">U {formatNumber(resumen[tablaKey]?.UPDATE || 0)}</Badge>
@@ -112,7 +112,7 @@ export default function AdminAuditoria({ notify }: { notify: (msg: string) => vo
       {/* filters */}
       <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
         <div className="flex flex-wrap items-center gap-2">
-          <select value={tabla} onChange={(e) => setTabla(e.target.value)} className="h-9 rounded-xl border border-gray-200 bg-white px-3 text-sm outline-none focus:border-brand-primary">
+          <select value={tabla} onChange={(e) => setTabla(e.target.value)} className="h-9 rounded-xl border border-line bg-[#FBFAF5] px-3 text-sm outline-none focus:border-ink">
             <option value="">Todas las tablas</option>
             {tablas.map((t) => <option key={t} value={t}>{t}</option>)}
           </select>
@@ -132,7 +132,7 @@ export default function AdminAuditoria({ notify }: { notify: (msg: string) => vo
       <Card bodyClassName="p-0">
         <div className="overflow-x-auto">
           <table className="w-full min-w-[760px] text-sm">
-            <thead className="border-b border-gray-100 bg-gray-50/70 text-xs uppercase tracking-wide text-gray-500">
+            <thead className="border-b border-line bg-paper-2/70 text-xs uppercase tracking-wide text-ink/55">
               <tr>
                 <th className="px-4 py-3 font-semibold">Fecha</th>
                 <th className="px-3 py-3 font-semibold">Tabla</th>
@@ -141,29 +141,29 @@ export default function AdminAuditoria({ notify }: { notify: (msg: string) => vo
                 <th className="px-3 py-3 text-right font-semibold">Detalles</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-50">
+            <tbody className="divide-y divide-line">
               {filtered.map((r) => (
-                <tr key={r.id} className="transition hover:bg-gray-50/70">
-                  <td className="whitespace-nowrap px-4 py-3 text-xs text-gray-500">{formatDateTime(r.fecha_registro)}</td>
-                  <td className="px-3 py-3 font-medium text-gray-700">{r.tabla_afectada}</td>
+                <tr key={r.id} className="transition hover:bg-paper-2/70">
+                  <td className="whitespace-nowrap px-4 py-3 text-[11.5px] text-ink/45">{formatDateTime(r.fecha_registro)}</td>
+                  <td className="px-3 py-3 font-medium text-ink">{r.tabla_afectada}</td>
                   <td className="px-3 py-3"><Badge tone={r.operacion === 'INSERT' ? 'green' : r.operacion === 'UPDATE' ? 'yellow' : 'red'}>{r.operacion}</Badge></td>
-                  <td className="px-3 py-3 text-xs text-gray-500">{r.usuario_id || '—'}</td>
+                  <td className="px-3 py-3 text-[11.5px] text-ink/45">{r.usuario_id || '—'}</td>
                   <td className="px-3 py-3 text-right"><Button size="xs" variant="outline" onClick={() => setDetail(r)}><FileSearch size={12} /> Ver</Button></td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
-        {filtered.length === 0 && <Empty icon="🕵️" title="Sin eventos" subtitle="No hay registros con estos filtros." />}
+        {filtered.length === 0 && <Empty title="Sin eventos" subtitle="No hay registros con estos filtros." />}
       </Card>
 
       <Modal open={!!detail} onClose={() => setDetail(null)} title={`${detail?.operacion} · ${detail?.tabla_afectada}`} subtitle={formatDateTime(detail?.fecha_registro)} size="lg">
         {detail && (
           <div className="space-y-4">
-            <div className="grid grid-cols-2 gap-3 rounded-xl bg-gray-50 p-4 text-sm">
-              <div><span className="text-gray-400">Usuario</span><p className="break-all text-xs">{detail.usuario_id || '—'}</p></div>
-              <div><span className="text-gray-400">IP</span><p className="font-semibold">{detail.ip_address || '—'}</p></div>
-              <div className="col-span-2"><span className="text-gray-400">User agent</span><p className="break-words text-xs">{detail.user_agent || '—'}</p></div>
+            <div className="grid grid-cols-2 gap-3 rounded-xl bg-paper-2 p-4 text-sm">
+              <div><span className="text-ink/35">Usuario</span><p className="break-all text-xs">{detail.usuario_id || '—'}</p></div>
+              <div><span className="text-ink/35">IP</span><p className="font-semibold">{detail.ip_address || '—'}</p></div>
+              <div className="col-span-2"><span className="text-ink/35">User agent</span><p className="break-words text-xs">{detail.user_agent || '—'}</p></div>
             </div>
             <div className="grid gap-4 md:grid-cols-2">
               {detail.datos_antiguos && (
@@ -179,15 +179,15 @@ export default function AdminAuditoria({ notify }: { notify: (msg: string) => vo
                 </div>
               )}
             </div>
-            {!detail.datos_antiguos && !detail.datos_nuevos && <p className="text-sm text-gray-500">No hay datos adjuntos en este evento.</p>}
+            {!detail.datos_antiguos && !detail.datos_nuevos && <p className="text-[12.5px] leading-relaxed text-ink/55">No hay datos adjuntos en este evento.</p>}
           </div>
         )}
       </Modal>
 
       <Modal open={cleanup} onClose={() => setCleanup(false)} title="Limpiar auditoría antigua" size="sm" footer={<><Button variant="outline" onClick={() => setCleanup(false)}>Cancelar</Button><Button variant="danger" onClick={runCleanup} disabled={cleanupBusy}><Trash2 size={14} /> {cleanupBusy ? 'Limpiando…' : 'Limpiar +90 días'}</Button></>}>
-        <div className="text-sm text-gray-600">
+        <div className="text-[12.5px] leading-relaxed text-ink/55">
           <p className="mb-2 flex items-center gap-2"><Settings2 size={16} className="text-indigo-500" /> Eliminará registros de auditoría con más de 90 días para mantener la base ligera.</p>
-          <p className="text-xs text-gray-500">Esta acción no afecta los datos de negocio, únicamente el historial de cambios antiguo.</p>
+          <p className="text-[11.5px] text-ink/45">Esta acción no afecta los datos de negocio, únicamente el historial de cambios antiguo.</p>
         </div>
       </Modal>
     </div>

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { supabase } from '@/lib/supabase-server-client'
-import { calcularRango, parseNumeroEspec, RANGO_VACIO, type RangoPrecio } from '@/lib/tasador'
+import { calcularRango, parseNumeroEspec, RANGO_VACIO, type RangoPrecio} from '@/lib/tasador'
 
 /**
  * Estimador de precios (§2 del roadmap de marketplace).

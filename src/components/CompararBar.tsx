@@ -5,7 +5,7 @@ import Image from 'next/image'
 import LocalLink from '@/components/LocalLink'
 import { useComparar } from '@/lib/comparar'
 import { useTranslations } from 'next-intl'
-import { GitCompare, Trash2, X } from 'lucide-react'
+import { GitCompare, Trash2 } from 'lucide-react'
 
 /**
  * Barra flotante del comparador: aparece con ≥1 anuncio en la lista y lleva

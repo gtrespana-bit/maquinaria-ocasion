@@ -1,4 +1,4 @@
-"use client"
+'use client'
 
 import LocalLink from '@/components/LocalLink'
 
@@ -12,14 +12,13 @@ import { formatPrecioObligatorio as formatPrecio } from '@/lib/precio'
 interface MetodoPago {
   id: string
   nombre: string
-  emoji: string
   instrucciones: Record<string, string>
 }
 
 const METODOS_PAGO: MetodoPago[] = [
-  { id: 'bizum', nombre: 'Bizum', emoji: '📱', instrucciones: {} },
-  { id: 'transferencia', nombre: 'Transferencia', emoji: '🏦', instrucciones: {} },
-  { id: 'paypal', nombre: 'PayPal', emoji: '💙', instrucciones: {} },
+  { id: 'bizum', nombre: 'Bizum', instrucciones: {} },
+  { id: 'transferencia', nombre: 'Transferencia', instrucciones: {} },
+  { id: 'paypal', nombre: 'PayPal', instrucciones: {} },
 ]
 
 export default function TabCreditos({ creditos, refreshCreditos }: { creditos: number; refreshCreditos: () => void }) {
@@ -45,86 +44,104 @@ export default function TabCreditos({ creditos, refreshCreditos }: { creditos: n
   }, [])
 
   return (
-    <div className="space-y-6">
-      {/* Balance */}
-      <div className="bg-gradient-to-r from-brand-primary to-brand-dark rounded-2xl p-6 text-white flex items-center justify-between">
+    <div className="space-y-8">
+      <section className="on-dark flex items-center justify-between gap-6 bg-ink px-6 py-6 text-paper">
         <div>
-          <p className="text-sm opacity-80">Tu balance actual</p>
-          <p className="text-4xl font-black">{creditos} créditos</p>
+          <p className="t-label text-paper/45">Tu balance actual</p>
+          <p className="t-display t-num mt-3 text-[clamp(2.2rem,5vw,3.2rem)] leading-none">
+            {creditos}
+            <span className="ml-2 font-sans text-[13px] font-medium tracking-normal text-paper/50">créditos</span>
+          </p>
         </div>
-        <CreditCard size={40} className="opacity-50" />
-      </div>
+        <CreditCard size={34} strokeWidth={1.2} className="shrink-0 text-paper/20" aria-hidden="true" />
+      </section>
 
-      {/* Info */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
-        <h3 className="font-bold text-lg mb-3">¿Para qué sirven?</h3>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-4">
-            <p className="font-bold text-brand-primary flex items-center gap-2"><Zap size={18} className="text-yellow-500" /> Subida al nº 1 — 1 crédito</p>
-            <p className="text-sm text-gray-600 mt-1">Sube tu publicación al #1 de la lista</p>
+      <section>
+        <h3 className="t-eyebrow border-b border-ink pb-3 text-ink">¿Para qué sirven?</h3>
+        <div className="mt-5 grid grid-cols-1 gap-px border border-line bg-line sm:grid-cols-2">
+          <div className="bg-[#FBFAF5] p-5">
+            <Zap size={16} strokeWidth={1.6} className="text-ink" aria-hidden="true" />
+            <p className="mt-3 text-[13.5px] font-semibold text-ink">Subida al nº 1 · 1 crédito</p>
+            <p className="mt-1 text-[12.5px] leading-relaxed text-ink/55">Sube tu publicación al primer puesto del listado.</p>
           </div>
-          <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
-            <p className="font-bold text-brand-primary flex items-center gap-2"><Star size={18} className="text-brand-accent" /> Destacado</p>
-            <p className="text-sm text-gray-600 mt-1">4cr/12h · 6cr/24h · 10cr/48h</p>
+          <div className="bg-[#FBFAF5] p-5">
+            <Star size={16} strokeWidth={1.6} className="text-ink" aria-hidden="true" />
+            <p className="mt-3 text-[13.5px] font-semibold text-ink">Destacado</p>
+            <p className="t-num mt-1 text-[12.5px] leading-relaxed text-ink/55">4 cr/12 h · 6 cr/24 h · 10 cr/48 h</p>
           </div>
         </div>
-      </div>
+      </section>
 
-      {/* Puente plan <-> créditos */}
-      <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+      <section className="flex flex-col gap-4 border border-line bg-[#FBFAF5] p-5 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <p className="font-bold text-gray-900">¿Publicas varias máquinas?</p>
-          <p className="text-sm text-gray-600">
+          <p className="text-[13.5px] font-semibold text-ink">¿Publicas varias máquinas?</p>
+          <p className="mt-1 max-w-lg text-[12.5px] leading-relaxed text-ink/55">
             Con Básico (19 €/mes) o Profesional (49 €/mes) tienes más anuncios y destacados incluidos cada mes.
           </p>
         </div>
-        <LocalLink
-          href="/para-profesionales"
-          className="inline-flex shrink-0 items-center justify-center gap-1.5 rounded-xl bg-brand-primary px-4 py-2 text-sm font-bold text-white hover:bg-brand-dark"
-        >
-          Ver planes <ArrowRight size={15} />
+        <LocalLink href="/para-profesionales" className="btn btn-outline btn-sm shrink-0 justify-center">
+          Ver planes <ArrowRight size={12} />
         </LocalLink>
-      </div>
+      </section>
 
-      {/* Paquetes */}
-      <h3 className="text-xl font-bold text-gray-800 text-center">Elige tu paquete</h3>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {PAQUETES_CREDITO.map((pkg) => {
-          const porCredito = pkg.precio / pkg.creditos
-          return (
-            <div key={pkg.creditos} className={`bg-white rounded-2xl shadow-lg overflow-hidden border-2 transition hover:-translate-y-1 ${pkg.popular ? 'border-brand-accent' : 'border-transparent'}`}>
-              {pkg.popular && <div className="bg-brand-accent text-white text-center py-1.5 text-xs font-bold">⭐ MÁS POPULAR</div>}
-              <div className="bg-gradient-to-br from-brand-primary to-brand-dark p-6 text-white text-center">
-                <p className="text-5xl font-black">{pkg.creditos}</p>
-                <p className="text-sm opacity-80">créditos</p>
+      <section>
+        <h3 className="t-eyebrow border-b border-ink pb-3 text-ink">Elige tu paquete</h3>
+        <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {PAQUETES_CREDITO.map(pkg => {
+            const porCredito = pkg.precio / pkg.creditos
+            return (
+              <div
+                key={pkg.creditos}
+                className={`flex flex-col border bg-[#FBFAF5] ${pkg.popular ? 'border-ink' : 'border-line'}`}
+              >
+                <div className={`flex items-center justify-between border-b px-4 py-2 ${pkg.popular ? 'border-ink bg-signal' : 'border-line'}`}>
+                  <span className="t-label text-ink/60">{pkg.creditos} créditos</span>
+                  {pkg.popular && <span className="t-label text-ink">Más popular</span>}
+                </div>
+                <div className="flex-1 px-5 py-5">
+                  <p className="t-display t-num text-[2rem] leading-none text-ink">{formatPrecio(pkg.precio)}</p>
+                  <p className="t-label mt-2 text-ink/40">{formatPrecio(porCredito)} por crédito</p>
+                  <ul className="mt-5 space-y-2 border-t border-line pt-4 text-[12.5px] text-ink/65">
+                    <li className="flex items-start gap-2">
+                      <CheckCircle size={12} strokeWidth={2} className="mt-0.5 shrink-0 text-moss" aria-hidden="true" />
+                      <span><strong className="font-semibold text-ink">{pkg.creditos}</strong> subidas al nº 1</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <CheckCircle size={12} strokeWidth={2} className="mt-0.5 shrink-0 text-moss" aria-hidden="true" />
+                      <span>o {Math.floor(pkg.creditos / 4)}× destacado 12 h</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <CheckCircle size={12} strokeWidth={2} className="mt-0.5 shrink-0 text-moss" aria-hidden="true" />
+                      <span>Sin expiración</span>
+                    </li>
+                  </ul>
+                </div>
+                <div className="p-4 pt-0">
+                  <button
+                    onClick={() => setPaqueteSeleccionado(pkg)}
+                    aria-haspopup="dialog"
+                    className={`btn w-full justify-center ${pkg.popular ? 'btn-ink' : 'btn-outline'}`}
+                  >
+                    Comprar
+                  </button>
+                </div>
               </div>
-              <div className="p-6 text-center">
-                <p className="text-3xl font-black text-gray-800 mb-1">{formatPrecio(pkg.precio)}</p>
-                <p className="text-xs text-gray-500 mb-5 bg-gray-50 rounded-lg py-1 px-2 inline-block">{formatPrecio(porCredito)} por crédito</p>
-                <ul className="text-sm text-gray-600 space-y-2 mb-6 text-left">
-                  <li className="flex items-center gap-2"><CheckCircle size={14} className="text-green-500 flex-shrink-0" /><strong>{pkg.creditos}</strong> subidas al nº 1</li>
-                  <li className="flex items-center gap-2"><CheckCircle size={14} className="text-green-500 flex-shrink-0" />o {Math.floor(pkg.creditos / 4)}× destacado 12h</li>
-                  <li className="flex items-center gap-2"><CheckCircle size={14} className="text-green-500 flex-shrink-0" />Sin expiración</li>
-                </ul>
-                <button onClick={() => setPaqueteSeleccionado(pkg)} aria-haspopup="dialog" className="w-full bg-brand-primary text-white py-3 rounded-lg font-bold hover:bg-brand-dark transition cursor-pointer">Comprar</button>
-              </div>
-            </div>
-          )
-        })}
-      </div>
+            )
+          })}
+        </div>
+      </section>
 
-      {/* Métodos */}
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
-        <h3 className="font-bold text-lg mb-4 text-center">Métodos de pago aceptados</h3>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          {metodosPago.map((m) => (
-            <div key={m.id} className="rounded-xl p-4 text-center bg-gray-50">
-              <span className="text-3xl block mb-2">{m.emoji}</span>
-              <p className="text-sm font-medium text-gray-800">{m.nombre}</p>
+      <section>
+        <h3 className="t-eyebrow border-b border-ink pb-3 text-ink">Métodos de pago aceptados</h3>
+        <div className="mt-5 grid grid-cols-1 gap-px border border-line bg-line sm:grid-cols-3">
+          {metodosPago.map(m => (
+            <div key={m.id} className="bg-[#FBFAF5] px-4 py-5">
+              <span className="t-label text-ink/30">{m.nombre.slice(0, 2).toUpperCase()}</span>
+              <p className="mt-2 text-[13.5px] font-medium text-ink">{m.nombre}</p>
             </div>
           ))}
         </div>
-      </div>
+      </section>
 
       {paqueteSeleccionado && (
         <ModalCompraCreditos
@@ -144,8 +161,7 @@ function ModalCompraCreditos({
   metodosPago,
   configurado,
   onClose,
-  onCompraExitosa,
-}: {
+  onCompraExitosa }: {
   paquete: any
   metodosPago: MetodoPago[]
   configurado: Record<string, boolean> | null
@@ -203,9 +219,7 @@ function ModalCompraCreditos({
           creditos: paquete.creditos,
           precioUsd: paquete.precio,
           metodoPago: selectedMetodo?.nombre || metodo,
-          comprobanteUrl: publicUrl,
-        }),
-      })
+          comprobanteUrl: publicUrl }) })
 
       const data = await res.json()
       if (data.ok) {
@@ -223,22 +237,22 @@ function ModalCompraCreditos({
   if (enviado) {
     return (
       <div
-        className="fixed inset-0 z-50 bg-black/60 flex items-end md:items-center justify-center"
+        className="fixed inset-0 z-50 bg-ink/60 flex items-end md:items-center justify-center"
         role="dialog"
         aria-modal="true"
         aria-labelledby="modal-compra-titulo"
         tabIndex={-1}
         onKeyDown={(e) => { if (e.key === 'Escape') onClose() }}
       >
-        <div className="bg-white w-full md:max-w-lg md:rounded-2xl rounded-t-2xl p-6 text-center">
-          <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <CheckCircle size={32} className="text-brand-accent" />
+        <div className="w-full border-t border-line-strong bg-[#FBFAF5] p-6 text-center md:max-w-lg md:rounded-2xl md:border">
+          <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center border border-moss/30 bg-moss-soft">
+            <CheckCircle size={22} strokeWidth={1.6} className="text-moss" />
           </div>
-          <h3 id="modal-compra-exito" className="text-xl font-bold text-brand-primary mb-2">¡Comprobante enviado!</h3>
-          <p className="text-sm text-gray-600 mb-4">
+          <h3 id="modal-compra-exito" className="text-[17px] font-semibold tracking-[-0.02em] text-ink">¡Comprobante enviado!</h3>
+          <p className="mb-5 mt-2 text-[13px] leading-relaxed text-ink/60">
             Tu pago será revisado en breve. Recibirás <strong>{paquete.creditos} créditos</strong> cuando se confirme.
           </p>
-          <button onClick={onClose} className="w-full bg-brand-primary text-white py-3 rounded-xl font-bold hover:bg-brand-dark transition">Cerrar</button>
+          <button onClick={onClose} className="btn btn-ink w-full justify-center">Cerrar</button>
         </div>
       </div>
     )
@@ -246,27 +260,27 @@ function ModalCompraCreditos({
 
   return (
     <div
-      className="fixed inset-0 z-50 bg-black/60 flex items-end md:items-center justify-center"
+      className="fixed inset-0 z-50 bg-ink/60 flex items-end md:items-center justify-center"
       role="dialog"
       aria-modal="true"
       aria-labelledby="modal-compra-titulo"
       tabIndex={-1}
       onKeyDown={(e) => { if (e.key === 'Escape') onClose() }}
     >
-      <div className="bg-white w-full md:max-w-lg md:rounded-2xl rounded-t-2xl max-h-[90vh] overflow-y-auto">
-        <div className="sticky top-0 bg-white border-b px-6 py-4 flex items-center justify-between rounded-t-2xl z-10">
+      <div className="max-h-[90vh] w-full overflow-y-auto border-t border-line-strong bg-[#FBFAF5] md:max-w-lg md:rounded-2xl md:border">
+        <div className="sticky top-0 z-10 flex items-center justify-between border-b border-line bg-[#FBFAF5] px-6 py-4">
           <div>
-            <h3 id="modal-compra-titulo" className="text-lg font-bold text-gray-900">{paquete.creditos} créditos — {formatPrecio(paquete.precio)}</h3>
+            <h3 id="modal-compra-titulo" className="text-[15px] font-semibold tracking-[-0.015em] text-ink">{paquete.creditos} créditos — {formatPrecio(paquete.precio)}</h3>
           </div>
-          <button onClick={onClose} aria-label="Cerrar modal de compra" className="p-2 hover:bg-gray-100 rounded-full"><X size={20} /></button>
+          <button onClick={onClose} aria-label="Cerrar modal de compra" className="text-ink/40 transition-colors hover:text-ink"><X size={16} /></button>
         </div>
 
         <div className="p-6 space-y-6">
           {/* Método de pago */}
           <div>
-            <h4 className="font-bold text-gray-800 mb-3">1. Elige cómo vas a pagar</h4>
+            <h4 className="t-label mb-3 text-ink/50">01 · Elige cómo vas a pagar</h4>
             {configurado && metodosPago.length === 0 && (
-              <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 text-sm text-amber-900">
+              <div className="border border-signal-deep/40 bg-signal/15 p-4 text-[12.5px] leading-relaxed text-ink/70">
                 Estamos terminando de configurar los pagos con Bizum, transferencia y PayPal.
                 Escríbenos desde{' '}
                 <LocalLink href="/contacto" className="font-semibold underline">contacto</LocalLink> y te
@@ -276,21 +290,21 @@ function ModalCompraCreditos({
             <div className="grid grid-cols-3 gap-3">
               {metodosPago.map(m => (
                 <button key={m.id} onClick={() => setMetodo(m.id)}
-                  className={`p-4 rounded-xl border-2 text-center transition ${metodo === m.id ? 'border-brand-accent bg-green-50' : 'border-gray-200 hover:border-gray-300'}`}>
-                  <span className="text-3xl block">{m.emoji}</span>
-                  <span className="text-sm font-medium text-gray-700 mt-1 block">{m.nombre}</span>
+                  className={`border p-3 text-center transition-colors ${metodo === m.id ? 'border-ink bg-signal' : 'border-line bg-paper hover:border-ink'}`}>
+                  <span className="t-label block text-ink/45">{m.nombre.slice(0, 2).toUpperCase()}</span>
+                  <span className="mt-1 block text-[12.5px] font-medium text-ink">{m.nombre}</span>
                 </button>
               ))}
             </div>
           </div>
 
           {/* Monto a pagar */}
-          <div className="bg-brand-primary/5 border-2 border-brand-primary/20 rounded-xl p-4">
-            <p className="text-xs text-gray-500 mb-1 text-center">Monto a pagar</p>
+          <div className="border border-line bg-paper-2 p-4">
+            <p className="t-label mb-1 text-center text-ink/45">Monto a pagar</p>
             <div className="flex items-center justify-center gap-3">
-              <p className="text-3xl font-black text-brand-primary">{formatPrecio(paquete.precio)}</p>
-              <button onClick={() => copyToClipboard(String(paquete.precio), 'precio')} className="flex items-center gap-1 bg-white border border-brand-primary/30 rounded-lg px-3 py-2 text-sm text-brand-primary hover:bg-brand-primary/5 transition">
-                {copiado === 'precio' ? '✓' : 'Copiar'}
+              <p className="t-display t-num text-[1.6rem] leading-none text-ink">{formatPrecio(paquete.precio)}</p>
+              <button onClick={() => copyToClipboard(String(paquete.precio), 'precio')} className="t-label flex items-center gap-1 border border-line bg-paper px-2.5 py-1.5 text-ink/60 transition-colors hover:border-ink hover:text-ink">
+                {copiado === 'precio' ? 'Copiado' : 'Copiar'}
               </button>
             </div>
           </div>
@@ -298,18 +312,18 @@ function ModalCompraCreditos({
           {/* Datos de pago */}
           {selectedMetodo && Object.keys(selectedMetodo.instrucciones).length > 0 && (
             <div>
-              <h4 className="font-bold text-gray-800 mb-3">2. Datos de pago</h4>
-              <div className="bg-gray-50 rounded-xl p-4 space-y-3">
+              <h4 className="t-label mb-3 text-ink/50">02 · Datos de pago</h4>
+              <div className="space-y-3 border border-line bg-paper-2 p-4">
                 {Object.entries(selectedMetodo.instrucciones).map(([key, value]) => {
                   const labelMap: Record<string, string> = { telefono: 'Teléfono (Bizum)', iban: 'IBAN', banco: 'Banco', receptor: 'Titular', email: 'PayPal (email)' }
                   return (
                     <div key={key} className="flex items-center justify-between">
                       <div>
-                        <span className="text-xs text-gray-500">{labelMap[key] || key}</span>
-                        <p className="text-sm font-medium text-gray-800">{value}</p>
+                        <span className="t-label text-ink/45">{labelMap[key] || key}</span>
+                        <p className="t-num break-all text-[13px] font-medium text-ink">{value}</p>
                       </div>
-                      <button onClick={() => copyToClipboard(value, key)} className="text-xs bg-white border rounded-md px-2 py-1 hover:bg-gray-100 transition ml-2">
-                        {copiado === key ? '✓ Copiado' : 'Copiar'}
+                      <button onClick={() => copyToClipboard(value, key)} className="t-label ml-2 shrink-0 border border-line bg-paper px-2 py-1 text-ink/50 transition-colors hover:border-ink hover:text-ink">
+                        {copiado === key ? 'Copiado' : 'Copiar'}
                       </button>
                     </div>
                   )
@@ -321,32 +335,32 @@ function ModalCompraCreditos({
           {/* Comprobante */}
           {selectedMetodo && (
             <div>
-              <h4 className="font-bold text-gray-800 mb-3">3. Sube tu comprobante de pago</h4>
-              <div className="border-2 border-dashed border-gray-300 rounded-xl p-6 text-center hover:border-brand-primary transition cursor-pointer"
+              <h4 className="t-label mb-3 text-ink/50">03 · Sube tu comprobante de pago</h4>
+              <div className="cursor-pointer border border-dashed border-line-strong p-6 text-center transition-colors hover:border-ink"
                 onClick={() => document.getElementById('comprobante-input-dash')?.click()}>
                 <input type="file" accept="image/*" id="comprobante-input-dash" onChange={handleFileChange} className="hidden" />
                 {comprobantePreview ? (
                   <div>
-                    <Image src={comprobantePreview} alt="Comprobante" className="max-h-48 mx-auto rounded-lg mb-3" width={400} height={300} unoptimized />
-                    <button onClick={(e) => { e.stopPropagation(); setComprobanteFile(null); setComprobantePreview('') }} className="text-sm text-red-500 hover:underline">Quitar imagen</button>
+                    <Image src={comprobantePreview} alt="Comprobante" className="mx-auto mb-3 max-h-48 w-auto border border-line" width={400} height={300} unoptimized />
+                    <button onClick={(e) => { e.stopPropagation(); setComprobanteFile(null); setComprobantePreview('') }} className="t-label text-clay hover:underline">Quitar imagen</button>
                   </div>
                 ) : (
                   <>
-                    <Upload size={32} className="mx-auto text-gray-500 mb-2" />
-                    <p className="text-sm text-gray-500">Toca para subir captura del pago</p>
-                    <p className="text-xs text-gray-500 mt-1">JPG, PNG — máx 5MB</p>
+                    <Upload size={24} strokeWidth={1.4} className="mx-auto mb-2 text-ink/30" />
+                    <p className="text-[13px] text-ink/60">Toca para subir la captura del pago</p>
+                    <p className="t-label mt-1 text-ink/30">JPG, PNG — máx 5 MB</p>
                   </>
                 )}
               </div>
               <button onClick={procesarCompra} disabled={enviando || !comprobanteFile}
-                className="w-full mt-4 bg-brand-primary text-white py-3.5 rounded-xl font-bold hover:bg-brand-dark transition flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
+                className="btn btn-ink mt-4 w-full justify-center disabled:cursor-not-allowed disabled:opacity-50">
                 {enviando ? <><Loader2 size={18} className="animate-spin" /> Enviando...</> : <><Upload size={18} /> Enviar comprobante</>}
               </button>
             </div>
           )}
 
           {!metodo && (
-            <div className="text-center py-4 text-sm text-gray-500">Selecciona un método de pago para continuar ↓</div>
+            <p className="t-label py-3 text-center text-ink/35">Selecciona un método de pago para continuar</p>
           )}
         </div>
       </div>

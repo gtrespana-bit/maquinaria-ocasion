@@ -28,8 +28,7 @@ export async function GET(request: NextRequest) {
       (process.env.SMTP_PASS || process.env.ZOHO_SMTP_PASS)
     ),
     rateLimit: true,
-    anuncios: false,
-  }
+    anuncios: false }
 
   try {
     if (config.supabase) {

@@ -19,11 +19,8 @@ export async function POST(req: NextRequest) {
             // Expire all auth cookies by setting maxAge=0
             responseCookies = cookiesToSet.map(c => ({
               ...c,
-              options: { ...c.options, maxAge: 0 },
-            }))
-          },
-        },
-      }
+              options: { ...c.options, maxAge: 0 } }))
+          } } }
     )
 
     await supabase.auth.signOut()

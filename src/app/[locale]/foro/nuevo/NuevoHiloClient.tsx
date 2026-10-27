@@ -25,24 +25,23 @@ export default function NuevoHiloClient({ categorias }: { categorias: ForoCatego
 
   if (loading) {
     return (
-      <div className="min-h-[50vh] flex items-center justify-center text-gray-500 font-bold">
-        {t('loading')}
+      <div className="shell py-16">
+        <p className="t-label text-ink/40">{t('loading')}</p>
+        <div className="skeleton mt-6 h-8 w-1/2" />
+        <div className="skeleton mt-3 h-40 w-full" />
       </div>
     )
   }
 
   if (!session) {
     return (
-      <div className="max-w-2xl mx-auto px-4 py-16 text-center">
-        <h1 className="text-3xl font-black text-gray-900 mb-3">{t('newThread')}</h1>
-        <p className="text-gray-600 mb-8">{t('loginRequired')}</p>
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-          <LocalLink href="/login" className="w-full sm:w-auto bg-brand-signal text-brand-darkNav font-black px-8 py-3 rounded-xl hover:brightness-110 transition">
-            {t('login')}
-          </LocalLink>
-          <LocalLink href="/register" className="w-full sm:w-auto border-2 border-gray-300 text-gray-800 font-black px-8 py-3 rounded-xl hover:border-brand-signal transition">
-            {t('register')}
-          </LocalLink>
+      <div className="mx-auto max-w-3xl px-5 py-16 md:px-8 md:py-20">
+        <p className="t-eyebrow text-ink/40">Comunidad</p>
+        <h1 className="t-display t-display-lg mt-5 text-ink">{t('newThread')}</h1>
+        <p className="mt-4 max-w-xl text-[14.5px] leading-relaxed text-muted">{t('loginRequired')}</p>
+        <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+          <LocalLink href="/login" className="btn btn-ink btn-lg justify-center">{t('login')}</LocalLink>
+          <LocalLink href="/register" className="btn btn-outline btn-lg justify-center">{t('register')}</LocalLink>
         </div>
       </div>
     )
@@ -66,8 +65,7 @@ export default function NuevoHiloClient({ categorias }: { categorias: ForoCatego
       const res = await fetch('/api/foro/hilos', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ titulo: tituloLimpio, cuerpo: cuerpoLimpio, categoria_id: categoriaId }),
-      })
+        body: JSON.stringify({ titulo: tituloLimpio, cuerpo: cuerpoLimpio, categoria_id: categoriaId }) })
       const data = await res.json().catch(() => ({}))
       if (res.ok && data.id) {
         const prefijo = locale === routing.defaultLocale ? '' : `/${locale}`
@@ -88,87 +86,91 @@ export default function NuevoHiloClient({ categorias }: { categorias: ForoCatego
     }
   }
 
-  const inputCls =
     'w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-signal/60 focus:border-brand-signal transition'
-
   return (
-    <div className="max-w-3xl mx-auto px-4 py-10">
-      <LocalLink href="/foro" className="inline-flex items-center gap-1.5 text-sm font-bold text-gray-500 hover:text-brand-signal transition mb-6">
-        <ArrowLeft className="w-4 h-4" aria-hidden="true" /> {t('backToForum')}
-      </LocalLink>
+    <div className="bg-paper">
+      <div className="shell max-w-3xl py-10 md:py-14">
+        <LocalLink
+          href="/foro"
+          className="t-label inline-flex items-center gap-2 text-ink/45 transition-colors hover:text-ink"
+        >
+          <ArrowLeft size={11} aria-hidden="true" /> {t('backToForum')}
+        </LocalLink>
 
-      <h1 className="text-3xl font-black text-gray-900 mb-2">{t('newThread')}</h1>
-      <p className="text-gray-600 mb-8">{t('newSubtitle')}</p>
+        <p className="t-eyebrow mt-8 text-ink/40">Comunidad</p>
+        <h1 className="t-display t-display-lg mt-5 text-ink">{t('newThread')}</h1>
+        <p className="mt-3 max-w-xl text-[14px] leading-relaxed text-muted">{t('newSubtitle')}</p>
 
-      <form onSubmit={enviar} className="bg-white border border-gray-200 rounded-2xl p-6 space-y-5">
-        <div>
-          <label htmlFor="categoria" className="block text-sm font-black text-gray-800 mb-1.5">{t('categoryLabel')}</label>
-          <select
-            id="categoria"
-            value={categoriaId}
-            onChange={e => setCategoriaId(e.target.value)}
-            className={inputCls}
-            required
-          >
-            <option value="">{t('selectCategory')}</option>
-            {categorias.map(cat => (
-              <option key={cat.id} value={cat.id}>
-                {cat.icono || '💬'} {locale === 'en' ? cat.nombre_en : cat.nombre_es}
-              </option>
-            ))}
-          </select>
-        </div>
+        <form onSubmit={enviar} className="mt-8 space-y-6 border border-line bg-[#FBFAF5] p-6 md:p-8">
+          <div>
+            <label htmlFor="categoria" className="t-label mb-1.5 block text-ink/50">{t('categoryLabel')}</label>
+            <select
+              id="categoria"
+              value={categoriaId}
+              onChange={e => setCategoriaId(e.target.value)}
+              className="field text-[15px]"
+              required
+            >
+              <option value="">{t('selectCategory')}</option>
+              {categorias.map(cat => (
+                <option key={cat.id} value={cat.id}>
+                  {locale === 'en' ? cat.nombre_en : cat.nombre_es}
+                </option>
+              ))}
+            </select>
+          </div>
 
-        <div>
-          <label htmlFor="titulo" className="block text-sm font-black text-gray-800 mb-1.5">{t('titleLabel')}</label>
-          <input
-            id="titulo"
-            type="text"
-            value={titulo}
-            onChange={e => setTitulo(e.target.value)}
-            maxLength={160}
-            placeholder={t('titlePlaceholder')}
-            className={inputCls}
-            required
-          />
-          <p className="text-xs text-gray-400 mt-1">{titulo.trim().length}/160</p>
-        </div>
+          <div>
+            <label htmlFor="titulo" className="t-label mb-1.5 block text-ink/50">{t('titleLabel')}</label>
+            <input
+              id="titulo"
+              type="text"
+              value={titulo}
+              onChange={e => setTitulo(e.target.value)}
+              maxLength={160}
+              placeholder={t('titlePlaceholder')}
+              className="field text-[15px]"
+              required
+            />
+            <p className="t-label mt-1 text-ink/30">{titulo.trim().length}/160</p>
+          </div>
 
-        <div>
-          <label htmlFor="cuerpo" className="block text-sm font-black text-gray-800 mb-1.5">{t('bodyLabel')}</label>
-          <textarea
-            id="cuerpo"
-            value={cuerpo}
-            onChange={e => setCuerpo(e.target.value)}
-            rows={8}
-            maxLength={6000}
-            placeholder={t('bodyPlaceholder')}
-            className={inputCls}
-            required
-          />
-          <p className="text-xs text-gray-400 mt-1">{cuerpo.trim().length}/6000</p>
-        </div>
+          <div>
+            <label htmlFor="cuerpo" className="t-label mb-1.5 block text-ink/50">{t('bodyLabel')}</label>
+            <textarea
+              id="cuerpo"
+              value={cuerpo}
+              onChange={e => setCuerpo(e.target.value)}
+              rows={8}
+              maxLength={6000}
+              placeholder={t('bodyPlaceholder')}
+              className="field resize-none text-[15px]"
+              required
+            />
+            <p className="t-label mt-1 text-ink/30">{cuerpo.trim().length}/6000</p>
+          </div>
 
-        {error && (
-          <p role="alert" className="text-sm font-bold text-red-600 bg-red-50 border border-red-200 rounded-lg px-3 py-2">
-            {error}
-          </p>
-        )}
+          {error && (
+            <p role="alert" className="border border-clay/40 bg-clay/[0.05] px-3 py-2 text-[13px] text-clay">
+              {error}
+            </p>
+          )}
 
-        <div className="flex items-center justify-end gap-3">
-          <LocalLink href="/foro" className="text-sm font-bold text-gray-500 hover:text-gray-800 transition">
-            {t('cancel')}
-          </LocalLink>
-          <button
-            type="submit"
-            disabled={enviando}
-            className="inline-flex items-center gap-2 bg-brand-signal text-brand-darkNav font-black px-6 py-3 rounded-xl hover:brightness-110 transition disabled:opacity-60"
-          >
-            {enviando ? <Loader2 className="w-4 h-4 animate-spin" aria-hidden="true" /> : <Send className="w-4 h-4" aria-hidden="true" />}
-            {enviando ? t('posting') : t('submit')}
-          </button>
-        </div>
-      </form>
+          <div className="flex items-center justify-between gap-3 border-t border-line pt-5">
+            <LocalLink href="/foro" className="t-label text-ink/50 transition-colors hover:text-ink">
+              {t('cancel')}
+            </LocalLink>
+            <button
+              type="submit"
+              disabled={enviando}
+              className="btn btn-ink btn-lg disabled:opacity-60"
+            >
+              {enviando ? <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" /> : <Send className="h-4 w-4" aria-hidden="true" />}
+              {enviando ? t('posting') : t('submit')}
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   )
 }

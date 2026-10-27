@@ -13,9 +13,7 @@ export const metadata: Metadata = {
     url: 'https://maquinaria.click/contacto',
     siteName: 'MaquinariaOcasión',
     type: 'website',
-    locale: 'es_ES',
-  },
-}
+    locale: 'es_ES' } }
 
 export default function ContactPage() {
   const SITIO = 'https://maquinaria.click'
@@ -27,18 +25,15 @@ export default function ContactPage() {
         itemListElement: [
           { '@type': 'ListItem', position: 1, name: 'Inicio', item: SITIO + '/' },
           { '@type': 'ListItem', position: 2, name: 'Contacto', item: SITIO + '/contacto' },
-        ],
-      },
+        ] },
       {
         '@type': 'ContactPage',
         '@id': SITIO + '/contacto#contact',
         name: 'Contacto — MaquinariaOcasión',
         description: 'Contacta con MaquinariaOcasión: soporte para comprar, vender o publicar tu maquinaria y herramienta en España.',
         url: SITIO + '/contacto',
-        isPartOf: { '@id': SITIO + '/#website' },
-      },
-    ],
-  }
+        isPartOf: { '@id': SITIO + '/#website' } },
+    ] }
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: serializeJsonLd(jsonLd) }} />

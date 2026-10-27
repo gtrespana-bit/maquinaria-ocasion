@@ -30,8 +30,7 @@ export async function POST(req: NextRequest) {
       body: `${cantidad} créditos fueron agregados a tu cuenta. Balance total: ${balanceTotal ?? cantidad}.`,
       tag: 'creditos-email',
       icon: '/icon-192.png',
-      click_url: '/creditos',
-    })
+      click_url: '/creditos' })
 
     return NextResponse.json({ ok: true })
   } catch (e: any) {

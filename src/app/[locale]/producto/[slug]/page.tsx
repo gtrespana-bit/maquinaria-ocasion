@@ -150,8 +150,7 @@ async function getEstadoReserva(productoId: string, userId?: string | null) {
     return {
       reservado: !!(producto as any).reservado,
       reservado_hasta: (producto as any).reservado_hasta || null,
-      reserva_propia_estado: propia,
-    }
+      reserva_propia_estado: propia }
   } catch {
     return null
   }
@@ -370,14 +369,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description: desc,
       type: 'article',
       images: image,
-      locale: 'es_ES',
-    },
+      locale: 'es_ES' },
     twitter: {
       card: 'summary_large_image',
       title,
       description: desc,
-      images: image,
-    },
+      images: image },
     alternates: alternatesSeo(`/producto/${canonicalSlug}`),
     // Vendido: la URL sigue viva (llega tráfico de WhatsApp/Google y hay
     // similares que mostrar) pero fuera del índice: contenido agotado.
@@ -386,8 +383,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     // Google con anuncios de verdad.
     robots: producto.vendido || esDemo
       ? { index: false, follow: true }
-      : { index: true, follow: true },
-  }
+      : { index: true, follow: true } }
 }
 
 export default async function ProductoPage({ params }: Props) {
@@ -444,19 +440,14 @@ export default async function ProductoPage({ params }: Props) {
           '@type': 'PostalAddress',
           addressLocality: sellerCity,
           addressRegion: sellerState,
-          addressCountry: 'ES',
-        },
-      },
-    },
+          addressCountry: 'ES' } } },
     category: producto.subcategoria || '',
     itemCondition: 'https://schema.org/' + (producto.estado === 'Nuevo' ? 'NewCondition' : 'UsedCondition'),
     address: {
       '@type': 'PostalAddress',
       addressLocality: producto.ubicacion_ciudad || '',
       addressRegion: producto.ubicacion_estado || '',
-      addressCountry: 'ES',
-    },
-  }
+      addressCountry: 'ES' } }
 
   // Estrellas en resultados de Google: solo con reseñas reales de este
   // producto (Google exige reviewCount ≥ 1; sin reseñas no se envía nada).
@@ -466,8 +457,7 @@ export default async function ProductoPage({ params }: Props) {
       ratingValue: resumenResenas.avg,
       reviewCount: resumenResenas.count,
       bestRating: 5,
-      worstRating: 1,
-    }
+      worstRating: 1 }
   }
 
   // Encontrar ciudad SEO para la ubicación
@@ -496,8 +486,7 @@ export default async function ProductoPage({ params }: Props) {
       ...(producto.subcategoria ? [{ '@type': 'ListItem', position: 3, name: producto.subcategoria, item: SITIO + '/catalogo?subcategoria=' + encodeURIComponent(producto.subcategoria) }] : []),
       ...(ciudadSEO ? [{ '@type': 'ListItem', position: producto.subcategoria ? 4 : 3, name: ciudadSEO.nombre, item: SITIO + '/' + ciudadSEO.slug }] : producto.ubicacion_ciudad ? [{ '@type': 'ListItem', position: producto.subcategoria ? 4 : 3, name: producto.ubicacion_ciudad, item: SITIO + '/catalogo?ciudad=' + encodeURIComponent(producto.ubicacion_ciudad) }] : []),
       { '@type': 'ListItem', position: producto.subcategoria ? (ciudadSEO || producto.ubicacion_ciudad ? 5 : 4) : (ciudadSEO || producto.ubicacion_ciudad ? 4 : 3), name: producto.titulo, item: productUrlCanonical },
-    ],
-  }
+    ] }
   // Enriquecer Product con brand/model si disponibles
   if (producto.marca) jsonLd.brand = { '@type': 'Brand', name: producto.marca }
   if (producto.modelo) jsonLd.model = producto.modelo
@@ -512,8 +501,7 @@ export default async function ProductoPage({ params }: Props) {
 
   const graphJsonLd = {
     '@context': 'https://schema.org',
-    '@graph': [breadcrumbJsonLd, jsonLd],
-  }
+    '@graph': [breadcrumbJsonLd, jsonLd] }
 
   return (
     <>

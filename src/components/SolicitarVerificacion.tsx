@@ -72,8 +72,7 @@ export default function SolicitarVerificacion() {
         ...sol,
         pago_movil_telefono: sol.telefono ?? sol.pago_movil_telefono,
         pago_movil_cedula: sol.dni ?? sol.pago_movil_cedula,
-        pago_movil_banco: sol.banco ?? sol.pago_movil_banco,
-      })
+        pago_movil_banco: sol.banco ?? sol.pago_movil_banco })
       return
     }
 
@@ -93,8 +92,7 @@ export default function SolicitarVerificacion() {
         ...solRech,
         pago_movil_telefono: solRech.telefono ?? solRech.pago_movil_telefono,
         pago_movil_cedula: solRech.dni ?? solRech.pago_movil_cedula,
-        pago_movil_banco: solRech.banco ?? solRech.pago_movil_banco,
-      })
+        pago_movil_banco: solRech.banco ?? solRech.pago_movil_banco })
     }
   }, [user])
 
@@ -174,8 +172,7 @@ export default function SolicitarVerificacion() {
         dni_foto_dorso_url: upD.data?.path || '',
         cedula_foto_frente_url: upF.data?.path || '',
         cedula_foto_dorso_url: upD.data?.path || '',
-        mensaje: mensaje.trim() || null,
-      })
+        mensaje: mensaje.trim() || null })
 
       if (dbError) throw dbError
 

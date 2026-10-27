@@ -70,8 +70,7 @@ export async function POST(request: NextRequest) {
     const estadoNuevo = accion === 'confirmar' ? 'activa' : 'rechazada'
     const cambios: Record<string, unknown> = {
       estado: estadoNuevo,
-      actualizado_en: ahora.toISOString(),
-    }
+      actualizado_en: ahora.toISOString() }
     // La ventana de 7 días arranca cuando la señal se confirma.
     if (accion === 'confirmar') {
       cambios.expira_en = new Date(ahora.getTime() + DIAS_VALIDEZ_RESERVA * 24 * 60 * 60 * 1000).toISOString()
@@ -92,16 +91,14 @@ export async function POST(request: NextRequest) {
         title: '✅ Reserva confirmada',
         body: `${titulo}: el vendedor ha recibido tu señal y el anuncio queda reservado para ti.`,
         tag: `reserva-${reservaId}`,
-        click_url: '/dashboard?tab=reservas',
-      }).catch(() => {})
+        click_url: '/dashboard?tab=reservas' }).catch(() => {})
       notificarAdminTelegram(`✅ Reserva confirmada\\n${titulo}\\nReserva: ${reservaId}`).catch(() => {})
     } else {
       notifyUser(sb, reserva.comprador_id, {
         title: 'Solicitud de reserva rechazada',
         body: `${titulo}: el vendedor no ha confirmado la reserva${motivo ? ` (${motivo})` : ''}.`,
         tag: `reserva-${reservaId}`,
-        click_url: '/dashboard?tab=reservas',
-      }).catch(() => {})
+        click_url: '/dashboard?tab=reservas' }).catch(() => {})
     }
 
     return NextResponse.json({ ok: true, estado: estadoNuevo })

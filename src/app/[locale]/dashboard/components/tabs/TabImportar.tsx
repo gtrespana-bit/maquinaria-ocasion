@@ -19,8 +19,7 @@ import {
   Loader2,
   Lock,
   UploadCloud,
-  XCircle,
-} from 'lucide-react'
+  XCircle } from 'lucide-react'
 import { plantillaCsv } from '@/lib/importar-csv'
 
 type Fila = {
@@ -98,8 +97,7 @@ export default function TabImportar() {
       const res = await fetch('/api/productos/importar', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ csv: texto }),
-      })
+        body: JSON.stringify({ csv: texto }) })
       const data = await res.json().catch(() => ({}))
       if (!res.ok || !data.ok) {
         setError(data.error || 'No se pudo analizar el archivo.')
@@ -120,8 +118,7 @@ export default function TabImportar() {
       const res = await fetch('/api/productos/importar', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ csv: texto, confirmar: true }),
-      })
+        body: JSON.stringify({ csv: texto, confirmar: true }) })
       const data = await res.json().catch(() => ({}))
       if (!res.ok || !data.ok) {
         setError(data.error || 'No se pudo importar.')
@@ -183,7 +180,7 @@ export default function TabImportar() {
 
   if (cargandoPlan) {
     return (
-      <div className="flex items-center gap-2 rounded-2xl border border-slate-200 bg-white p-6 text-sm text-slate-500">
+      <div className="flex items-center gap-2 border border-line bg-[#FBFAF5] p-6 text-[12.5px] text-ink/55">
         <Loader2 size={18} className="animate-spin" /> Cargando…
       </div>
     )
@@ -192,30 +189,30 @@ export default function TabImportar() {
   if (!permitido) {
     return (
       <div className="space-y-4">
-        <div className="rounded-2xl border border-slate-200 bg-white p-6">
-          <h2 className="flex items-center gap-2 text-xl font-black text-slate-900">
-            <FileSpreadsheet size={20} className="text-brand-primary" /> Importar stock desde CSV
+        <div className="border border-line bg-[#FBFAF5] p-6">
+          <h2 className="flex items-center gap-2 t-display t-display-sm text-ink">
+            <FileSpreadsheet size={20} className="text-ink" /> Importar stock desde CSV
           </h2>
-          <p className="mt-2 max-w-2xl text-sm text-slate-600">
+          <p className="mt-2 max-w-2xl text-[12.5px] text-ink/55">
             Sube tu Excel o el export de tu DMS y publica todo el stock de una vez. Revisa una
             vista previa antes de crear nada: verás qué filas están bien, cuáles fallan y por qué.
           </p>
 
-          <div className="mt-5 rounded-2xl border border-dashed border-slate-300 bg-slate-50/60 p-5">
+          <div className="mt-5 rounded-2xl border border-dashed border-line-strong bg-paper-2/60 p-5">
             <div className="flex items-start gap-3">
-              <span className="mt-0.5 rounded-lg bg-white p-1.5 text-slate-400 shadow-sm">
+              <span className="mt-0.5 rounded-lg bg-[#FBFAF5] p-1.5 text-ink/40">
                 <Lock size={16} />
               </span>
               <div>
-                <p className="font-bold text-slate-800">Disponible en el plan Profesional</p>
-                <p className="mt-1 text-sm text-slate-600">
+                <p className="font-semibold text-ink">Disponible en el plan Profesional</p>
+                <p className="mt-1 text-[12.5px] text-ink/55">
                   Si tienes decenas de máquinas, subir el stock a mano es un formulario tras otro.
                   La importación desde CSV del plan Profesional los publica de una vez (hasta 100
                   filas por archivo), con vista previa y errores por línea.
                 </p>
                 <LocalLink
                   href="/para-profesionales"
-                  className="mt-3 inline-flex items-center gap-1.5 rounded-xl bg-brand-primary px-4 py-2 text-sm font-bold text-white hover:bg-brand-dark"
+                  className="mt-3 inline-flex items-center gap-1.5 rounded-xl bg-ink px-4 py-2 text-sm font-semibold text-paper hover:bg-brand-dark"
                 >
                   Ver Profesional, 49 €/mes <ArrowRight size={14} />
                 </LocalLink>
@@ -225,16 +222,16 @@ export default function TabImportar() {
         </div>
 
         {/* Aun sin plan, la plantilla es pública: así se ve el formato exacto. */}
-        <div className="rounded-2xl border border-slate-200 bg-white p-5">
-          <p className="font-bold text-slate-800">El formato que acepta</p>
-          <p className="mt-1 text-sm text-slate-600">
+        <div className="border border-line bg-[#FBFAF5] p-5">
+          <p className="font-semibold text-ink">El formato que acepta</p>
+          <p className="mt-1 text-[12.5px] text-ink/55">
             Doce columnas, separadas por punto y coma o coma. Solo son obligatorias el título, el
             precio, el tipo y la comunidad.
           </p>
           <button
             type="button"
             onClick={descargarPlantilla}
-            className="mt-3 inline-flex items-center gap-1.5 rounded-xl border border-slate-200 px-3.5 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+            className="mt-3 inline-flex items-center gap-1.5 rounded-xl border border-line px-3.5 py-2 text-sm font-semibold text-ink hover:bg-paper-2"
           >
             <Download size={14} /> Descargar plantilla
           </button>
@@ -247,10 +244,10 @@ export default function TabImportar() {
     <div className="space-y-5">
       <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h2 className="flex items-center gap-2 text-xl font-black text-slate-900">
-            <FileSpreadsheet size={20} className="text-brand-primary" /> Importar stock
+          <h2 className="flex items-center gap-2 t-display t-display-sm text-ink">
+            <FileSpreadsheet size={20} className="text-ink" /> Importar stock
           </h2>
-          <p className="mt-1 text-sm text-slate-500">
+          <p className="mt-1 text-[12.5px] text-ink/55">
             Publica todo tu stock de una vez. Primero verás una vista previa; nada se crea hasta que
             confirmes.
           </p>
@@ -258,23 +255,23 @@ export default function TabImportar() {
         <button
           type="button"
           onClick={descargarPlantilla}
-          className="inline-flex items-center gap-1.5 self-start rounded-xl border border-slate-200 px-3.5 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+          className="inline-flex items-center gap-1.5 self-start rounded-xl border border-line px-3.5 py-2 text-sm font-semibold text-ink hover:bg-paper-2"
         >
           <Download size={14} /> Plantilla
         </button>
       </div>
 
       {/* Entrada */}
-      <section className="rounded-2xl border border-slate-200 bg-white p-5">
+      <section className="border border-line bg-[#FBFAF5] p-5">
         <div className="flex flex-wrap items-center gap-3">
           <button
             type="button"
             onClick={() => inputRef.current?.click()}
-            className="inline-flex items-center gap-1.5 rounded-xl bg-slate-100 px-3.5 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-200"
+            className="inline-flex items-center gap-1.5 rounded-xl bg-paper-2 px-3.5 py-2 text-sm font-semibold text-ink hover:bg-line"
           >
             <UploadCloud size={15} /> Elegir archivo .csv
           </button>
-          <span className="text-xs text-slate-500">
+          <span className="text-[11.5px] text-ink/45">
             {nombreArchivo || 'o pega el contenido abajo'}
           </span>
           <input
@@ -301,7 +298,7 @@ export default function TabImportar() {
           rows={8}
           spellCheck={false}
           placeholder={'Titulo;Precio;Tipo;Comunidad;Ciudad;Marca;Modelo;Estado;Año;Horas de uso;Fotos;Descripción\nKubota M7 tractor agrícola;48500;Tractores;Comunitat Valenciana;Valencia;Kubota;M7;Usado;2018;4200;https://…jpg;Tractor con 4.200 horas, enganche 3 puntos y PTO.'}
-          className="mt-3 w-full rounded-xl border border-slate-200 p-3 font-mono text-xs text-slate-800 outline-none focus:border-brand-primary"
+          className="mt-3 w-full rounded-xl border border-line p-3 font-mono text-xs text-ink outline-none focus:border-brand-primary"
         />
 
         <div className="mt-3 flex flex-wrap items-center gap-3">
@@ -309,12 +306,12 @@ export default function TabImportar() {
             type="button"
             onClick={analizar}
             disabled={!texto.trim() || analizando}
-            className="inline-flex items-center gap-1.5 rounded-xl bg-brand-primary px-4 py-2 text-sm font-bold text-white hover:bg-brand-dark disabled:opacity-50"
+            className="inline-flex items-center gap-1.5 rounded-xl bg-ink px-4 py-2 text-sm font-semibold text-paper hover:bg-brand-dark disabled:opacity-50"
           >
             {analizando ? <Loader2 size={14} className="animate-spin" /> : <CheckCircle2 size={14} />}
             Analizar sin publicar
           </button>
-          <span className="text-xs text-slate-500">
+          <span className="text-[11.5px] text-ink/45">
             No se actualizan anuncios existentes: cada fila es un anuncio nuevo.
           </span>
         </div>
@@ -329,7 +326,7 @@ export default function TabImportar() {
       {/* Resultado */}
       {resultado && (
         <section className="rounded-2xl border border-emerald-200 bg-emerald-50 p-5">
-          <p className="flex items-center gap-2 font-bold text-emerald-900">
+          <p className="flex items-center gap-2 font-semibold text-emerald-900">
             <CheckCircle2 size={18} /> {resultado.importados} anuncio
             {resultado.importados === 1 ? '' : 's'} publicado
             {resultado.importados === 1 ? '' : 's'}
@@ -361,7 +358,7 @@ export default function TabImportar() {
           <div className="mt-3 flex flex-wrap gap-2">
             <LocalLink
               href="/dashboard?tab=productos"
-              className="inline-flex items-center gap-1.5 rounded-xl bg-brand-primary px-4 py-2 text-sm font-bold text-white hover:bg-brand-dark"
+              className="inline-flex items-center gap-1.5 rounded-xl bg-ink px-4 py-2 text-sm font-semibold text-paper hover:bg-brand-dark"
             >
               Ver mis anuncios <ArrowRight size={14} />
             </LocalLink>
@@ -380,27 +377,27 @@ export default function TabImportar() {
       {previa && (
         <section className="space-y-4">
           <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
-            <div className="rounded-2xl border border-slate-200 bg-white p-4">
-              <p className="text-xs font-semibold text-slate-500">Filas leídas</p>
-              <p className="text-2xl font-black text-slate-900">{previa.total}</p>
+            <div className="border border-line bg-[#FBFAF5] p-4">
+              <p className="text-xs font-semibold text-ink/60">Filas leídas</p>
+              <p className="t-display t-num text-[1.75rem] leading-none text-ink">{previa.total}</p>
             </div>
             <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-4">
               <p className="text-xs font-semibold text-emerald-700">Listas para publicar</p>
-              <p className="text-2xl font-black text-emerald-800">{previa.importables}</p>
+              <p className="t-display t-num text-[1.75rem] leading-none text-emerald-800">{previa.importables}</p>
             </div>
             <div className="rounded-2xl border border-red-200 bg-red-50 p-4">
               <p className="text-xs font-semibold text-red-700">Con errores</p>
-              <p className="text-2xl font-black text-red-800">{previa.invalidas}</p>
+              <p className="t-display t-num text-[1.75rem] leading-none text-red-800">{previa.invalidas}</p>
             </div>
             <div className="rounded-2xl border border-amber-200 bg-amber-50 p-4">
               <p className="text-xs font-semibold text-amber-700">Fuera de cupo</p>
-              <p className="text-2xl font-black text-amber-800">{previa.sinCupo}</p>
+              <p className="t-display t-num text-[1.75rem] leading-none text-amber-800">{previa.sinCupo}</p>
             </div>
           </div>
 
-          <div className="rounded-2xl border border-slate-200 bg-white">
-            <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 p-4">
-              <p className="font-bold text-slate-800">
+          <div className="border border-line bg-[#FBFAF5]">
+            <div className="flex flex-wrap items-center justify-between gap-2 border-b border-line p-4">
+              <p className="font-semibold text-ink">
                 {previa.importables > 0
                   ? `Se van a publicar ${previa.importables} anuncios`
                   : 'No hay filas válidas que publicar'}
@@ -409,7 +406,7 @@ export default function TabImportar() {
                 type="button"
                 onClick={importar}
                 disabled={previa.importables === 0 || importando}
-                className="inline-flex items-center gap-1.5 rounded-xl bg-brand-primary px-4 py-2 text-sm font-bold text-white hover:bg-brand-dark disabled:opacity-50"
+                className="inline-flex items-center gap-1.5 rounded-xl bg-ink px-4 py-2 text-sm font-semibold text-paper hover:bg-brand-dark disabled:opacity-50"
               >
                 {importando ? <Loader2 size={14} className="animate-spin" /> : <UploadCloud size={14} />}
                 {importando ? 'Importando…' : `Importar ${previa.importables}`}
@@ -418,7 +415,7 @@ export default function TabImportar() {
 
             <div className="max-h-[420px] overflow-auto">
               <table className="w-full text-left text-xs">
-                <thead className="sticky top-0 bg-slate-50 text-slate-500">
+                <thead className="sticky top-0 bg-paper-2 text-ink/60">
                   <tr>
                     <th className="px-3 py-2 font-semibold">Línea</th>
                     <th className="px-3 py-2 font-semibold">Título</th>
@@ -434,10 +431,10 @@ export default function TabImportar() {
                     const fueraDeCupo =
                       ok && previa.filas.filter((x) => x.errores.length === 0).indexOf(f) >= previa.importables
                     return (
-                      <tr key={f.linea} className="border-t border-slate-100 align-top">
-                        <td className="px-3 py-2 text-slate-400">{f.linea}</td>
+                      <tr key={f.linea} className="border-t border-line align-top">
+                        <td className="px-3 py-2 text-ink/40">{f.linea}</td>
                         <td className="px-3 py-2">
-                          <p className="font-semibold text-slate-800">{f.titulo || '—'}</p>
+                          <p className="font-semibold text-ink">{f.titulo || '—'}</p>
                           {f.errores.map((e) => (
                             <p key={e} className="mt-0.5 text-red-700">
                               ✕ {e}
@@ -449,13 +446,13 @@ export default function TabImportar() {
                             </p>
                           ))}
                         </td>
-                        <td className="px-3 py-2 text-slate-700">
+                        <td className="px-3 py-2 text-ink">
                           {f.precio != null ? `${f.precio.toLocaleString('es-ES')} €` : '—'}
                         </td>
-                        <td className="px-3 py-2 text-slate-600">
+                        <td className="px-3 py-2 text-ink/60">
                           {[f.ubicacion_ciudad, f.ubicacion_estado].filter(Boolean).join(', ') || '—'}
                         </td>
-                        <td className="px-3 py-2 text-slate-600">{f.imagenes.length}</td>
+                        <td className="px-3 py-2 text-ink/60">{f.imagenes.length}</td>
                         <td className="px-3 py-2">
                           {!ok ? (
                             <span className="font-semibold text-red-700">Corregir</span>
@@ -488,12 +485,12 @@ export default function TabImportar() {
           )}
 
           {previa.recortadas > 0 && (
-            <p className="text-xs text-slate-500">
+            <p className="text-[11.5px] text-ink/45">
               Se han ignorado {previa.recortadas} filas: el máximo por archivo es de 100.
             </p>
           )}
           {previa.desconocidas?.length > 0 && (
-            <p className="text-xs text-slate-500">
+            <p className="text-[11.5px] text-ink/45">
               Columnas ignoradas: {previa.desconocidas.join(', ')}.
             </p>
           )}

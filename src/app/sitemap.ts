@@ -243,15 +243,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticUrls: MetadataRoute.Sitemap = staticPaths.map((page) => ({
     url: page.path ? `${BASE_URL}${page.path}` : `${BASE_URL}/`,
     changeFrequency: page.changeFrequency,
-    priority: page.priority,
-  }))
+    priority: page.priority }))
 
   // Familias (3) + subcategorías (12): las landings nacionales indexables.
   const categoryUrls: MetadataRoute.Sitemap = LANDINGS_CATEGORIA_LIST.map((category) => ({
     url: `${BASE_URL}/categoria/${category.slug}`,
     changeFrequency: 'daily',
-    priority: category.tipo === 'familia' ? 0.9 : 0.8,
-  }))
+    priority: category.tipo === 'familia' ? 0.9 : 0.8 }))
 
   const indexableLandings = await getIndexableLandings(supabase)
   const cityUrls: MetadataRoute.Sitemap = CIUDADES_SEO
@@ -259,8 +257,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     .map((city) => ({
       url: `${BASE_URL}/${city.slug}`,
       changeFrequency: 'weekly',
-      priority: 0.7,
-    }))
+      priority: 0.7 }))
 
   const cityCategoryUrls: MetadataRoute.Sitemap = []
   for (const city of CIUDADES_SEO) {
@@ -269,8 +266,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       cityCategoryUrls.push({
         url: `${BASE_URL}/${city.slug}/${category}`,
         changeFrequency: 'weekly',
-        priority: 0.6,
-      })
+        priority: 0.6 })
     }
   }
 
@@ -278,8 +274,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     url: `${BASE_URL}/blog/${post.slug}`,
     ...(post.lastModified ? { lastModified: post.lastModified } : {}),
     changeFrequency: 'monthly',
-    priority: 0.6,
-  }))
+    priority: 0.6 }))
 
   let dynamicUrls: MetadataRoute.Sitemap = []
   if (supabase) {
@@ -297,8 +292,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
           url: `${BASE_URL}/producto/${product.slug || product.id}`,
           ...(validLastModified ? { lastModified: validLastModified } : {}),
           changeFrequency: 'weekly',
-          priority: 0.8,
-        }
+          priority: 0.8 }
       })
 
       const vendorIds = [
@@ -307,8 +301,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       const vendorUrls: MetadataRoute.Sitemap = vendorIds.map((id) => ({
         url: `${BASE_URL}/vendedor/${id}`,
         changeFrequency: 'weekly',
-        priority: 0.5,
-      }))
+        priority: 0.5 }))
 
       const tiendaUrls: MetadataRoute.Sitemap = []
       const sellerIds = [...new Set((productos as any[]).map((product) => product.user_id).filter(Boolean))]
@@ -327,8 +320,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             tiendaUrls.push({
               url: `${BASE_URL}/tienda/${tienda.slug}`,
               changeFrequency: 'daily',
-              priority: 0.7,
-            })
+              priority: 0.7 })
           }
         }
       }
@@ -349,8 +341,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
           url: `${BASE_URL}/foro/hilo/${hilo.id}`,
           ...(validLastModified ? { lastModified: validLastModified } : {}),
           changeFrequency: 'daily' as const,
-          priority: 0.6,
-        }
+          priority: 0.6 }
       })
 
       dynamicUrls = [...productUrls, ...vendorUrls, ...tiendaUrls, ...foroUrls]
@@ -365,15 +356,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     .map((f) => ({
       url: `${BASE_URL}/marca/${slugFabricante(f)}`,
       changeFrequency: 'weekly',
-      priority: 0.7,
-    }))
+      priority: 0.7 }))
   const modeloUrls: MetadataRoute.Sitemap = MARCAS_MODELOS
     .filter((model) => stockMarcasModelos.modelos.has(slugModelo(model)))
     .map((model) => ({
       url: `${BASE_URL}/modelo/${slugModelo(model)}`,
       changeFrequency: 'daily',
-      priority: 0.8,
-    }))
+      priority: 0.8 }))
 
   return [
     ...staticUrls,

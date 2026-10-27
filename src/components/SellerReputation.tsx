@@ -21,8 +21,7 @@ const NIVELES: Record<number, { nombre: string; desc: string; bg: string; text: 
   2: { nombre: 'Oro', desc: 'Vendedor Confiable', bg: 'bg-yellow-50', text: 'text-yellow-800', border: 'border-yellow-300' },
   3: { nombre: 'Platino', desc: 'Vendedor Premium', bg: 'bg-sky-50', text: 'text-sky-800', border: 'border-sky-200' },
   4: { nombre: 'Diamante', desc: 'Vendedor Élite', bg: 'bg-purple-50', text: 'text-purple-800', border: 'border-purple-200' },
-  5: { nombre: 'Maestro', desc: 'Vendedor Legendario', bg: 'bg-gradient-to-r from-yellow-50 to-purple-50', text: 'text-purple-900', border: 'border-purple-300' },
-}
+  5: { nombre: 'Maestro', desc: 'Vendedor Legendario', bg: 'bg-gradient-to-r from-yellow-50 to-purple-50', text: 'text-purple-900', border: 'border-purple-300' } }
 
 const BADGE_CONFIG: Record<string, { label: string; color: string; tooltip: string }> = {
   vendedor_activo: { label: '🟢 Vendedor Activo', color: 'bg-green-100 text-green-800 border-green-200', tooltip: 'Publicó en los últimos 7 días' },
@@ -33,8 +32,7 @@ const BADGE_CONFIG: Record<string, { label: string; color: string; tooltip: stri
   '50_publicaciones': { label: '📋 50+ publicaciones', color: 'bg-gray-100 text-gray-800 border-gray-200', tooltip: 'Más de 50 publicaciones' },
   '100_publicaciones': { label: '⭐ 100+ publicaciones', color: 'bg-yellow-100 text-yellow-800 border-yellow-200', tooltip: 'Más de 100 publicaciones en total' },
   buena_reputacion: { label: '⭐ Buena reputación', color: 'bg-amber-100 text-amber-800 border-amber-200', tooltip: '5+ reseñas con promedio 4.0+' },
-  top_vendedor: { label: '👑 Top Vendedor', color: 'bg-yellow-100 text-amber-900 border-amber-300', tooltip: '10+ reseñas con promedio 4.5+' },
-}
+  top_vendedor: { label: '👑 Top Vendedor', color: 'bg-yellow-100 text-amber-900 border-amber-300', tooltip: '10+ reseñas con promedio 4.5+' } }
 
 function getLastActivityText(ultimaActividad: string | null): string {
   if (!ultimaActividad) return ''
@@ -49,8 +47,7 @@ function getLastActivityText(ultimaActividad: string | null): string {
 export default function SellerReputation({
   nivel, numResenas, promedioResenas, numPubsActivas,
   numPubsVendidas, antiguedadDias, ultimaActividad,
-  verificado, badges, size = 'md',
-}: SellerReputationProps) {
+  verificado, badges, size = 'md' }: SellerReputationProps) {
   const isCompact = size === 'sm'
   const ICONOS: Record<number, string> = { 0: '🥉', 1: '🥈', 2: '🥇', 3: '💎', 4: '💠', 5: '👑' }
   const cfg = NIVELES[Math.min(nivel, 5)]

@@ -12,13 +12,10 @@
  * Ahora las fechas se guardan en `perfiles` y el interruptor solo decide si se
  * concede una prueba NUEVA.
  */
-import {
-  DIAS_GRACIA_TRIAL,
+import { DIAS_GRACIA_TRIAL,
   DIAS_MES_GRATIS_DEFAULT,
   PLAN_PRUEBA,
-  periodoTrial,
-  type PlanPago,
-} from '@/lib/planes-anuncios'
+  periodoTrial, type PlanPago } from '@/lib/planes-anuncios'
 
 export { DIAS_GRACIA_TRIAL }
 
@@ -112,8 +109,7 @@ export function estadoTrial(opts: {
     enPrueba,
     enGracia,
     graciaHasta,
-    diasGraciaRestantes: enGracia && graciaHasta ? diasHasta(ahora, graciaHasta) : 0,
-  }
+    diasGraciaRestantes: enGracia && graciaHasta ? diasHasta(ahora, graciaHasta) : 0 }
 }
 
 /**
@@ -150,8 +146,7 @@ export function calcularTrial(opts?: {
   return {
     inicio: ahora,
     hasta: new Date(ahora.getTime() + dias * DIA_MS),
-    plan: opts?.plan ?? PLAN_PRUEBA,
-  }
+    plan: opts?.plan ?? PLAN_PRUEBA }
 }
 
 export type AvisoPlanTipo =
@@ -264,55 +259,46 @@ export function mensajeAvisoPlan(
       return {
         titulo: `Te quedan ${dias ?? 10} días del pack ${plan}`,
         cuerpo: 'Activa tu pack para no perder el cupo ni el escaparate. Sin permanencia.',
-        url: '/dashboard?tab=plan',
-      }
+        url: '/dashboard?tab=plan' }
     case 'trial_3d':
       return {
         titulo: `Tu pack ${plan} termina en ${dias ?? 3} días`,
         cuerpo: 'Activa el plan Profesional antes de que termine. Tus anuncios no se borran.',
-        url: '/dashboard?tab=plan',
-      }
+        url: '/dashboard?tab=plan' }
     case 'trial_ultimo_dia':
       return {
         titulo: `Hoy es el último día de tu prueba ${plan}`,
         cuerpo: `Después tendrás ${DIAS_GRACIA_TRIAL} días de gracia. Activa tu pack para mantener tu stock publicado.`,
-        url: '/dashboard?tab=plan',
-      }
+        url: '/dashboard?tab=plan' }
     case 'trial_gracia':
       return {
         titulo: 'Tu prueba ha terminado: tienes 7 días de gracia',
         cuerpo: 'Activa tu pack para conservar todos tus anuncios activos. No se ha borrado nada.',
-        url: '/dashboard?tab=plan',
-      }
+        url: '/dashboard?tab=plan' }
     case 'gracia_ultimo_dia':
       return {
         titulo: 'Mañana se pausarán los anuncios que sobran',
         cuerpo: 'No se borran: podrás reactivarlos al ampliar el pack o pausar otros.',
-        url: '/dashboard?tab=plan',
-      }
+        url: '/dashboard?tab=plan' }
     case 'pago_fallido_1d':
       return {
         titulo: 'No hemos podido cobrar tu pack',
         cuerpo: 'Actualiza la tarjeta para mantener tu cupo. Tus anuncios siguen activos.',
-        url: '/dashboard?tab=plan',
-      }
+        url: '/dashboard?tab=plan' }
     case 'pago_fallido_3d':
       return {
         titulo: 'Sigue pendiente el cobro de tu pack',
         cuerpo: 'Actualiza el método de pago. Mantenemos tu plan mientras lo resuelves.',
-        url: '/dashboard?tab=plan',
-      }
+        url: '/dashboard?tab=plan' }
     case 'pago_fallido_7d':
       return {
         titulo: 'Último aviso: no hemos podido cobrar tu pack',
         cuerpo: 'Si no se resuelve el pago, tu cuenta volverá al plan gratuito y se pausarán los anuncios que sobran.',
-        url: '/dashboard?tab=plan',
-      }
+        url: '/dashboard?tab=plan' }
     case 'winback':
       return {
         titulo: 'Tu pack terminó hace unos días',
         cuerpo: 'Tus anuncios siguen ahí. Vuelve desde 19 €/mes y recupera el cupo cuando quieras.',
-        url: '/para-profesionales',
-      }
+        url: '/para-profesionales' }
   }
 }

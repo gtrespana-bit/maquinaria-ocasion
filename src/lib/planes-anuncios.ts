@@ -31,8 +31,7 @@ export const PLANES_PRO = [
       'Escaparate /tienda/tu-taller',
       'Estadísticas por anuncio y diagnóstico',
       'Soporte prioritario por email',
-    ],
-  },
+    ] },
   {
     id: 'unlimited' as const,
     nombre: 'Profesional',
@@ -54,8 +53,7 @@ export const PLANES_PRO = [
       'Estadísticas completas: mercado, 90 días y exportación CSV',
       'Escaparate /tienda/tu-taller',
       'Soporte prioritario y alta asistida',
-    ],
-  },
+    ] },
 ] as const
 
 export type PlanPago = (typeof PLANES_PRO)[number]['id']
@@ -88,8 +86,7 @@ export const PLAN_GRATIS = {
     '10 fotos por anuncio',
     'Chat con compradores',
     'Estadísticas básicas',
-  ],
-} as const
+  ] } as const
 
 /** Etiqueta humana y consistente en toda la app. */
 export function etiquetaPlan(plan: string | null | undefined): string {
@@ -219,8 +216,7 @@ export function periodoTrial(opts: {
         guardadoInicio && !Number.isNaN(guardadoInicio.getTime())
           ? guardadoInicio
           : new Date(guardadoHasta.getTime() - dias * 86400000),
-      hasta: guardadoHasta,
-    }
+      hasta: guardadoHasta }
   }
 
   if (opts.mesGratisActivo === false) return { inicio: null, hasta: null }
@@ -359,8 +355,7 @@ export function resumenCupo(opts: {
     mesGratisActivo: opts.mesGratisActivo,
     diasGratis: opts.diasGratis,
     ahora,
-    planPagoVigente: pagoVigente,
-  })
+    planPagoVigente: pagoVigente })
   const gracia = trialGraciaVigente({
     tipo,
     creadoEn: opts.creadoEn,
@@ -369,8 +364,7 @@ export function resumenCupo(opts: {
     mesGratisActivo: opts.mesGratisActivo,
     diasGratis: opts.diasGratis,
     ahora,
-    planPagoVigente: pagoVigente,
-  })
+    planPagoVigente: pagoVigente })
   const periodo = periodoTrial({ ...opts, tipo })
 
   const periodoMes = mesClave(ahora)
@@ -400,8 +394,7 @@ export function resumenCupo(opts: {
     destacadosMes: destMax,
     destacadosUsados: destUsados,
     destacadosRestantes: Math.max(0, destMax - destUsados),
-    mesGratisActivo: opts.mesGratisActivo,
-  }
+    mesGratisActivo: opts.mesGratisActivo }
 }
 
 export function mensajeCupoLleno(resumen: ReturnType<typeof resumenCupo>): string {
@@ -421,6 +414,5 @@ export function serializarCupo(resumen: ReturnType<typeof resumenCupo>) {
   return {
     ...resumen,
     max: resumen.max,
-    restantes: resumen.restantes,
-  }
+    restantes: resumen.restantes }
 }

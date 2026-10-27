@@ -4,9 +4,7 @@ import dynamic from 'next/dynamic'
 import { useEffect, useState } from 'react'
 import {
   alCambiarConsentimiento,
-  leerConsentimiento,
-  type Consentimiento,
-} from '@/lib/cookie-consent'
+  leerConsentimiento, type Consentimiento} from '@/lib/cookie-consent'
 
 const Analytics = dynamic(
   () => import('@vercel/analytics/react').then((m) => m.Analytics),

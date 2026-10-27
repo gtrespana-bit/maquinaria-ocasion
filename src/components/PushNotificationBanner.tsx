@@ -82,8 +82,7 @@ function usePushNotification() {
       // 3. Subscribe to push
       const subscription = await reg.pushManager.subscribe({
         userVisibleOnly: true,
-        applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC) as BufferSource,
-      })
+        applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC) as BufferSource })
 // debug
 
       // 4. Check session. Importar Supabase aquí evita cargar el cliente de
@@ -101,10 +100,8 @@ function usePushNotification() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${data.session.access_token}`,
-        },
-        body: JSON.stringify({ subscription }),
-      })
+          Authorization: `Bearer ${data.session.access_token}` },
+        body: JSON.stringify({ subscription }) })
 // debug
 
       if (!res.ok) {

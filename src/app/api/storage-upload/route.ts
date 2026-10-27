@@ -74,8 +74,7 @@ export async function POST(req: NextRequest) {
     const key = `${base}.${ext}`
 
     const supabase = createClient(url, serviceKey, {
-      auth: { persistSession: false, autoRefreshToken: false },
-    })
+      auth: { persistSession: false, autoRefreshToken: false } })
 
     const arrayBuffer = await file.arrayBuffer()
     const buffer = Buffer.from(arrayBuffer)
@@ -87,8 +86,7 @@ export async function POST(req: NextRequest) {
       .upload(key, buffer, {
         contentType,
         upsert: true,
-        cacheControl: '31536000',
-      })
+        cacheControl: '31536000' })
 
     if (uploadErr) {
       console.error('Supabase storage upload error:', uploadErr)

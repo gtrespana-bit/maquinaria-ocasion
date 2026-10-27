@@ -16,8 +16,7 @@ export const LIMITES_TIENDA = {
   horario: 200,
   direccion: 200,
   slugMin: 3,
-  slugMax: 60,
-} as const
+  slugMax: 60 } as const
 
 export function puedeTenerTienda(tipoVendedor: string | null | undefined): boolean {
   return (TIPOS_CON_TIENDA as readonly string[]).includes(tipoVendedor || '')
@@ -34,7 +33,7 @@ export function slugify(texto: string): string {
     .replace(/[\u0300-\u036f]/g, '')
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, '-')
-    .replace(/-{2,}/g, '-')
+    .replace(/-{2 }/g, '-')
     .replace(/^-+|-+$/g, '')
 }
 

@@ -11,7 +11,7 @@
 
 import { useCallback, useEffect, useState } from 'react'
 import { CheckCircle2, Loader2, RefreshCw, X } from 'lucide-react'
-import { ETIQUETAS_ESTADO_RESERVA, normalizarEstadoReserva, type EstadoReserva } from '@/lib/reservas'
+import { ETIQUETAS_ESTADO_RESERVA, normalizarEstadoReserva, type EstadoReserva} from '@/lib/reservas'
 import { apiJson } from './components/admin-utils'
 
 interface Reserva {
@@ -97,8 +97,7 @@ export default function AdminReservas({ notify }: { notify: (msg: string) => voi
       await apiJson('/api/admin/reservas', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ reservaId: reserva.id, accion: id, motivo }),
-      })
+        body: JSON.stringify({ reservaId: reserva.id, accion: id, motivo }) })
       notify('Reserva actualizada')
       await cargar()
     } catch (e: any) {
@@ -128,12 +127,12 @@ export default function AdminReservas({ notify }: { notify: (msg: string) => voi
           {[
             { label: 'Solicitadas', valor: stats.solicitadas, tono: 'text-amber-700' },
             { label: 'Activas', valor: stats.activas, tono: 'text-green-700' },
-            { label: 'Completadas', valor: stats.completadas, tono: 'text-gray-700' },
-            { label: 'Total', valor: stats.total, tono: 'text-brand-primary' },
+            { label: 'Completadas', valor: stats.completadas, tono: 'text-ink' },
+            { label: 'Total', valor: stats.total, tono: 'text-ink' },
           ].map(c => (
-            <div key={c.label} className="rounded-xl border border-gray-100 bg-white p-3">
-              <p className="text-xs text-gray-500">{c.label}</p>
-              <p className={`text-xl font-black ${c.tono}`}>{c.valor}</p>
+            <div key={c.label} className="rounded-xl border border-line bg-[#FBFAF5] p-3">
+              <p className="text-[11.5px] text-ink/45">{c.label}</p>
+              <p className={`text-xl font-semibold ${c.tono}`}>{c.valor}</p>
             </div>
           ))}
         </div>
@@ -146,7 +145,7 @@ export default function AdminReservas({ notify }: { notify: (msg: string) => voi
             type="button"
             onClick={() => setFiltro(f.id)}
             className={`rounded-lg border px-3 py-1.5 text-xs font-semibold transition ${
-              filtro === f.id ? 'border-brand-primary bg-brand-primary text-white' : 'border-gray-200 bg-white text-gray-600 hover:bg-gray-50'
+              filtro === f.id ? 'border-brand-primary bg-ink text-paper' : 'border-line bg-[#FBFAF5] text-ink/55 hover:bg-paper-2'
             }`}
           >
             {f.label}
@@ -155,7 +154,7 @@ export default function AdminReservas({ notify }: { notify: (msg: string) => voi
         <button
           type="button"
           onClick={cargar}
-          className="ml-auto inline-flex items-center gap-1.5 rounded-lg border border-gray-200 bg-white px-3 py-1.5 text-xs font-semibold text-gray-600 hover:bg-gray-50"
+          className="ml-auto inline-flex items-center gap-1.5 rounded-lg border border-line bg-[#FBFAF5] px-3 py-1.5 t-label text-ink/45/55 hover:bg-paper-2"
         >
           <RefreshCw size={13} /> Actualizar
         </button>
@@ -164,11 +163,11 @@ export default function AdminReservas({ notify }: { notify: (msg: string) => voi
       {error && <p className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">{error}</p>}
 
       {cargando ? (
-        <div className="rounded-xl border border-gray-100 bg-white p-8 text-center text-gray-500">
+        <div className="rounded-xl border border-line bg-[#FBFAF5] p-8 text-center text-ink/55">
           <Loader2 size={20} className="mx-auto animate-spin" />
         </div>
       ) : reservas.length === 0 ? (
-        <div className="rounded-xl border border-gray-100 bg-white p-8 text-center text-gray-500">
+        <div className="rounded-xl border border-line bg-[#FBFAF5] p-8 text-center text-ink/55">
           No hay reservas en este filtro.
         </div>
       ) : (
@@ -178,21 +177,21 @@ export default function AdminReservas({ notify }: { notify: (msg: string) => voi
             const etiqueta = ETIQUETAS_ESTADO_RESERVA[estado]
             const vivas = ['solicitada', 'activa'].includes(estado)
             return (
-              <div key={r.id} className="rounded-xl border border-gray-100 bg-white p-4">
+              <div key={r.id} className="rounded-xl border border-line bg-[#FBFAF5] p-4">
                 <div className="flex flex-wrap items-start justify-between gap-2">
                   <div className="min-w-0">
-                    <p className="font-semibold text-gray-900">{r.productos?.titulo || 'Anuncio'}</p>
-                    <p className="text-xs text-gray-500">
+                    <p className="font-semibold text-ink">{r.productos?.titulo || 'Anuncio'}</p>
+                    <p className="text-[11.5px] text-ink/45">
                       {r.productos?.precio_usd ? `${r.productos.precio_usd} € de precio · ` : ''}
                       Del {fecha(r.created_at)} · {estado === 'activa' ? `expira ${fecha(r.expira_en)}` : 'sin confirmar'}
                     </p>
                   </div>
-                  <span className={`rounded-full border px-2 py-1 text-[11px] font-bold ${etiqueta?.tono || 'border-gray-200 bg-gray-50'}`}>
+                  <span className={`rounded-full border px-2 py-1 text-[11px] font-bold ${etiqueta?.tono || 'border-line bg-paper-2'}`}>
                     {etiqueta?.label || r.estado}
                   </span>
                 </div>
 
-                <div className="mt-2 grid gap-1 text-xs text-gray-700 sm:grid-cols-2">
+                <div className="mt-2 grid gap-1 text-xs text-ink sm:grid-cols-2">
                   <p>
                     <strong>{r.importe} €</strong> de señal · {r.metodo_pago}
                     {r.comision ? ` · comisión ${r.comision} €` : ''}
@@ -208,7 +207,7 @@ export default function AdminReservas({ notify }: { notify: (msg: string) => voi
                   {r.revisado_en && <p>Revisada: {fecha(r.revisado_en)}</p>}
                 </div>
 
-                {r.mensaje && <p className="mt-1 text-xs italic text-gray-600">“{r.mensaje}”</p>}
+                {r.mensaje && <p className="mt-1 text-xs italic text-ink/55">“{r.mensaje}”</p>}
                 {r.motivo_cancelacion && <p className="mt-1 text-xs text-red-700">Motivo: {r.motivo_cancelacion}</p>}
 
                 <div className="mt-3 flex flex-wrap gap-2">
@@ -217,7 +216,7 @@ export default function AdminReservas({ notify }: { notify: (msg: string) => voi
                       href={`/producto/${r.productos.slug || r.productos.id}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 rounded-lg border border-gray-300 px-3 py-2 text-xs font-semibold text-gray-700 hover:bg-gray-50"
+                      className="inline-flex items-center gap-1.5 rounded-lg border border-line-strong px-3 py-2 t-label text-ink/45 hover:bg-paper-2"
                     >
                       Ver anuncio
                     </a>
@@ -229,7 +228,7 @@ export default function AdminReservas({ notify }: { notify: (msg: string) => voi
                         type="button"
                         onClick={() => accion(r, 'completar')}
                         disabled={trabajando === r.id}
-                        className="inline-flex items-center gap-1.5 rounded-lg bg-brand-primary px-3 py-2 text-xs font-bold text-white hover:bg-brand-dark disabled:opacity-50"
+                        className="inline-flex items-center gap-1.5 rounded-lg bg-ink px-3 py-2 text-xs font-bold text-paper hover:bg-brand-dark disabled:opacity-50"
                       >
                         {trabajando === r.id ? <Loader2 size={13} className="animate-spin" /> : <CheckCircle2 size={13} />}
                         Marcar entregada
@@ -238,7 +237,7 @@ export default function AdminReservas({ notify }: { notify: (msg: string) => voi
                         type="button"
                         onClick={() => accion(r, 'cancelar')}
                         disabled={trabajando === r.id}
-                        className="inline-flex items-center gap-1.5 rounded-lg bg-gray-700 px-3 py-2 text-xs font-bold text-white hover:bg-gray-800 disabled:opacity-50"
+                        className="inline-flex items-center gap-1.5 rounded-lg bg-gray-700 px-3 py-2 text-xs font-bold text-paper hover:bg-ink disabled:opacity-50"
                       >
                         {trabajando === r.id ? <Loader2 size={13} className="animate-spin" /> : <X size={13} />}
                         Cancelar

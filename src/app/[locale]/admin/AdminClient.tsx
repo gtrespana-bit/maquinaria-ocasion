@@ -3,10 +3,27 @@
 import { useEffect, useRef, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import {
-  LayoutDashboard, Package, ShieldAlert, Users, ShieldCheck, CreditCard, History,
-  Tag, Megaphone, Download, Settings2, LogIn, LogOut, ArrowLeft, Menu, X, Sparkles, Handshake,
-  Ticket, BarChart3, MessageSquare,
-} from 'lucide-react'
+  LayoutDashboard,
+  Package,
+  ShieldAlert,
+  Users,
+  ShieldCheck,
+  CreditCard,
+  History,
+  Tag,
+  Megaphone,
+  Download,
+  Settings2,
+  LogIn,
+  LogOut,
+  ArrowLeft,
+  Menu,
+  X,
+  Sparkles,
+  Handshake,
+  Ticket,
+  BarChart3,
+  MessageSquare } from 'lucide-react'
 import LocalLink from '@/components/LocalLink'
 import { useAuth } from '@/components/AuthProvider'
 import { ADMIN_EMAILS } from '@/lib/admin-config'
@@ -26,7 +43,7 @@ import AdminAudiencia from './components/AdminAudiencia'
 import VerificacionTab from './VerificacionTab'
 import AdminReservas from './AdminReservas'
 import { Badge } from './components/AdminUi'
-import { apiJson, type Perfil } from './components/admin-utils'
+import {apiJson, type Perfil } from './components/admin-utils'
 
 const NAV = [
   { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard, description: 'Vista general' },
@@ -107,8 +124,7 @@ export default function AdminPage() {
         publicaciones: c.publicaciones || 0,
         moderacion: (c.publicaciones || 0) + (c.denuncias || 0),
         verificacion: c.verificacion || 0,
-        foro: c.foro || 0,
-      })
+        foro: c.foro || 0 })
     } catch {
       // Sin contadores la navegación sigue disponible.
     }
@@ -157,64 +173,62 @@ export default function AdminPage() {
 
   if (loading) {
     return (
-      <div className="flex min-h-[60vh] items-center justify-center" role="status" aria-live="polite">
-        <div className="text-center text-gray-600">
-          <span className="mx-auto mb-3 inline-block h-10 w-10 animate-spin rounded-full border-4 border-brand-primary border-t-transparent" />
-          <p>Comprobando tu sesión…</p>
-        </div>
+      <div className="mx-auto w-full max-w-md px-5 py-24" role="status" aria-live="polite">
+        <p className="t-label text-ink/35">Comprobando tu sesión…</p>
+        <div className="skeleton mt-5 h-3 w-2/3" />
+        <div className="skeleton mt-2 h-3 w-1/3" />
       </div>
     )
   }
 
   if (!session || !user) {
     return (
-      <div className="flex min-h-[60vh] items-center justify-center px-4">
-        <div className="w-full max-w-md rounded-2xl border border-gray-200 bg-white p-8 text-center shadow-sm">
-          <span className="mx-auto mb-4 flex h-10 w-10 items-center justify-center rounded-xl bg-brand-primary/10 text-brand-primary"><ShieldCheck size={22} /></span>
-          <h1 className="text-2xl font-black text-gray-800">Inicia sesión para continuar</h1>
-          <p className="mt-3 text-gray-600">El panel administrativo está disponible únicamente para usuarios autorizados.</p>
-          <button
-            type="button"
-            onClick={() => router.push('/login?redirect=/admin')}
-            className="mt-6 inline-flex items-center gap-2 rounded-xl bg-brand-primary px-5 py-3 font-semibold text-white transition hover:bg-brand-dark focus:outline-none focus:ring-2 focus:ring-brand-primary focus:ring-offset-2"
-          >
-            <LogIn size={18} /> Iniciar sesión
-          </button>
-        </div>
+      <div className="mx-auto w-full max-w-md px-5 py-20 md:py-28">
+        <p className="t-eyebrow text-ink/40">Acceso restringido</p>
+        <h1 className="t-display t-display-lg mt-5 text-ink">Inicia sesión para continuar</h1>
+        <p className="mt-4 text-[13.5px] leading-relaxed text-muted">
+          El panel administrativo está disponible únicamente para usuarios autorizados.
+        </p>
+        <button
+          type="button"
+          onClick={() => router.push('/login?redirect=/admin')}
+          className="btn btn-ink btn-lg mt-8"
+        >
+          <LogIn size={14} /> Iniciar sesión
+        </button>
       </div>
     )
   }
 
   if (!isAdmin) {
     return (
-      <div className="flex min-h-[60vh] items-center justify-center">
-        <div className="text-center">
-          <h2 className="mb-4 text-2xl font-black text-gray-800">🔒 Acceso denegado</h2>
-          <p className="text-gray-500">No tienes permisos para esta página.</p>
-          <button onClick={() => router.push('/')} className="mt-4 text-brand-primary hover:underline">Volver al inicio</button>
-        </div>
+      <div className="mx-auto w-full max-w-md px-5 py-20 md:py-28">
+        <p className="t-eyebrow text-ink/40">Acceso denegado</p>
+        <h2 className="t-display t-display-md mt-5 text-ink">No tienes permisos</h2>
+        <p className="mt-3 text-[13.5px] leading-relaxed text-muted">Esta sección es solo para administradores.</p>
+        <button onClick={() => router.push('/')} className="btn btn-outline btn-lg mt-8">Volver al inicio</button>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-paper">
       {toast && (
-        <div role="status" aria-live="polite" aria-atomic="true" className="fixed right-4 top-4 z-[100] rounded-xl bg-gray-900 px-5 py-3 text-sm font-medium text-white shadow-2xl">
+        <div role="status" aria-live="polite" aria-atomic="true" className="fixed right-4 top-4 z-[100] max-w-xs border border-ink bg-ink px-4 py-2.5 text-[12.5px] font-medium text-paper">
           {toast}
         </div>
       )}
 
       {/* mobile top bar */}
-      <div className="sticky top-0 z-40 border-b border-gray-200 bg-white px-4 py-2 lg:hidden">
+      <div className="sticky top-0 z-40 border-b border-ink bg-[#FBFAF5] px-4 py-2 lg:hidden">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <button onClick={() => setMobileOpen(!mobileOpen)} className="rounded-lg p-2 text-gray-600 hover:bg-gray-100" aria-label="Abrir navegación">
+            <button onClick={() => setMobileOpen(!mobileOpen)} className="p-1.5 text-ink/55 transition-colors hover:text-ink" aria-label="Abrir navegación">
               {mobileOpen ? <X size={20} /> : <Menu size={20} />}
             </button>
-            <span className="text-sm font-black text-gray-800">{activeNav.label}</span>
+            <span className="t-label text-ink">{activeNav.label}</span>
           </div>
-          <LocalLink href="/" className="text-xs font-semibold text-brand-primary hover:underline">Ver sitio</LocalLink>
+          <LocalLink href="/" className="t-label text-ink/45 transition-colors hover:text-ink">Ver sitio</LocalLink>
         </div>
         {mobileOpen && (
           <div className="mt-2 grid max-h-[calc(100vh-4rem)] grid-cols-2 gap-1.5 overflow-y-auto overscroll-contain pb-1">
@@ -223,9 +237,9 @@ export default function AdminPage() {
                 key={n.id}
                 type="button"
                 onClick={() => navigate(n.id)}
-                className={`flex items-center gap-2 rounded-xl px-3 py-2 text-left text-xs font-semibold transition ${tab === n.id ? 'bg-brand-primary text-white' : 'bg-gray-50 text-gray-700 hover:bg-gray-100'}`}
+                className={`flex items-center gap-2 border px-2.5 py-2 text-left text-[11.5px] font-medium transition-colors ${tab === n.id ? 'border-ink bg-ink text-paper' : 'border-line bg-paper text-ink/60'}`}
               >
-                <n.icon size={15} /> {n.label}
+                <n.icon size={13} strokeWidth={1.6} /> {n.label}
               </button>
             ))}
           </div>
@@ -240,13 +254,13 @@ export default function AdminPage() {
             if (!nav || nav.contains(e.target as Node)) return
             nav.scrollTop += e.deltaY
           }}
-          className="sticky top-0 hidden h-screen max-h-screen w-64 flex-shrink-0 self-start flex-col overflow-y-auto overscroll-contain border-r border-gray-200 bg-white px-3 py-5 lg:flex"
+          className="sticky top-0 hidden h-screen max-h-screen w-64 flex-shrink-0 self-start flex-col overflow-y-auto overscroll-contain border-r border-line bg-[#FBFAF5] px-3 py-5 lg:flex"
         >
           <div className="mb-6 flex shrink-0 items-center gap-3 px-2">
-            <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-brand-primary text-white"><Sparkles size={20} /></span>
+            <span className="flex h-9 w-9 items-center justify-center bg-ink text-paper"><Sparkles size={15} strokeWidth={1.6} /></span>
             <div>
-              <p className="text-sm font-black text-gray-900">Admin MaquinariaOcasión</p>
-              <p className="text-xs text-gray-500">Control total</p>
+              <p className="text-[12.5px] font-semibold tracking-[-0.01em] text-ink">Panel</p>
+              <p className="t-label mt-0.5 text-ink/35">Control total</p>
             </div>
           </div>
 
@@ -262,29 +276,29 @@ export default function AdminPage() {
                 data-active={tab === n.id ? 'true' : undefined}
                 aria-current={tab === n.id ? 'page' : undefined}
                 onClick={() => navigate(n.id)}
-                className={`group flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left transition ${tab === n.id ? 'bg-brand-primary text-white shadow-sm' : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'}`}
+                className={`group flex w-full items-center gap-2.5 border-l-2 px-2.5 py-2 text-left transition-colors ${tab === n.id ? 'border-ink bg-[#FBFAF5] text-ink' : 'border-transparent text-ink/55 hover:border-line hover:bg-[#FBFAF5] hover:text-ink'}`}
               >
-                <n.icon size={17} />
+                <n.icon size={14} strokeWidth={1.6} />
                 <span className="flex-1">
-                  <span className="block text-sm font-semibold">{n.label}</span>
-                  <span className={`block text-[11px] ${tab === n.id ? 'text-white/70' : 'text-gray-400'}`}>{n.description}</span>
+                  <span className="block text-[12.5px] font-medium">{n.label}</span>
+                  <span className={`block text-[10.5px] leading-snug ${tab === n.id ? 'text-ink/45' : 'text-ink/30'}`}>{n.description}</span>
                 </span>
                 {badgeFor(n.id) ? <Badge tone={tab === n.id ? 'dark' : 'red'}>{badgeFor(n.id)}</Badge> : null}
               </button>
             ))}
           </nav>
 
-          <div className="mt-4 shrink-0 space-y-2 border-t border-gray-100 pt-4">
-            <div className="rounded-xl bg-gray-50 px-3 py-2.5">
-              <p className="truncate text-xs font-bold text-gray-800">{user.email}</p>
-              <p className="text-[11px] text-gray-500">Administrador</p>
+          <div className="mt-4 shrink-0 space-y-2 border-t border-line pt-4">
+            <div className="border border-line bg-paper px-2.5 py-2">
+              <p className="truncate text-[11.5px] font-medium text-ink/70">{user.email}</p>
+              <p className="t-label mt-0.5 text-ink/30">Administrador</p>
             </div>
             <div className="flex gap-2">
-              <button onClick={() => router.push('/')} className="flex flex-1 items-center justify-center gap-1.5 rounded-xl border border-gray-200 px-3 py-2 text-xs font-semibold text-gray-600 transition hover:bg-gray-50">
-                <ArrowLeft size={14} /> Sitio
+              <button onClick={() => router.push('/')} className="t-label flex flex-1 items-center justify-center gap-1.5 border border-line px-2.5 py-2 text-ink/50 transition-colors hover:border-ink hover:text-ink">
+                <ArrowLeft size={11} /> Sitio
               </button>
-              <button onClick={handleLogout} className="flex flex-1 items-center justify-center gap-1.5 rounded-xl border border-gray-200 px-3 py-2 text-xs font-semibold text-red-600 transition hover:bg-red-50">
-                <LogOut size={14} /> Salir
+              <button onClick={handleLogout} className="t-label flex flex-1 items-center justify-center gap-1.5 border border-line px-2.5 py-2 text-ink/50 transition-colors hover:border-clay hover:text-clay">
+                <LogOut size={11} /> Salir
               </button>
             </div>
           </div>
@@ -292,17 +306,18 @@ export default function AdminPage() {
 
         {/* content */}
         <main className="min-w-0 flex-1 px-4 py-6 sm:px-6 lg:px-8">
-          <div className="mb-6 hidden items-center justify-between lg:flex">
+          <div className="mb-7 hidden items-end justify-between gap-6 border-b border-ink pb-4 lg:flex">
             <div>
-              <h1 className="text-2xl font-black text-gray-900">{activeNav.label}</h1>
-              <p className="text-sm text-gray-500">{activeNav.description} · {user.email}</p>
+              <p className="t-eyebrow text-ink/40">Administración</p>
+              <h1 className="t-display t-display-md mt-3 text-ink">{activeNav.label}</h1>
+              <p className="t-label mt-2 text-ink/35">{activeNav.description} · {user.email}</p>
             </div>
-            <LocalLink href="/" className="inline-flex items-center gap-1.5 rounded-xl border border-gray-200 bg-white px-3 py-2 text-xs font-semibold text-gray-600 transition hover:bg-gray-50">
-              <ArrowLeft size={14} /> Volver al sitio
+            <LocalLink href="/" className="btn btn-outline btn-sm shrink-0">
+              <ArrowLeft size={11} /> Volver al sitio
             </LocalLink>
           </div>
 
-          <div className="space-y-5">
+          <div className="space-y-4">
             {tab === 'dashboard' && <AdminDashboard notify={notify} jump={navigate} />}
             {tab === 'audiencia' && <AdminAudiencia notify={notify} />}
             {tab === 'publicaciones' && <AdminPublicaciones notify={notify} />}

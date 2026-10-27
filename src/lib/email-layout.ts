@@ -15,8 +15,7 @@ export const COLORS = {
   dark: '#1E293B',
   gray: '#64748B',
   lightGray: '#E2E8F0',
-  success: '#059669',
-}
+  success: '#059669' }
 
 const URL_BASE = (typeof process !== 'undefined' && process.env?.NEXT_PUBLIC_URL) || 'https://maquinaria.click'
 const CONTACT = 'soporte@maquinaria.click'

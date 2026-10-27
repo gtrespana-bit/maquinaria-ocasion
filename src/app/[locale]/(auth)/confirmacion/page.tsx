@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { useTranslations } from 'next-intl'
-import { CheckCircle, Mail, ExternalLink, ArrowRight, RefreshCw } from 'lucide-react'
+import { CheckCircle, ArrowRight, RefreshCw } from 'lucide-react'
 import LocalLink from '@/components/LocalLink'
 import { useRouter } from 'next/navigation'
 
@@ -34,8 +34,7 @@ function ConfirmacionContent() {
       const res = await fetch('/api/reconfirmar', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email }),
-      })
+        body: JSON.stringify({ email }) })
       const data = await res.json().catch(() => ({}))
 
       if (!res.ok) {
@@ -52,97 +51,63 @@ function ConfirmacionContent() {
   }
 
   return (
-    <div className="min-h-[80vh] flex items-center justify-center px-4 py-12">
-      <div className="w-full max-w-md">
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-black text-brand-primary">
-            MaquinariaOcasión
-          </h1>
-        </div>
+    <div className="bg-paper">
+      <div className="shell max-w-[560px] py-16 md:py-24">
+        <p className="t-eyebrow text-ink/40">Cuenta</p>
+        <h1 className="t-display t-display-lg mt-5 text-ink">{t('confirmacion.title')}</h1>
 
-        <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-100">
-          {/* Icono de éxito */}
-          <div className="flex justify-center mb-6">
-            <div className="bg-green-100 rounded-full p-4">
-              <CheckCircle className="text-green-600" size={48} />
-            </div>
+        <div className="mt-8 border border-line bg-[#FBFAF5]">
+          <div className="flex items-center gap-3 border-b border-ink px-5 py-3">
+            <CheckCircle size={14} strokeWidth={1.8} className="shrink-0 text-moss" aria-hidden="true" />
+            <p className="t-label text-ink">Solicitud registrada</p>
           </div>
 
-          {/* Mensaje principal */}
-          <h2 className="text-2xl font-bold text-gray-800 mb-4">
-            {t('confirmacion.title')}
-          </h2>
-
-          <div className="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-lg mb-6">
-            <div className="flex items-start gap-3">
-              <Mail className="text-blue-600 mt-0.5" size={20} />
-              <div className="text-left">
-                <p className="font-semibold text-blue-900 mb-1">
-                  {t('confirmacion.sent_to')}
-                </p>
-                <p className="text-sm text-blue-700">
-                  <strong>{email}</strong>
-                </p>
-              </div>
-            </div>
+          <div className="border-b border-line bg-paper-2/60 px-5 py-4">
+            <p className="t-label text-ink/40">{t('confirmacion.sent_to')}</p>
+            <p className="t-num mt-1 break-all text-[13px] font-medium text-ink">{email}</p>
           </div>
 
-          <div className="space-y-3 text-sm text-gray-600 mb-6">
-            <p>
-              {t('confirmacion.instructions')}
-            </p>
+          <div className="px-5 py-5">
+            <p className="text-[13.5px] leading-relaxed text-ink/65">{t('confirmacion.instructions')}</p>
           </div>
 
-          {/* Reenviar email */}
-          <div className="bg-yellow-50 border-l-4 border-yellow-500 p-4 rounded-lg mb-6">
-            <p className="text-sm text-yellow-900 font-semibold mb-2">
-              {t('confirmacion.not_received')}
-            </p>
-            <p className="text-sm text-yellow-800 mb-3">
-              {t('confirmacion.resend_hint')}
-            </p>
+          <div className="border-t border-line px-5 py-5">
+            <p className="text-[12.5px] font-semibold text-ink">{t('confirmacion.not_received')}</p>
+            <p className="mt-1 text-[11.5px] leading-relaxed text-ink/45">{t('confirmacion.resend_hint')}</p>
             <button
               onClick={handleResend}
               disabled={resending || !email || email === 'tu correo electrónico'}
-              className="w-full bg-yellow-500 text-brand-dark font-bold py-3 rounded-lg hover:bg-accent/90 transition flex items-center justify-center gap-2 disabled:opacity-50"
+              className="btn btn-outline btn-sm mt-3 w-full justify-center disabled:opacity-40"
             >
               {resending ? (
                 <>
-                  <RefreshCw size={16} className="animate-spin" />
-                  Enviando...
+                  <RefreshCw size={11} className="animate-spin" />
+                  Enviando…
                 </>
               ) : resendStatus === 'success' ? (
                 <>
-                  <CheckCircle size={16} />
-                  ¡Email reenviado!
+                  <CheckCircle size={11} />
+                  Email reenviado
                 </>
               ) : (
                 <>
-                  <RefreshCw size={16} />
+                  <RefreshCw size={11} />
                   Reenviar email de confirmación
                 </>
               )}
             </button>
             {resendStatus === 'error' && (
-              <p className="text-xs text-red-600 mt-2">
-                Error al reenviar. Verifica que el email sea correcto.
-              </p>
+              <p className="mt-2 text-[11.5px] text-clay">Error al reenviar. Verifica que el email sea correcto.</p>
             )}
           </div>
-
-          {/* Botón principal */}
-          <div className="space-y-3">
-            <button
-              onClick={handleConfirmClick}
-              className="w-full bg-brand-primary text-white py-4 rounded-lg font-bold hover:bg-brand-dark transition flex items-center justify-center gap-2 text-lg"
-            >
-              {t('confirmacion.confirmed')}
-              <ArrowRight size={20} />
-            </button>
-          </div>
-
-          <p className="text-xs text-gray-500 mt-4 text-center">{t('confirmacion.footer')}</p>
         </div>
+
+        <button onClick={handleConfirmClick} className="btn btn-ink btn-lg mt-6 w-full justify-between">
+          {t('confirmacion.confirmed')}
+          <ArrowRight size={14} />
+        </button>
+
+        <p className="t-label mt-5 text-ink/30">{t('confirmacion.footer')}</p>
       </div>
     </div>
   )

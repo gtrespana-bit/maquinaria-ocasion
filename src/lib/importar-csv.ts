@@ -58,8 +58,7 @@ export const CAMPOS: DefinicionCampo[] = [
     campo: 'subcategoria',
     etiqueta: 'Tipo',
     obligatorio: true,
-    alias: ['subcategoria', 'tipo', 'categoria', 'type', 'carroceria', 'familia'],
-  },
+    alias: ['subcategoria', 'tipo', 'categoria', 'type', 'carroceria', 'familia'] },
   { campo: 'ubicacion_estado', etiqueta: 'Comunidad', obligatorio: true, alias: ['comunidad', 'provincia', 'region', 'ccaa', 'comunidad-autonoma', 'ubicacion-estado'] },
   { campo: 'ubicacion_ciudad', etiqueta: 'Ciudad', alias: ['ciudad', 'municipio', 'localidad', 'city'] },
   { campo: 'marca', etiqueta: 'Marca', alias: ['marca', 'brand', 'fabricante'] },
@@ -100,11 +99,9 @@ const SUBCATEGORIAS: { label: string; etiquetas: string[] }[] = TODAS_LAS_SUBS.m
         'herramienta-electrica': ['herramienta electrica', 'taladro', 'amoladora'],
         'motores': ['generador', 'grupo electrógeno', 'compresor', 'soldadora'],
         'sierra-poda': ['motosierra', 'desbrozadora', 'sierra y poda', 'poda'],
-        'taller-manual': ['taller', 'utillaje'],
-      } as Record<string, string[]>
+        'taller-manual': ['taller', 'utillaje'] } as Record<string, string[]>
     )[sub.slug] ?? [],
-  ],
-}))
+  ] }))
 
 // ── Utilidades de texto ────────────────────────────────────────────────────
 
@@ -207,8 +204,7 @@ export function parseCsv(texto: string, maxFilas: number = MAX_FILAS): CsvParsea
   return {
     cabeceras: cabecera.map((h) => h.trim()),
     filas: resto.slice(0, maxFilas),
-    separador,
-  }
+    separador }
 }
 
 /** Elige el separador contando los candidatos en la primera línea. */
@@ -478,8 +474,7 @@ export function validarImportacion(
       imagenes,
       especificaciones,
       errores,
-      avisos,
-    })
+      avisos })
   })
 
   const invalidas = filas.filter((f) => f.errores.length > 0).length
@@ -488,8 +483,7 @@ export function validarImportacion(
     validas: filas.length - invalidas,
     invalidas,
     recortadas,
-    mapa,
-  }
+    mapa }
 }
 
 /**

@@ -204,8 +204,7 @@ export async function POST(req: NextRequest) {
     revalidarListadosPublicos({
       ubicacionCiudad: data.ubicacion_ciudad,
       ubicacionEstado: data.ubicacion_estado,
-      subcategoria: data.subcategoria,
-    })
+      subcategoria: data.subcategoria })
 
     // Telegram alert if the server-side moderation marked the product pending.
     // Plain text avoids HTML/Markdown injection through user content.
@@ -218,9 +217,7 @@ export async function POST(req: NextRequest) {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             chat_id: CHAT,
-            text: `ALERTA MODERACIÓN — SOSPECHOSO\n\nTítulo: ${String(sanitizedData.titulo || '').slice(0, 200)}\nUsuario: ${auth.user.email || userId}\nPalabras: ${moderacion.palabras.join(', ')}`,
-          }),
-        }).catch(() => {})
+            text: `ALERTA MODERACIÓN — SOSPECHOSO\n\nTítulo: ${String(sanitizedData.titulo || '').slice(0, 200)}\nUsuario: ${auth.user.email || userId}\nPalabras: ${moderacion.palabras.join(', ')}` }) }).catch(() => {})
       }
     }
 

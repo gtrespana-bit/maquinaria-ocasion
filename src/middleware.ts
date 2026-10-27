@@ -1,7 +1,6 @@
+import { type NextRequest } from 'next/server'
 import createMiddleware from 'next-intl/middleware'
 import { routing } from './i18n/routing'
-import { type NextRequest } from 'next/server'
-
 // REMOVED: Supabase auth middleware was causing Edge Runtime errors
 // because @supabase/ssr uses Node.js APIs not available in Edge Runtime.
 // La sesión la hidrata el AuthProvider en el cliente (supabase.auth.getSession
@@ -30,5 +29,4 @@ export default async function middleware(request: NextRequest) {
 export const config = {
   matcher: [
     '/((?!api|_next|_vercel|.*\\..*|.*route\\.ts$).*)',
-  ],
-}
+  ] }

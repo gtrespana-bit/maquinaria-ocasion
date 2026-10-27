@@ -20,8 +20,7 @@ import {
   slugReservado,
   slugValido,
   slugify,
-  validarTienda,
-} from '@/lib/tiendas'
+  validarTienda } from '@/lib/tiendas'
 import { cupoDeUsuario } from '@/lib/planes-servidor'
 
 export const dynamic = 'force-dynamic'
@@ -29,7 +28,6 @@ export const dynamic = 'force-dynamic'
 const CAMPOS =
   'id, slug, nombre, descripcion, web, portada_url, horario, direccion, ' +
   'ciudad, estado, tipo_vendedor, tienda_activa, foto_perfil_url'
-
 function admin() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL
   const key = process.env.SUPABASE_SERVICE_ROLE_KEY
@@ -70,8 +68,7 @@ export async function GET(req: NextRequest) {
     ok: true,
     tienda,
     puedeAbrir: puedePorTipo,
-    requierePlan,
-  })
+    requierePlan })
 }
 
 export async function PUT(req: NextRequest) {
@@ -111,8 +108,7 @@ export async function PUT(req: NextRequest) {
       {
         ok: false,
         error:
-          'Solo los talleres y vendedores profesionales pueden abrir tienda. Cambia tu tipo de vendedor en tu perfil.',
-      },
+          'Solo los talleres y vendedores profesionales pueden abrir tienda. Cambia tu tipo de vendedor en tu perfil.' },
       { status: 403 }
     )
   }
@@ -128,8 +124,7 @@ export async function PUT(req: NextRequest) {
           ok: false,
           codigo: 'PLAN',
           error:
-            'El escaparate está incluido en los planes Básico y Profesional. Activa uno para abrir tu tienda; tus anuncios siguen publicados mientras tanto.',
-        },
+            'El escaparate está incluido en los planes Básico y Profesional. Activa uno para abrir tu tienda; tus anuncios siguen publicados mientras tanto.' },
         { status: 403 }
       )
     }
@@ -141,8 +136,7 @@ export async function PUT(req: NextRequest) {
     web: body?.web,
     horario: body?.horario,
     direccion: body?.direccion,
-    slug: body?.slug,
-  })
+    slug: body?.slug })
   if (Object.keys(errores).length > 0) {
     return NextResponse.json({ ok: false, error: Object.values(errores)[0], errores }, { status: 400 })
   }
@@ -155,8 +149,7 @@ export async function PUT(req: NextRequest) {
     descripcion: recorta(body?.descripcion, LIMITES_TIENDA.descripcion),
     horario: recorta(body?.horario, LIMITES_TIENDA.horario),
     direccion: recorta(body?.direccion, LIMITES_TIENDA.direccion),
-    web: normalizarWeb(body?.web),
-  }
+    web: normalizarWeb(body?.web) }
 
   if (typeof body?.nombre === 'string' && body.nombre.trim()) {
     cambios.nombre = body.nombre.trim().slice(0, 120)

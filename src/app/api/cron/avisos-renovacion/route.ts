@@ -67,8 +67,7 @@ export async function GET(request: NextRequest) {
         body: cuerpo,
         tag: `renovacion-${aviso.productoId}`,
         icon: '/icon-192.png',
-        click_url: '/dashboard?tab=productos',
-      })
+        click_url: '/dashboard?tab=productos' })
       enviados++
       marcados.push(aviso.productoId)
     } catch {

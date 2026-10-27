@@ -1,113 +1,189 @@
 'use client'
 
-import BrandLogo from '@/components/BrandLogo'
+import BrandLogo, { BrandMark } from '@/components/BrandLogo'
 import LocalLink from '@/components/LocalLink'
 import { hayDatosTitular } from '@/lib/datos-legales'
 import { useTranslations } from 'next-intl'
 import { TODAS_LAS_SUBS, FAMILIAS } from '@/lib/categorias'
 import { CIUDADES_SEO } from '@/lib/ubicaciones-seo'
+import { ArrowUpRight } from 'lucide-react'
 
-// Familias → tipos: la navegación del footer refleja la taxonomía real del
-// vertical de maquinaria.
-const FAMILIAS_FOOTER = FAMILIAS.map(f => ({
+const FAMILIAS_FOOTER = FAMILIAS.map((f) => ({
   key: f.key,
-  icon: f.icon,
+  label: f.label,
   tipos: f.subs
-    .map(slug => TODAS_LAS_SUBS.find(s => s.slug === slug))
+    .map((slug) => TODAS_LAS_SUBS.find((s) => s.slug === slug))
     .filter((s): s is NonNullable<typeof s> => Boolean(s))
-    .map(s => ({
-      label: s.label,
-      href: `/categoria/${s.slug}`,
-    })),
-}))
+    .map((s) => ({ label: s.label, href: `/categoria/${s.slug}` })) }))
 
-// Provincias principales → landing pages SEO locales (/[provincia])
 const PROVINCIAS_FOOTER = ['madrid', 'barcelona', 'valencia', 'sevilla', 'malaga', 'alicante']
-  .map(slug => CIUDADES_SEO.find(c => c.slug === slug))
+  .map((slug) => CIUDADES_SEO.find((c) => c.slug === slug))
   .filter((c): c is NonNullable<typeof c> => Boolean(c))
+
+function FootHeading({ children }: { children: React.ReactNode }) {
+  return (
+    <h3 className="t-label mb-4 flex items-center gap-2 text-paper/40">
+      <span aria-hidden="true" className="h-1 w-1 bg-signal" />
+      {children}
+    </h3>
+  )
+}
+
+function FootLink({
+  href,
+  children,
+  external }: {
+  href: string
+  children: React.ReactNode
+  external?: boolean
+}) {
+  return (
+    <li>
+      <LocalLink
+        href={href}
+        className="group inline-flex items-baseline gap-1 text-[13.5px] leading-6 text-paper/65 transition-colors hover:text-paper"
+      >
+        {children}
+        {external && (
+          <ArrowUpRight
+            size={10}
+            className="translate-y-px opacity-0 transition-opacity group-hover:opacity-60"
+          />
+        )}
+      </LocalLink>
+    </li>
+  )
+}
 
 export function Footer() {
   const t = useTranslations()
+  const year = new Date().getFullYear()
 
   return (
-    <footer className="bg-brand-darkNav text-gray-300 mt-auto pb-20 md:pb-0 border-t-4 border-brand-signal">
-      <div className="hidden md:block">
-        <div className="max-w-7xl mx-auto px-4 py-12">
-          <div className="grid grid-cols-1 md:grid-cols-5 gap-8">
-            <div>
-              <BrandLogo href="/" tone="light" size="md" className="mb-3" />
-              <p className="text-sm leading-relaxed">{t('footer.description')}</p>
-            </div>
-            <nav aria-label={t('footer.categories')}>
-              <h3 className="text-white font-black mb-3 uppercase tracking-wide text-xs flex items-center gap-2 before:content-[''] before:inline-block before:w-3 before:h-3 before:bg-brand-signal before:rounded-[3px]">{t('footer.categories')}</h3>
-              <ul className="space-y-2 text-sm">
-                {FAMILIAS_FOOTER.map(f => (
-                  <li key={f.key}>
-                    <p className="text-gray-400 text-xs font-bold uppercase tracking-wide mt-2 first:mt-0">
-                      {f.icon} {t(`familias.${f.key}.label`)}
-                    </p>
-                    <ul className="mt-1 space-y-1">
-                      {f.tipos.map(c => (
-                        <li key={c.label}>
-                          <LocalLink href={c.href} className="hover:text-brand-signal transition hover:underline underline-offset-2">
-                            {c.label}
-                          </LocalLink>
-                        </li>
-                      ))}
-                    </ul>
-                  </li>
-                ))}
-              </ul>
-            </nav>
-            <nav aria-label={t('footer.cities')}>
-              <h3 className="text-white font-black mb-3 uppercase tracking-wide text-xs flex items-center gap-2 before:content-[''] before:inline-block before:w-3 before:h-3 before:bg-brand-signal before:rounded-[3px]">{t('footer.cities')}</h3>
-              <ul className="space-y-2 text-sm">
-                {PROVINCIAS_FOOTER.map(c => (
-                  <li key={c.slug}>
-                    <LocalLink href={`/${c.slug}`} className="hover:text-brand-signal transition">
-                      {t('footer.classifiedsIn', { city: c.nombre })}
-                    </LocalLink>
-                  </li>
-                ))}
-              </ul>
-            </nav>
-            <nav aria-label={t('footer.information')}>
-              <h3 className="text-white font-black mb-3 uppercase tracking-wide text-xs flex items-center gap-2 before:content-[''] before:inline-block before:w-3 before:h-3 before:bg-brand-signal before:rounded-[3px]">{t('footer.information')}</h3>
-              <ul className="space-y-2 text-sm">
-                {[
-                  [t('footer.brands'), '/marcas'],
-                  ['Blog', '/blog'],
-                  [t('foro.title'), '/foro'],
-                  ['Planes para profesionales', '/para-profesionales'],
-                  [t('footer.howItWorks'), '/como-funciona'],
-                  [t('footer.aboutUs'), '/sobre-nosotros'],
-                  ['FAQ', '/faq'],
-                  [t('nav.contact'), '/contacto'],
-                ].map(([l, p]) => (
-                  <li key={p}><LocalLink href={p} className="hover:text-brand-signal transition">{l}</LocalLink></li>
-                ))}
-              </ul>
-            </nav>
-            <div>
-              <h3 className="text-white font-black mb-3 uppercase tracking-wide text-xs flex items-center gap-2 before:content-[''] before:inline-block before:w-3 before:h-3 before:bg-brand-signal before:rounded-[3px]">{t('footer.legal')}</h3>
-              <ul className="space-y-2 text-sm">
-                <li><LocalLink href="/tasador" className="hover:text-brand-signal transition">{t('footer.priceTool')}</LocalLink></li>
-                <li><LocalLink href="/terminos-y-condiciones" className="hover:text-brand-signal transition">{t('footer.terms')}</LocalLink></li>
-                <li><LocalLink href="/politica-de-privacidad" className="hover:text-brand-signal transition">{t('footer.privacy')}</LocalLink></li>
-                <li><LocalLink href="/politica-de-cookies" className="hover:text-brand-signal transition">{t('footer.cookies')}</LocalLink></li>
-                {/* El aviso legal solo se enlaza cuando el titular está
-                    configurado: antes de eso la página no está completa y no
-                    debe presentarse como si lo estuviera. */}
-                {hayDatosTitular() && (
-                  <li><LocalLink href="/aviso-legal" className="hover:text-brand-signal transition">{t('footer.legalNotice')}</LocalLink></li>
-                )}
-              </ul>
-              <p className="text-xs text-gray-300 mt-4">{t('footer.madeWithLove')}</p>
+    <footer className="on-dark relative mt-auto overflow-hidden bg-ink text-paper">
+      {/* Filete de señal en la parte superior */}
+      <div aria-hidden="true" className="h-[3px] w-full bg-signal" />
+
+      <div className="shell pt-12 md:pt-16">
+        <div className="grid grid-cols-1 gap-10 md:grid-cols-12 md:gap-8">
+          {/* Identidad */}
+          <div className="md:col-span-4 lg:col-span-3">
+            <BrandLogo href="/" tone="light" size="md" />
+            <p className="mt-5 max-w-xs text-[13.5px] leading-relaxed text-paper/55">
+              {t('footer.description')}
+            </p>
+            <div className="mt-6 flex flex-col gap-2">
+              <LocalLink href="/publicar" className="btn btn-signal btn-sm self-start">
+                Publicar gratis
+              </LocalLink>
+              <span className="t-label text-paper/35">Sin comisiones · Toda España</span>
             </div>
           </div>
-          <div className="border-t border-gray-700 mt-8 pt-6 text-center text-sm">
-            <p>© {new Date().getFullYear()} MaquinariaOcasión. {t('footer.allRightsReserved')}</p>
+
+          {/* Taxonomía */}
+          <nav className="md:col-span-4 lg:col-span-3" aria-label={t('footer.categories')}>
+            <FootHeading>{t('footer.categories')}</FootHeading>
+            <div className="space-y-5">
+              {FAMILIAS_FOOTER.map((f) => (
+                <div key={f.key}>
+                  <LocalLink
+                    href={`/categoria/${f.key}`}
+                    className="mb-1.5 block text-[13px] font-semibold text-paper/90 hover:text-signal"
+                  >
+                    {t(`familias.${f.key}.label`)}
+                  </LocalLink>
+                  <ul className="flex flex-wrap gap-x-4 gap-y-1">
+                    {f.tipos.map((c) => (
+                      <li key={c.label}>
+                        <LocalLink
+                          href={c.href}
+                          className="text-[12.5px] leading-6 text-paper/50 transition-colors hover:text-paper"
+                        >
+                          {c.label}
+                        </LocalLink>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          </nav>
+
+          {/* Territorio */}
+          <nav className="md:col-span-2 lg:col-span-2" aria-label={t('footer.cities')}>
+            <FootHeading>{t('footer.cities')}</FootHeading>
+            <ul className="space-y-1">
+              {PROVINCIAS_FOOTER.map((c) => (
+                <FootLink key={c.slug} href={`/${c.slug}`}>
+                  {c.nombre}
+                </FootLink>
+              ))}
+              <FootLink href="/catalogo">Ver todo el catálogo</FootLink>
+            </ul>
+          </nav>
+
+          {/* Información */}
+          <nav className="md:col-span-2 lg:col-span-2" aria-label={t('footer.information')}>
+            <FootHeading>{t('footer.information')}</FootHeading>
+            <ul className="space-y-1">
+              <FootLink href="/como-funciona">{t('footer.howItWorks')}</FootLink>
+              <FootLink href="/sobre-nosotros">{t('footer.aboutUs')}</FootLink>
+              <FootLink href="/marcas">{t('footer.brands')}</FootLink>
+              <FootLink href="/tasador">{t('footer.priceTool')}</FootLink>
+              <FootLink href="/blog">Blog</FootLink>
+              <FootLink href="/foro">{t('foro.title')}</FootLink>
+              <FootLink href="/faq">FAQ</FootLink>
+              <FootLink href="/contacto">{t('nav.contact')}</FootLink>
+            </ul>
+          </nav>
+
+          {/* Legal */}
+          <nav className="md:col-span-12 lg:col-span-2" aria-label={t('footer.legal')}>
+            <FootHeading>{t('footer.legal')}</FootHeading>
+            <ul className="space-y-1">
+              <FootLink href="/terminos-y-condiciones">{t('footer.terms')}</FootLink>
+              <FootLink href="/politica-de-privacidad">{t('footer.privacy')}</FootLink>
+              <FootLink href="/politica-de-cookies">{t('footer.cookies')}</FootLink>
+              {hayDatosTitular() && (
+                <FootLink href="/aviso-legal">{t('footer.legalNotice')}</FootLink>
+              )}
+              <FootLink href="/para-profesionales">Planes profesionales</FootLink>
+            </ul>
+          </nav>
+        </div>
+
+        {/* Pie legal */}
+        <div className="mt-12 flex flex-col gap-3 border-t border-line-dark py-6 md:flex-row md:items-center md:justify-between">
+          <p className="t-label text-paper/35">
+            © {year} MaquinariaOcasión · {t('footer.allRightsReserved')}
+          </p>
+          <div className="flex items-center gap-4">
+            <span className="t-label text-paper/25">{t('footer.madeWithLove')}</span>
+            <span aria-hidden="true" className="h-3 w-px bg-line-dark" />
+            <span className="t-label text-paper/25">ES · EUR €</span>
           </div>
+        </div>
+      </div>
+
+      {/* Wordmark gigante recortado: cierre de página tipo revista */}
+      <div aria-hidden="true" className="relative mt-2 select-none overflow-hidden">
+        <div className="shell">
+          <span
+            className="t-display block text-paper/[0.055]"
+            style={{ fontSize: 'clamp(2.5rem, 10.4vw, 10.5rem)', lineHeight: 0.84 }}
+          >
+            MAQUINARIA
+          </span>
+          <span
+            className="t-serif-italic -mt-[0.16em] block text-signal/20"
+            style={{ fontSize: 'clamp(2.5rem, 10.4vw, 10.5rem)', lineHeight: 0.84 }}
+          >
+            Ocasión
+          </span>
+        </div>
+        <div className="pointer-events-none absolute right-5 bottom-5 hidden items-center gap-2 md:flex">
+          <BrandMark size={22} tone="light" />
+          <span className="t-label text-paper/25">maquinaria.click</span>
         </div>
       </div>
     </footer>

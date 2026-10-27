@@ -13,8 +13,7 @@ export interface EmailParams {
  */
 export async function enviarEmail(params: EmailParams) {
   const r = await enviarEmailDetallado(params.to, params.subject, params.html, {
-    replyTo: params.replyTo,
-  })
+    replyTo: params.replyTo })
   if (r.ok) return { success: true, canal: r.canal, id: r.id }
   console.error('❌ Error enviando email:', r.error)
   return { success: false, error: r.error }

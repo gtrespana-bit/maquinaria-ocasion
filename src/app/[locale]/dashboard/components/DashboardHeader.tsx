@@ -1,4 +1,4 @@
-"use client"
+'use client'
 
 import Avatar from '@/components/Avatar'
 import BadgeVerificado from '@/components/BadgeVerificado'
@@ -8,15 +8,15 @@ import { Camera, Edit, X, Save, Phone, MapPin, Mail } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useTranslations } from 'next-intl'
 
-const ICONOS: Record<number, string> = { 0: '🥉', 1: '🥈', 2: '🥇', 3: '💎', 4: '💠', 5: '👑' }
+// Nivel de confianza: se expresa con trama y contraste, no con emojis.
+// Los tonos suben de neutro a señal según el nivel (0 → 5).
 const NIVELES: Record<number, { nombreKey: string; bg: string; text: string; border: string }> = {
-  0: { nombreKey: 'levelBronze', bg: 'bg-orange-50', text: 'text-orange-800', border: 'border-orange-200' },
-  1: { nombreKey: 'levelSilver', bg: 'bg-gray-100', text: 'text-gray-700', border: 'border-gray-300' },
-  2: { nombreKey: 'levelGold', bg: 'bg-yellow-50', text: 'text-yellow-800', border: 'border-yellow-300' },
-  3: { nombreKey: 'levelPlatinum', bg: 'bg-sky-50', text: 'text-sky-800', border: 'border-sky-200' },
-  4: { nombreKey: 'levelDiamond', bg: 'bg-purple-50', text: 'text-purple-800', border: 'border-purple-200' },
-  5: { nombreKey: 'levelMaster', bg: 'bg-gradient-to-r from-yellow-50 to-purple-50', text: 'text-purple-900', border: 'border-purple-300' },
-}
+  0: { nombreKey: 'levelBronze', bg: 'bg-paper-2', text: 'text-ink/60', border: 'border-line' },
+  1: { nombreKey: 'levelSilver', bg: 'bg-paper-2', text: 'text-ink/70', border: 'border-line-strong' },
+  2: { nombreKey: 'levelGold', bg: 'bg-signal/20', text: 'text-ink', border: 'border-signal-deep/40' },
+  3: { nombreKey: 'levelPlatinum', bg: 'bg-signal/35', text: 'text-ink', border: 'border-signal-deep/50' },
+  4: { nombreKey: 'levelDiamond', bg: 'bg-signal/55', text: 'text-ink', border: 'border-ink/20' },
+  5: { nombreKey: 'levelMaster', bg: 'bg-signal', text: 'text-ink', border: 'border-ink' } }
 
 export default function DashboardHeader({
   user,
@@ -25,8 +25,7 @@ export default function DashboardHeader({
   fotoUrl, setFotoUrl,
   verificado, nivelConfianza, resenasCount, promedioResenas,
   setToast, setGuardando, onFotoChange,
-  abrirEdicion = 0,
-}: {
+  abrirEdicion = 0 }: {
   user: any
   nombre: string; setNombre: (s: string) => void
   telefono: string; setTelefono: (s: string) => void
@@ -59,8 +58,7 @@ export default function DashboardHeader({
       const response = await fetch('/api/perfil', {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ nombre, telefono, estado, ciudad, tipo_vendedor: tipoVendedor }),
-      })
+        body: JSON.stringify({ nombre, telefono, estado, ciudad, tipo_vendedor: tipoVendedor }) })
       const result = await response.json().catch(() => ({}))
       if (!response.ok) {
         setToast(t('saveError') + (result.error || 'Error desconocido'))
@@ -80,12 +78,12 @@ export default function DashboardHeader({
   const cfg = NIVELES[n]
 
   return (
-    <div className="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-4 sm:p-5 mb-6">
+    <div className="mb-6 border border-line bg-[#FBFAF5] p-5 sm:p-6">
       <div className="flex flex-col sm:flex-row items-start gap-4">
         <label className="relative group cursor-pointer flex-shrink-0">
           <Avatar nombre={nombre} fotoUrl={fotoUrl} size="lg" />
-          <div className="absolute inset-0 rounded-full bg-black/50 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
-            <Camera size={18} className="text-white" />
+          <div className="absolute inset-0 flex items-center justify-center bg-ink/60 opacity-0 transition group-hover:opacity-100">
+            <Camera size={18} className="text-paper" />
           </div>
           <input type="file" accept="image/*" onChange={onFotoChange} className="hidden" />
         </label>
@@ -94,60 +92,60 @@ export default function DashboardHeader({
             <div className="space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-medium text-gray-500 mb-1">{t('name')}</label>
-                  <input type="text" value={nombre} onChange={e => setNombre(e.target.value)} className="w-full border rounded-lg px-3 py-2 text-sm" placeholder={t('namePlaceholder')} />
+                  <label className="t-label mb-1 block text-ink/45">{t('name')}</label>
+                  <input type="text" value={nombre} onChange={e => setNombre(e.target.value)} className="field text-[13px]" placeholder={t('namePlaceholder')} />
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-gray-500 mb-1 flex items-center gap-1"><Phone size={12} /> {t('phone')}</label>
-                  <input type="tel" value={telefono} onChange={e => setTelefono(e.target.value)} className="w-full border rounded-lg px-3 py-2 text-sm" placeholder="+34 600 123 456" />
+                  <label className="t-label mb-1 flex items-center gap-1 text-ink/45"><Phone size={12} /> {t('phone')}</label>
+                  <input type="tel" value={telefono} onChange={e => setTelefono(e.target.value)} className="field text-[13px]" placeholder="+34 600 123 456" />
                 </div>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-medium text-gray-500 mb-1 flex items-center gap-1"><MapPin size={12} /> {t('state')}</label>
-                  <select value={estado} onChange={e => setEstado(e.target.value)} className="w-full border rounded-lg px-3 py-2 text-sm bg-white">
+                  <label className="t-label mb-1 flex items-center gap-1 text-ink/45"><MapPin size={12} /> {t('state')}</label>
+                  <select value={estado} onChange={e => setEstado(e.target.value)} className="field text-[13px]">
                     <option value="">{t('selectType')}</option>
                     {ESTADOS.map(e => <option key={e} value={e}>{e}</option>)}
                   </select>
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-gray-500 mb-1">{t('municipality')}</label>
-                  <select value={ciudad} onChange={e => setCiudad(e.target.value)} className="w-full border rounded-lg px-3 py-2 text-sm bg-white" disabled={!estado}>
+                  <label className="t-label mb-1 block text-ink/45">{t('municipality')}</label>
+                  <select value={ciudad} onChange={e => setCiudad(e.target.value)} className="field text-[13px]" disabled={!estado}>
                     <option value="">{t('selectType')}</option>
                     {municipiosDisponibles.map(m => <option key={m} value={m}>{m}</option>)}
                   </select>
                 </div>
               </div>
               <div>
-                <label className="block text-xs font-medium text-gray-500 mb-2">{t('sellerTypeLabel')}</label>
+                <label className="t-label mb-2 block text-ink/45">{t('sellerTypeLabel')}</label>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                   {TIPOS_VENDEDOR.map(tipo => (
                     <button
                       key={tipo}
                       type="button"
                       onClick={() => setTipoVendedor(tipo)}
-                      className={`text-left rounded-xl border px-3 py-2.5 transition ${
+                      className={`border p-2.5 text-left transition-colors ${
                         tipoVendedor === tipo
-                          ? 'border-brand-primary ring-1 ring-brand-primary bg-brand-primary/5'
-                          : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'
+                          ? 'border-ink bg-signal'
+                          : 'border-line bg-paper hover:border-ink'
                       }`}
                     >
-                      <span className="block text-sm font-semibold text-gray-900">
+                      <span className="block text-[12.5px] font-semibold text-ink">
                         {tTipos(tipo)}
                       </span>
-                      <span className="block text-xs text-gray-500 mt-0.5">
+                      <span className="mt-0.5 block text-[11px] leading-snug text-ink/55">
                         {tTipos(`${tipo}Desc`)}
                       </span>
                     </button>
                   ))}
                 </div>
-                <p className="text-xs text-gray-400 mt-1.5">{t('sellerTypeHint')}</p>
+                <p className="mt-1.5 text-[11.5px] leading-relaxed text-ink/40">{t('sellerTypeHint')}</p>
               </div>
               <div className="flex gap-2">
-                <button onClick={handleGuardar} className="flex items-center gap-2 bg-brand-primary text-white px-4 py-2 rounded-lg text-sm font-medium">
+                <button onClick={handleGuardar} className="btn btn-ink btn-sm">
                   <Save size={14} /> {t('save')}
                 </button>
-                <button onClick={() => setEditando(false)} className="flex items-center gap-2 border px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-50">
+                <button onClick={() => setEditando(false)} className="btn btn-outline btn-sm">
                   <X size={14} /> {t('cancelEdit')}
                 </button>
               </div>
@@ -155,22 +153,22 @@ export default function DashboardHeader({
           ) : (
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
               <div>
-                <h2 className="text-xl font-bold text-gray-900">
-                  {nombre || <button onClick={() => setEditando(true)} className="text-sm font-medium text-brand-primary hover:underline">{t('addName')}</button>}
+                <h2 className="text-[18px] font-semibold tracking-[-0.02em] text-ink">
+                  {nombre || <button onClick={() => setEditando(true)} className="text-[12px] font-medium text-ink underline underline-offset-4">{t('addName')}</button>}
                 </h2>
-                {user?.email && <p className="text-sm text-gray-500 flex items-center gap-1 mt-1"><Mail size={12} /> {user.email}</p>}
-                {(ciudad || estado) && <p className="text-sm text-gray-500 flex items-center gap-1"><MapPin size={12} /> {[ciudad, estado].filter(Boolean).join(', ')}</p>}
+                {user?.email && <p className="mt-1 flex items-center gap-1.5 text-[12.5px] text-ink/50"><Mail size={12} /> {user.email}</p>}
+                {(ciudad || estado) && <p className="flex items-center gap-1.5 text-[12.5px] text-ink/50"><MapPin size={12} /> {[ciudad, estado].filter(Boolean).join(', ')}</p>}
                 {/* Badges */}
                 <div className="mt-2 flex flex-wrap items-center gap-2">
                   <BadgeTipoVendedor tipo={tipoVendedor} />
                   {verificado && <BadgeVerificado size="sm" />}
                   <div className="inline-flex items-center gap-1.5 text-xs">
-                    <span className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full border ${cfg.bg} ${cfg.border}`}>
-                      <span className="text-sm leading-none">{ICONOS[n]}</span>
-                      <span className={`font-semibold ${cfg.text}`}>{t(cfg.nombreKey)}</span>
+                    <span className={`inline-flex items-center gap-1.5 border px-2 py-0.5 ${cfg.bg} ${cfg.border}`}>
+                      <span aria-hidden="true" className={`h-1.5 w-1.5 ${cfg.text === 'text-ink' ? 'bg-ink' : 'bg-ink/40'}`} />
+                      <span className={`t-label ${cfg.text}`}>{t(cfg.nombreKey)}</span>
                     </span>
                     {resenasCount > 0 && (
-                      <span className="text-gray-500">{t('reviewsSummary', { rating: promedioResenas.toFixed(1), count: resenasCount })}</span>
+                      <span className="t-label text-ink/40">{t('reviewsSummary', { rating: promedioResenas.toFixed(1), count: resenasCount })}</span>
                     )}
                   </div>
                 </div>
@@ -178,7 +176,7 @@ export default function DashboardHeader({
               <button
                 type="button"
                 onClick={() => setEditando(true)}
-                className="flex items-center justify-center gap-1.5 border border-slate-200 px-3 py-2 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50 transition w-full sm:w-auto"
+                className="btn btn-outline btn-sm w-full justify-center sm:w-auto"
               >
                 <Edit size={14} aria-hidden="true" /> {t('editProfile')}
               </button>

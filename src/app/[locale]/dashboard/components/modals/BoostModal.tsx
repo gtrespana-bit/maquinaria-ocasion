@@ -1,4 +1,4 @@
-"use client"
+'use client'
 
 import { useEffect, useRef } from 'react'
 import { X, Zap } from 'lucide-react'
@@ -23,7 +23,7 @@ export default function BoostModal({ titulo, onBoost, onClose }: { titulo: strin
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-ink/60 p-4"
       onClick={onClose}
       role="presentation"
     >
@@ -33,46 +33,46 @@ export default function BoostModal({ titulo, onBoost, onClose }: { titulo: strin
         aria-modal="true"
         aria-labelledby="boost-modal-title"
         tabIndex={-1}
-        className="bg-white rounded-2xl p-6 max-w-md w-full shadow-2xl outline-none"
+        className="w-full max-w-md border border-line-strong bg-[#FBFAF5] p-6 outline-none"
         onClick={e => e.stopPropagation()}
       >
-        <div className="flex items-center justify-between mb-4">
-          <h3 id="boost-modal-title" className="text-xl font-bold text-gray-800">⚡ Subir al nº 1 — 7 días</h3>
+        <div className="mb-4 flex items-center justify-between border-b border-ink pb-3">
+          <h3 id="boost-modal-title" className="text-[16px] font-semibold tracking-[-0.02em] text-ink">Subir al nº 1 — 7 días</h3>
           <button
             onClick={onClose}
             aria-label="Cerrar modal"
-            className="p-2 hover:bg-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-accent"
+            className="text-ink/40 transition-colors hover:text-ink focus:outline-none focus:ring-2 focus:ring-ink"
           >
             <X size={20} aria-hidden="true" />
           </button>
         </div>
-        <p className="text-sm text-gray-600 mb-4">
+        <p className="mb-3 text-[13px] leading-relaxed text-ink/65">
           <strong>{titulo}</strong>
         </p>
-        <p className="text-sm text-gray-600 mb-2">
+        <p className="mb-2">
           Tu publicación pasará a la <strong>primera posición</strong> del catálogo y de la portada,
           y se mantendrá ahí durante <strong>7 días</strong>.
         </p>
-        <p className="text-sm text-gray-600 mb-4">
+        <p className="mb-3 text-[13px] leading-relaxed text-ink/65">
           Si otra persona sube su anuncio después, compartiréis la parte alta de la lista: el orden
           entre anuncios subidos lo decide la fecha de la subida.
         </p>
-        <div className="flex items-center gap-2 mb-6 bg-yellow-50 border border-yellow-200 rounded-xl p-3">
-          <Zap size={20} className="text-yellow-600" aria-hidden="true" />
-          <span className="font-bold text-brand-primary">Costo: 1 crédito</span>
+        <div className="mb-6 flex items-center gap-2 border border-signal-deep/40 bg-signal/15 p-3">
+          <Zap size={14} strokeWidth={1.6} className="text-ink" aria-hidden="true" />
+          <span className="t-label text-ink">Costo: 1 crédito</span>
         </div>
         <div className="flex gap-3">
           <button
             onClick={onClose}
-            className="flex-1 py-3 border border-gray-200 rounded-lg font-medium text-gray-600 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-brand-accent"
+            className="btn btn-outline flex-1 justify-center"
           >
             Cancelar
           </button>
           <button
             onClick={onBoost}
-            className="flex-1 py-3 bg-brand-accent text-white rounded-lg font-bold hover:bg-accent/90 focus:outline-none focus:ring-2 focus:ring-brand-accent focus:ring-offset-2"
+            className="btn btn-ink flex-1 justify-center"
           >
-            ⚡ Subir al nº 1 (1 crédito)
+            Subir al nº 1 · 1 crédito
           </button>
         </div>
       </div>

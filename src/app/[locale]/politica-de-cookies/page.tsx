@@ -3,7 +3,7 @@ import { alternatesSeo } from '@/lib/seo'
 import { setRequestLocale } from 'next-intl/server'
 import DocumentoLegal from '@/components/DocumentoLegal'
 import BotonPreferenciasCookies from '@/components/BotonPreferenciasCookies'
-import { POLITICA_COOKIES, type IdiomaLegal } from '@/lib/textos-legales'
+import {POLITICA_COOKIES, type IdiomaLegal } from '@/lib/textos-legales'
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params

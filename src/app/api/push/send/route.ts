@@ -54,8 +54,7 @@ export async function POST(req: NextRequest) {
       body: cuerpo || titulo,
       tag: `msg-${targetUserId.slice(0, 8)}`,
       icon: '/icon-192.png',
-      click_url: click_url || '/chat',
-    }
+      click_url: click_url || '/chat' }
 
     const deadSubs: string[] = []
 

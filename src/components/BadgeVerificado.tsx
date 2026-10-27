@@ -12,8 +12,7 @@ export default function BadgeVerificado({ size = 'sm' }: { size?: 'sm' | 'md' | 
   const sizes = {
     sm: { icon: 14, text: 'text-xs', gap: 'gap-1' },
     md: { icon: 16, text: 'text-sm', gap: 'gap-1.5' },
-    lg: { icon: 20, text: 'text-base', gap: 'gap-2' },
-  }
+    lg: { icon: 20, text: 'text-base', gap: 'gap-2' } }
   const s = sizes[size]
 
   return (

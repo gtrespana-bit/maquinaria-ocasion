@@ -23,8 +23,7 @@ export async function notificarAdminTelegram(texto: string): Promise<boolean> {
       // Telegram no interpreta HTML por defecto: se manda texto plano para que
       // un título con `<>` no rompa el envío.
       body: JSON.stringify({ chat_id: chatId, text: texto.slice(0, 4000) }),
-      signal: AbortSignal.timeout(TIMEOUT_MS),
-    })
+      signal: AbortSignal.timeout(TIMEOUT_MS) })
     return res.ok
   } catch (err: any) {
     console.warn('Aviso a Telegram no enviado:', err?.message)

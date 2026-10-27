@@ -19,8 +19,7 @@ function getAdminClient() {
     throw new Error('Faltan NEXT_PUBLIC_SUPABASE_URL o SUPABASE_SERVICE_ROLE_KEY')
   }
   return createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY, {
-    auth: { persistSession: false, autoRefreshToken: false },
-  })
+    auth: { persistSession: false, autoRefreshToken: false } })
 }
 
 function htmlRecuperacion(nombre: string, accionLink: string): string {
@@ -75,8 +74,7 @@ export async function enviarRecuperacion(
   const { data, error } = await sb.auth.admin.generateLink({
     type: 'recovery',
     email,
-    options: { redirectTo },
-  })
+    options: { redirectTo } })
 
   if (error) {
     console.error('❌ [recuperacion-email] generateLink error:', error.message)
@@ -99,8 +97,7 @@ export async function enviarRecuperacion(
     return {
       ok: false,
       mensaje:
-        'No se pudo enviar el correo. Inténtalo de nuevo en unos minutos o escríbenos a soporte@maquinaria.click',
-    }
+        'No se pudo enviar el correo. Inténtalo de nuevo en unos minutos o escríbenos a soporte@maquinaria.click' }
   }
   return { ok: true }
 }

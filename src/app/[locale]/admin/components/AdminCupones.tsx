@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Gift, Ticket, Users } from 'lucide-react'
 import { Badge, Button, Card, Loading, RefreshButton, SearchInput, formatDate, formatDateTime } from './AdminUi'
-import { apiJson, type Perfil } from './admin-utils'
+import {apiJson, type Perfil } from './admin-utils'
 import RegalarPlanModal from './RegalarPlanModal'
 import { diasRestantesDePlan, etiquetaPlan, planVigente } from '@/lib/planes-regalo'
 
@@ -61,8 +61,7 @@ type PacksInfo = {
 const TONO_PACK: Record<string, 'blue' | 'brand' | 'purple' | 'gray'> = {
   starter: 'blue',
   plus: 'brand',
-  unlimited: 'purple',
-}
+  unlimited: 'purple' }
 
 export default function AdminCupones({ notify }: { notify: (msg: string) => void }) {
   const [loading, setLoading] = useState(true)
@@ -99,7 +98,7 @@ export default function AdminCupones({ notify }: { notify: (msg: string) => void
         setDiasGratis(res.ajustes.diasGratis)
       }
     } catch (e: any) {
-      notify('❌ ' + e.message)
+      notify( e.message)
     }
     setLoading(false)
   }, [notify])
@@ -152,11 +151,10 @@ export default function AdminCupones({ notify }: { notify: (msg: string) => void
       await apiJson('/api/admin/cupones', {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ajustes: { mesGratisActivo: mesGratis, diasGratis } }),
-      })
+        body: JSON.stringify({ ajustes: { mesGratisActivo: mesGratis, diasGratis } }) })
       notify('Mes de prueba actualizado')
     } catch (e: any) {
-      notify('❌ ' + e.message)
+      notify( e.message)
     }
   }
 
@@ -175,14 +173,12 @@ export default function AdminCupones({ notify }: { notify: (msg: string) => void
           mesesDescuento: meses,
           validoDesde: desde || null,
           validoHasta: hasta || null,
-          notas,
-        }),
-      })
+          notas }) })
       notify('Cupón ' + res.cupon.codigo + ' creado')
       setCodigo('')
       load()
     } catch (e: any) {
-      notify('❌ ' + e.message)
+      notify( e.message)
     }
   }
 
@@ -190,8 +186,7 @@ export default function AdminCupones({ notify }: { notify: (msg: string) => void
     await apiJson('/api/admin/cupones', {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ id, activo: false }),
-    })
+      body: JSON.stringify({ id, activo: false }) })
     load()
   }
 
@@ -201,8 +196,8 @@ export default function AdminCupones({ notify }: { notify: (msg: string) => void
     <div className="space-y-6">
       <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
         <div>
-          <h2 className="text-xl font-black text-gray-900">Planes, regalos y cupones</h2>
-          <p className="text-sm text-gray-500">
+          <h2 className="text-xl font-semibold text-ink">Planes, regalos y cupones</h2>
+          <p className="text-[12.5px] leading-relaxed text-ink/55">
             Planes de pago, prueba gratuita, cupones y regalos directos de tiempo gratis a un usuario.
           </p>
         </div>
@@ -210,8 +205,8 @@ export default function AdminCupones({ notify }: { notify: (msg: string) => void
       </div>
 
       <Card>
-        <h3 className="font-bold text-gray-900 mb-1">Prueba gratuita (nuevas altas)</h3>
-        <p className="text-sm text-gray-500 mb-4">
+        <h3 className="font-semibold text-ink mb-1">Prueba gratuita (nuevas altas)</h3>
+        <p className="text-[12.5px] leading-relaxed text-ink/55 mb-4">
           Si está activo, cada profesional o taller nuevo tiene {diasGratis} días con el plan Profesional
           desde el alta (o desde que un particular se pasa a profesional). Apagarlo deja de conceder
           pruebas nuevas, pero <strong>no corta</strong> las que ya están en curso: sus fechas están
@@ -239,10 +234,10 @@ export default function AdminCupones({ notify }: { notify: (msg: string) => void
 
       {/* ── Regalo directo de plan ─────────────────────────────── */}
       <Card className="border-brand-primary/30">
-        <h3 className="mb-1 flex items-center gap-2 font-bold text-gray-900">
-          <Gift size={18} className="text-brand-primary" /> Regalar plan a un usuario
+        <h3 className="mb-1 flex items-center gap-2 font-semibold text-ink">
+          <Gift size={18} className="text-ink" /> Regalar plan a un usuario
         </h3>
-        <p className="mb-4 text-sm text-gray-500">
+        <p className="mb-4 text-[12.5px] leading-relaxed text-ink/55">
           Días de Profesional gratis para una cuenta concreta, sin cupón y sin Stripe. El usuario recibe
           un email de aviso y el regalo queda anotado en la bitácora de abajo.
         </p>
@@ -254,9 +249,9 @@ export default function AdminCupones({ notify }: { notify: (msg: string) => void
           className="w-full sm:max-w-md"
         />
 
-        <div className="mt-3 divide-y divide-gray-50">
+        <div className="mt-3 divide-y divide-line">
           {usuariosFiltrados.length === 0 && (
-            <p className="py-4 text-sm text-gray-500">
+            <p className="py-4 text-[12.5px] leading-relaxed text-ink/55">
               {usuarios.length === 0 ? 'No se pudo cargar la lista de usuarios.' : 'Sin resultados para esa búsqueda.'}
             </p>
           )}
@@ -265,12 +260,12 @@ export default function AdminCupones({ notify }: { notify: (msg: string) => void
             const restantes = diasRestantesDePlan(u.plan_hasta)
             return (
               <div key={u.id} className="flex items-center gap-3 py-2.5">
-                <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-gray-100 text-sm font-bold text-gray-600">
+                <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-paper-2 text-[13px] font-medium text-ink/55">
                   {u.nombre?.slice(0, 1) || '?'}
                 </span>
                 <div className="min-w-0 flex-1">
-                  <p className="truncate text-sm font-semibold text-gray-800">{u.nombre || 'Sin nombre'}</p>
-                  <p className="truncate text-xs text-gray-500">{u.email || u.telefono || '—'}</p>
+                  <p className="truncate text-[13px] font-medium text-ink">{u.nombre || 'Sin nombre'}</p>
+                  <p className="truncate text-[11.5px] text-ink/45">{u.email || u.telefono || '—'}</p>
                 </div>
                 {vigente ? (
                   <Badge tone={TONO_PACK[u.plan_anuncios || ''] || 'gray'}>
@@ -278,7 +273,7 @@ export default function AdminCupones({ notify }: { notify: (msg: string) => void
                     {restantes != null ? ` · ${restantes} d` : ''}
                   </Badge>
                 ) : (
-                  <span className="hidden text-xs text-gray-400 sm:block">Sin plan</span>
+                  <span className="hidden t-label text-ink/35 sm:block">Sin plan</span>
                 )}
                 <Button size="xs" variant={vigente ? 'outline' : 'primary'} onClick={() => setRegalo(u)}>
                   <Gift size={13} /> Regalar
@@ -288,7 +283,7 @@ export default function AdminCupones({ notify }: { notify: (msg: string) => void
           })}
         </div>
         {!busqueda && usuarios.length > 8 && (
-          <p className="mt-2 text-xs text-gray-400">
+          <p className="mt-2 t-label text-ink/35">
             Mostrando los 8 usuarios más recientes. Escribe para buscar entre los {usuarios.length} cargados.
           </p>
         )}
@@ -296,8 +291,8 @@ export default function AdminCupones({ notify }: { notify: (msg: string) => void
 
       {packsInfo && (
         <Card>
-          <h3 className="mb-3 flex items-center gap-2 font-bold text-gray-900">
-            <Users size={18} className="text-brand-primary" /> Planes activos ahora mismo
+          <h3 className="mb-3 flex items-center gap-2 font-semibold text-ink">
+            <Users size={18} className="text-ink" /> Planes activos ahora mismo
           </h3>
           <div className="mb-4 grid grid-cols-2 gap-3 sm:grid-cols-4">
             {[
@@ -305,9 +300,9 @@ export default function AdminCupones({ notify }: { notify: (msg: string) => void
               { label: 'Profesional', valor: packsInfo.resumen.unlimited, tone: 'brand' as const },
               { label: 'Total con plan', valor: packsInfo.resumen.total, tone: 'gray' as const },
             ].map((kpi) => (
-              <div key={kpi.label} className="rounded-xl border border-gray-100 bg-gray-50/60 p-3">
-                <p className="text-2xl font-black text-gray-900">{kpi.valor}</p>
-                <p className="mt-0.5 flex items-center gap-1.5 text-xs font-medium text-gray-500">
+              <div key={kpi.label} className="rounded-xl border border-line bg-paper-2/60 p-3">
+                <p className="text-2xl font-semibold text-ink">{kpi.valor}</p>
+                <p className="mt-0.5 flex items-center gap-1.5 text-xs font-medium text-ink/55">
                   <Badge tone={kpi.tone}>{kpi.label}</Badge>
                 </p>
               </div>
@@ -317,7 +312,7 @@ export default function AdminCupones({ notify }: { notify: (msg: string) => void
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b text-left text-xs uppercase tracking-wide text-gray-500">
+                <tr className="border-b text-left text-xs uppercase tracking-wide text-ink/55">
                   <th className="py-2">Usuario</th>
                   <th>Plan</th>
                   <th>Activo hasta</th>
@@ -328,17 +323,17 @@ export default function AdminCupones({ notify }: { notify: (msg: string) => void
               </thead>
               <tbody>
                 {packsInfo.packs.map((p) => (
-                  <tr key={p.id} className="border-b border-gray-100">
+                  <tr key={p.id} className="border-b border-line">
                     <td className="py-2">
-                      <p className="font-semibold text-gray-800">{p.nombre}</p>
-                      <p className="text-xs text-gray-400">{p.email || '—'}</p>
+                      <p className="font-semibold text-ink">{p.nombre}</p>
+                      <p className="t-label text-ink/35">{p.email || '—'}</p>
                     </td>
                     <td><Badge tone={TONO_PACK[p.plan] || 'gray'}>{p.planEtiqueta}</Badge></td>
-                    <td className="text-xs text-gray-500">{formatDate(p.planHasta)}</td>
-                    <td className="text-xs font-semibold text-gray-700">
+                    <td className="text-[11.5px] text-ink/45">{formatDate(p.planHasta)}</td>
+                    <td className="t-label text-ink/45">
                       {p.diasRestantes != null ? `${p.diasRestantes} días` : '—'}
                     </td>
-                    <td className="text-xs text-gray-500">
+                    <td className="text-[11.5px] text-ink/45">
                       {p.tipoVendedor === 'taller' ? 'Taller' : p.tipoVendedor === 'profesional' ? 'Profesional' : 'Particular'}
                     </td>
                     <td className="text-right">
@@ -352,8 +347,7 @@ export default function AdminCupones({ notify }: { notify: (msg: string) => void
                             email: p.email,
                             plan_anuncios: p.plan,
                             plan_hasta: p.planHasta,
-                            tipo_vendedor: p.tipoVendedor,
-                          })
+                            tipo_vendedor: p.tipoVendedor })
                         }
                       >
                         <Gift size={13} /> Ajustar
@@ -364,15 +358,15 @@ export default function AdminCupones({ notify }: { notify: (msg: string) => void
               </tbody>
             </table>
             {packsInfo.packs.length === 0 && (
-              <p className="py-4 text-sm text-gray-500">Nadie tiene plan de pago todavía (ni regalado).</p>
+              <p className="py-4 text-[12.5px] leading-relaxed text-ink/55">Nadie tiene plan de pago todavía (ni regalado).</p>
             )}
           </div>
 
-          <h4 className="mb-2 mt-6 text-sm font-bold text-gray-900">Últimos regalos hechos desde el panel</h4>
+          <h4 className="mb-2 mt-6 text-[13px] font-medium text-ink">Últimos regalos hechos desde el panel</h4>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b text-left text-xs uppercase tracking-wide text-gray-500">
+                <tr className="border-b text-left text-xs uppercase tracking-wide text-ink/55">
                   <th className="py-2">Cuándo</th>
                   <th>Usuario</th>
                   <th>Regalo</th>
@@ -383,11 +377,11 @@ export default function AdminCupones({ notify }: { notify: (msg: string) => void
               </thead>
               <tbody>
                 {packsInfo.regalos.map((r) => (
-                  <tr key={r.id} className="border-b border-gray-100">
-                    <td className="py-2 text-xs text-gray-500">{formatDateTime(r.creadoEn)}</td>
+                  <tr key={r.id} className="border-b border-line">
+                    <td className="py-2 text-[11.5px] text-ink/45">{formatDateTime(r.creadoEn)}</td>
                     <td className="text-xs">
-                      <p className="font-semibold text-gray-800">{r.nombre}</p>
-                      <p className="text-gray-400">{r.email || '—'}</p>
+                      <p className="font-semibold text-ink">{r.nombre}</p>
+                      <p className="text-ink/35">{r.email || '—'}</p>
                     </td>
                     <td className="text-xs">
                       {r.plan === 'gratis' ? (
@@ -395,28 +389,28 @@ export default function AdminCupones({ notify }: { notify: (msg: string) => void
                       ) : (
                         <>
                           <Badge tone={TONO_PACK[r.plan] || 'gray'}>{r.planEtiqueta}</Badge>
-                          <span className="ml-2 text-gray-500">{r.dias} días</span>
+                          <span className="ml-2 text-ink/55">{r.dias} días</span>
                         </>
                       )}
                     </td>
-                    <td className="text-xs text-gray-500">{formatDate(r.planHasta)}</td>
-                    <td className="max-w-[220px] truncate text-xs text-gray-500" title={r.motivo || ''}>
+                    <td className="text-[11.5px] text-ink/45">{formatDate(r.planHasta)}</td>
+                    <td className="max-w-[220px] truncate text-[11.5px] text-ink/45" title={r.motivo || ''}>
                       {r.motivo || '—'}
                     </td>
-                    <td className="text-xs text-gray-400">{r.adminEmail || '—'}</td>
+                    <td className="t-label text-ink/35">{r.adminEmail || '—'}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
             {packsInfo.regalos.length === 0 && (
-              <p className="py-4 text-sm text-gray-500">Aún no has regalado ningún plan.</p>
+              <p className="py-4 text-[12.5px] leading-relaxed text-ink/55">Aún no has regalado ningún plan.</p>
             )}
           </div>
         </Card>
       )}
 
       <Card>
-        <h3 className="font-bold text-gray-900 mb-3 flex items-center gap-2"><Ticket size={18} /> Nuevo cupón</h3>
+        <h3 className="font-semibold text-ink mb-3 flex items-center gap-2"><Ticket size={18} /> Nuevo cupón</h3>
         <div className="grid sm:grid-cols-2 gap-3 text-sm">
           <label className="block">
             Tipo
@@ -471,7 +465,7 @@ export default function AdminCupones({ notify }: { notify: (msg: string) => void
           </label>
         </div>
         <Button className="mt-4" onClick={crear}>Generar cupón</Button>
-        <p className="mt-2 text-xs text-gray-400">
+        <p className="mt-2 t-label text-ink/35">
           El cupón lo canjea el propio usuario desde su panel y exige cuenta profesional. Para dárselo tú directamente, usa
           «Regalar plan a un usuario».
         </p>
@@ -482,7 +476,7 @@ export default function AdminCupones({ notify }: { notify: (msg: string) => void
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="text-left text-gray-500 border-b">
+              <tr className="text-left text-ink/55 border-b">
                 <th className="py-2">Código</th>
                 <th>Tipo</th>
                 <th>Detalle</th>
@@ -493,7 +487,7 @@ export default function AdminCupones({ notify }: { notify: (msg: string) => void
             </thead>
             <tbody>
               {cupones.map(c => (
-                <tr key={c.id} className="border-b border-gray-100">
+                <tr key={c.id} className="border-b border-line">
                   <td className="py-2 font-mono font-bold">{c.codigo}</td>
                   <td>{c.tipo === 'descuento' ? 'Descuento' : 'Regalo'}</td>
                   <td>
@@ -512,7 +506,7 @@ export default function AdminCupones({ notify }: { notify: (msg: string) => void
               ))}
             </tbody>
           </table>
-          {cupones.length === 0 && <p className="text-sm text-gray-500 py-4">Aún no hay cupones.</p>}
+          {cupones.length === 0 && <p className="text-[12.5px] leading-relaxed text-ink/55 py-4">Aún no hay cupones.</p>}
         </div>
       </Card>
 

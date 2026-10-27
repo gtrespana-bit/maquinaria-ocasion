@@ -26,10 +26,7 @@ export async function generateMetadata(props: PageProps): Promise<Metadata> {
       follow: true,
       googleBot: {
         index: false,
-        follow: true,
-      },
-    },
-  }
+        follow: true } } }
 }
 
 export default function BuscarPage({ searchParams }: { searchParams: Promise<{ [key: string]: string | undefined }> }) {

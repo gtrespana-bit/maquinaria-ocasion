@@ -91,8 +91,7 @@ export async function POST(req: NextRequest) {
           body: `A alguien le gustó "${productoTitle || product.titulo}"`,
           tag: `fav-${productId.slice(0, 8)}`,
           icon: '/icon-192.png',
-          click_url: `/producto/${product.slug || productId}`,
-        })
+          click_url: `/producto/${product.slug || productId}` })
 
         const deadSubs: string[] = []
         await Promise.all(subs.map(async (sub: any) => {

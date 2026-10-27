@@ -89,8 +89,7 @@ export async function GET(request: NextRequest) {
             : `${nuevos.length} publicaciones nuevas coinciden con "${etiqueta}"`,
           tag: `busqueda-${b.id.slice(0, 8)}`,
           icon: '/icon-192.png',
-          click_url: `/buscar?${params.toString()}`,
-        })
+          click_url: `/buscar?${params.toString()}` })
         notificados++
       }
     } catch (e: any) {

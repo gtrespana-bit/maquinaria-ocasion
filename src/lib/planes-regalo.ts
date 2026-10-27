@@ -12,7 +12,7 @@
  * devuelve el plan y la fecha de fin resultantes.
  */
 
-import { esPlanPago, type PlanPago } from '@/lib/planes-anuncios'
+import { esPlanPago, type PlanPago} from '@/lib/planes-anuncios'
 
 /** `gratis` = quitar el pack (volver a la cuenta sin suscripción). */
 export type PlanRegalable = PlanPago | 'gratis'
@@ -78,8 +78,7 @@ export function calcularRegaloPlan(opts: {
       planHasta: null,
       diasSumados: 0,
       hastaAnterior: hastaValida,
-      extendido: false,
-    }
+      extendido: false }
   }
 
   const dias = diasRegaloValidos(opts.dias, opts.plan)
@@ -89,8 +88,7 @@ export function calcularRegaloPlan(opts: {
       planHasta: hastaValida,
       diasSumados: 0,
       hastaAnterior: hastaValida,
-      extendido: false,
-    }
+      extendido: false }
   }
 
   const mismoPackVigente =
@@ -107,8 +105,7 @@ export function calcularRegaloPlan(opts: {
     planHasta,
     diasSumados: opts.modo === 'extender' && mismoPackVigente ? dias : 0,
     hastaAnterior: hastaValida,
-    extendido: opts.modo === 'extender' && mismoPackVigente,
-  }
+    extendido: opts.modo === 'extender' && mismoPackVigente }
 }
 
 /** Días que quedan de pack (null si no hay fecha o ya venció). */

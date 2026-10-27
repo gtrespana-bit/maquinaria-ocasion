@@ -60,8 +60,7 @@ export async function requireAdmin(
   }
   if (!getAdminEmails().includes((user.email || '').toLowerCase())) {
     return {
-      response: NextResponse.json({ error: 'No tienes permisos de administrador' }, { status: 403 }),
-    }
+      response: NextResponse.json({ error: 'No tienes permisos de administrador' }, { status: 403 }) }
   }
   return { user }
 }

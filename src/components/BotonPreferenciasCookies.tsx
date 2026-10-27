@@ -13,15 +13,15 @@ export default function BotonPreferenciasCookies({ locale = 'es' }: { locale?: s
   const esIngles = locale === 'en'
 
   return (
-    <div className="mt-8 border-t border-gray-200 pt-6">
+    <div className="mt-10 border-t border-line pt-6">
       <button
         type="button"
         onClick={() => reiniciarConsentimiento()}
-        className="inline-flex items-center gap-2 bg-white border-2 border-brand-primary text-brand-primary font-bold rounded-xl px-5 py-3 hover:bg-brand-primary hover:text-white transition"
+        className="btn btn-outline"
       >
         {esIngles ? 'Change my choice' : 'Cambiar mi decisión'}
       </button>
-      <p className="text-sm text-gray-500 mt-2">
+      <p className="mt-2 text-[12.5px] text-muted">
         {esIngles
           ? 'The cookie notice will be shown again so you can accept or reject again.'
           : 'Volverás a ver el aviso de cookies para aceptar o rechazar de nuevo.'}

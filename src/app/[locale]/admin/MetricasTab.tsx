@@ -1,9 +1,10 @@
 'use client'
+
 import { formatPrecio } from '@/lib/precio'
 
 import { useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabase'
-import { Users, ShoppingBag, Eye, TrendingUp, DollarSign, Star, Zap, Clock, ArrowUp, ArrowDown } from 'lucide-react'
+import { Users, ShoppingBag, Eye, TrendingUp, DollarSign, Star, Clock } from 'lucide-react'
 
 export default function MetricasTab() {
   const [loading, setLoading] = useState(true)
@@ -78,8 +79,7 @@ export default function MetricasTab() {
           totalResenas: totalResenas || 0,
           totalTransactions: totalTransactions || 0,
           verifiedSellers: verifiedSellers || 0,
-          pendingTransactions: pendingTransactions || 0,
-        })
+          pendingTransactions: pendingTransactions || 0 })
         setRecentActivity(recent || [])
         setTopSellers(Object.values(sellerStats).sort((a: any, b: any) => b.totalVisits - a.totalVisits).slice(0, 10))
       } catch (err) {
@@ -115,75 +115,75 @@ export default function MetricasTab() {
       {/* KPI Cards */}
       <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
         {cards.map((card, i) => (
-          <div key={i} className="bg-white rounded-xl p-5 shadow-sm border border-gray-100">
+          <div key={i} className="bg-[#FBFAF5] rounded-xl p-5  border border-line">
             <div className={`w-10 h-10 rounded-lg ${card.bg} flex items-center justify-center mb-3`}>
               <card.icon size={20} className={card.color} />
             </div>
-            <p className="text-2xl font-black text-gray-900">{card.value ?? 0}</p>
-            <p className="text-xs text-gray-500 mt-1">{card.label}</p>
+            <p className="text-2xl font-semibold text-ink">{card.value ?? 0}</p>
+            <p className="text-[11.5px] text-ink/45 mt-1">{card.label}</p>
           </div>
         ))}
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Publicaciones recientes */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100">
-          <div className="p-5 border-b border-gray-100 flex items-center gap-2">
+        <div className="bg-[#FBFAF5] rounded-xl  border border-line">
+          <div className="p-5 border-b border-line flex items-center gap-2">
             <Clock size={18} className="text-blue-600" />
-            <h3 className="font-bold text-gray-900">Publicaciones recientes</h3>
+            <h3 className="font-semibold text-ink">Publicaciones recientes</h3>
           </div>
-          <div className="divide-y divide-gray-50">
+          <div className="divide-y divide-line">
             {recentActivity.slice(0, 10).map((p: any) => (
               <div key={p.id} className="px-5 py-3 flex items-center justify-between">
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-gray-800 truncate">{p.titulo}</p>
-                  <p className="text-xs text-gray-500">
+                  <p className="text-sm font-medium text-ink truncate">{p.titulo}</p>
+                  <p className="text-[11.5px] text-ink/45">
                     {formatPrecio(p.precio_usd || 0)} · {p.seller_nombre}
                   </p>
                 </div>
                 <div className="text-right ml-4">
-                  <p className="text-xs text-gray-500">
+                  <p className="text-[11.5px] text-ink/45">
                     {new Intl.DateTimeFormat('es-ES', { year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date(p.creado_en))}
                   </p>
-                  <p className="text-xs text-gray-500 flex items-center gap-1 justify-end">
+                  <p className="text-[11.5px] text-ink/45 flex items-center gap-1 justify-end">
                     <Eye size={10} /> {p.visitas || 0}
                   </p>
                 </div>
               </div>
             ))}
             {recentActivity.length === 0 && (
-              <p className="px-5 py-8 text-center text-sm text-gray-500">No hay publicaciones aún</p>
+              <p className="px-5 py-8 text-center text-[12.5px] leading-relaxed text-ink/55">No hay publicaciones aún</p>
             )}
           </div>
         </div>
 
         {/* Top vendedores por visitas */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100">
-          <div className="p-5 border-b border-gray-100 flex items-center gap-2">
+        <div className="bg-[#FBFAF5] rounded-xl  border border-line">
+          <div className="p-5 border-b border-line flex items-center gap-2">
             <TrendingUp size={18} className="text-orange-600" />
-            <h3 className="font-bold text-gray-900">Top vendedores por visitas</h3>
+            <h3 className="font-semibold text-ink">Top vendedores por visitas</h3>
           </div>
-          <div className="divide-y divide-gray-50">
+          <div className="divide-y divide-line">
             {topSellers.slice(0, 10).map((s: any, i: number) => (
               <div key={i} className="px-5 py-3 flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <span className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold
-                    ${i === 0 ? 'bg-yellow-100 text-yellow-800' : i === 1 ? 'bg-gray-100 text-gray-700' : i === 2 ? 'bg-orange-100 text-orange-800' : 'bg-gray-50 text-gray-500'}`}>
+                    ${i === 0 ? 'bg-yellow-100 text-yellow-800' : i === 1 ? 'bg-paper-2 text-ink' : i === 2 ? 'bg-orange-100 text-orange-800' : 'bg-paper-2 text-ink/55'}`}>
                     {i + 1}
                   </span>
                   <div>
-                    <p className="text-sm font-medium text-gray-800">{s.nombre}</p>
-                    <p className="text-xs text-gray-500">{s.activeProducts} activos de {s.totalProducts}</p>
+                    <p className="text-sm font-medium text-ink">{s.nombre}</p>
+                    <p className="text-[11.5px] text-ink/45">{s.activeProducts} activos de {s.totalProducts}</p>
                   </div>
                 </div>
-                <div className="flex items-center gap-1.5 text-sm font-bold text-brand-primary">
+                <div className="flex items-center gap-1.5 text-[13px] font-medium text-ink">
                   <Eye size={14} />
                   {formatPrecio(s.totalVisits)}
                 </div>
               </div>
             ))}
             {topSellers.length === 0 && (
-              <p className="px-5 py-8 text-center text-sm text-gray-500">No hay datos aún</p>
+              <p className="px-5 py-8 text-center text-[12.5px] leading-relaxed text-ink/55">No hay datos aún</p>
             )}
           </div>
         </div>
@@ -194,20 +194,20 @@ export default function MetricasTab() {
         <div className="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-xl p-6">
           <div className="flex items-center gap-3 mb-3">
             <DollarSign size={24} className="text-green-600" />
-            <h3 className="font-bold text-gray-900 text-lg">Estimación de ingresos</h3>
+            <h3 className="font-semibold text-ink text-lg">Estimación de ingresos</h3>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
             <div>
-              <p className="text-sm text-gray-500">Si 20% compran el paquete 5 €</p>
-              <p className="text-2xl font-black text-green-600">${(stats.totalTransactions * 0.2 * 5).toFixed(2)}</p>
+              <p className="text-[12.5px] leading-relaxed text-ink/55">Si 20% compran el paquete 5 €</p>
+              <p className="text-2xl font-semibold text-green-600">${(stats.totalTransactions * 0.2 * 5).toFixed(2)}</p>
             </div>
             <div>
-              <p className="text-sm text-gray-500">Si 20% compran el paquete 10 €</p>
-              <p className="text-2xl font-black text-green-600">${(stats.totalTransactions * 0.2 * 10).toFixed(2)}</p>
+              <p className="text-[12.5px] leading-relaxed text-ink/55">Si 20% compran el paquete 10 €</p>
+              <p className="text-2xl font-semibold text-green-600">${(stats.totalTransactions * 0.2 * 10).toFixed(2)}</p>
             </div>
             <div>
-              <p className="text-sm text-gray-500">Si 20% compran el paquete 20 €</p>
-              <p className="text-2xl font-black text-green-600">${(stats.totalTransactions * 0.2 * 20).toFixed(2)}</p>
+              <p className="text-[12.5px] leading-relaxed text-ink/55">Si 20% compran el paquete 20 €</p>
+              <p className="text-2xl font-semibold text-green-600">${(stats.totalTransactions * 0.2 * 20).toFixed(2)}</p>
             </div>
           </div>
         </div>

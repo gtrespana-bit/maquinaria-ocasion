@@ -27,8 +27,7 @@ export async function GET(request: Request) {
     const { error } = await supabase.auth.verifyOtp({
       email,
       token,
-      type: 'email',
-    })
+      type: 'email' })
 
     if (error) {
       return NextResponse.redirect(new URL(confirmPath, request.url))

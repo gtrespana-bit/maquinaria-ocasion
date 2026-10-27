@@ -72,8 +72,7 @@ export const TRANSICIONES_RESERVA: Record<EstadoReserva, readonly EstadoReserva[
   completada: [],
   rechazada: [],
   cancelada: [],
-  expirada: [],
-}
+  expirada: [] }
 
 export function puedeTransicionar(desde: unknown, hacia: unknown): boolean {
   if (!esEstadoReserva(desde) || !esEstadoReserva(hacia)) return false
@@ -132,34 +131,27 @@ export const ETIQUETAS_ESTADO_RESERVA: Record<EstadoReserva, { label: string; de
   solicitada: {
     label: 'Solicitud enviada',
     descripcion: 'El comprador ha pedido reservar con señal. El vendedor debe confirmar cuando reciba el pago.',
-    tono: 'bg-amber-50 text-amber-800 border-amber-200',
-  },
+    tono: 'bg-amber-50 text-amber-800 border-amber-200' },
   activa: {
     label: 'Reserva activa',
     descripcion: 'El vendedor confirmó la señal: el anuncio queda reservado hasta la fecha indicada.',
-    tono: 'bg-brand-accent/10 text-brand-accent-dark border-brand-accent/40',
-  },
+    tono: 'bg-brand-accent/10 text-brand-accent-dark border-brand-accent/40' },
   completada: {
     label: 'Operación completada',
     descripcion: 'El anuncio se ha vendido y la señal se descontó del precio.',
-    tono: 'bg-gray-100 text-gray-700 border-gray-200',
-  },
+    tono: 'bg-gray-100 text-gray-700 border-gray-200' },
   rechazada: {
     label: 'Solicitud rechazada',
     descripcion: 'El vendedor no ha confirmado la reserva: el anuncio sigue disponible.',
-    tono: 'bg-red-50 text-red-700 border-red-200',
-  },
+    tono: 'bg-red-50 text-red-700 border-red-200' },
   cancelada: {
     label: 'Reserva cancelada',
     descripcion: 'Alguna de las partes ha cancelado la reserva y el anuncio vuelve a estar libre.',
-    tono: 'bg-gray-100 text-gray-700 border-gray-200',
-  },
+    tono: 'bg-gray-100 text-gray-700 border-gray-200' },
   expirada: {
     label: 'Reserva caducada',
     descripcion: 'Pasó la fecha límite sin cerrarse: el anuncio vuelve a estar libre.',
-    tono: 'bg-gray-100 text-gray-700 border-gray-200',
-  },
-}
+    tono: 'bg-gray-100 text-gray-700 border-gray-200' } }
 
 /**
  * Condiciones de la señal, tal como se muestran al comprador antes de pedirla.

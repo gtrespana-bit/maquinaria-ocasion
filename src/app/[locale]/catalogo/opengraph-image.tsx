@@ -23,8 +23,7 @@ const SUBS = TODAS_LAS_SUBS
 const FAMILIA_COLOR: Record<string, string> = {
   agricola: '#166534',
   obra: '#1E293B',
-  herramientas: '#B45309',
-}
+  herramientas: '#B45309' }
 const COLOR_POR_DEFECTO = '#0F172A'
 const ICONO_POR_DEFECTO = '🚜'
 const POR_DEFECTO = { name: 'Maquinaria y herramienta', icon: ICONO_POR_DEFECTO, color: COLOR_POR_DEFECTO }
@@ -37,8 +36,7 @@ function resolverCategoria(param?: string) {
   return {
     name: sub.label,
     icon: sub.icon || ICONO_POR_DEFECTO,
-    color: FAMILIA_COLOR[familia?.key ?? ''] || COLOR_POR_DEFECTO,
-  }
+    color: FAMILIA_COLOR[familia?.key ?? ''] || COLOR_POR_DEFECTO }
 }
 
 export default async function Image({ searchParams }: { searchParams?: { [key: string]: string | string[] | undefined } }) {
@@ -61,8 +59,7 @@ export default async function Image({ searchParams }: { searchParams?: { [key: s
             'radial-gradient(circle at 25% 25%, rgba(255,255,255,0.18) 0%, transparent 40%), radial-gradient(circle at 75% 75%, rgba(0,0,0,0.25) 0%, transparent 40%)',
           padding: '40px',
           color: 'white',
-          fontFamily: 'Inter, sans-serif',
-        }}
+          fontFamily: 'Inter, sans-serif' }}
       >
         <div style={{ fontSize: '120px', marginBottom: '20px' }}>{cat.icon}</div>
         <h1
@@ -72,8 +69,7 @@ export default async function Image({ searchParams }: { searchParams?: { [key: s
             textAlign: 'center',
             textShadow: '2px 2px 4px rgba(0,0,0,0.5)',
             lineHeight: 1.2,
-            margin: 0,
-          }}
+            margin: 0 }}
         >
           {cat.name}
         </h1>
@@ -85,8 +81,7 @@ export default async function Image({ searchParams }: { searchParams?: { [key: s
             fontSize: '24px',
             fontWeight: 'bold',
             color: 'white',
-            textShadow: '2px 2px 4px rgba(0,0,0,0.5)',
-          }}
+            textShadow: '2px 2px 4px rgba(0,0,0,0.5)' }}
         >
           maquinaria.click
         </div>

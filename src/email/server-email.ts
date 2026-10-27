@@ -1,4 +1,3 @@
-'use server'
 import { enviarEmailSMTP } from '@/lib/server-email'
 import { escapeHtml } from '@/lib/html-escape'
 import { emailLayout, COLORS } from '@/lib/email-layout'
@@ -137,8 +136,7 @@ export async function enviarEmailNivel(
     'Bronce': '🥉',
     'Plata': '🥈',
     'Oro': '🥇',
-    'Diamante': '💎',
-  }
+    'Diamante': '💎' }
   const emoji = nivelesEmoji[nivelNuevo] || '⭐'
   return enviar('MaquinariaOcasión', email, `${emoji} Subiste de nivel: ${nivelNuevo}!`, `
     <div style="font-family:sans-serif;max-width:500px;margin:0 auto">

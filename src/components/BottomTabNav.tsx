@@ -2,67 +2,71 @@
 
 import { usePathname } from 'next/navigation'
 import LocalLink from '@/components/LocalLink'
-import { Home, Search, PlusCircle, MessageCircle, User } from 'lucide-react'
+import { Home, Search, Plus, MessageCircle, User } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 
 /**
- * Barra de navegación inferior.
+ * Navegación inferior (móvil).
  *
- * Antes solo se montaba en modo PWA, pero la gran mayoría del tráfico móvil
- * llega por enlace compartido (WhatsApp, Google) directamente al navegador.
- * Ahí el botón grande de "Publicar" —el patrón que mejor convierte en móvil—
- * no existía. Ahora se muestra en todo móvil (PWA y navegador) y desaparece
- * en escritorio (md:hidden).
+ * Barra de papel con filete superior, iconos de 1,5 px y una única acción
+ * destacada: publicar, en placa de señal. Se muestra también en navegador
+ * (no solo en PWA) porque la mayoría del tráfico móvil llega por enlace.
  */
 export default function BottomTabNav() {
   const pathname = usePathname()
   const t = useTranslations()
 
-  const navItems = [
+  const items = [
     { href: '/', icon: Home, label: t('bottomNav.home') },
-    { href: '/buscar', icon: Search, label: t('bottomNav.search') },
-    { href: '/publicar', icon: PlusCircle, label: t('bottomNav.publish'), highlight: true },
+    { href: '/catalogo', icon: Search, label: t('bottomNav.search') },
+    { href: '/publicar', icon: Plus, label: t('bottomNav.publish'), primary: true },
     { href: '/chat', icon: MessageCircle, label: t('bottomNav.chat') },
     { href: '/dashboard', icon: User, label: t('bottomNav.profile') },
   ]
 
   return (
     <nav
-      className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-200 md:hidden"
+      className="fixed inset-x-0 bottom-0 z-50 border-t border-line bg-paper/95 backdrop-blur-md md:hidden"
       style={{ paddingBottom: 'env(safe-area-inset-bottom, 0)' }}
-      role="navigation"
+      aria-label="Navegación principal"
     >
-      <div className="flex items-center justify-around h-16">
-        {navItems.map((item) => {
+      <div className="flex h-[58px] items-stretch">
+        {items.map((item) => {
           const Icon = item.icon
-          const isActive = pathname === item.href || (item.href === '/dashboard' && pathname === '/dashboard')
+          const active =
+            item.href === '/' ? pathname === '/' : pathname === item.href || pathname.startsWith(`${item.href}/`)
+
+          if (item.primary) {
+            return (
+              <LocalLink
+                key={item.href}
+                href={item.href}
+                className="relative flex flex-1 items-center justify-center"
+                aria-label={item.label}
+              >
+                <span className="flex h-11 w-11 -translate-y-[3px] items-center justify-center bg-signal text-ink shadow-signal-glow">
+                  <Icon size={22} strokeWidth={2.2} />
+                </span>
+              </LocalLink>
+            )
+          }
+
           return (
             <LocalLink
               key={item.href}
               href={item.href}
-              className={`flex flex-col items-center justify-center flex-1 h-full transition ${
-                item.highlight ? '-mt-4' : ''
-              }`}
+              className="relative flex flex-1 flex-col items-center justify-center gap-1"
+              aria-current={active ? 'page' : undefined}
             >
-              {item.highlight ? (
-                <div className="w-14 h-14 bg-brand-accent rounded-full flex items-center justify-center shadow-lg shadow-yellow-200 active:scale-95 transition-transform">
-                  <Icon size={26} className="text-brand-primary" />
-                </div>
-              ) : (
-                <div className="flex flex-col items-center">
-                  <Icon
-                    size={22}
-                    className={isActive ? 'text-brand-primary' : 'text-gray-500'}
-                  />
-                  <span
-                    className={`text-[10px] mt-0.5 font-medium ${
-                      isActive ? 'text-brand-primary' : 'text-gray-500'
-                    }`}
-                  >
-                    {item.label}
-                  </span>
-                </div>
-              )}
+              <Icon size={19} strokeWidth={active ? 1.9 : 1.5} className={active ? 'text-ink' : 'text-ink/45'} />
+              <span
+                className={`text-[9.5px] font-medium uppercase tracking-[0.12em] ${
+                  active ? 'text-ink' : 'text-ink/40'
+                }`}
+              >
+                {item.label}
+              </span>
+              {active && <span aria-hidden="true" className="absolute top-0 h-px w-6 bg-ink" />}
             </LocalLink>
           )
         })}

@@ -29,9 +29,7 @@ import {
   importeSeñalValido,
   normalizarEstadoReserva,
   reservaVigente,
-  sugerirImporteSeñal,
-  type EstadoReserva,
-} from '@/lib/reservas'
+  sugerirImporteSeñal, type EstadoReserva} from '@/lib/reservas'
 
 const METODOS = [
   { id: 'bizum', label: 'Bizum' },
@@ -83,8 +81,7 @@ export default function BotonReservar({
   userId,
   reservadoInicial = false,
   reservadoHastaInicial = null,
-  onEstadoReserva,
-}: Props) {
+  onEstadoReserva }: Props) {
   const t = useTranslations('productDetail')
   const [abierto, setAbierto] = useState(false)
   const [cargando, setCargando] = useState(true)
@@ -130,8 +127,7 @@ export default function BotonReservar({
       const res = await fetch('/api/reservas', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ productoId: producto.id, importe, metodoPago: metodo, mensaje }),
-      })
+        body: JSON.stringify({ productoId: producto.id, importe, metodoPago: metodo, mensaje }) })
       const json = await res.json().catch(() => ({}))
       if (!res.ok || !json.ok) {
         setError(json.error || 'No se pudo crear la solicitud')
@@ -155,8 +151,7 @@ export default function BotonReservar({
       const res = await fetch('/api/reservas/cancelar', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ reservaId: miReserva.id, motivo: 'Cancelada por el comprador' }),
-      })
+        body: JSON.stringify({ reservaId: miReserva.id, motivo: 'Cancelada por el comprador' }) })
       if (res.ok) { setMiReserva(null); setAbierto(false); setAjenaVigente(false) }
     } finally {
       setEnviando(false)

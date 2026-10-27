@@ -3,13 +3,22 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import Image from 'next/image'
 import {
-  Package, Pause, Play, Star, Zap, Trash2, Eye, ExternalLink, CheckSquare, Square,
-  Filter, ChevronLeft, ChevronRight, Search, Loader2,
-} from 'lucide-react'
+  Package,
+  Pause,
+  Play,
+  Star,
+  Zap,
+  Trash2,
+  Eye,
+  ExternalLink,
+  CheckSquare,
+  Square,
+  ChevronLeft,
+  ChevronRight } from 'lucide-react'
 import LocalLink from '@/components/LocalLink'
 import { productUrl } from '@/lib/product-url'
-import { Badge, Button, Card, Confirm, Empty, Loading, Modal, RefreshButton, SearchInput, Segmented, formatDate, formatDateTime, formatMoney, formatNumber, timeAgo } from './AdminUi'
-import { apiJson, type Producto, type Perfil } from './admin-utils'
+import { Badge, Button, Card, Confirm, Empty, Loading, Modal, RefreshButton, SearchInput, Segmented, formatDate, formatDateTime, formatMoney, formatNumber } from './AdminUi'
+import {apiJson, type Producto, type Perfil } from './admin-utils'
 
 type TabKey = 'todas' | 'activas' | 'pausadas' | 'pendientes' | 'vendidas' | 'destacadas' | 'rechazadas'
 type SortKey = 'creado_en' | 'precio_usd' | 'visitas' | 'titulo'
@@ -55,8 +64,7 @@ export default function AdminPublicaciones({ notify }: { notify: (msg: string) =
           const res = await apiJson<{ ok: boolean; perfiles: Perfil[] }>('/api/admin/perfiles-ids', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ userIds }),
-          })
+            body: JSON.stringify({ userIds }) })
           const m: Record<string, Perfil> = {}
           ;(res.perfiles || []).forEach((p) => (m[p.id] = p))
           setPerfiles(m)
@@ -67,7 +75,7 @@ export default function AdminPublicaciones({ notify }: { notify: (msg: string) =
       setSelected(new Set())
       setPage(1)
     } catch (e: any) {
-      notify('❌ ' + (e?.message || 'Error cargando publicaciones'))
+      notify( (e?.message || 'Error cargando publicaciones'))
     }
     setLoading(false)
     setRefreshing(false)
@@ -122,9 +130,9 @@ export default function AdminPublicaciones({ notify }: { notify: (msg: string) =
     try {
       await apiJson('/api/admin/toggle-activo', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ productId: p.id, activo }) })
       setItems((prev) => prev.map((x) => (x.id === p.id ? { ...x, activo } : x)))
-      notify(activo ? '✅ Publicación activada' : '⏸️ Publicación pausada')
+      notify(activo ? ' Publicación activada' : ' Publicación pausada')
     } catch (e: any) {
-      notify('❌ ' + e.message)
+      notify( e.message)
     }
     setActionId(null)
   }
@@ -136,9 +144,9 @@ export default function AdminPublicaciones({ notify }: { notify: (msg: string) =
     try {
       await apiJson('/api/admin/toggle-destacado', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ productId: p.id, destacado: next }) })
       setItems((prev) => prev.map((x) => (x.id === p.id ? { ...x, destacado: next, destacado_hasta: next ? new Date(Date.now() + 48 * 3600000).toISOString() : null } : x)))
-      notify(next ? '⭐ Destacada por 48h' : '☆ Destacado quitado')
+      notify(next ? ' Destacada por 48h' : ' Destacado quitado')
     } catch (e: any) {
-      notify('❌ ' + e.message)
+      notify( e.message)
     }
     setActionId(null)
   }
@@ -149,9 +157,9 @@ export default function AdminPublicaciones({ notify }: { notify: (msg: string) =
     try {
       await apiJson('/api/admin/boost-producto', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ productId: p.id }) })
       setItems((prev) => prev.map((x) => (x.id === p.id ? { ...x, boosteado_en: new Date().toISOString() } : x)))
-      notify('⚡ Publicación boosted')
+      notify('Publicación boosted')
     } catch (e: any) {
-      notify('❌ ' + e.message)
+      notify( e.message)
     }
     setActionId(null)
   }
@@ -162,9 +170,9 @@ export default function AdminPublicaciones({ notify }: { notify: (msg: string) =
       await apiJson('/api/admin/eliminar-producto', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ productId: id }) })
       setItems((prev) => prev.filter((x) => x.id !== id))
       setSelected((prev) => { const n = new Set(prev); n.delete(id); return n })
-      notify('🗑️ Publicación eliminada')
+      notify('Publicación eliminada')
     } catch (e: any) {
-      notify('❌ ' + e.message)
+      notify( e.message)
     }
     setActionId(null)
   }
@@ -191,7 +199,7 @@ export default function AdminPublicaciones({ notify }: { notify: (msg: string) =
     setSelected(new Set())
     setBusy(false)
     await load(true)
-    notify(bulkAction === 'eliminar' ? `🗑️ ${ok} publicaciones eliminadas${fail ? ` · ${fail} fallaron` : ''}` : `✅ ${ok} publicaciones actualizadas${fail ? ` · ${fail} fallaron` : ''}`)
+    notify(bulkAction === 'eliminar' ? ` ${ok} publicaciones eliminadas${fail ? ` · ${fail} fallaron` : ''}` : ` ${ok} publicaciones actualizadas${fail ? ` · ${fail} fallaron` : ''}`)
   }
 
   const counts = { total: items.length, visible: filtered.length }
@@ -202,13 +210,13 @@ export default function AdminPublicaciones({ notify }: { notify: (msg: string) =
     <div className="space-y-5">
       <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
         <div>
-          <h2 className="text-xl font-black text-gray-900">Publicaciones</h2>
-          <p className="text-sm text-gray-500">{counts.visible} de {counts.total} publicaciones cargadas</p>
+          <h2 className="text-xl font-semibold text-ink">Publicaciones</h2>
+          <p className="text-[12.5px] leading-relaxed text-ink/55">{counts.visible} de {counts.total} publicaciones cargadas</p>
         </div>
         <div className="flex gap-2">
           {selected.size > 0 && (
-            <div className="flex items-center gap-2 rounded-xl border border-brand-primary/30 bg-brand-primary/5 px-3 py-2">
-              <span className="text-xs font-bold text-brand-primary">{selected.size} seleccionadas</span>
+            <div className="flex items-center gap-2 rounded-xl border border-brand-primary/30 bg-ink/5 px-3 py-2">
+              <span className="t-label text-ink/45">{selected.size} seleccionadas</span>
               <Button size="xs" variant="success" onClick={() => setBulkAction('activar')}>Activar</Button>
               <Button size="xs" variant="outline" onClick={() => setBulkAction('pausar')}>Pausar</Button>
               <Button size="xs" variant="danger" onClick={() => setBulkAction('eliminar')}>Eliminar</Button>
@@ -228,7 +236,7 @@ export default function AdminPublicaciones({ notify }: { notify: (msg: string) =
               key={f}
               type="button"
               onClick={() => { const next = sortBy === f ? (sortDir === 'asc' ? 'desc' : 'asc') : 'asc'; setSortBy(f); setSortDir(next) }}
-              className={`rounded-lg px-3 py-2 text-xs font-semibold transition ${sortBy === f ? 'bg-gray-900 text-white' : 'border border-gray-200 bg-white text-gray-600 hover:bg-gray-50'}`}
+              className={`rounded-lg px-3 py-2 text-xs font-semibold transition ${sortBy === f ? 'bg-ink text-paper' : 'border border-line bg-[#FBFAF5] text-ink/55 hover:bg-paper-2'}`}
             >
               {f === 'creado_en' ? 'Fecha' : f === 'precio_usd' ? 'Precio' : f === 'visitas' ? 'Visitas' : 'Título'} {sortBy === f ? (sortDir === 'asc' ? '↑' : '↓') : ''}
             </button>
@@ -240,7 +248,7 @@ export default function AdminPublicaciones({ notify }: { notify: (msg: string) =
       <Card bodyClassName="p-0">
         <div className="hidden overflow-x-auto lg:block">
           <table className="w-full text-sm">
-            <thead className="border-b border-gray-100 bg-gray-50/70 text-xs uppercase tracking-wide text-gray-500">
+            <thead className="border-b border-line bg-paper-2/70 text-xs uppercase tracking-wide text-ink/55">
               <tr>
                 <th className="px-4 py-3"><button onClick={() => { setSelected((prev) => selected.size === pageItems.length ? new Set() : new Set(pageItems.map((p) => p.id))) }} className="flex items-center gap-1 font-semibold">{selected.size === pageItems.length && pageItems.length ? <CheckSquare size={14} /> : <Square size={14} />} All</button></th>
                 <th className="px-3 py-3 font-semibold">Publicación</th>
@@ -252,46 +260,46 @@ export default function AdminPublicaciones({ notify }: { notify: (msg: string) =
                 <th className="px-3 py-3 text-right font-semibold">Acciones</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-50">
+            <tbody className="divide-y divide-line">
               {pageItems.map((p) => (
-                <tr key={p.id} className="transition hover:bg-gray-50/70">
+                <tr key={p.id} className="transition hover:bg-paper-2/70">
                   <td className="px-4 py-3">
                     <button onClick={() => setSelected((prev) => { const n = new Set(prev); if (n.has(p.id)) n.delete(p.id); else n.add(p.id); return n })}>
-                      {selected.has(p.id) ? <CheckSquare size={17} className="text-brand-primary" /> : <Square size={17} className="text-gray-300" />}
+                      {selected.has(p.id) ? <CheckSquare size={17} className="text-ink" /> : <Square size={17} className="text-ink/35" />}
                     </button>
                   </td>
                   <td className="max-w-sm px-3 py-3">
                     <div className="flex items-center gap-3">
-                      <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center overflow-hidden rounded-lg bg-gray-100">
-                        {p.imagen_url ? <Image src={p.imagen_url} alt="" width={48} height={48} className="object-cover" /> : <span className="text-lg">📦</span>}
+                      <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center overflow-hidden rounded-lg bg-paper-2">
+                        {p.imagen_url ? <Image src={p.imagen_url} alt="" width={48} height={48} className="object-cover" /> : <Package size={14} strokeWidth={1.4} className="text-ink/30" aria-hidden="true" />}
                       </div>
                       <div className="min-w-0">
-                        <button onClick={() => setDetail(p)} className="block max-w-xs truncate text-left font-semibold text-gray-800 hover:text-brand-primary">{p.titulo || 'Sin título'}</button>
-                        <div className="mt-0.5 flex flex-wrap items-center gap-1.5 text-xs text-gray-500">
+                        <button onClick={() => setDetail(p)} className="block max-w-xs truncate text-left font-semibold text-ink hover:text-ink">{p.titulo || 'Sin título'}</button>
+                        <div className="mt-0.5 flex flex-wrap items-center gap-1.5 text-[11.5px] text-ink/45">
                           {p.subcategoria && <span>{p.subcategoria}</span>}
                           {p.ubicacion_ciudad && <span>· {p.ubicacion_ciudad}</span>}
-                          {p.destacado && <Badge tone="brand">⭐</Badge>}
-                          {p.boosteado_en && <Badge tone="green">⚡</Badge>}
+                          {p.destacado && <Badge tone="brand">Destacado</Badge>}
+                          {p.boosteado_en && <Badge tone="green">Boost</Badge>}
                         </div>
                       </div>
                     </div>
                   </td>
                   <td className="px-3 py-3">
-                    <p className="font-medium text-gray-700">{perfiles[p.user_id]?.nombre || '—'}</p>
-                    <p className="text-xs text-gray-400">{perfiles[p.user_id]?.email || ''}</p>
+                    <p className="font-medium text-ink">{perfiles[p.user_id]?.nombre || '—'}</p>
+                    <p className="t-label text-ink/35">{perfiles[p.user_id]?.email || ''}</p>
                   </td>
-                  <td className="whitespace-nowrap px-3 py-3 text-right font-bold text-brand-primary">{formatMoney(p.precio_usd)}</td>
-                  <td className="px-3 py-3 text-center text-gray-600">{formatNumber(p.visitas)}</td>
+                  <td className="whitespace-nowrap px-3 py-3 text-right font-semibold text-ink">{formatMoney(p.precio_usd)}</td>
+                  <td className="px-3 py-3 text-center text-ink/55">{formatNumber(p.visitas)}</td>
                   <td className="px-3 py-3"><EstadoBadge p={p} /></td>
-                  <td className="whitespace-nowrap px-3 py-3 text-xs text-gray-500">{formatDate(p.creado_en)}</td>
+                  <td className="whitespace-nowrap px-3 py-3 text-[11.5px] text-ink/45">{formatDate(p.creado_en)}</td>
                   <td className="whitespace-nowrap px-3 py-3 text-right">
                     <div className="flex justify-end gap-1">
-                      <button onClick={() => setDetail(p)} title="Ver detalle" className="rounded-lg p-1.5 text-gray-400 transition hover:bg-gray-100 hover:text-blue-600"><Eye size={15} /></button>
-                      <button onClick={() => toggleActivo(p, !p.activo)} disabled={actionId === p.id} title={p.activo ? 'Pausar' : 'Activar'} className="rounded-lg p-1.5 text-gray-400 transition hover:bg-gray-100 hover:text-gray-700">{p.activo ? <Pause size={15} /> : <Play size={15} />}</button>
+                      <button onClick={() => setDetail(p)} title="Ver detalle" className="rounded-lg p-1.5 text-ink/35 transition hover:bg-paper-2 hover:text-blue-600"><Eye size={15} /></button>
+                      <button onClick={() => toggleActivo(p, !p.activo)} disabled={actionId === p.id} title={p.activo ? 'Pausar' : 'Activar'} className="rounded-lg p-1.5 text-ink/35 transition hover:bg-paper-2 hover:text-ink">{p.activo ? <Pause size={15} /> : <Play size={15} />}</button>
                       <button onClick={() => toggleDestacado(p)} disabled={actionId === p.id} title="Destacar" className="rounded-lg p-1.5 text-yellow-500 transition hover:bg-yellow-50"><Star size={15} /></button>
                       <button onClick={() => boost(p)} disabled={actionId === p.id} title="Boostear" className="rounded-lg p-1.5 text-emerald-500 transition hover:bg-emerald-50"><Zap size={15} /></button>
-                      <a href={productUrl(p)} target="_blank" rel="noopener noreferrer" title="Ver sitio" className="rounded-lg p-1.5 text-gray-400 transition hover:bg-gray-100 hover:text-blue-600"><ExternalLink size={15} /></a>
-                      <button onClick={() => eliminar(p.id)} disabled={actionId === p.id} title="Eliminar" className="rounded-lg p-1.5 text-gray-400 transition hover:bg-red-50 hover:text-red-600"><Trash2 size={15} /></button>
+                      <a href={productUrl(p)} target="_blank" rel="noopener noreferrer" title="Ver sitio" className="rounded-lg p-1.5 text-ink/35 transition hover:bg-paper-2 hover:text-blue-600"><ExternalLink size={15} /></a>
+                      <button onClick={() => eliminar(p.id)} disabled={actionId === p.id} title="Eliminar" className="rounded-lg p-1.5 text-ink/35 transition hover:bg-red-50 hover:text-red-600"><Trash2 size={15} /></button>
                     </div>
                   </td>
                 </tr>
@@ -301,43 +309,43 @@ export default function AdminPublicaciones({ notify }: { notify: (msg: string) =
         </div>
 
         {/* mobile/card list */}
-        <div className="divide-y divide-gray-50 lg:hidden">
+        <div className="divide-y divide-line lg:hidden">
           {pageItems.map((p) => (
             <div key={p.id} className="space-y-3 p-4">
               <div className="flex items-start gap-3">
-                <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center overflow-hidden rounded-xl bg-gray-100">
-                  {p.imagen_url ? <Image src={p.imagen_url} alt="" width={56} height={56} className="object-cover" /> : <span className="text-xl">📦</span>}
+                <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center overflow-hidden rounded-xl bg-paper-2">
+                  {p.imagen_url ? <Image src={p.imagen_url} alt="" width={56} height={56} className="object-cover" /> : <Package size={16} strokeWidth={1.4} className="text-ink/30" aria-hidden="true" />}
                 </div>
                 <div className="min-w-0 flex-1">
-                  <button onClick={() => setDetail(p)} className="block w-full truncate text-left font-semibold text-gray-800">{p.titulo}</button>
-                  <p className="text-xs text-gray-500">{perfiles[p.user_id]?.nombre || '—'} · {formatDate(p.creado_en)}</p>
+                  <button onClick={() => setDetail(p)} className="block w-full truncate text-left font-semibold text-ink">{p.titulo}</button>
+                  <p className="text-[11.5px] text-ink/45">{perfiles[p.user_id]?.nombre || '—'} · {formatDate(p.creado_en)}</p>
                   <div className="mt-1.5 flex flex-wrap gap-1.5"><EstadoBadge p={p} /></div>
                 </div>
                 <button onClick={() => setSelected((prev) => { const n = new Set(prev); if (n.has(p.id)) n.delete(p.id); else n.add(p.id); return n })}>
-                  {selected.has(p.id) ? <CheckSquare size={18} className="text-brand-primary" /> : <Square size={18} className="text-gray-300" />}
+                  {selected.has(p.id) ? <CheckSquare size={18} className="text-ink" /> : <Square size={18} className="text-ink/35" />}
                 </button>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-lg font-black text-brand-primary">{formatMoney(p.precio_usd)}</span>
+                <span className="text-lg font-semibold text-ink">{formatMoney(p.precio_usd)}</span>
                 <div className="flex gap-1">
-                  <button onClick={() => setDetail(p)} className="rounded-lg p-2 text-gray-400 hover:bg-gray-100 hover:text-blue-600"><Eye size={16} /></button>
-                  <button onClick={() => toggleActivo(p, !p.activo)} className="rounded-lg p-2 text-gray-400 hover:bg-gray-100">{p.activo ? <Pause size={16} /> : <Play size={16} />}</button>
+                  <button onClick={() => setDetail(p)} className="rounded-lg p-2 text-ink/35 hover:bg-paper-2 hover:text-blue-600"><Eye size={16} /></button>
+                  <button onClick={() => toggleActivo(p, !p.activo)} className="rounded-lg p-2 text-ink/35 hover:bg-paper-2">{p.activo ? <Pause size={16} /> : <Play size={16} />}</button>
                   <button onClick={() => toggleDestacado(p)} className="rounded-lg p-2 text-yellow-500 hover:bg-yellow-50"><Star size={16} /></button>
                   <button onClick={() => boost(p)} className="rounded-lg p-2 text-emerald-500 hover:bg-emerald-50"><Zap size={16} /></button>
-                  <button onClick={() => eliminar(p.id)} className="rounded-lg p-2 text-gray-400 hover:bg-red-50 hover:text-red-600"><Trash2 size={16} /></button>
+                  <button onClick={() => eliminar(p.id)} className="rounded-lg p-2 text-ink/35 hover:bg-red-50 hover:text-red-600"><Trash2 size={16} /></button>
                 </div>
               </div>
             </div>
           ))}
         </div>
 
-        {pageItems.length === 0 && <Empty icon="📦" title="No hay publicaciones" subtitle="Ajusta los filtros o trata de nuevo." />}
+        {pageItems.length === 0 && <Empty title="No hay publicaciones" subtitle="Ajusta los filtros o trata de nuevo." />}
       </Card>
 
       {/* pagination */}
       {filtered.length > PAGE_SIZE && (
-        <div className="flex items-center justify-between rounded-2xl border border-gray-200 bg-white px-4 py-3">
-          <p className="text-xs text-gray-500">Página {page} de {totalPages}</p>
+        <div className="flex items-center justify-between rounded-2xl border border-line bg-[#FBFAF5] px-4 py-3">
+          <p className="text-[11.5px] text-ink/45">Página {page} de {totalPages}</p>
           <div className="flex gap-1">
             <Button size="sm" variant="outline" disabled={page <= 1} onClick={() => setPage((p) => p - 1)}><ChevronLeft size={14} /> Anterior</Button>
             <Button size="sm" variant="outline" disabled={page >= totalPages} onClick={() => setPage((p) => p + 1)}>Siguiente <ChevronRight size={14} /></Button>
@@ -350,37 +358,37 @@ export default function AdminPublicaciones({ notify }: { notify: (msg: string) =
         {detail && (
           <div className="space-y-5">
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-              <div className="flex aspect-square items-center justify-center overflow-hidden rounded-xl bg-gray-100">
-                {detail.imagen_url ? <Image src={detail.imagen_url} alt="" width={400} height={400} className="object-cover" /> : <span className="text-4xl">📦</span>}
+              <div className="flex aspect-square items-center justify-center overflow-hidden rounded-xl bg-paper-2">
+                {detail.imagen_url ? <Image src={detail.imagen_url} alt="" width={400} height={400} className="object-cover" /> : <Package size={28} strokeWidth={1.2} className="text-ink/25" aria-hidden="true" />}
               </div>
               <div className="space-y-3">
                 <div className="flex flex-wrap gap-2">
                   <EstadoBadge p={detail} />
-                  {detail.destacado && <Badge tone="brand">⭐ Destacado</Badge>}
-                  {detail.boosteado_en && <Badge tone="green">⚡ Boosted</Badge>}
+                  {detail.destacado && <Badge tone="brand"> Destacado</Badge>}
+                  {detail.boosteado_en && <Badge tone="green"> Boosted</Badge>}
                 </div>
-                <p className="text-3xl font-black text-brand-primary">{formatMoney(detail.precio_usd)}</p>
-                {detail.marca && <p className="text-sm text-gray-600"><strong>Marca:</strong> {detail.marca}</p>}
-                {detail.modelo && <p className="text-sm text-gray-600"><strong>Modelo:</strong> {detail.modelo}</p>}
-                {detail.subcategoria && <p className="text-sm text-gray-600"><strong>Categoría:</strong> {detail.subcategoria}</p>}
-                <p className="text-sm text-gray-600"><strong>Ubicación:</strong> {detail.ubicacion_ciudad || '—'}{detail.ubicacion_estado ? `, ${detail.ubicacion_estado}` : ''}</p>
-                <p className="text-sm text-gray-600"><strong>Estado del artículo:</strong> {detail.estado || '—'}</p>
+                <p className="text-3xl font-semibold text-ink">{formatMoney(detail.precio_usd)}</p>
+                {detail.marca && <p className="text-[12.5px] leading-relaxed text-ink/55"><strong>Marca:</strong> {detail.marca}</p>}
+                {detail.modelo && <p className="text-[12.5px] leading-relaxed text-ink/55"><strong>Modelo:</strong> {detail.modelo}</p>}
+                {detail.subcategoria && <p className="text-[12.5px] leading-relaxed text-ink/55"><strong>Categoría:</strong> {detail.subcategoria}</p>}
+                <p className="text-[12.5px] leading-relaxed text-ink/55"><strong>Ubicación:</strong> {detail.ubicacion_ciudad || '—'}{detail.ubicacion_estado ? `, ${detail.ubicacion_estado}` : ''}</p>
+                <p className="text-[12.5px] leading-relaxed text-ink/55"><strong>Estado del artículo:</strong> {detail.estado || '—'}</p>
               </div>
             </div>
             {detail.descripcion && (
               <div>
-                <h4 className="mb-1 text-xs font-semibold uppercase tracking-wide text-gray-400">Descripción</h4>
-                <p className="whitespace-pre-line rounded-xl bg-gray-50 p-4 text-sm text-gray-700">{detail.descripcion}</p>
+                <h4 className="mb-1 text-xs font-semibold uppercase tracking-wide text-ink/35">Descripción</h4>
+                <p className="whitespace-pre-line rounded-xl bg-paper-2 p-4 text-sm text-ink">{detail.descripcion}</p>
               </div>
             )}
             {detail.motivo_moderacion && (
-              <div className="rounded-xl border border-red-200 bg-red-50 p-3 text-sm text-red-700">⚠️ Motivo de moderación: {detail.motivo_moderacion}</div>
+              <div className="rounded-xl border border-red-200 bg-red-50 p-3 text-sm text-red-700"> Motivo de moderación: {detail.motivo_moderacion}</div>
             )}
-            <div className="flex flex-wrap gap-2 border-t border-gray-100 pt-4">
+            <div className="flex flex-wrap gap-2 border-t border-line pt-4">
               <Button size="sm" variant={detail.activo ? 'outline' : 'success'} onClick={() => toggleActivo(detail, !detail.activo)}>{detail.activo ? <><Pause size={14} /> Pausar</> : <><Play size={14} /> Activar</>}</Button>
               <Button size="sm" variant="secondary" onClick={() => toggleDestacado(detail)} disabled={actionId === detail.id}><Star size={14} /> {detail.destacado ? 'Quitar destacado' : 'Destacar 48h'}</Button>
               <Button size="sm" variant="secondary" onClick={() => boost(detail)} disabled={actionId === detail.id}><Zap size={14} /> Boost</Button>
-              <a href={productUrl(detail)} target="_blank" rel="noopener noreferrer" className="inline-flex h-8 items-center gap-1.5 rounded-xl border border-gray-300 px-3 text-xs font-semibold text-gray-700 transition hover:bg-gray-50"><Eye size={14} /> Ver en sitio</a>
+              <a href={productUrl(detail)} target="_blank" rel="noopener noreferrer" className="inline-flex h-8 items-center gap-1.5 rounded-xl border border-line-strong px-3 t-label text-ink/45 transition hover:bg-paper-2"><Eye size={14} /> Ver en sitio</a>
               <Button size="sm" variant="danger" onClick={() => { eliminar(detail.id); setDetail(null) }} disabled={actionId === detail.id}><Trash2 size={14} /> Eliminar</Button>
             </div>
           </div>

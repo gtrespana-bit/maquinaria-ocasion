@@ -30,8 +30,7 @@ export async function POST(request: NextRequest) {
 
     const { data, error } = await sb.rpc('aprobar_transaccion', {
       p_transaccion_id: body.transactionId,
-      p_admin_id: (auth as any).user?.id || null,
-    })
+      p_admin_id: (auth as any).user?.id || null })
 
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 500 })

@@ -51,8 +51,7 @@ export async function GET(request: NextRequest) {
 
     const usuarios = lista.map((p) => ({
       ...p,
-      email: emailById.get(p.id) || null,
-    }))
+      email: emailById.get(p.id) || null }))
 
     return NextResponse.json({ ok: true, usuarios })
   } catch (err: any) {

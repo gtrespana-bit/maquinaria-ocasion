@@ -1,4 +1,4 @@
-"use client"
+'use client'
 
 import { useEffect, useState, lazy, Suspense } from 'react'
 import { useRouter, usePathname } from 'next/navigation'
@@ -47,8 +47,7 @@ function PasswordModal({ user, setToast, onClose }: { user: any; setToast: (s: s
 
     const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
       email: user!.email!,
-      password: pwActual,
-    })
+      password: pwActual })
     if (signInError || !signInData.user) {
       setPwError(t('pwWrong'))
       setPwGuardando(false)
@@ -66,29 +65,29 @@ function PasswordModal({ user, setToast, onClose }: { user: any; setToast: (s: s
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4" onClick={onClose}>
-      <div className="bg-white rounded-2xl p-6 max-w-md w-full shadow-2xl" onClick={e => e.stopPropagation()}>
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="text-xl font-bold text-gray-800">{t('passwordTitle')}</h3>
-          <button onClick={onClose} className="p-1 hover:bg-gray-100 rounded-lg"><X size={20} /></button>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-ink/60 p-4" onClick={onClose}>
+      <div className="w-full max-w-md border border-line bg-paper p-6" onClick={e => e.stopPropagation()}>
+        <div className="mb-4 flex items-center justify-between border-b border-ink pb-3">
+          <h3 className="text-[16px] font-semibold tracking-[-0.02em] text-ink">{t('passwordTitle')}</h3>
+          <button onClick={onClose} className="text-ink/40 transition-colors hover:text-ink" aria-label="Cerrar"><X size={16} /></button>
         </div>
-        {pwError && <div className="bg-red-50 text-red-700 p-3 rounded-lg mb-4 text-sm">⚠️ {pwError}</div>}
+        {pwError && <div className="mb-4 border border-clay/40 bg-clay/[0.05] px-3 py-2 text-[12.5px] text-clay">{pwError}</div>}
         <form onSubmit={handleCambiarPassword} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">{t('pwCurrent')}</label>
-            <input type="password" value={pwActual} onChange={e => setPwActual(e.target.value)} required className="w-full border rounded-lg px-3 py-2 text-sm bg-white" placeholder={t('pwCurrentPlaceholder')} />
+            <label className="t-label mb-1 block text-ink/45">{t('pwCurrent')}</label>
+            <input type="password" value={pwActual} onChange={e => setPwActual(e.target.value)} required className="field text-[13.5px]" placeholder={t('pwCurrentPlaceholder')} />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">{t('pwNew')}</label>
-            <input type="password" value={pwNueva} onChange={e => setPwNueva(e.target.value)} required className="w-full border rounded-lg px-3 py-2 text-sm bg-white" placeholder={t('pwNewPlaceholder')} />
+            <label className="t-label mb-1 block text-ink/45">{t('pwNew')}</label>
+            <input type="password" value={pwNueva} onChange={e => setPwNueva(e.target.value)} required className="field text-[13.5px]" placeholder={t('pwNewPlaceholder')} />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">{t('pwRepeat')}</label>
-            <input type="password" value={pwRepetir} onChange={e => setPwRepetir(e.target.value)} required className="w-full border rounded-lg px-3 py-2 text-sm bg-white" placeholder={t('pwRepeatPlaceholder')} />
+            <label className="t-label mb-1 block text-ink/45">{t('pwRepeat')}</label>
+            <input type="password" value={pwRepetir} onChange={e => setPwRepetir(e.target.value)} required className="field text-[13.5px]" placeholder={t('pwRepeatPlaceholder')} />
           </div>
           <div className="flex gap-3">
-            <button type="button" onClick={onClose} className="flex-1 py-3 border border-gray-200 rounded-lg font-medium text-gray-600 hover:bg-gray-50">{t('cancelEdit')}</button>
-            <button type="submit" disabled={pwGuardando} className="flex-1 py-3 bg-brand-primary text-white rounded-lg font-bold hover:bg-brand-dark disabled:opacity-50">{pwGuardando ? t('pwSaving') : t('pwChange')}</button>
+            <button type="button" onClick={onClose} className="btn btn-outline flex-1 justify-center">{t('cancelEdit')}</button>
+            <button type="submit" disabled={pwGuardando} className="btn btn-ink flex-1 justify-center disabled:opacity-50">{pwGuardando ? t('pwSaving') : t('pwChange')}</button>
           </div>
         </form>
       </div>
@@ -127,8 +126,7 @@ export default function DashboardPage() {
 
     const res = await fetch('/api/foto-perfil', {
       method: 'POST',
-      body: formData,
-    })
+      body: formData })
     const json = await res.json()
 
     if (!res.ok) {
@@ -170,8 +168,7 @@ export default function DashboardPage() {
     const res = await fetch('/api/productos/promocionar', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ productId, tipo: 'boost' }),
-    })
+      body: JSON.stringify({ productId, tipo: 'boost' }) })
     const result = await res.json().catch(() => ({}))
     if (!res.ok || !result?.ok) {
       data.setToast(`Error: ${result?.error || t('boostError')}`)
@@ -192,8 +189,7 @@ export default function DashboardPage() {
     const res = await fetch('/api/productos/promocionar', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ productId, tipo: 'destacado', horas, incluidoPlan }),
-    })
+      body: JSON.stringify({ productId, tipo: 'destacado', horas, incluidoPlan }) })
     const result = await res.json().catch(() => ({}))
     if (!res.ok || !result?.ok) {
       data.setToast(`Error: ${result?.error || t('featuredError')}`)
@@ -210,22 +206,24 @@ export default function DashboardPage() {
   if (authLoading) {
     // Show loading state while authentication is being resolved
     return (
-      <div className="min-h-[60vh] flex items-center justify-center px-4">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-primary mx-auto mb-4"></div>
-          <p className="text-gray-500">Cargando...</p>
+      <div className="shell max-w-[1180px] py-10">
+        <p className="t-label text-ink/35">Cargando panel…</p>
+        <div className="skeleton mt-6 h-16 w-full" />
+        <div className="mt-6 grid grid-cols-2 gap-px border border-line bg-line md:grid-cols-6">
+          {[0, 1, 2, 3, 4, 5].map(i => <div key={i} className="h-20 bg-paper" />)}
         </div>
+        <div className="skeleton mt-6 h-48 w-full" />
       </div>
     )
   }
 
   if (!session) {
     return (
-      <div className="min-h-[60vh] flex items-center justify-center px-4">
-        <div className="text-center">
-          <h2 className="text-2xl font-bold text-gray-800 mb-4">{t('loginRequired')}</h2>
-          <p className="text-gray-500 mb-6">{t('loginRequiredDesc')}</p>
-          <LocalLink href="/login" className="inline-block bg-brand-primary text-white px-8 py-3 rounded-lg font-bold hover:bg-brand-dark transition">{t('loginButton')}</LocalLink>
+      <div className="shell flex min-h-[52vh] max-w-[640px] flex-col justify-center py-16">
+        <div>
+          <h2 className="t-display t-display-md text-ink">{t('loginRequired')}</h2>
+          <p className="mx-auto mt-3 max-w-md text-[14px] leading-relaxed text-muted">{t('loginRequiredDesc')}</p>
+          <LocalLink href="/login" className="btn btn-ink btn-lg mt-6">{t('loginButton')}</LocalLink>
         </div>
       </div>
     )
@@ -234,10 +232,10 @@ export default function DashboardPage() {
   const numPubsVendidas = data.productos.filter((p: any) => !p.activo && p.estado_moderacion !== 'rechazado').length
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8">
+    <div className="shell max-w-[1180px] py-8 md:py-10">
       {/* Toast */}
       {data.toast && (
-        <div className="fixed top-4 right-4 z-50 bg-gray-900 text-white px-6 py-3 rounded-xl shadow-2xl text-sm font-medium animate-bounce max-w-xs">
+        <div className="fixed right-4 top-4 z-50 max-w-xs border border-ink bg-ink px-5 py-3 text-[12.5px] font-medium text-paper">
           {data.toast}
         </div>
       )}
@@ -286,48 +284,36 @@ export default function DashboardPage() {
       <PlanBar onAbrirPlan={setActiveTab} />
 
       {/* Resumen */}
-      <div className="bg-gradient-to-r from-brand-primary to-blue-800 rounded-xl p-5 text-white mb-6">
-        <h3 className="font-bold text-lg mb-3 flex items-center gap-2">{t('performance')}</h3>
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4">
-          <div>
-            <p className="text-2xl font-black">{data.visitasTotales}</p>
-            <p className="text-xs text-blue-200">{t('totalViews')}</p>
-          </div>
-          <div>
-            <p className="text-2xl font-black">{data.productos.length ? Math.round(data.visitasTotales / data.productos.length) : 0}</p>
-            <p className="text-xs text-blue-200">{t('avgPerProduct')}</p>
-          </div>
-          <div>
-            <p className="text-2xl font-black">{data.pubCount}</p>
-            <p className="text-xs text-blue-200">{t('activeProducts')}</p>
-          </div>
-          <div>
-            <p className="text-2xl font-black">{data.productos.filter((p: any) => p.boosteado_en || (p.destacado && p.destacado_hasta > new Date().toISOString())).length}</p>
-            <p className="text-xs text-blue-200">{t('promotedNow')}</p>
-          </div>
-          <div>
-            <p className="text-2xl font-black">{data.favoritosCount}</p>
-            <p className="text-xs text-blue-200">{t('favorites')}</p>
-          </div>
-          <div>
-            <p className="text-2xl font-black">{data.creditos}</p>
-            <p className="text-xs text-blue-200">{t('creditsLabel')}</p>
-          </div>
+      <section className="mb-6 border border-line bg-[#FBFAF5]" aria-labelledby="rendimiento-titulo">
+        <div className="flex flex-wrap items-baseline justify-between gap-2 border-b border-ink px-5 pb-3 pt-4">
+          <h3 id="rendimiento-titulo" className="t-eyebrow text-ink">{t('performance')}</h3>
+          <span className="t-label text-ink/35">{t('pubProgress', { count: data.pubCount })}</span>
         </div>
-        <div className="mt-4 pt-4 border-t border-white/20">
-          <div className="flex flex-col sm:flex-row gap-4">
-            <div className="flex items-center gap-2 text-sm">
-              <span>{t('freeCredit')}</span>
+        <dl className="grid grid-cols-2 gap-px bg-line sm:grid-cols-3 md:grid-cols-6">
+          {[
+            { valor: data.visitasTotales, etiqueta: t('totalViews') },
+            { valor: data.productos.length ? Math.round(data.visitasTotales / data.productos.length) : 0, etiqueta: t('avgPerProduct') },
+            { valor: data.pubCount, etiqueta: t('activeProducts') },
+            { valor: data.productos.filter((p: any) => p.boosteado_en || (p.destacado && p.destacado_hasta > new Date().toISOString())).length, etiqueta: t('promotedNow') },
+            { valor: data.favoritosCount, etiqueta: t('favorites') },
+            { valor: data.creditos, etiqueta: t('creditsLabel') },
+          ].map(celda => (
+            <div key={celda.etiqueta} className="bg-paper px-4 py-4">
+              <dd className="t-display t-num text-[1.5rem] leading-none text-ink">{celda.valor}</dd>
+              <dt className="t-label mt-2 text-ink/45">{celda.etiqueta}</dt>
             </div>
-            <div className="flex items-center gap-2 text-sm">
-              <span>{t('pubProgress', { count: data.pubCount })}</span>
-              <div className="w-24 bg-white/30 rounded-full h-1.5">
-                <div className="bg-brand-accent h-1.5 rounded-full transition-all" style={{ width: `${Math.min((data.pubCount / 10) * 100, 100)}%` }} />
-              </div>
+          ))}
+        </dl>
+        <div className="flex flex-col gap-3 border-t border-line px-5 py-3 sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-[12.5px] text-ink/60">{t('freeCredit')}</p>
+          <div className="flex items-center gap-2.5">
+            <span className="t-label text-ink/40">{t('pubProgress', { count: data.pubCount })}</span>
+            <div className="h-1 w-24 bg-line">
+              <div className="h-1 bg-ink transition-all" style={{ width: `${Math.min((data.pubCount / 10) * 100, 100)}%` }} />
             </div>
           </div>
         </div>
-      </div>
+      </section>
 
       <div className="lg:flex lg:gap-8">
         <DashboardNav active={activeTab} onChange={setActiveTab} onLogout={handleLogout} />
@@ -335,7 +321,7 @@ export default function DashboardPage() {
           {/* Tab Content */}
           {activeTab === 'resumen' && <TabResumen userId={user!.id} />}
           {activeTab === 'productos' && (
-            <Suspense fallback={<div className="p-12 text-center text-gray-500">{t('loadingListings')}</div>}>
+            <Suspense fallback={<div className="border border-line bg-[#FBFAF5] p-12 text-center"><p className="t-label text-ink/40">{t('loadingListings')}</p></div>}>
               <TabProductos
                 productos={data.productos}
                 onBoost={setBoostTarget}
@@ -345,12 +331,12 @@ export default function DashboardPage() {
             </Suspense>
           )}
           {activeTab === 'rendimiento' && (
-            <Suspense fallback={<div className="p-12 text-center text-gray-500">Calculando tus métricas…</div>}>
+            <Suspense fallback={<div className="border border-line bg-[#FBFAF5] p-12 text-center"><p className="t-label text-ink/40">Calculando tus métricas…</p></div>}>
               <TabRendimiento />
             </Suspense>
           )}
           {activeTab === 'importar' && (
-            <Suspense fallback={<div className="p-12 text-center text-gray-500">Cargando…</div>}>
+            <Suspense fallback={<div className="border border-line bg-[#FBFAF5] p-12 text-center"><p className="t-label text-ink/40">Cargando…</p></div>}>
               <TabImportar />
             </Suspense>
           )}
@@ -359,23 +345,23 @@ export default function DashboardPage() {
             <TabCreditos creditos={data.creditos} refreshCreditos={data.refreshAll} />
           )}
           {activeTab === 'tratos' && (
-            <Suspense fallback={<div className="bg-white rounded-xl border border-gray-100 p-8 text-center text-gray-500">Cargando…</div>}>
+            <Suspense fallback={<div className="border border-line bg-[#FBFAF5] p-8 text-center"><p className="t-label text-ink/40">Cargando…</p></div>}>
               <TabTratos userId={user!.id} />
             </Suspense>
           )}
           {activeTab === 'tienda' && (
-            <Suspense fallback={<div className="bg-white rounded-xl border border-gray-100 p-8 text-center text-gray-500">Cargando…</div>}>
+            <Suspense fallback={<div className="border border-line bg-[#FBFAF5] p-8 text-center"><p className="t-label text-ink/40">Cargando…</p></div>}>
               <TabTienda />
             </Suspense>
           )}
           {activeTab === 'favoritos' && <TabFavoritos favoritos={data.favoritos} />}
           {activeTab === 'plan' && (
-            <Suspense fallback={<div className="bg-white rounded-xl border border-gray-100 p-8 text-center text-gray-500">Cargando tu plan…</div>}>
+            <Suspense fallback={<div className="border border-line bg-[#FBFAF5] p-8 text-center"><p className="t-label text-ink/40">Cargando tu plan…</p></div>}>
               <TabPlan onRefresh={data.refreshAll} />
             </Suspense>
           )}
           {activeTab === 'cuenta' && (
-            <Suspense fallback={<div className="bg-white rounded-xl border border-gray-100 p-8 text-center text-gray-500">Cargando…</div>}>
+            <Suspense fallback={<div className="border border-line bg-[#FBFAF5] p-8 text-center"><p className="t-label text-ink/40">Cargando…</p></div>}>
               <TabCuenta
                 verificado={data.verificado}
                 nivelConfianza={data.nivelConfianza}

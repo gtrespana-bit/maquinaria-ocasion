@@ -32,10 +32,8 @@ export default function robots(): MetadataRoute.Robots {
           // Versiones sin prefijo (es) y con prefijo /en (localePrefix: as-needed)
           ...PRIVATE_SEGMENTS,
           ...PRIVATE_SEGMENTS.map((s) => `/en${s}`),
-        ],
-      },
+        ] },
     ],
     sitemap: [`${BASE_URL}/sitemap.xml`, `${BASE_URL}/sitemap-images.xml`],
-    host: BASE_URL,
-  }
+    host: BASE_URL }
 }

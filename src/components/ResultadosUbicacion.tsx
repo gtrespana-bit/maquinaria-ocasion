@@ -1,10 +1,9 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { useRouter, useSearchParams } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
 import { ESTADOS, getMunicipiosNombres } from '@/lib/ubicaciones'
-import { Search, ChevronRight, MapPin, ChevronDown, X } from 'lucide-react'
+import { Search, MapPin, ChevronDown, X } from 'lucide-react'
 
 type ProductoCat = {
   id: string

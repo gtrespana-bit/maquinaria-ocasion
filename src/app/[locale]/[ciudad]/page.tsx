@@ -22,8 +22,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const t = await getTranslations({ locale, namespace: 'notFound' })
     return {
       title: t('title'),
-      description: t('description'),
-    }
+      description: t('description') }
   }
 
   const title = ciudadSEO.titulo
@@ -43,22 +42,18 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       type: 'website',
       locale: 'es_ES',
       url: `https://maquinaria.click/${ciudad}`,
-      images: [{ url: ogImage, width: 1200, height: 630, alt: title }],
-    },
+      images: [{ url: ogImage, width: 1200, height: 630, alt: title }] },
     twitter: {
       card: 'summary_large_image',
       title,
       description,
-      images: [ogImage],
-    },
+      images: [ogImage] },
     alternates: alternatesSeo(`/${ciudad}`),
     robots: {
       // Ciudad sin anuncios = página vacía: fuera del índice (pero se
       // rastrea) hasta que haya inventario. Fail-open si la DB falla.
       index: await hayAnunciosEnCiudad(getSupabaseServerClient(), ciudadSEO.nombre, ciudadSEO.municipio),
-      follow: true,
-    },
-  }
+      follow: true } }
 }
 
 async function getProductosCiudad(ciudadNombre: string, municipio?: string) {
@@ -142,9 +137,7 @@ export default async function CiudadPage({ params }: Props) {
     geo: {
       '@type': 'GeoCoordinates',
       latitude: ciudadSEO.lat,
-      longitude: ciudadSEO.lng,
-    },
-  }
+      longitude: ciudadSEO.lng } }
 
   const breadcrumbJsonLd = {
     '@context': 'https://schema.org',
@@ -152,8 +145,7 @@ export default async function CiudadPage({ params }: Props) {
     itemListElement: [
       { '@type': 'ListItem', position: 1, name: 'Inicio', item: SITIO + '/' },
       { '@type': 'ListItem', position: 2, name: ciudadSEO.nombre, item: cityUrl },
-    ],
-  }
+    ] }
 
   const collectionPageJsonLd = {
     '@context': 'https://schema.org',
@@ -164,8 +156,7 @@ export default async function CiudadPage({ params }: Props) {
     url: cityUrl,
     isPartOf: { '@id': SITIO + '/#website' },
     breadcrumb: { '@id': cityUrl + '#breadcrumb' },
-    mainEntity: productos.length > 0 ? { '@id': cityUrl + '#itemlist' } : undefined,
-  }
+    mainEntity: productos.length > 0 ? { '@id': cityUrl + '#itemlist' } : undefined }
 
   const itemListJsonLd = productos.length > 0 ? {
     '@context': 'https://schema.org',
@@ -184,10 +175,7 @@ export default async function CiudadPage({ params }: Props) {
         price: p.precio_usd || 0,
         priceCurrency: 'EUR',
         availability: 'https://schema.org/InStock',
-        url: productAbsoluteUrl(p, SITIO),
-      },
-    })),
-  } : null
+        url: productAbsoluteUrl(p, SITIO) } })) } : null
 
   return (
     <>

@@ -17,9 +17,7 @@ export const metadata: Metadata = {
     siteName: 'MaquinariaOcasión',
     type: 'website',
     locale: 'es_ES',
-    images: [{ url: '/og-image.webp', width: 1200, height: 630, alt: 'Publica tu maquinaria en MaquinariaOcasión' }],
-  },
-}
+    images: [{ url: '/og-image.webp', width: 1200, height: 630, alt: 'Publica tu maquinaria en MaquinariaOcasión' }] } }
 
 export default function PublicarLayout({ children }: { children: ReactNode }) {
   return children

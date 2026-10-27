@@ -3,8 +3,7 @@ import { requireAdmin } from '@/lib/require-auth'
 import { checkRateLimit, getClientIp, rateLimitResponse } from '@/lib/rate-limit'
 import {
   enviarEmailDetallado,
-  canalEmailInfo,
-} from '@/lib/server-email'
+  canalEmailInfo } from '@/lib/server-email'
 import { emailLayout } from '@/lib/email-layout'
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
@@ -29,8 +28,7 @@ export async function GET(request: NextRequest) {
       ? 'Sin canal: configura RESEND_API_KEY en Vercel (preferido) o SMTP_USER/SMTP_PASS.'
       : info.resend
         ? `Canal activo: Resend API. Si no llega, verifica en Resend que el dominio del remitente (${info.from}) esté verificado y revisa Resend → Logs.`
-        : `Canal activo: SMTP (${info.smtpHost}:${info.smtpPort}).`,
-  })
+        : `Canal activo: SMTP (${info.smtpHost}:${info.smtpPort}).` })
 }
 
 /**
@@ -76,8 +74,7 @@ export async function POST(req: NextRequest) {
       canal: r.canal,
       id: r.id || null,
       from: info.from,
-      to,
-    })
+      to })
   }
 
   return NextResponse.json(
@@ -92,8 +89,7 @@ export async function POST(req: NextRequest) {
           ? 'Revisa: 1) que RESEND_API_KEY sea válida (re_...), 2) que el dominio del remitente esté verificado en Resend → Domains, 3) Resend → Logs para el detalle.'
           : r.canal === 'smtp'
             ? 'Revisa host/puerto/credenciales SMTP. Para Resend por SMTP: host=smtp.resend.com, puerto=465, user=resend, pass=RESEND_API_KEY.'
-            : 'Configura RESEND_API_KEY en Vercel → Settings → Environment Variables y redespliega.',
-    },
+            : 'Configura RESEND_API_KEY en Vercel → Settings → Environment Variables y redespliega.' },
     { status: 502 },
   )
 }

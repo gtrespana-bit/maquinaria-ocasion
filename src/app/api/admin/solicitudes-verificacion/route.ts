@@ -16,7 +16,6 @@ import { requireUUIDs } from '@/lib/validation'
 // Canónico telefono/dni/banco + dni_foto_*; legados pago_movil_*/cedula_foto_* se mantienen sincronizados
 const SOLICITUD_COLUMNS =
   'id, user_id, telefono, dni, banco, dni_foto_frente_url, dni_foto_dorso_url, pago_movil_telefono, pago_movil_cedula, pago_movil_banco, cedula_foto_frente_url, cedula_foto_dorso_url, mensaje, estado, creada_en, revisada_en, rechazo_motivo'
-
 export async function GET(request: NextRequest) {
   try {
     const auth = await requireAdmin(request)
@@ -87,8 +86,7 @@ export async function POST(request: NextRequest) {
         .update({
           estado: 'rechazada',
           rechazo_motivo: String(motivo).slice(0, 1000),
-          revisada_en: new Date().toISOString(),
-        })
+          revisada_en: new Date().toISOString() })
         .eq('id', id)
       if (error) {
         return NextResponse.json({ error: error.message }, { status: 500 })
@@ -114,8 +112,7 @@ export async function POST(request: NextRequest) {
     // Canónico ES: telefono/dni/banco/dni_foto_*. Legados sincronizados por trigger.
     const updateData: Record<string, any> = {
       verificado: true,
-      verificado_desde: new Date().toISOString(),
-    }
+      verificado_desde: new Date().toISOString() }
     if (pago_movil_telefono) { updateData.telefono_verificacion = pago_movil_telefono; updateData.pago_movil_telefono = pago_movil_telefono; updateData.telefono = pago_movil_telefono }
     if (pago_movil_cedula) {
       updateData.dni = pago_movil_cedula; updateData.pago_movil_cedula = pago_movil_cedula; updateData.cedula_numero = pago_movil_cedula

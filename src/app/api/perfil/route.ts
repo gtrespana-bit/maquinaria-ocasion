@@ -52,8 +52,7 @@ async function getOrCreateProfile(user: any) {
         // Si eligió tipo al registrarse, el perfil nace con él (Fase 2).
         ...(TIPOS_VENDEDOR.includes(tipoMeta as (typeof TIPOS_VENDEDOR)[number])
           ? { tipo_vendedor: tipoMeta }
-          : {}),
-      })
+          : {}) })
       .select(PROFILE_COLUMNS)
       .maybeSingle()
 

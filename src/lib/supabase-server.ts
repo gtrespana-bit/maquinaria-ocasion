@@ -53,9 +53,7 @@ export async function getServerUser(): Promise<any | null> {
           setAll() {
             // El servidor nunca escribe cookies de auth desde un Server
             // Component. El navegador las mantiene vía /api/auth/session.
-          },
-        },
-      }
+          } } }
     )
 
     // Validación con jwt explícito: NO pasa por el storage ni por _loadSession,
@@ -107,9 +105,7 @@ export async function getUserFromRequestCookies(
           },
           setAll() {
             // no-op: solo lectura
-          },
-        },
-      }
+          } } }
     )
 
     const { data, error } = await supabase.auth.getUser(accessToken)

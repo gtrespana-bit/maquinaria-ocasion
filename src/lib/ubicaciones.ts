@@ -133,8 +133,7 @@ export const MUNICIPIOS_POR_ESTADO: Record<string, Municipio[]> = {
   ],
   'Melilla': [
     { nombre: 'Melilla', capital: 'Melilla', lat: 35.2923, lng: -2.9386 },
-  ],
-}
+  ] }
 
 // Helper: obtener provincias de una comunidad autónoma
 export function getMunicipios(estado: string): Municipio[] {

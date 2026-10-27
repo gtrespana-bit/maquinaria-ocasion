@@ -61,8 +61,7 @@ export async function POST(req: NextRequest) {
     ubicacion_estado: limpiar(body.ubicacion_estado),
     ubicacion_ciudad: limpiar(body.ubicacion_ciudad),
     precio_min: body.precio_min ? Number(body.precio_min) : null,
-    precio_max: body.precio_max ? Number(body.precio_max) : null,
-  }
+    precio_max: body.precio_max ? Number(body.precio_max) : null }
 
   if (!row.q && !row.categoria && !row.subcategoria && !row.marca && !row.ubicacion_estado && !row.ubicacion_ciudad) {
     return NextResponse.json({ error: 'La búsqueda no tiene filtros para guardar' }, { status: 400 })

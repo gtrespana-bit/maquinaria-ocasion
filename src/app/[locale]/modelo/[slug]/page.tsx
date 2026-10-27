@@ -8,17 +8,14 @@ import {
   MARCAS_MODELOS,
   etiquetaModelo,
   modeloPorSlug,
-  slugModelo,
-} from '@/lib/marcas'
+  slugModelo } from '@/lib/marcas'
 import {
   calcularEstadisticas,
   estadisticasPorTramo,
-  resumenMercado,
-} from '@/lib/precios-mercado'
+  resumenMercado } from '@/lib/precios-mercado'
 import ModeloClient from './ModeloClient'
 import { productAbsoluteUrl } from '@/lib/product-url'
 import LocalLink from '@/components/LocalLink'
-import { ArrowRight } from 'lucide-react'
 import { alternatesSeo, descripcionSeo, tituloSeo } from '@/lib/seo'
 
 /**
@@ -74,15 +71,13 @@ async function getDatosModelo(slug: string) {
     precio: getPrecioEur(a),
     anio: a.espec_anio != null ? Number(a.espec_anio) : null,
     horas: a.espec_horas != null ? Number(a.espec_horas) : null,
-    es_demo: a.es_demo,
-  }))
+    es_demo: a.es_demo }))
 
   return {
     modelo,
     anuncios,
     est: calcularEstadisticas(paraEstadistica),
-    tramos: estadisticasPorTramo(paraEstadistica),
-  }
+    tramos: estadisticasPorTramo(paraEstadistica) }
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -118,8 +113,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     // muestra de precios sería una plantilla casi duplicada.
     robots: anuncios.length > 0 ? { index: true, follow: true } : { index: false, follow: true },
     openGraph: { title, description, url, siteName: 'MaquinariaOcasión', locale: 'es_ES', images: [{ url: `https://maquinaria.click/api/og/catalog?categoria=${ogParam}`, width: 1200, height: 630, alt: title }] },
-    twitter: { card: 'summary_large_image', title, description, images: [`https://maquinaria.click/api/og/catalog?categoria=${ogParam}`] },
-  }
+    twitter: { card: 'summary_large_image', title, description, images: [`https://maquinaria.click/api/og/catalog?categoria=${ogParam}`] } }
 }
 
 export default async function ModeloPage({ params }: Props) {
@@ -147,23 +141,19 @@ export default async function ModeloPage({ params }: Props) {
   if (est && est.muestra >= 3 && est.mediana) {
     faqs.push({
       pregunta: `¿Cuánto cuesta un ${nombre} de segunda mano?`,
-      respuesta: `Según los ${est.muestra} anuncios activos de MaquinariaOcasión, el precio de referencia de un ${nombre} es de ${formatPrecio(est.mediana)} de mediana, con la mitad de los anuncios entre ${formatPrecio(est.p25)} y ${formatPrecio(est.p75)}. El precio final depende del año, las horas de uso, el estado general y la documentación (factura, ficha técnica y manual).`,
-    })
+      respuesta: `Según los ${est.muestra} anuncios activos de MaquinariaOcasión, el precio de referencia de un ${nombre} es de ${formatPrecio(est.mediana)} de mediana, con la mitad de los anuncios entre ${formatPrecio(est.p25)} y ${formatPrecio(est.p75)}. El precio final depende del año, las horas de uso, el estado general y la documentación (factura, ficha técnica y manual).` })
   }
   faqs.push({
     pregunta: `¿Cuántos ${nombre} hay en venta ahora mismo?`,
     respuesta: anuncios.length > 0
       ? `Hay ${anuncios.length} anuncios activos de ${nombre} en MaquinariaOcasión, de toda España. Puedes filtrarlos por precio, horas de uso y año en el catálogo filtrado por ${nombre}.`
-      : `Ahora mismo no hay anuncios activos de ${nombre}, pero puedes publicar el tuyo gratis o filtrar el catálogo por la marca ${modelo.fabricante} para ver modelos cercanos.`,
-  })
+      : `Ahora mismo no hay anuncios activos de ${nombre}, pero puedes publicar el tuyo gratis o filtrar el catálogo por la marca ${modelo.fabricante} para ver modelos cercanos.` })
   faqs.push({
     pregunta: `¿Qué debo revisar en un ${nombre} de segunda mano?`,
-    respuesta: `Antes de pagar: la documentación (factura, ficha técnica y manual), las horas certificadas de uso, el motor y el sistema hidráulico, el estado general y el mantenimiento reciente. Conviene probar la máquina en funcionamiento y llevar la factura y la transferencia en regla.`,
-  })
+    respuesta: `Antes de pagar: la documentación (factura, ficha técnica y manual), las horas certificadas de uso, el motor y el sistema hidráulico, el estado general y el mantenimiento reciente. Conviene probar la máquina en funcionamiento y llevar la factura y la transferencia en regla.` })
   faqs.push({
     pregunta: `¿Cómo se transporta un ${nombre} tras la compra?`,
-    respuesta: `Depende del peso y las dimensiones: la herramienta ligera viaja en furgoneta o paletizada; la maquinaria pesada suele necesitar camión rígido o góndola. Acuerda por escrito quién paga la carga, el transporte y el seguro, y comprueba medidas y peso en la ficha antes de cerrar el precio.`,
-  })
+    respuesta: `Depende del peso y las dimensiones: la herramienta ligera viaja en furgoneta o paletizada; la maquinaria pesada suele necesitar camión rígido o góndola. Acuerda por escrito quién paga la carga, el transporte y el seguro, y comprueba medidas y peso en la ficha antes de cerrar el precio.` })
 
   const faqJsonLd = {
     '@context': 'https://schema.org',
@@ -172,9 +162,7 @@ export default async function ModeloPage({ params }: Props) {
     mainEntity: faqs.map(f => ({
       '@type': 'Question',
       name: f.pregunta,
-      acceptedAnswer: { '@type': 'Answer', text: f.respuesta },
-    })),
-  }
+      acceptedAnswer: { '@type': 'Answer', text: f.respuesta } })) }
 
   const breadcrumbJsonLd = {
     '@context': 'https://schema.org',
@@ -184,8 +172,7 @@ export default async function ModeloPage({ params }: Props) {
       { '@type': 'ListItem', position: 2, name: 'Marcas', item: SITIO + '/marcas' },
       { '@type': 'ListItem', position: 3, name: modelo.fabricante, item: SITIO + '/catalogo?marca=' + encodeURIComponent(modelo.fabricante) },
       { '@type': 'ListItem', position: 4, name: etiquetaModelo(modelo), item: pageUrl },
-    ],
-  }
+    ] }
 
   // Schema principal: Product + AggregateOffer con el rango real observado.
   const productModelJsonLd: Record<string, unknown> = {
@@ -205,11 +192,8 @@ export default async function ModeloPage({ params }: Props) {
             lowPrice: est.minimo,
             highPrice: est.maximo,
             offerCount: est.muestra,
-            availability: 'https://schema.org/InStock',
-          },
-        }
-      : {}),
-  }
+            availability: 'https://schema.org/InStock' } }
+      : {}) }
 
   // Si hay anuncios, añadir ItemList
   const itemListJsonLd = anuncios.length > 0 ? {
@@ -229,10 +213,7 @@ export default async function ModeloPage({ params }: Props) {
         price: getPrecioEur(p) || 0,
         priceCurrency: 'EUR',
         availability: 'https://schema.org/InStock',
-        url: productAbsoluteUrl(p, SITIO),
-      },
-    })),
-  } : null
+        url: productAbsoluteUrl(p, SITIO) } })) } : null
 
   // Grafo único: migas de pan, producto/modelo, listado y FAQ.
   const graphJsonLd = {
@@ -242,8 +223,7 @@ export default async function ModeloPage({ params }: Props) {
       productModelJsonLd,
       ...(itemListJsonLd ? [itemListJsonLd] : []),
       faqJsonLd,
-    ],
-  }
+    ] }
 
   return (
     <>
@@ -260,33 +240,40 @@ export default async function ModeloPage({ params }: Props) {
         hermanos={hermanos.map(h => ({
           valor: h.valor,
           etiqueta: etiquetaModelo(h),
-          slug: slugModelo(h),
-        }))}
+          slug: slugModelo(h) }))}
       />
 
       {/* FAQ visible (Google la usa para "La gente también pregunta") */}
-      <section className="max-w-7xl mx-auto px-4 py-10 border-t border-gray-100">
-        <h2 className="text-xl md:text-2xl font-black text-gray-900 mb-4">
-          Preguntas frecuentes sobre el {nombre}
-        </h2>
-        <div className="space-y-3">
-          {faqs.map((f, i) => (
-            <details key={i} className="bg-white border border-gray-200 rounded-xl p-4 group">
-              <summary className="font-bold text-gray-900 cursor-pointer list-none flex justify-between items-center gap-4">
-                {f.pregunta}
-                <ArrowRight size={16} className="text-brand-accent shrink-0 transition-transform group-open:rotate-90" />
-              </summary>
-              <p className="mt-3 text-sm text-gray-700 leading-relaxed">{f.respuesta}</p>
-            </details>
-          ))}
+      <section className="border-t border-line bg-paper">
+        <div className="shell py-12 md:py-16">
+          <h2 className="t-display t-display-md max-w-3xl text-ink">
+            Preguntas frecuentes sobre el {nombre}
+          </h2>
+          <div className="mt-8 max-w-4xl divide-y divide-line border-y border-line">
+            {faqs.map((f, i) => (
+              <details key={i} className="group py-4">
+                <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-[15px] font-medium text-ink">
+                  <span className="flex items-baseline gap-3">
+                    <span className="t-label text-ink/30">{String(i + 1).padStart(2, '0')}</span>
+                    {f.pregunta}
+                  </span>
+                  <span aria-hidden="true" className="relative h-3 w-3 shrink-0 transition-transform duration-300 group-open:rotate-45">
+                    <span className="absolute left-0 top-1/2 h-px w-3 -translate-y-1/2 bg-ink" />
+                    <span className="absolute left-1/2 top-0 h-3 w-px -translate-x-1/2 bg-ink" />
+                  </span>
+                </summary>
+                <p className="mt-2 pl-8 text-[13.5px] leading-relaxed text-muted">{f.respuesta}</p>
+              </details>
+            ))}
+          </div>
+          <p className="mt-6 text-[13px] text-muted">
+            ¿Quieres vender el tuyo?{' '}
+            <LocalLink href="/publicar" className="font-medium text-ink underline underline-offset-4">
+              Publica gratis tu {nombre}
+            </LocalLink>{' '}
+            y llega a compradores de toda España.
+          </p>
         </div>
-        <p className="mt-6 text-sm text-gray-500">
-          ¿Quieres vender el tuyo?{' '}
-          <LocalLink href="/publicar" className="text-brand-primary font-semibold hover:underline">
-            Publica gratis tu {nombre}
-          </LocalLink>{' '}
-          y llega a compradores de toda España.
-        </p>
       </section>
     </>
   )

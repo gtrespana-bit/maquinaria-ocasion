@@ -2,8 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import type { SupabaseClient } from '@supabase/supabase-js'
 import { requireAdmin } from '@/lib/require-auth'
 import { sbAdmin } from '@/lib/planes-servidor'
-import {
-  agregarVisitas,
+import { agregarVisitas,
   bucketsDelRango,
   porcentajeVariacion,
   rangoAnterior,
@@ -11,17 +10,7 @@ import {
   serieDeFechas,
   serieDiasSemana,
   serieHoras,
-  agruparFuentes,
-  type ActividadPeriodo,
-  type EstadoPlataforma,
-  type FilaRanking,
-  type FilaVisitaAgregable,
-  type InformeAudiencia,
-  type PuntoSerie,
-  type Rango,
-  type ResumenVisitas,
-  type TipoPagina,
-} from '@/lib/analitica'
+  agruparFuentes, type FilaVisitaAgregable, type PuntoSerie, type Rango, type ResumenVisitas, type EstadoPlataforma, type TipoPagina, type InformeAudiencia, type ActividadPeriodo, type FilaRanking} from '@/lib/analitica'
 
 /**
  * Informe de audiencia para el panel admin.
@@ -156,9 +145,7 @@ async function informeActividad(sb: Cliente, rango: Rango): Promise<{ actividad:
       resenas: resenas.total,
       resenasSerie: serieDeFechas(resenas.fechas, rango),
       denuncias: denuncias.total,
-      denunciasSerie: serieDeFechas(denuncias.fechas, rango),
-    },
-  }
+      denunciasSerie: serieDeFechas(denuncias.fechas, rango) } }
 }
 
 /** Estado actual de la plataforma (no depende del rango, salvo donde se indica). */
@@ -250,8 +237,7 @@ async function informeEstado(sb: Cliente, rango: Rango): Promise<EstadoPlataform
 
   const packsPorPlan = ['starter', 'plus', 'unlimited'].map((plan) => ({
     plan,
-    usuarios: conteoPlanes.get(plan) || 0,
-  }))
+    usuarios: conteoPlanes.get(plan) || 0 }))
 
   return {
     usuariosTotal,
@@ -266,8 +252,7 @@ async function informeEstado(sb: Cliente, rango: Rango): Promise<EstadoPlataform
     anunciosPublicadosPeriodo,
     anunciosVendidosPeriodo,
     anunciosConVisitasPeriodo: 0,
-    porcentajeAnunciosConVisitas: null,
-  }
+    porcentajeAnunciosConVisitas: null }
 }
 
 /** Normaliza lo que devuelve la RPC al tipo del panel. */
@@ -281,8 +266,7 @@ function resumenDesdeRpc(datos: any, rango: Rango): ResumenVisitas {
       corta: '',
       visitas: 0,
       visitantes: 0,
-      sesiones: 0,
-    })
+      sesiones: 0 })
   }
   const serie: PuntoSerie[] = buckets.map((b) => {
     const encontrado = (datos?.serie || []).find((p: any) => String(p.clave) === b.clave)
@@ -290,16 +274,14 @@ function resumenDesdeRpc(datos: any, rango: Rango): ResumenVisitas {
       ...b,
       visitas: Number(encontrado?.visitas) || 0,
       visitantes: Number(encontrado?.visitantes) || 0,
-      sesiones: Number(encontrado?.sesiones) || 0,
-    }
+      sesiones: Number(encontrado?.sesiones) || 0 }
   })
 
   const ranking = (lista: any[] | undefined): FilaRanking[] =>
     (lista || []).map((f) => ({
       clave: String(f.clave ?? f.host ?? ''),
       visitas: Number(f.visitas) || 0,
-      visitantes: Number(f.visitantes) || 0,
-    }))
+      visitantes: Number(f.visitantes) || 0 }))
 
   const visitas = Number(datos?.visitas) || 0
   const visitantes = Number(datos?.visitantes) || 0
@@ -322,8 +304,7 @@ function resumenDesdeRpc(datos: any, rango: Rango): ResumenVisitas {
       clave: String(p.clave ?? p.ruta),
       visitas: Number(p.visitas) || 0,
       visitantes: Number(p.visitantes) || 0,
-      tipo: (p.tipo || 'otro') as TipoPagina,
-    })),
+      tipo: (p.tipo || 'otro') as TipoPagina })),
     // La RPC solo devuelve las horas y los días con datos: se rellenan los
     // huecos para que las gráficas tengan siempre 24 y 7 barras.
     horas: serieHoras(
@@ -331,8 +312,7 @@ function resumenDesdeRpc(datos: any, rango: Rango): ResumenVisitas {
     ),
     diasSemana: serieDiasSemana(
       (datos?.diasSemana || []).map((d: any) => ({ dow: Number(d.dow) || 0, visitas: Number(d.visitas) || 0 })),
-    ),
-  }
+    ) }
 }
 
 async function visitasDelRango(
@@ -343,8 +323,7 @@ async function visitasDelRango(
     const { data, error } = await sb.rpc('analitica_visitas', {
       p_desde: iso(rango.desde),
       p_hasta: iso(rango.hasta),
-      p_granularidad: rango.granularidad,
-    })
+      p_granularidad: rango.granularidad })
     if (!error && data) {
       const resumen = resumenDesdeRpc(data, rango)
       return {
@@ -352,8 +331,7 @@ async function visitasDelRango(
         degradado: false,
         topProductos: (data as any).topProductos || [],
         sinVisitas: (data as any).productosSinVisitas || [],
-        truncado: false,
-      }
+        truncado: false }
     }
     if (error && !/does not exist|schema cache|function/i.test(error.message || '')) {
       console.error('[admin/estadisticas] rpc:', error.message)
@@ -385,8 +363,7 @@ async function visitasDelRango(
     degradado: true,
     topProductos: [],
     sinVisitas: [],
-    truncado,
-  }
+    truncado }
 }
 
 /** Anuncios con visitas en el periodo: alimenta el % de anuncios «vivos». */
@@ -412,8 +389,7 @@ export async function GET(request: NextRequest) {
       preset: params.get('preset'),
       desde: params.get('desde'),
       hasta: params.get('hasta'),
-      granularidad: params.get('granularidad'),
-    })
+      granularidad: params.get('granularidad') })
     const anterior = rangoAnterior(rango)
 
     const sb = sbAdmin()
@@ -442,31 +418,26 @@ export async function GET(request: NextRequest) {
         hasta: iso(rango.hasta),
         granularidad: rango.granularidad,
         buckets: bucketsDelRango(rango),
-        dias: Math.max(1, Math.round((rango.hasta.getTime() - rango.desde.getTime()) / 86400000)),
-      },
+        dias: Math.max(1, Math.round((rango.hasta.getTime() - rango.desde.getTime()) / 86400000)) },
       visitas: visitas.resumen,
       actividad: actividad.actividad,
       estado: {
         ...estado,
         anunciosConVisitasPeriodo: conVisitas,
-        porcentajeAnunciosConVisitas: porcentajeConVisitas,
-      },
+        porcentajeAnunciosConVisitas: porcentajeConVisitas },
       comparativa: {
         visitas: visitas.degradado ? null : visitasPrevias.resumen.visitas,
         visitantes: visitas.degradado ? null : visitasPrevias.resumen.visitantes,
         registros: registrosPrevios,
         publicaciones: publicacionesPrevias,
-        mensajes: mensajesPrevios,
-      },
+        mensajes: mensajesPrevios },
       filasTruncadas: visitas.truncado || actividad.truncado,
       degradado: visitas.degradado,
       ...(visitas.degradado
         ? {
             aviso:
-              'Falta aplicar la migración 202609290001_analitica_visitas.sql: las visitas se están agrupando al vuelo y los «nuevos vs recurrentes» no se pueden calcular.',
-          }
-        : {}),
-    }
+              'Falta aplicar la migración 202609290001_analitica_visitas.sql: las visitas se están agrupando al vuelo y los «nuevos vs recurrentes» no se pueden calcular.' }
+        : {}) }
 
     return NextResponse.json({
       ok: true,
@@ -479,9 +450,7 @@ export async function GET(request: NextRequest) {
         visitantes: porcentajeVariacion(visitas.resumen.visitantes, visitasPrevias.resumen.visitantes),
         registros: porcentajeVariacion(actividad.actividad.registros, registrosPrevios),
         publicaciones: porcentajeVariacion(actividad.actividad.publicaciones, publicacionesPrevias),
-        mensajes: porcentajeVariacion(actividad.actividad.mensajes, mensajesPrevios),
-      },
-    })
+        mensajes: porcentajeVariacion(actividad.actividad.mensajes, mensajesPrevios) } })
   } catch (err: any) {
     return NextResponse.json({ error: err.message || 'Error desconocido' }, { status: 500 })
   }

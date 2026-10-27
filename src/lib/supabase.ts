@@ -46,8 +46,7 @@ export const supabase = new Proxy({} as any, {
     const client = getSupabaseClient()
     const value = client[prop as keyof ReturnType<typeof createClient>]
     return typeof value === 'function' ? value.bind(client) : value
-  },
-})
+  } })
 
 export const isSupabaseConfigured = () => {
   return !!supabaseUrl && !!supabaseAnonKey

@@ -72,8 +72,7 @@ export function decidirAccionPago(sesion: SesionStripeMinima): DecisionPago {
   if (importeEur != null && Math.abs(importeEur - paquete.precio) > 0.01) {
     return {
       accion: 'descartar',
-      motivo: `Importe cobrado (${importeEur} €) no coincide con el paquete (${paquete.precio} €)`,
-    }
+      motivo: `Importe cobrado (${importeEur} €) no coincide con el paquete (${paquete.precio} €)` }
   }
 
   return { accion: 'acreditar', userId, creditos, importeEur }

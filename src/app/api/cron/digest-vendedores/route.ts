@@ -109,8 +109,7 @@ export async function GET(request: NextRequest) {
         body: `${agg.visitas} vistas${guardados > 0 ? ` · ${guardados} guardados` : ''} esta semana`,
         tag: 'digest-semanal',
         icon: '/icon-192.png',
-        click_url: '/dashboard',
-      })
+        click_url: '/dashboard' })
       enviados++
     } catch { /* un fallo no frena el resto */ }
   }
@@ -119,8 +118,7 @@ export async function GET(request: NextRequest) {
   const filas = (productos || []).map((p: any) => ({
     producto_id: p.id,
     visitas: p.visitas || 0,
-    actualizado_en: new Date().toISOString(),
-  }))
+    actualizado_en: new Date().toISOString() }))
   for (let i = 0; i < filas.length; i += 500) {
     await admin.from('visitas_snapshot').upsert(filas.slice(i, i + 500), { onConflict: 'producto_id' })
   }

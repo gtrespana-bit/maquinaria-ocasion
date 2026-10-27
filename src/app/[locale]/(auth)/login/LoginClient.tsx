@@ -56,8 +56,7 @@ export default function LoginPage() {
       const res = await fetch('/api/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
-      })
+        body: JSON.stringify({ email, password }) })
 
       const data = await res.json()
 
@@ -74,8 +73,7 @@ export default function LoginPage() {
       if (data.session?.access_token && data.session?.refresh_token) {
         await supabase.auth.setSession({
           access_token: data.session.access_token,
-          refresh_token: data.session.refresh_token,
-        })
+          refresh_token: data.session.refresh_token })
         
         // Wait briefly to allow AuthProvider to process the session change
         await new Promise(resolve => setTimeout(resolve, 100))
@@ -104,8 +102,7 @@ export default function LoginPage() {
       const res = await fetch('/api/reconfirmar', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email }),
-      })
+        body: JSON.stringify({ email }) })
       const data = await res.json().catch(() => ({}))
 
       if (!res.ok) {
@@ -133,8 +130,7 @@ export default function LoginPage() {
       const res = await fetch('/api/password-reset', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, locale }),
-      })
+        body: JSON.stringify({ email, locale }) })
       const data = await res.json().catch(() => ({}))
       if (!res.ok) {
         setResetError(data.error || 'No se pudo enviar el correo. Inténtalo de nuevo.')
@@ -148,25 +144,54 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-[80vh] flex items-center justify-center px-4 py-12">
-      <div className="w-full max-w-md">
-        <div className="text-center mb-8">
-          <BrandLogo href="/" size="lg" className="justify-center" priority />
-          <h1 className="text-2xl font-bold text-gray-800 mt-5">{t('login.title')}</h1>
-          <p className="text-gray-500 mt-1">{t('login.subtitle')}</p>
+    <div className="grid min-h-[calc(100vh-140px)] grid-cols-1 lg:grid-cols-2">
+      {/* Panel editorial: solo escritorio */}
+      <aside className="on-dark relative hidden overflow-hidden bg-ink px-12 py-16 text-paper lg:flex lg:flex-col lg:justify-between">
+        <div aria-hidden="true" className="blueprint absolute inset-0 opacity-60" />
+        <div className="relative">
+          <BrandLogo href="/" tone="light" size="md" />
+        </div>
+        <div className="relative max-w-md">
+          <p className="t-eyebrow text-signal">Cuenta MaquinariaOcasión</p>
+          <p className="t-display mt-6 text-[2.6rem] text-paper">
+            Tu maquinaria,
+            <br />
+            <span className="t-serif-italic text-signal">en el mercado.</span>
+          </p>
+          <ul className="mt-10 space-y-3 border-t border-line-dark pt-6">
+            {['Publicar gratis, sin comisiones', 'Chat directo con compradores', 'Panel con tus anuncios y su rendimiento'].map((item) => (
+              <li key={item} className="flex items-baseline gap-3 text-[13.5px] text-paper/60">
+                <span aria-hidden="true" className="h-1 w-1 shrink-0 bg-signal" />
+                {item}
+              </li>
+            ))}
+          </ul>
+        </div>
+        <p className="t-label relative text-paper/30">maquinaria.click</p>
+      </aside>
+
+      {/* Formulario */}
+      <div className="flex items-center justify-center px-5 py-14 md:px-10">
+        <div className="w-full max-w-[400px]">
+        <div className="mb-9">
+          <div className="lg:hidden">
+            <BrandLogo href="/" size="lg" priority />
+          </div>
+          <h1 className="t-display t-display-md mt-6 text-ink">{t('login.title')}</h1>
+          <p className="mt-2 text-[14px] text-muted">{t('login.subtitle')}</p>
         </div>
 
-        <div className="bg-white rounded-2xl shadow-sm p-8 border border-gray-100">
+        <div>
           {error && (
-            <div className="flex items-center gap-2 bg-red-50 text-red-700 p-3 rounded-lg mb-6 text-sm">
-              <AlertCircle size={18} />
+            <div className="mb-6 flex items-start gap-2 border border-clay/40 bg-clay/[0.05] p-3 text-[13px] text-clay">
+              <AlertCircle size={16} className="mt-0.5 shrink-0" />
               {error}
             </div>
           )}
 
           <form onSubmit={handleLogin} className="space-y-5">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">{t('login.email')}</label>
+              <label className="t-label mb-1 block text-ink/50">{t('login.email')}</label>
               <input
                 type="email"
                 name="email"
@@ -176,12 +201,12 @@ export default function LoginPage() {
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="tu@email.com"
                 required
-                className="w-full border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-accent text-gray-900 bg-white"
+                className="field text-[15px]"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">{t('login.password')}</label>
+              <label className="t-label mb-1 block text-ink/50">{t('login.password')}</label>
               <input
                 type="password"
                 name="password"
@@ -190,7 +215,7 @@ export default function LoginPage() {
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Tu contraseña"
                 required
-                className="w-full border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-accent text-gray-900 bg-white"
+                className="field text-[15px]"
               />
             </div>
 
@@ -198,15 +223,15 @@ export default function LoginPage() {
               <button
                 type="button"
                 onClick={() => setShowReset(!showReset)}
-                className="text-sm text-brand-primary hover:underline font-medium"
+                className="t-label text-ink/60 underline underline-offset-4 transition-colors hover:text-ink"
               >
                 {t('login.forgot_password')}
               </button>
             </div>
 
             {showReset && !resetSent ? (
-              <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-4 animate-fadeIn">
-                <p className="text-sm text-yellow-800 mb-3 font-medium">{t('login.reset_title')}</p>
+              <div className="border border-line bg-paper-2/60 p-4">
+                <p className="mb-3 text-[13px] text-ink/70">{t('login.reset_title')}</p>
                 {resetError && (
                   <p className="text-sm text-red-600 mb-3">{resetError}</p>
                 )}
@@ -220,28 +245,28 @@ export default function LoginPage() {
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="tu@email.com"
                     required
-                    className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-accent bg-white"
+                    className="field text-[14px]"
                   />
                   <button
                     type="submit"
                     disabled={resetLoading}
-                    className="w-full bg-brand-primary text-white py-2.5 rounded-lg font-semibold hover:bg-brand-dark transition disabled:opacity-50 text-sm"
+                    className="btn btn-ink btn-sm w-full"
                   >
                     {resetLoading ? t('login.sending') : t('login.reset_submit')}
                   </button>
                   <button
                     type="button"
                     onClick={() => setShowReset(false)}
-                    className="w-full text-sm text-gray-600 hover:text-gray-800"
+                    className="w-full text-[13px] text-muted transition-colors hover:text-ink"
                   >
                     {t('login.cancel')}
                   </button>
                 </form>
               </div>
             ) : showReset && resetSent ? (
-              <div className="bg-green-50 border border-green-200 rounded-xl p-4 text-center animate-fadeIn">
-                <p className="text-sm text-green-700 font-semibold mb-2">{t('login.link_sent')}</p>
-                <p className="text-sm text-green-600">
+              <div className="border border-moss/30 bg-moss-soft p-4 text-center">
+                <p className="mb-2 text-[13px] font-semibold text-moss">{t('login.link_sent')}</p>
+                <p className="text-[13px] text-moss/80">
                   {t('login.reset_sent')}
                 </p>
                 <button
@@ -257,46 +282,46 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-brand-primary text-white py-3 rounded-lg font-bold hover:bg-brand-dark transition disabled:opacity-50"
+              className="btn btn-ink w-full btn-lg"
             >
               {loading ? t('login.submitting') : t('login.submit')}
             </button>
           </form>
 
-          <p className="text-center text-sm text-gray-500 mt-6">
+          <p className="mt-8 text-center text-[13px] text-muted">
             {t('login.no_account')}{' '}
-            <LocalLink href="/register" className="text-brand-primary font-semibold hover:underline">
+            <LocalLink href="/register" className="font-semibold text-ink underline decoration-signal decoration-2 underline-offset-4">
               {t('login.register')}
             </LocalLink>
           </p>
 
           {/* Botón para reenviar email de confirmación */}
           {!showResend ? (
-            <p className="text-center text-sm text-gray-500 mt-3">
+            <p className="mt-3 text-center text-[13px] text-muted">
               {t('login.resend_prompt')}
               <button
                 type="button"
                 onClick={() => setShowResend(true)}
-                className="text-brand-primary font-semibold hover:underline ml-1"
+                className="ml-1 font-semibold text-ink underline decoration-signal decoration-2 underline-offset-4"
               >
                 {t('login.resend')}
               </button>
             </p>
           ) : (
-            <div className="mt-4 p-4 bg-blue-50 rounded-lg border border-blue-200">
+            <div className="mt-4 border border-line bg-paper-2/60 p-4">
               {resendSuccess ? (
                 <div className="text-center">
-                  <div className="flex items-center justify-center gap-2 text-green-700 font-semibold mb-2">
+                  <div className="mb-2 flex items-center justify-center gap-2 text-[13px] font-semibold text-moss">
                     {resendYaConfirmado ? t('login.resend_already') : t('login.resend_success')}
                   </div>
-                  <p className="text-sm text-gray-600 mb-3">
+                  <p className="mb-3 text-[13px] text-muted">
                     {resendYaConfirmado ? t('login.resend_already_desc') : t('login.resend_success_desc')}
                     {!resendYaConfirmado && <strong> {email}</strong>}
                   </p>
                   <button
                     type="button"
                     onClick={() => setShowResend(false)}
-                    className="text-brand-primary font-semibold hover:underline text-sm"
+                    className="text-[13px] font-semibold text-ink underline underline-offset-4"
                   >
                     {t('login.reset_back')}
                   </button>
@@ -316,20 +341,20 @@ export default function LoginPage() {
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="tu@email.com"
                       required
-                      className="w-full border rounded-lg px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-brand-accent bg-white text-sm"
+                      className="field text-[14px]"
                     />
                   </div>
                   <button
                     type="submit"
                     disabled={resendLoading}
-                    className="w-full bg-brand-primary text-white py-2.5 rounded-lg font-semibold hover:bg-brand-dark transition disabled:opacity-50 text-sm"
+                    className="btn btn-ink btn-sm w-full"
                   >
                     {resendLoading ? t('login.sending') : t('login.resend')}
                   </button>
                   <button
                     type="button"
                     onClick={() => setShowResend(false)}
-                    className="w-full text-sm text-gray-600 hover:text-gray-800"
+                    className="w-full text-[13px] text-muted transition-colors hover:text-ink"
                   >
                     {t('login.cancel')}
                   </button>
@@ -337,6 +362,7 @@ export default function LoginPage() {
               )}
             </div>
           )}
+        </div>
         </div>
       </div>
     </div>

@@ -1,6 +1,5 @@
-'use client';
+'use client'
 
-import { useState, useEffect, useCallback } from 'react';
 import { ProductCardLazy } from './ProductCardLazy';
 
 interface Producto {
@@ -39,7 +38,7 @@ export const OptimizedProductGrid = ({
 
   // Renderizar productos con carga diferida
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 xl:grid-cols-3">
       {productos.map((p, index) => (
         <ProductCardLazy
           key={`${p.id}-${currentPage}`}

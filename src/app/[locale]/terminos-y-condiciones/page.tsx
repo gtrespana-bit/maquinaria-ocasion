@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { alternatesSeo } from '@/lib/seo'
 import { setRequestLocale } from 'next-intl/server'
 import DocumentoLegal from '@/components/DocumentoLegal'
-import { TERMINOS, type IdiomaLegal } from '@/lib/textos-legales'
+import {TERMINOS, type IdiomaLegal } from '@/lib/textos-legales'
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params

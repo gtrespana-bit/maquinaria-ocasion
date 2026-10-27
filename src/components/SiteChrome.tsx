@@ -25,7 +25,7 @@ export function SiteChrome({ children, lang = 'es' }: { children: React.ReactNod
   if (admin) {
     return (
       <div lang={lang}>
-        <main id="main-content" className="min-h-screen bg-white">
+        <main id="main-content" className="min-h-screen bg-paper">
           {children}
         </main>
       </div>
@@ -35,7 +35,7 @@ export function SiteChrome({ children, lang = 'es' }: { children: React.ReactNod
   return (
     <div lang={lang}>
       <Header />
-      <main id="main-content" className="min-h-screen bg-white">
+      <main id="main-content" className="min-h-screen bg-paper">
         {children}
       </main>
       <Footer />

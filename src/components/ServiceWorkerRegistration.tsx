@@ -17,8 +17,7 @@ export function ServiceWorkerRegistration() {
       try {
         const registration = await navigator.serviceWorker.register('/sw.js', {
           scope: '/',
-          updateViaCache: 'none',
-        })
+          updateViaCache: 'none' })
 
         if (cancelled) return
 

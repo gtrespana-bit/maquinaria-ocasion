@@ -1,4 +1,4 @@
-'use client';
+'use client'
 
 /**
  * Selector de marca/modelo agrupado por fabricante.
@@ -15,9 +15,7 @@
 import {
   agruparPorFabricante,
   etiquetaModelo,
-  valoresUnicos,
-  type MarcaModelo,
-} from '@/lib/marcas';
+  valoresUnicos, type MarcaModelo} from '@/lib/marcas';
 
 interface SelectorMarcaProps {
   id?: string;
@@ -39,8 +37,7 @@ export function SelectorMarca({
   allLabel,
   onChange,
   className,
-  ariaLabel,
-}: SelectorMarcaProps) {
+  ariaLabel }: SelectorMarcaProps) {
   // flatMap de varias subcategorías puede repetir la misma entrada; el valor
   // canónico es único en el catálogo maestro, así que deduplicamos por él.
   const unicos = valoresUnicos(modelos).map(v => modelos.find(m => m.valor === v)!)

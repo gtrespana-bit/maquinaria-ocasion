@@ -73,8 +73,7 @@ export default function ConfirmEmailPage() {
         if (accessToken && refreshToken) {
           const { error: errorSet } = await supabase.auth.setSession({
             access_token: accessToken,
-            refresh_token: refreshToken,
-          })
+            refresh_token: refreshToken })
           if (!errorSet) {
             setYaLogueado(true)
             terminarExito()
@@ -89,8 +88,7 @@ export default function ConfirmEmailPage() {
           const tipoOtp = type === 'email' ? 'signup' : type
           const { data: dataOtp, error: errorOtp } = await supabase.auth.verifyOtp({
             token_hash: tokenHash,
-            type: tipoOtp as 'signup' | 'invite' | 'magiclink' | 'recovery' | 'email_change',
-          })
+            type: tipoOtp as 'signup' | 'invite' | 'magiclink' | 'recovery' | 'email_change' })
           if (errorOtp) {
             // Token inválido/expirado: quizá el usuario YA confirmó antes y
             // reutilizó el enlace. Comprobar sesión antes de rendirse.

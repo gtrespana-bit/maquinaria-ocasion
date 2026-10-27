@@ -54,8 +54,7 @@ export default function ResponderClient({ hiloId, cerrado }: { hiloId: string; c
       const res = await fetch('/api/foro/mensajes', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ hilo_id: hiloId, cuerpo: cuerpoLimpio }),
-      })
+        body: JSON.stringify({ hilo_id: hiloId, cuerpo: cuerpoLimpio }) })
       const data = await res.json().catch(() => ({}))
 
       if (res.ok && data.id) {

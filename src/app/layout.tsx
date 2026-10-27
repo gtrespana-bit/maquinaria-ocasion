@@ -11,41 +11,47 @@ import GoogleAnalyticsScript from '@/components/GoogleAnalyticsScript'
 import GoogleAnalytics from '@/components/GoogleAnalytics'
 import CookieConsent from '@/components/CookieConsent'
 
-// Fuente Inter autohospedada (woff2 locales) en lugar de next/font/google.
-const inter = localFont({
-  src: [
-    { path: './fonts/inter-latin-400-normal.woff2', weight: '400', style: 'normal' },
-    { path: './fonts/inter-latin-400-italic.woff2', weight: '400', style: 'italic' },
-    { path: './fonts/inter-latin-500-normal.woff2', weight: '500', style: 'normal' },
-    { path: './fonts/inter-latin-500-italic.woff2', weight: '500', style: 'italic' },
-    { path: './fonts/inter-latin-600-normal.woff2', weight: '600', style: 'normal' },
-    { path: './fonts/inter-latin-600-italic.woff2', weight: '600', style: 'italic' },
-    { path: './fonts/inter-latin-700-normal.woff2', weight: '700', style: 'normal' },
-    { path: './fonts/inter-latin-700-italic.woff2', weight: '700', style: 'italic' },
-    { path: './fonts/inter-latin-900-normal.woff2', weight: '900', style: 'normal' },
-    { path: './fonts/inter-latin-900-italic.woff2', weight: '900', style: 'italic' },
-  ],
-  variable: '--font-inter',
+// ── Tipografía ──────────────────────────────────────────────────────────────
+// Archivo Variable (display + UI: grotesca de origen industrial con eje de
+// ancho), Instrument Serif (contrapunto editorial en itálica) y JetBrains Mono
+// (micro-etiquetas y datos). Autohospedadas desde /src/app/fonts: cero
+// peticiones a Google Fonts, cero CLS.
+const archivo = localFont({
+  src: [{ path: './fonts/archivo-latin-var.woff2', weight: '100 900', style: 'normal' }],
+  variable: '--font-archivo',
   display: 'swap',
   preload: true,
-})
+  declarations: [{ prop: 'font-stretch', value: '62% 125%' }] })
+
+const instrumentSerif = localFont({
+  src: [
+    { path: './fonts/instrument-serif-400-normal.woff2', weight: '400', style: 'normal' },
+    { path: './fonts/instrument-serif-400-italic.woff2', weight: '400', style: 'italic' },
+  ],
+  variable: '--font-serif',
+  display: 'swap',
+  preload: true })
+
+const jetbrainsMono = localFont({
+  src: [{ path: './fonts/jetbrains-mono-latin-var.woff2', weight: '100 800', style: 'normal' }],
+  variable: '--font-jetbrains',
+  display: 'swap',
+  preload: false })
 
 export const viewport: Viewport = {
-  themeColor: '#0F172A',
+  themeColor: '#0C0E0D',
   width: 'device-width',
   initialScale: 1,
   maximumScale: 5,
   userScalable: true,
   viewportFit: 'cover',
-  colorScheme: 'light',
-}
+  colorScheme: 'light' }
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://maquinaria.click'),
   title: {
     default: 'Maquinaria agrícola, de obra y herramientas de ocasión | MaquinariaOcasión',
-    template: '%s | MaquinariaOcasión',
-  },
+    template: '%s | MaquinariaOcasión' },
   description:
     'Marketplace especializado en maquinaria agrícola, maquinaria de obra y herramientas de segunda mano en España. Anuncios con precio, fotos y ficha técnica. Publica gratis.',
   keywords: [
@@ -64,8 +70,7 @@ export const metadata: Metadata = {
   formatDetection: {
     email: false,
     address: false,
-    telephone: false,
-  },
+    telephone: false },
   openGraph: {
     type: 'website',
     locale: 'es_ES',
@@ -78,16 +83,13 @@ export const metadata: Metadata = {
         url: '/og-image.webp',
         width: 1200,
         height: 630,
-        alt: 'MaquinariaOcasión — Maquinaria agrícola, de obra y herramientas de ocasión en España',
-      },
-    ],
-  },
+        alt: 'MaquinariaOcasión — Maquinaria agrícola, de obra y herramientas de ocasión en España' },
+    ] },
   twitter: {
     card: 'summary_large_image',
     title: 'Maquinaria agrícola, de obra y herramientas de ocasión',
     description: 'Marketplace especializado en maquinaria agrícola, de obra y herramientas de segunda mano en España. Publica gratis.',
-    images: ['/og-image.webp'],
-  },
+    images: ['/og-image.webp'] },
   robots: {
     index: true,
     follow: true,
@@ -96,14 +98,11 @@ export const metadata: Metadata = {
       follow: true,
       'max-video-preview': -1,
       'max-image-preview': 'large',
-      'max-snippet': -1,
-    },
-  },
+      'max-snippet': -1 } },
   verification: process.env.GOOGLE_SITE_VERIFICATION
     ? { google: process.env.GOOGLE_SITE_VERIFICATION }
     : undefined,
-  category: 'marketplace',
-}
+  category: 'marketplace' }
 
 /**
  * Origen de Supabase para el preconnect del <head>.
@@ -118,12 +117,11 @@ const SUPABASE_ORIGIN =
 
 // IMPORTANTE — LAYOUT RAÍZ 100% ESTÁTICO. (ver comentario original)
 export default async function RootLayout({
-  children,
-}: {
+  children }: {
   children: React.ReactNode
 }) {
   return (
-    <html lang="es" className={inter.variable} suppressHydrationWarning>
+    <html lang="es" className={`${archivo.variable} ${instrumentSerif.variable} ${jetbrainsMono.variable}`} suppressHydrationWarning>
       <head>
         <GoogleAnalyticsScript />
         <link rel="preconnect" href={SUPABASE_ORIGIN} />
@@ -195,8 +193,8 @@ export default async function RootLayout({
           }}
         />
       </head>
-      <body className="bg-white antialiased" suppressHydrationWarning>
-        <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-brand-primary focus:text-white focus:rounded-lg focus:shadow-lg">
+      <body className="bg-paper text-ink antialiased" suppressHydrationWarning>
+        <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-[100] focus:px-4 focus:py-2 focus:bg-ink focus:text-paper focus:t-eyebrow focus:rounded-xs">
           Saltar al contenido principal
         </a>
         <AuthProvider>

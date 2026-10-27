@@ -40,9 +40,7 @@ export function alternatesSeo(path: string) {
     canonical,
     languages: {
       'es-ES': canonical,
-      'x-default': canonical,
-    },
-  }
+      'x-default': canonical } }
 }
 
 /** Quita comillas envolventes (frontmatter YAML, títulos copiados, etc.). */

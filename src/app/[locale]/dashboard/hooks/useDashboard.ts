@@ -84,8 +84,7 @@ export function useDashboard() {
         // Flatten the joined data for backwards compatibility
         const flattenedResenas = (data || []).map((r: any) => ({
           ...r,
-          producto_titulo: r.productos?.titulo || 'Producto eliminado',
-        }))
+          producto_titulo: r.productos?.titulo || 'Producto eliminado' }))
         setResenas(flattenedResenas)
         if (data && data.length > 0) {
           const avg = data.reduce((sum: number, r: any) => sum + r.puntuacion, 0) / data.length
@@ -118,15 +117,14 @@ export function useDashboard() {
             const nivelNuevo = nombresNivel[newLevel] || `Nivel ${newLevel}`
             setNivelConfianza(newLevel)
             setBadgesAuto(payload.new?.badges_automaticos || [])
-            setToast(`🎉 Subiste de nivel: ${nivelNuevo}!`)
+            setToast(`Subiste de nivel: ${nivelNuevo}`)
             setTimeout(() => setToast(null), 6000)
             // EMAIL: Trigger level-up email
             try {
               fetch('/api/email-verificacion', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ userId: user.id, nuevoNivel: nivelNuevo, nivelAnterior }),
-              }).catch(() => {})
+                body: JSON.stringify({ userId: user.id, nuevoNivel: nivelNuevo, nivelAnterior }) }).catch(() => {})
             } catch {}
           } else if (typeof newLevel === 'number') {
             setNivelConfianza(newLevel)
@@ -173,6 +171,5 @@ export function useDashboard() {
     creditos, setCreditos, pubCount, nombre, setNombre, telefono, setTelefono,
     estado, setEstado, ciudad, setCiudad, tipoVendedor, setTipoVendedor, fotoUrl, setFotoUrl, verificado,
     nivelConfianza, badgesAuto, ultimaActividad, creadoEn, resenas,
-    promedioResenas, loading, setToast, toast, refreshAll,
-  }
+    promedioResenas, loading, setToast, toast, refreshAll }
 }

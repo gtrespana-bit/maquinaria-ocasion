@@ -50,8 +50,7 @@ export async function POST(request: NextRequest) {
         : 'Tu perfil ya no está verificado en MaquinariaOcasión.',
       tag: verificado ? 'verified' : 'verified-revoked',
       icon: '/icon-192.png',
-      click_url: '/dashboard',
-    })
+      click_url: '/dashboard' })
 
     return NextResponse.json({ ok: true })
   } catch (err: any) {

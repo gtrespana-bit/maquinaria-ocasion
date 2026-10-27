@@ -27,8 +27,7 @@ const NIVELES: Record<string, NivelPlan> = {
   gratis: 0,
   starter: 1,
   plus: 3,
-  unlimited: 3,
-}
+  unlimited: 3 }
 
 /** Nivel de un plan. Cualquier valor raro cae a gratis (falla cerrado). */
 export function nivelPlan(plan: string | null | undefined): NivelPlan {
@@ -61,8 +60,7 @@ export function capacidades(plan: string | null | undefined): Capacidades {
     serie: nivel >= 2,
     mercado: nivel >= 2,
     precioVsMercado: nivel >= 2,
-    exportar: nivel >= 3,
-  }
+    exportar: nivel >= 3 }
 }
 
 /** Periodos que ofrece el panel. 90 días es la vista «profesional». */
@@ -124,8 +122,7 @@ export function diagnosticoAnuncio(opts: {
       clave: 'vendido',
       etiqueta: 'Vendido',
       sugerencia: 'Ya está vendido. Duplícalo si te entra otra unidad igual.',
-      tono: 'neutro',
-    }
+      tono: 'neutro' }
   }
 
   if (opts.pausadoPorPlan || opts.activo === false) {
@@ -133,8 +130,7 @@ export function diagnosticoAnuncio(opts: {
       clave: 'pausado',
       etiqueta: opts.pausadoPorPlan ? 'Pausado por cupo' : 'Pausado',
       sugerencia: 'No se está mostrando. Reactívalo cuando tengas hueco en tu plan.',
-      tono: 'aviso',
-    }
+      tono: 'aviso' }
   }
 
   if (dias < 7) {
@@ -142,8 +138,7 @@ export function diagnosticoAnuncio(opts: {
       clave: 'nuevo',
       etiqueta: 'Recién publicado',
       sugerencia: 'Aún es pronto para sacar conclusiones: deja pasar una semana.',
-      tono: 'neutro',
-    }
+      tono: 'neutro' }
   }
 
   if (visitas === 0) {
@@ -152,8 +147,7 @@ export function diagnosticoAnuncio(opts: {
       etiqueta: 'Sin visitas',
       sugerencia:
         'No lo está viendo nadie. Revisa el título y la portada, y compártelo en tus redes o por WhatsApp.',
-      tono: 'malo',
-    }
+      tono: 'malo' }
   }
 
   if (visitas >= 30 && contactos === 0) {
@@ -164,8 +158,7 @@ export function diagnosticoAnuncio(opts: {
         visitas >= 100
           ? 'Mucho tráfico y ninguna pregunta: el precio está por encima de lo que espera el comprador. Bájalo un 5–10 % o añade más fotos del interior.'
           : 'Recibe visitas pero nadie escribe. Revisa el precio frente a otros anuncios parecidos y completa la descripción.',
-      tono: 'malo',
-    }
+      tono: 'malo' }
   }
 
   const tasa = visitas > 0 ? contactos / visitas : 0
@@ -174,8 +167,7 @@ export function diagnosticoAnuncio(opts: {
       clave: 'funciona',
       etiqueta: 'Funciona',
       sugerencia: `Te escriben ${Math.round(tasa * 100)} de cada 100 visitas. Mantén las fotos y el precio donde están.`,
-      tono: 'ok',
-    }
+      tono: 'ok' }
   }
 
   if (favoritos >= 5 && contactos === 0) {
@@ -184,16 +176,14 @@ export function diagnosticoAnuncio(opts: {
       etiqueta: 'Guardado, sin consultas',
       sugerencia:
         'A mucha gente le interesa (lo guardan) pero no da el paso. Responde rápido en el chat y añade el precio en el título.',
-      tono: 'aviso',
-    }
+      tono: 'aviso' }
   }
 
   return {
     clave: 'normal',
     etiqueta: 'Normal',
     sugerencia: 'Sin señales raras. Si quieres más visibilidad, destácalo unos días.',
-    tono: 'neutro',
-  }
+    tono: 'neutro' }
 }
 
 // ── Comparativa ────────────────────────────────────────────────────────────
@@ -254,8 +244,7 @@ export function compararVentas(opts: {
       titulo: 'Aún no hay suficiente mercado para comparar',
       detalle:
         'Cuando se vendan más anuncios de tu categoría podrás ver si vendes más rápido o más lento que la media.',
-      tono: 'neutro',
-    }
+      tono: 'neutro' }
   }
 
   if (ventasPropias < 3 || diasMios == null) {
@@ -265,8 +254,7 @@ export function compararVentas(opts: {
       diferencia: null,
       titulo: `En tu categoría se tarda ${diasMercado} días de media`,
       detalle: 'Vende 3 anuncios y te diremos si vas por delante o por detrás.',
-      tono: 'neutro',
-    }
+      tono: 'neutro' }
   }
 
   const diferencia = Math.round(((diasMios - diasMercado) / diasMercado) * 100)
@@ -278,8 +266,7 @@ export function compararVentas(opts: {
       diferencia,
       titulo: `Vendes un ${Math.abs(diferencia)} % más rápido que tu categoría`,
       detalle: `Tardas ${diasMios} días frente a ${diasMercado} de mediana. Buen precio y buen anuncio.`,
-      tono: 'ok',
-    }
+      tono: 'ok' }
   }
   if (diferencia >= 15) {
     return {
@@ -288,8 +275,7 @@ export function compararVentas(opts: {
       diferencia,
       titulo: `Vendes un ${diferencia} % más lento que tu categoría`,
       detalle: `Tardas ${diasMios} días frente a ${diasMercado} de mediana. Revisa precio y fotos de los que menos visitas reciben.`,
-      tono: 'aviso',
-    }
+      tono: 'aviso' }
   }
   return {
     diasMios,
@@ -297,8 +283,7 @@ export function compararVentas(opts: {
     diferencia,
     titulo: 'Vas en línea con tu categoría',
     detalle: `Tardas ${diasMios} días y la mediana es ${diasMercado}.`,
-    tono: 'neutro',
-  }
+    tono: 'neutro' }
 }
 
 /**
@@ -328,8 +313,7 @@ export function rellenarSerie(
     timeZone: 'Europe/Madrid',
     year: 'numeric',
     month: '2-digit',
-    day: '2-digit',
-  })
+    day: '2-digit' })
 
   const salida: { dia: string; visitas: number }[] = []
   const hoyMs = ahora.getTime()
@@ -359,29 +343,24 @@ export function motivoUpsell(
       return {
         titulo: 'Mira qué anuncio te trae compradores',
         detalle:
-          'Con el plan Básico ves visitas, favoritos y contactos de cada anuncio, y un diagnóstico de qué cambiar.',
-      }
+          'Con el plan Básico ves visitas, favoritos y contactos de cada anuncio, y un diagnóstico de qué cambiar.' }
     case 'serie':
       return {
         titulo: 'Descubre si tu stock está subiendo o bajando',
         detalle:
-          'Profesional añade la evolución diaria de 90 días y la comparativa con el resto de tu categoría.',
-      }
+          'Profesional añade la evolución diaria de 90 días y la comparativa con el resto de tu categoría.' }
     case 'mercado':
       return {
         titulo: 'Compara tu precio con el mercado',
         detalle:
-          'Profesional te dice el precio mediano de tu categoría y cuánto tarda en venderse un anuncio como el tuyo.',
-      }
+          'Profesional te dice el precio mediano de tu categoría y cuánto tarda en venderse un anuncio como el tuyo.' }
     case 'exportar':
       return {
         titulo: 'Llévate el informe a tu hoja de cálculo',
-        detalle: 'Profesional permite descargar el rendimiento de todos tus anuncios en CSV.',
-      }
+        detalle: 'Profesional permite descargar el rendimiento de todos tus anuncios en CSV.' }
     case 'periodo90':
       return {
         titulo: 'Necesitas más perspectiva',
-        detalle: 'El periodo de 90 días está incluido en Profesional.',
-      }
+        detalle: 'El periodo de 90 días está incluido en Profesional.' }
   }
 }

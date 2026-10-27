@@ -19,7 +19,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { sbAdmin } from '@/lib/sb-admin'
 import { notificarAdminTelegram } from '@/lib/telegram-admin'
 import { ENGINES_NODE, leerRuntimeNode } from '@/lib/runtime-node'
-import { decidirAviso, type EstadoRuntime } from '@/lib/runtime-vigilancia'
+import {decidirAviso, type EstadoRuntime } from '@/lib/runtime-vigilancia'
 
 const CLAVE = 'runtime_node'
 
@@ -37,8 +37,7 @@ async function leerEstadoAnterior(): Promise<EstadoRuntime | null> {
       node: valor.node,
       cumple: valor.cumple === true,
       commit: typeof valor.commit === 'string' ? valor.commit : null,
-      region: typeof valor.region === 'string' ? valor.region : null,
-    }
+      region: typeof valor.region === 'string' ? valor.region : null }
   } catch {
     // Sin base de datos el cron sigue siendo útil: avisará en cada cambio de
     // versión que observe dentro de esta misma ejecución.
@@ -58,8 +57,7 @@ export async function GET(request: NextRequest) {
     cumple: info.cumple,
     commit: info.commit,
     region: info.region,
-    comprobado_en: new Date().toISOString(),
-  }
+    comprobado_en: new Date().toISOString() }
 
   const anterior = await leerEstadoAnterior()
   const decision = decidirAviso(anterior, actual, info.minimo)
@@ -76,8 +74,7 @@ export async function GET(request: NextRequest) {
       await sbAdmin().from('plataforma_ajustes').upsert({
         clave: CLAVE,
         valor: { ...actual, avisado_en: avisado ? actual.comprobado_en : null },
-        actualizado_en: actual.comprobado_en,
-      })
+        actualizado_en: actual.comprobado_en })
     } catch (err: any) {
       console.warn('[cron/runtime-check] no se pudo guardar el estado:', err?.message)
     }
@@ -92,6 +89,5 @@ export async function GET(request: NextRequest) {
     commit: info.commit,
     anterior: anterior?.node ?? null,
     motivo: decision.motivo,
-    avisado,
-  })
+    avisado })
 }
