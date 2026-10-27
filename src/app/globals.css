@@ -23,14 +23,14 @@
   --background: #f5f2eb;
   /* Altura real de la cabecera pegajosa: la usan las columnas sticky para no
      meterse debajo (barra de utilidad 32 + barra principal 74 + raíl 40). */
-  --header-h: 62px;
+  --header-h: 62px;   /* móvil: barra principal */
   --header-offset: calc(var(--header-h) + 1rem);
 }
 @media (min-width: 768px) {
-  :root { --header-h: 106px; }
+  :root { --header-h: 115px; } /* + raíl de taxonomía (40) */
 }
 @media (min-width: 1024px) {
-  :root { --header-h: 138px; }
+  :root { --header-h: 147px; } /* + barra de utilidad (32) */
 }
 
 @layer base {
