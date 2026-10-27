@@ -5,6 +5,7 @@ import { validateProductData, sanitizeObject } from '@/lib/validation'
 import { verificarContenido } from '@/lib/moderacion'
 import { requireUser } from '@/lib/require-auth'
 import { revalidarListadosPublicos } from '@/lib/revalidar'
+import { avisarIndexNowDeAnuncio } from '@/lib/indexnow'
 import { mensajeCupoLleno } from '@/lib/planes-anuncios'
 import { cupoDeUsuario } from '@/lib/planes-servidor'
 import { normalizarVideoUrl } from '@/lib/video-embed'
@@ -206,6 +207,11 @@ export async function POST(req: NextRequest) {
       ubicacionCiudad: data.ubicacion_ciudad,
       ubicacionEstado: data.ubicacion_estado,
       subcategoria: data.subcategoria })
+
+    // Aviso inmediato a Bing/Yandex/Seznam (IndexNow) de la ficha nueva y de
+    // sus landings. En segundo plano: si el buscador falla, la publicación ya
+    // está hecha y el cron diario lo reintenta.
+    avisarIndexNowDeAnuncio(data)
 
     // Confirmación por email al anunciante. Nunca debe romper la publicación:
     // si el proveedor de correo falla, el anuncio ya está creado y publicado.
