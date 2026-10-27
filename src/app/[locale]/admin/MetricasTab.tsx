@@ -101,8 +101,8 @@ export default function MetricasTab() {
 
   const cards = [
     { label: 'Usuarios registrados', value: stats.totalUsers, icon: Users, color: 'text-ink', bg: 'bg-blue-50' },
-    { label: 'Publicaciones totales', value: stats.totalProducts, icon: ShoppingBag, color: 'text-purple-600', bg: 'bg-purple-50' },
-    { label: 'Publicaciones activas', value: stats.activeProducts, icon: ShoppingBag, color: 'text-green-600', bg: 'bg-signal/10' },
+    { label: 'Publicaciones totales', value: stats.totalProducts, icon: ShoppingBag, color: 'text-ink', bg: 'bg-purple-50' },
+    { label: 'Publicaciones activas', value: stats.activeProducts, icon: ShoppingBag, color: 'text-moss', bg: 'bg-signal/10' },
     { label: 'Visitas totales', value: stats.totalVisits?.toLocaleString(), icon: Eye, color: 'text-orange-600', bg: 'bg-orange-50' },
     { label: 'Reseñas', value: stats.totalResenas, icon: Star, color: 'text-signal-deep', bg: 'bg-paper-2' },
     { label: 'Transacciones', value: stats.totalTransactions, icon: DollarSign, color: 'text-moss', bg: 'bg-moss/10' },
@@ -168,7 +168,7 @@ export default function MetricasTab() {
               <div key={i} className="px-5 py-3 flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <span className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold
-                    ${i === 0 ? 'bg-yellow-100 text-yellow-800' : i === 1 ? 'bg-paper-2 text-ink' : i === 2 ? 'bg-orange-100 text-orange-800' : 'bg-paper-2 text-ink/55'}`}>
+                    ${i === 0 ? 'bg-signal/15 text-ink' : i === 1 ? 'bg-paper-2 text-ink' : i === 2 ? 'bg-orange-100 text-orange-800' : 'bg-paper-2 text-ink/55'}`}>
                     {i + 1}
                   </span>
                   <div>
@@ -191,23 +191,23 @@ export default function MetricasTab() {
 
       {/* Revenue estimate */}
       {stats.totalTransactions > 0 && (
-        <div className="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-xl p-6">
+        <div className="border border-moss/30 bg-moss/10 rounded-xl p-6">
           <div className="flex items-center gap-3 mb-3">
-            <DollarSign size={24} className="text-green-600" />
+            <DollarSign size={24} className="text-moss" />
             <h3 className="font-semibold text-ink text-lg">Estimación de ingresos</h3>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
             <div>
               <p className="text-[12.5px] leading-relaxed text-ink/55">Si 20% compran el paquete 5 €</p>
-              <p className="text-2xl font-semibold text-green-600">${(stats.totalTransactions * 0.2 * 5).toFixed(2)}</p>
+              <p className="text-2xl font-semibold text-moss">${(stats.totalTransactions * 0.2 * 5).toFixed(2)}</p>
             </div>
             <div>
               <p className="text-[12.5px] leading-relaxed text-ink/55">Si 20% compran el paquete 10 €</p>
-              <p className="text-2xl font-semibold text-green-600">${(stats.totalTransactions * 0.2 * 10).toFixed(2)}</p>
+              <p className="text-2xl font-semibold text-moss">${(stats.totalTransactions * 0.2 * 10).toFixed(2)}</p>
             </div>
             <div>
               <p className="text-[12.5px] leading-relaxed text-ink/55">Si 20% compran el paquete 20 €</p>
-              <p className="text-2xl font-semibold text-green-600">${(stats.totalTransactions * 0.2 * 20).toFixed(2)}</p>
+              <p className="text-2xl font-semibold text-moss">${(stats.totalTransactions * 0.2 * 20).toFixed(2)}</p>
             </div>
           </div>
         </div>

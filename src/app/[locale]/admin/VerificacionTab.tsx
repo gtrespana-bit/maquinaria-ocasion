@@ -169,8 +169,8 @@ export default function VerificacionTab({ notify }: { notify: (msg: string) => v
                     <div className="flex items-center gap-2 mb-3">
                       <h4 className="font-bold text-lg">{perfil.nombre || 'Sin nombre'}</h4>
                       <span className={`text-xs px-2 py-0.5 rounded-full font-semibold ${
-                        sol.estado === 'pendiente' ? 'bg-yellow-100 text-yellow-800' :
-                        sol.estado === 'aprobada' ? 'bg-green-100 text-green-800' :
+                        sol.estado === 'pendiente' ? 'bg-signal/15 text-ink' :
+                        sol.estado === 'aprobada' ? 'bg-moss/10 text-moss' :
                         'bg-clay/10 text-clay'
                       }`}>
                         {sol.estado}
@@ -194,7 +194,7 @@ export default function VerificacionTab({ notify }: { notify: (msg: string) => v
                     </div>
 
                     <div className={`inline-block px-3 py-1.5 rounded-lg text-xs font-semibold ${
-                      datosCoinciden ? 'bg-green-100 text-green-800' : 'bg-amber-100 text-amber-800'
+                      datosCoinciden ? 'bg-moss/10 text-moss' : 'bg-signal/15 text-ink'
                     }`}>
                       {datosCoinciden ? 'Datos coinciden con el perfil' : 'Datos no coinciden — revisar DNI/NIE'}
                     </div>

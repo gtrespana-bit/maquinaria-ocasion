@@ -236,7 +236,7 @@ function ModalPago({
           <div>
             <h4 className="font-bold text-ink mb-3">{t('choosePayment')}</h4>
             {configurado && metodos.length === 0 && (
-              <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 text-sm text-amber-900">
+              <div className="bg-signal/10 border border-line rounded-xl p-4 text-sm text-ink">
                 Estamos terminando de configurar los pagos con Bizum, transferencia y PayPal.
                 Escríbenos y te damos los datos para comprar créditos ahora mismo:{' '}
                 <LocalLink href="/contacto" className="font-semibold underline">contacto</LocalLink>.

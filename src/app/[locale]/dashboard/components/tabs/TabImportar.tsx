@@ -338,7 +338,7 @@ export default function TabImportar() {
             {resultado.restantes != null && ` Te quedan ${resultado.restantes} huecos de cupo.`}
           </p>
           {resultado.sinCupo > 0 && (
-            <p className="mt-2 text-sm text-amber-800">
+            <p className="mt-2 text-sm text-ink">
               {resultado.sinCupo} anuncio(s) válidos no caben en tu plan.{' '}
               <LocalLink href="/para-profesionales" className="font-semibold underline">
                 Hazte Profesional
@@ -389,9 +389,9 @@ export default function TabImportar() {
               <p className="text-xs font-semibold text-clay">Con errores</p>
               <p className="t-display t-num text-[1.75rem] leading-none text-clay">{previa.invalidas}</p>
             </div>
-            <div className="rounded-2xl border border-amber-200 bg-amber-50 p-4">
+            <div className="rounded-2xl border border-line bg-signal/10 p-4">
               <p className="text-xs font-semibold text-amber-700">Fuera de cupo</p>
-              <p className="t-display t-num text-[1.75rem] leading-none text-amber-800">{previa.sinCupo}</p>
+              <p className="t-display t-num text-[1.75rem] leading-none text-ink">{previa.sinCupo}</p>
             </div>
           </div>
 
@@ -471,7 +471,7 @@ export default function TabImportar() {
           </div>
 
           {previa.sinCupo > 0 && (
-            <div className="flex items-start gap-2 rounded-xl border border-amber-200 bg-amber-50 p-3 text-sm text-amber-900">
+            <div className="flex items-start gap-2 rounded-xl border border-line bg-signal/10 p-3 text-sm text-ink">
               <Info size={16} className="mt-0.5 shrink-0" />
               <span>
                 Tu plan permite {previa.cupo ?? '∞'} anuncios activos y te quedan{' '}

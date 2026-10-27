@@ -114,11 +114,11 @@ export default function TabTienda() {
 
   if (noDisponible) {
     return (
-      <div className="bg-amber-50 border border-amber-200 rounded-xl p-6 flex gap-3">
+      <div className="bg-signal/10 border border-line rounded-xl p-6 flex gap-3">
         <AlertTriangle className="text-amber-600 shrink-0" size={20} />
         <div>
-          <p className="font-semibold text-amber-900">La tienda todavía no está activada</p>
-          <p className="text-sm text-amber-800">
+          <p className="font-semibold text-ink">La tienda todavía no está activada</p>
+          <p className="text-sm text-ink">
             Falta aplicar la migración <code>202609220002_tiendas_profesionales.sql</code> en la
             base de datos.
           </p>
@@ -334,7 +334,7 @@ export default function TabTienda() {
           <p
             className={`text-sm rounded-xl p-3 ${
               mensaje.includes('correctamente')
-                ? 'bg-signal/10 text-green-800 border border-green-200'
+                ? 'bg-signal/10 text-moss border border-line'
                 : 'bg-clay/[0.07] text-clay border border-clay/30'
             }`}
           >

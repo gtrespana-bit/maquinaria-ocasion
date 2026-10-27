@@ -102,9 +102,9 @@ export default function TabReservas({ userId }: { userId: string }) {
 
   if (pendienteMigracion) {
     return (
-      <div className="bg-amber-50 border border-amber-200 rounded-xl p-5">
-        <h3 className="font-semibold text-amber-900 mb-1">Reservas aún no disponibles</h3>
-        <p className="text-sm text-amber-800">
+      <div className="bg-signal/10 border border-line rounded-xl p-5">
+        <h3 className="font-semibold text-ink mb-1">Reservas aún no disponibles</h3>
+        <p className="text-sm text-ink">
           Falta aplicar la migración de base de datos de reservas. En cuanto esté aplicada, aparecerán aquí tus reservas.
         </p>
       </div>

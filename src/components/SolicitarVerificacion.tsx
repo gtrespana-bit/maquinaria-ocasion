@@ -225,7 +225,7 @@ export default function SolicitarVerificacion() {
   // === PENDIENTE ===
   if (estado === 'pendiente') {
     return (
-      <div className="bg-[#FBFAF5] rounded-2xl shadow-sm border border-yellow-200 overflow-hidden">
+      <div className="bg-[#FBFAF5] rounded-2xl shadow-sm border border-line overflow-hidden">
         <div className="bg-paper-20 px-6 py-4">
           <div className="flex items-center gap-3">
             <Clock size={28} className="text-yellow-900" />
@@ -341,7 +341,7 @@ export default function SolicitarVerificacion() {
   // === SIN SOLICITUD ===
   return (
     <div>
-      <div className="bg-gradient-to-r from-blue-50 to-emerald-50 border border-blue-100 rounded-2xl p-6 mb-6">
+      <div className="border border-line bg-paper-2 rounded-2xl p-6 mb-6">
         <div className="flex items-start gap-3">
           <Shield size={24} className="text-brand-primary flex-shrink-0 mt-0.5" />
           <div>

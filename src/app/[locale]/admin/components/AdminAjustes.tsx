@@ -74,7 +74,7 @@ export default function AdminAjustes({ notify }: { notify: (msg: string) => void
     { key: 'supabase', label: 'Base de datos', desc: 'Conexión y credenciales de Supabase', icon: Database, color: 'text-moss bg-moss/10' },
     { key: 'telegram', label: 'Telegram', desc: 'Alertas operativas en tiempo real', icon: Send, color: 'text-ink bg-blue-50' },
     { key: 'push', label: 'Push Web', desc: 'Notificaciones a los usuarios', icon: Zap, color: 'text-signal-deep bg-paper-2' },
-    { key: 'email', label: 'Email', desc: 'Correos transaccionales (Resend)', icon: Mail, color: 'text-purple-600 bg-purple-50' },
+    { key: 'email', label: 'Email', desc: 'Correos transaccionales (Resend)', icon: Mail, color: 'text-ink bg-purple-50' },
     { key: 'anuncios', label: 'Anuncios globales', desc: 'Banner público en todo el sitio', icon: Megaphone, color: 'text-orange-600 bg-orange-50' },
     { key: 'rateLimit', label: 'Rate limiting', desc: 'Protección anti-abuso de la API', icon: Shield, color: 'text-ink/55 bg-paper-2' },
   ]
@@ -153,7 +153,7 @@ export default function AdminAjustes({ notify }: { notify: (msg: string) => void
             </Button>
           </div>
           {emailResult && (
-            <div className={`flex items-start gap-2 rounded-lg p-3 text-sm ${emailResult.ok ? 'bg-signal/10 text-green-700' : 'bg-clay/[0.07] text-clay'}`}>
+            <div className={`flex items-start gap-2 rounded-lg p-3 text-sm ${emailResult.ok ? 'bg-signal/10 text-moss' : 'bg-clay/[0.07] text-clay'}`}>
               {emailResult.ok ? <CheckCircle2 size={16} className="mt-0.5 shrink-0" /> : <XCircle size={16} className="mt-0.5 shrink-0" />}
               <span>{emailResult.text}</span>
             </div>

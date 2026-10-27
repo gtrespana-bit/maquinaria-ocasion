@@ -109,11 +109,11 @@ export default function AdminReservas({ notify }: { notify: (msg: string) => voi
 
   if (pendienteMigracion) {
     return (
-      <div className="rounded-xl border border-amber-200 bg-amber-50 p-5">
-        <h3 className="font-bold text-amber-900 mb-1">Migración de reservas pendiente</h3>
-        <p className="text-sm text-amber-800">
-          Aplica <code className="rounded bg-amber-100 px-1">supabase/migrations/202609160001_reservas.sql</code> y{' '}
-          <code className="rounded bg-amber-100 px-1">202609170004_reservas_confirmacion_vendedor.sql</code> para
+      <div className="rounded-xl border border-line bg-signal/10 p-5">
+        <h3 className="font-bold text-ink mb-1">Migración de reservas pendiente</h3>
+        <p className="text-sm text-ink">
+          Aplica <code className="rounded bg-signal/15 px-1">supabase/migrations/202609160001_reservas.sql</code> y{' '}
+          <code className="rounded bg-signal/15 px-1">202609170004_reservas_confirmacion_vendedor.sql</code> para
           activar las reservas.
         </p>
       </div>
@@ -126,7 +126,7 @@ export default function AdminReservas({ notify }: { notify: (msg: string) => voi
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
           {[
             { label: 'Solicitadas', valor: stats.solicitadas, tono: 'text-amber-700' },
-            { label: 'Activas', valor: stats.activas, tono: 'text-green-700' },
+            { label: 'Activas', valor: stats.activas, tono: 'text-moss' },
             { label: 'Completadas', valor: stats.completadas, tono: 'text-ink' },
             { label: 'Total', valor: stats.total, tono: 'text-ink' },
           ].map(c => (

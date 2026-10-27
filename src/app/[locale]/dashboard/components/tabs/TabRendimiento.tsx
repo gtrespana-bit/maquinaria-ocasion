@@ -111,7 +111,7 @@ const numero = (n: number | null | undefined) =>
 function tonoClase(tono: string) {
   if (tono === 'ok') return 'bg-moss/10 text-moss border-moss/30'
   if (tono === 'malo') return 'bg-clay/[0.07] text-clay border-clay/30'
-  if (tono === 'aviso') return 'bg-amber-50 text-amber-800 border-amber-200'
+  if (tono === 'aviso') return 'bg-signal/10 text-ink border-line'
   return 'bg-paper-2 text-ink/60 border-line'
 }
 
@@ -298,7 +298,7 @@ export default function TabRendimiento() {
       </div>
 
       {datos.parcial && (
-        <div className="flex items-start gap-2 rounded-xl border border-amber-200 bg-amber-50 p-3 text-xs text-amber-900">
+        <div className="flex items-start gap-2 rounded-xl border border-line bg-signal/10 p-3 text-xs text-ink">
           <Info size={15} className="mt-0.5 shrink-0" />
           <span>
             Modo básico: las métricas por periodo aún no están activadas en este entorno, así que se

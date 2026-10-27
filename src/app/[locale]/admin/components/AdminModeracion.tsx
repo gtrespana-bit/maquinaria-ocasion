@@ -238,7 +238,7 @@ export default function AdminModeracion({
           {revisados.map((d) => (
             <div key={d.id} className="flex items-center justify-between px-5 py-3 text-sm">
               <div className="flex min-w-0 items-center gap-3">
-                <span className={`flex h-8 w-8 items-center justify-center rounded-lg ${d.estado === 'resuelta' ? 'bg-signal/10 text-green-600' : 'bg-paper-2 text-ink/55'}`}>{d.estado === 'resuelta' ? <Check size={15} /> : <X size={15} />}</span>
+                <span className={`flex h-8 w-8 items-center justify-center rounded-lg ${d.estado === 'resuelta' ? 'bg-signal/10 text-moss' : 'bg-paper-2 text-ink/55'}`}>{d.estado === 'resuelta' ? <Check size={15} /> : <X size={15} />}</span>
                 <div className="min-w-0">
                   <p className="truncate font-medium text-ink">{d.motivo || 'Reporte'}</p>
                   <p className="t-label text-ink/35">{formatDate(d.creada_en)} · {d.estado}</p>

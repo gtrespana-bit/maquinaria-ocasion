@@ -162,11 +162,11 @@ export default function AdminDashboard({
 
   const kpis = [
     { label: 'Usuarios', value: formatNumber(data.users), icon: Users, accent: 'bg-blue-50 text-ink', onClick: () => jump('usuarios'), helper: `${formatNumber(data.verified)} verificados` },
-    { label: 'Publicaciones', value: formatNumber(data.products), icon: ShoppingBag, accent: 'bg-purple-50 text-purple-600', onClick: () => jump('publicaciones'), helper: `${formatNumber(data.active)} activas · ${formatNumber(data.sold)} vendidas` },
+    { label: 'Publicaciones', value: formatNumber(data.products), icon: ShoppingBag, accent: 'bg-purple-50 text-ink', onClick: () => jump('publicaciones'), helper: `${formatNumber(data.active)} activas · ${formatNumber(data.sold)} vendidas` },
     { label: 'Ingresos (créditos)', value: formatMoney(data.revenueUsd), icon: DollarSign, accent: 'bg-moss/10 text-moss', onClick: () => jump('transacciones'), helper: `+${formatMoney(data.revenueToday)} hoy` },
     { label: 'Ventas hoy', value: formatNumber(data.transactionsToday), icon: Wallet, accent: 'bg-paper-2 text-yellow-700', onClick: () => jump('transacciones'), helper: 'compras aprobadas' },
     { label: 'Visitas', value: formatNumber(data.totalVisits), icon: Eye, accent: 'bg-orange-50 text-orange-600', onClick: () => jump('audiencia'), helper: 'ver audiencia y actividad' },
-    { label: 'Reseñas', value: formatNumber(data.reviews), icon: Star, accent: 'bg-amber-50 text-amber-600', onClick: () => jump('publicaciones'), helper: 'confianza en la plataforma' },
+    { label: 'Reseñas', value: formatNumber(data.reviews), icon: Star, accent: 'bg-signal/10 text-amber-600', onClick: () => jump('publicaciones'), helper: 'confianza en la plataforma' },
     { label: 'Pendientes', value: formatNumber(data.pendingTransactions), icon: Clock, accent: 'bg-clay/[0.07] text-clay', onClick: () => jump('transacciones'), helper: data.pendingTransactions ? 'requieren tu acción' : 'todo al día' },
     { label: 'Moderación', value: formatNumber(data.pendingModeration + data.activeReports), icon: ShieldCheck, accent: 'bg-paper-2 text-ink', onClick: () => jump('moderacion'), helper: `${data.pendingModeration} pubs · ${data.activeReports} denuncias` },
   ]
@@ -263,7 +263,7 @@ export default function AdminDashboard({
               <div className="flex h-20 items-end gap-2">
                 {data.last7Transactions.map((v, i) => (
                   <div key={i} className="flex flex-1 flex-col items-center gap-1">
-                    <div className="w-full rounded-t-lg bg-gradient-to-t from-emerald-500 to-emerald-400" style={{ height: `${Math.max(4, (v / maxTxTrend) * 76)}px` }} />
+                    <div className="w-full rounded-t-lg bg-ink/80" style={{ height: `${Math.max(4, (v / maxTxTrend) * 76)}px` }} />
                     <span className="text-[10px] text-ink/35">{new Date(Date.now() - (6 - i) * 86400000).toLocaleDateString('es-ES', { weekday: 'short' })}</span>
                   </div>
                 ))}

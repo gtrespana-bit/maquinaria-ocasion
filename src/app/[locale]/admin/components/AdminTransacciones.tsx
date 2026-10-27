@@ -158,7 +158,7 @@ export default function AdminTransacciones({
           <div className="flex items-center gap-3"><span className="flex h-9 w-9 items-center justify-center rounded-xl bg-paper-2 text-signal-deep"><CreditCard size={17} /></span><div><p className="text-2xl font-semibold text-ink">{formatMoney(ingresos)}</p><p className="text-[11.5px] text-ink/45">Ingresos (€)</p></div></div>
         </Card>
         <Card bodyClassName="p-4">
-          <div className="flex items-center gap-3"><span className="flex h-9 w-9 items-center justify-center rounded-xl bg-purple-50 text-purple-600"><DollarSign size={17} /></span><div><p className="text-2xl font-semibold text-ink">{formatNumber(creditosAprobados)}</p><p className="text-[11.5px] text-ink/45">Créditos emitidos</p></div></div>
+          <div className="flex items-center gap-3"><span className="flex h-9 w-9 items-center justify-center rounded-xl bg-purple-50 text-ink"><DollarSign size={17} /></span><div><p className="text-2xl font-semibold text-ink">{formatNumber(creditosAprobados)}</p><p className="text-[11.5px] text-ink/45">Créditos emitidos</p></div></div>
         </Card>
       </div>
 

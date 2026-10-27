@@ -102,7 +102,7 @@ export default function TabReputacion({
             <p className="text-[11.5px] text-ink/45 mt-1">{t('activeListings')}</p>
           </div>
           <div className="bg-paper-2 rounded-xl p-4">
-            <p className="text-3xl font-semibold text-green-600">{numPubsVendidas}</p>
+            <p className="text-3xl font-semibold text-moss">{numPubsVendidas}</p>
             <p className="text-[11.5px] text-ink/45 mt-1">{t('soldPaused')}</p>
           </div>
           <div className="bg-paper-2 rounded-xl p-4">
@@ -110,7 +110,7 @@ export default function TabReputacion({
             <p className="text-[11.5px] text-ink/45 mt-1">{t('daysOnPlatform')}</p>
           </div>
           <div className="bg-paper-2 rounded-xl p-4">
-            <p className="text-3xl font-semibold text-purple-600">{verificado ? '✅' : '⏳'}</p>
+            <p className="text-3xl font-semibold text-ink">{verificado ? '✅' : '⏳'}</p>
             <p className="text-[11.5px] text-ink/45 mt-1">{t('verification')}</p>
           </div>
         </div>

@@ -310,8 +310,8 @@ function ProductoPageClientInner({
                   onClick={handleCopiarEnlace}
                   className={`inline-flex items-center gap-1.5 text-xs font-bold px-3 py-2 rounded-lg border transition ${
                     copiado
-                      ? 'bg-green-100 border-green-400 text-green-800'
-                      : 'bg-[#FBFAF5] border-green-300 text-green-800 hover:bg-signal/10'
+                      ? 'bg-moss/10 border-green-400 text-moss'
+                      : 'bg-[#FBFAF5] border-green-300 text-moss hover:bg-signal/10'
                   }`}
                 >
                   <Share2 size={14} />
@@ -323,13 +323,13 @@ function ProductoPageClientInner({
               <div className="mt-3 flex flex-wrap gap-2">
                 <LocalLink
                   href="/dashboard?tab=productos"
-                  className="inline-flex items-center gap-1.5 rounded-lg bg-amber-100 px-3 py-2 text-xs font-bold text-amber-900 hover:bg-amber-200"
+                  className="inline-flex items-center gap-1.5 rounded-lg bg-signal/15 px-3 py-2 text-xs font-bold text-ink hover:bg-amber-200"
                 >
                   ⭐ {t('successBoostCta')}
                 </LocalLink>
                 <LocalLink
                   href="/para-profesionales"
-                  className="inline-flex items-center gap-1.5 rounded-lg border border-green-300 bg-[#FBFAF5] px-3 py-2 text-xs font-bold text-green-800 hover:bg-signal/10"
+                  className="inline-flex items-center gap-1.5 rounded-lg border border-green-300 bg-[#FBFAF5] px-3 py-2 text-xs font-bold text-moss hover:bg-signal/10"
                 >
                   {t('successPlansCta')}
                 </LocalLink>
@@ -385,7 +385,7 @@ function ProductoPageClientInner({
                     href={videoEmbed.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 text-sm font-black text-brand-darkNav bg-brand-signal hover:bg-brand-signal-dark rounded-full px-4 py-2 transition"
+                    className="btn btn-signal btn-sm"
                   >
                     <ExternalLink size={14} /> {t('product.video')}
                   </a>

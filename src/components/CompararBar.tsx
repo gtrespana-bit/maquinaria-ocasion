@@ -46,7 +46,7 @@ export default function CompararBar() {
 
         <LocalLink
           href="/comparar"
-          className="bg-brand-signal text-brand-darkNav text-xs font-black px-3.5 py-2 rounded-full hover:bg-brand-signal-dark transition flex items-center gap-1.5 shrink-0"
+          className="btn btn-signal btn-sm flex shrink-0 items-center gap-1.5"
         >
           <GitCompare size={14} strokeWidth={2.6} /> {t('comparar.cta')}
         </LocalLink>

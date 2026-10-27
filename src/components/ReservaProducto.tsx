@@ -63,9 +63,9 @@ export function AvisoReservado({ hasta }: { hasta?: string | null }) {
     : null
 
   return (
-    <div className="flex items-start gap-3 bg-amber-50 border border-amber-200 rounded-xl p-3.5 mb-5">
+    <div className="flex items-start gap-3 bg-signal/10 border border-line rounded-xl p-3.5 mb-5">
       <CalendarClock size={18} className="text-amber-700 mt-0.5 flex-shrink-0" aria-hidden="true" />
-      <div className="text-sm text-amber-900">
+      <div className="text-sm text-ink">
         <p className="font-bold">Reservado con señal</p>
         <p className="text-xs mt-0.5">
           Otro comprador ha pagado una señal por este anuncio{fecha ? ` y lo tiene reservado hasta el ${fecha}` : ''}.

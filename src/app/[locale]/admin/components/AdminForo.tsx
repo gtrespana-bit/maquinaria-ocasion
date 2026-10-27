@@ -114,7 +114,7 @@ export default function AdminForo({ notify }: { notify: (msg: string) => void })
     <div className="space-y-5">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-3">
-          <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-50 text-blue-700"><MessageSquare size={22} /></span>
+          <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-50 text-ink"><MessageSquare size={22} /></span>
           <div>
             <h2 className="text-xl font-semibold text-ink">Foro</h2>
             <p className="text-[12.5px] leading-relaxed text-ink/55">{pendientes.length} hilos pendientes · {mensajes.length} respuestas pendientes · {hilos.length} hilos en total</p>

@@ -154,7 +154,7 @@ export default function ReportarButton({ productoId }: { productoId: string }) {
                 <div className="text-4xl mb-3" aria-hidden="true">
                   {'\u2705'}
                 </div>
-                <p className="font-bold text-green-700">Denuncia enviada</p>
+                <p className="font-bold text-moss">Denuncia enviada</p>
                 <p className="text-sm text-ink/70 mt-1">Revisaremos la publicacion lo antes posible.</p>
               </div>
             ) : yaReportado ? (

@@ -28,10 +28,10 @@ export default function ResponderClient({ hiloId, cerrado }: { hiloId: string; c
       <div className="bg-[#FBFAF5] border border-dashed border-line-strong rounded-2xl p-6 text-center">
         <p className="text-ink/75 font-bold mb-4">{t('loginRequired')}</p>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-          <LocalLink href="/login" className="w-full sm:w-auto bg-brand-signal text-brand-darkNav font-black px-6 py-2.5 rounded-xl hover:brightness-110 transition">
+          <LocalLink href="/login" className="btn btn-signal w-full sm:w-auto">
             {t('login')}
           </LocalLink>
-          <LocalLink href="/register" className="w-full sm:w-auto border-2 border-line-strong text-ink font-black px-6 py-2.5 rounded-xl hover:border-brand-signal transition">
+          <LocalLink href="/register" className="btn btn-outline w-full sm:w-auto">
             {t('register')}
           </LocalLink>
         </div>
@@ -82,7 +82,7 @@ export default function ResponderClient({ hiloId, cerrado }: { hiloId: string; c
 
   return (
     <form onSubmit={enviar} className="bg-[#FBFAF5] border border-line rounded-2xl p-5 sm:p-6">
-      <label htmlFor="respuesta" className="block text-sm font-black text-ink mb-1.5">
+      <label htmlFor="respuesta" className="t-label mb-1.5 block text-ink/50">
         {t('replyLabel')}
       </label>
       <textarea
@@ -100,7 +100,7 @@ export default function ResponderClient({ hiloId, cerrado }: { hiloId: string; c
         <button
           type="submit"
           disabled={enviando}
-          className="inline-flex items-center gap-2 bg-brand-signal text-brand-darkNav font-black px-6 py-2.5 rounded-xl hover:brightness-110 transition disabled:opacity-60"
+          className="btn btn-signal disabled:opacity-60"
         >
           {enviando ? <Loader2 className="w-4 h-4 animate-spin" aria-hidden="true" /> : <Send className="w-4 h-4" aria-hidden="true" />}
           {enviando ? t('replyPosting') : t('replySubmit')}

@@ -315,7 +315,7 @@ export default function AdminAudiencia({ notify }: { notify: (msg: string) => vo
       </div>
 
       {(informe.degradado || informe.aviso || informe.filasTruncadas) && (
-        <div className="flex flex-wrap items-start gap-3 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
+        <div className="flex flex-wrap items-start gap-3 rounded-2xl border border-line bg-signal/10 px-4 py-3 text-sm text-ink">
           <AlertTriangle size={17} className="mt-0.5 flex-shrink-0" />
           <div className="space-y-1">
             {informe.aviso && <p>{informe.aviso}</p>}
@@ -352,7 +352,7 @@ export default function AdminAudiencia({ notify }: { notify: (msg: string) => vo
           label="Sesiones"
           value={formatNumber(visitas.sesiones)}
           icon={Activity}
-          accent="bg-purple-50 text-purple-600"
+          accent="bg-purple-50 text-ink"
           helper={visitas.paginasPorVisita != null ? `${visitas.paginasPorVisita} páginas por visitante` : undefined}
         />
         <StatCard
@@ -366,7 +366,7 @@ export default function AdminAudiencia({ notify }: { notify: (msg: string) => vo
           label="Registros"
           value={formatNumber(actividad.registros)}
           icon={UserPlus}
-          accent="bg-amber-50 text-amber-600"
+          accent="bg-signal/10 text-amber-600"
           trend={data ? { value: `${(data.variacion.registros ?? 0) >= 0 ? '+' : ''}${data.variacion.registros ?? 0}%`, positive: (data.variacion.registros ?? 0) >= 0 } : undefined}
           helper={`${formatNumber(actividad.nuevosProfesionales)} profesionales o talleres`}
         />
@@ -423,7 +423,7 @@ export default function AdminAudiencia({ notify }: { notify: (msg: string) => vo
                   <span>Visitantes únicos</span>
                   <span className="text-ink">{formatNumber(visitas.visitantes)} en total</span>
                 </div>
-                <Barras datos={visitantesChart} color="bg-gradient-to-t from-blue-500 to-blue-400" altura={64} />
+                <Barras datos={visitantesChart} color="bg-ink/70" altura={64} />
               </div>
             </div>
           )}
@@ -572,7 +572,7 @@ export default function AdminAudiencia({ notify }: { notify: (msg: string) => vo
                   return (
                     <div key={h.hora} className="flex-1" title={`${h.hora}:00 · ${h.visitas} visitas`}>
                       <div
-                        className="w-full rounded-t bg-gradient-to-t from-indigo-500/70 to-indigo-400"
+                        className="w-full rounded-t bg-moss/60"
                         style={{ height: `${Math.max(2, (h.visitas / maximo) * 58)}px` }}
                       />
                     </div>

@@ -126,13 +126,13 @@ export default function AprobacionPage() {
       ) : (
         <div className="space-y-4">
           {pendientes.map((t) => (
-            <div key={t.id} className="bg-[#FBFAF5] rounded-xl border border-yellow-200 p-5 ">
+            <div key={t.id} className="bg-[#FBFAF5] rounded-xl border border-line p-5 ">
               <div className="flex flex-col sm:flex-row gap-4">
                 {/* Info */}
                 <div className="flex-1 space-y-2">
                   <div className="flex items-center gap-2">
                     <span className="text-lg font-semibold text-ink">{t.monto} créditos</span>
-                    <span className="bg-yellow-100 text-yellow-700 text-xs px-2 py-0.5 rounded-full font-bold">PENDIENTE</span>
+                    <span className="bg-signal/15 text-yellow-700 text-xs px-2 py-0.5 rounded-full font-bold">PENDIENTE</span>
                   </div>
                   <p className="text-[12.5px] leading-relaxed text-ink/55"> {t.precio_usd ? `${t.precio_usd} €` : '?'} — {t.metodo_pago || 'N/A'}</p>
                   <p className="text-[11.5px] text-ink/45">{new Intl.DateTimeFormat('es-ES', { year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date(t.creado_en))} {new Intl.DateTimeFormat('es-ES', { hour: '2-digit', minute: '2-digit' }).format(new Date(t.creado_en))}</p>
@@ -144,7 +144,7 @@ export default function AprobacionPage() {
                         href={`/api/admin/comprobante?url=${encodeURIComponent(t.comprobante_url)}`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 bg-blue-50 text-blue-700 px-4 py-2.5 rounded-lg text-sm font-medium hover:bg-blue-100 transition border border-blue-200"
+                        className="inline-flex items-center gap-2 bg-blue-50 text-ink px-4 py-2.5 rounded-lg text-sm font-medium hover:bg-paper-2 transition border border-line"
                       >
                          Ver comprobante de pago
                       </a>

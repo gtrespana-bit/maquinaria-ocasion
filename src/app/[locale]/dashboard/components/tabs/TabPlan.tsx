@@ -71,7 +71,7 @@ function Barra({ valor, max, tono = 'verde' }: { valor: number; max: number | nu
   return (
     <div className="h-2 w-full overflow-hidden bg-paper-2" role="presentation">
       <div
-        className={`h-full transition-all ${tono === 'ambar' ? 'bg-amber-500' : pct >= 100 ? 'bg-amber-500' : 'bg-emerald-500'}`}
+        className={`h-full transition-all ${tono === 'ambar' ? 'bg-signal/100' : pct >= 100 ? 'bg-signal/100' : 'bg-emerald-500'}`}
         style={{ width: `${pct}%` }}
       />
     </div>
@@ -352,11 +352,11 @@ export default function TabPlan({ onRefresh }: { onRefresh?: () => void }) {
       )}
 
       {estado.trialGracia && (
-        <section className="rounded-2xl border border-amber-200 bg-amber-50 p-5">
-          <h3 className="text-[15px] font-semibold tracking-[-0.015em] text-amber-900">
+        <section className="rounded-2xl border border-line bg-signal/10 p-5">
+          <h3 className="text-[15px] font-semibold tracking-[-0.015em] text-ink">
             Tu prueba terminó: te quedan {estado.diasGracia} días de gracia
           </h3>
-          <p className="mt-1 text-sm text-amber-800">
+          <p className="mt-1 text-sm text-ink">
             El {fecha(estado.graciaHasta)} se pausarán los anuncios que excedan el cupo del plan gratuito.
             No se borra ninguno: podrás reactivarlos al activar un plan o pausar otro para dejar sitio.
           </p>

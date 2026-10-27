@@ -520,16 +520,16 @@ export default async function ProductoPage({ params }: Props) {
       </Suspense>
 
       {relacionados.length > 0 && (
-        <section className="max-w-7xl mx-auto px-4 py-8 border-t border-line mt-8">
-          <h2 className="text-xl md:text-2xl font-black text-ink mb-4">
+        <section className="shell border-t border-line py-12">
+          <h2 className="t-eyebrow border-b border-ink pb-3 text-ink">
             {t('relatedTitle')}
           </h2>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
+          <div className="mt-6 grid grid-cols-2 gap-px border border-line bg-line lg:grid-cols-4">
             {relacionados.map((p: any) => (
               <LocalLink
                 key={p.id}
                 href={`/producto/${p.slug || p.id}`}
-                className="bg-[#FBFAF5] rounded-xl overflow-hidden shadow-sm border border-line hover:shadow-lg hover:-translate-y-1 transition group block"
+                className="group block bg-[#FBFAF5] transition hover:bg-paper-2"
               >
                 <div className="aspect-square bg-paper-2 relative overflow-hidden">
                   <Image
@@ -543,11 +543,11 @@ export default async function ProductoPage({ params }: Props) {
                     quality={75}
                   />
                 </div>
-                <div className="p-3">
-                  <h3 className="font-semibold text-ink text-sm truncate group-hover:text-brand-primary transition-colors">
+                <div className="p-4">
+                  <h3 className="truncate text-[13.5px] font-semibold text-ink">
                     {p.titulo}
                   </h3>
-                  <p className="text-lg font-black text-brand-primary mt-0.5">
+                  <p className="t-display t-num mt-1.5 text-[1.1rem] leading-none text-ink">
                     {formatPrecio(p.precio_usd || 0)}
                   </p>
                   {p.ubicacion_ciudad && (
@@ -564,11 +564,11 @@ export default async function ProductoPage({ params }: Props) {
           Google descubre jerarquía y topicalidad con enlaces en el
           cuerpo de la ficha: landing de la provincia y página del
           modelo. */}
-      <section className="max-w-7xl mx-auto px-4 py-8 border-t border-line mt-8">
-        <h2 className="text-lg font-black text-ink mb-3">
+      <section className="shell border-t border-line py-12">
+        <h2 className="t-eyebrow border-b border-ink pb-3 text-ink">
           Explora más maquinaria relacionada
         </h2>
-        <ul className="space-y-2 text-sm">
+        <ul className="mt-5 grid gap-x-8 gap-y-2 text-[13.5px] sm:grid-cols-2">
           {ciudadSEO && (
             <li>
               <LocalLink

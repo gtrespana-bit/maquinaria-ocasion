@@ -237,7 +237,7 @@ export default function AdminUsuarios({ notify }: { notify: (msg: string) => voi
                   <td className="whitespace-nowrap px-3 py-3 text-[11.5px] text-ink/45">{[u.ciudad, u.estado].filter(Boolean).join(', ') || '—'}</td>
                   <td className="whitespace-nowrap px-3 py-3 text-right font-semibold text-ink">{formatNumber(u.credito_balance)}</td>
                   <td className="px-3 py-3 text-center">
-                    <button disabled={busyId === u.id} onClick={() => toggleVerificado(u, !u.verificado)} className={`rounded-full px-2 py-1 text-xs font-bold transition ${u.verificado ? 'bg-blue-100 text-blue-700 hover:bg-blue-200' : 'bg-paper-2 text-ink/55 hover:bg-blue-50 hover:text-ink'}`}>
+                    <button disabled={busyId === u.id} onClick={() => toggleVerificado(u, !u.verificado)} className={`rounded-full px-2 py-1 text-xs font-bold transition ${u.verificado ? 'bg-paper-2 text-ink hover:bg-blue-200' : 'bg-paper-2 text-ink/55 hover:bg-blue-50 hover:text-ink'}`}>
                       {u.verificado ? 'Sí' : 'No'}
                     </button>
                   </td>
