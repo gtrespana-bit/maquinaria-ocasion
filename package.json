@@ -22,7 +22,8 @@
     "prebuild": "npm run check:node",
     "prebuild:standalone": "npm run check:node",
     "prebuild:analyze": "npm run check:node",
-    "prestart": "npm run check:node"
+    "prestart": "npm run check:node",
+    "verificar:sitemap": "node scripts/verificar-sitemap.mjs"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1044.0",

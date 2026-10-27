@@ -12,9 +12,38 @@ import { limpiarComillas } from '@/lib/seo'
 const BASE_URL = 'https://maquinaria.click'
 const PAGE_SIZE = 1000
 
+// Tope duro de filas: evita que una tabla enorme convierta la generación del
+// sitemap en una consulta sin fin (Google corta la descarga y Search Console
+// lo marca como «no se ha podido obtener»).
+const MAX_FILAS = 20000
+
 // El sitemap se regenera periódicamente para descubrir anuncios nuevos sin
 // necesitar un despliegue. El de imágenes conserva su caché independiente.
 export const revalidate = 21600
+
+const MODERACION = 'estado_moderacion.is.null,estado_moderacion.eq.aprobado'
+
+/**
+ * Columnas por orden de preferencia. Si una instalación no tiene `slug`
+ * (esquema antiguo) o `es_demo`, se reintenta con la siguiente lista en vez
+ * de devolver un sitemap vacío.
+ */
+const COLUMNAS = [
+  'id, slug, user_id, actualizado_en, ubicacion_ciudad, subcategoria, marca, es_demo',
+  'id, user_id, actualizado_en, ubicacion_ciudad, subcategoria, marca, es_demo',
+  'id, user_id, actualizado_en, ubicacion_ciudad, subcategoria, marca',
+]
+
+type FilaProducto = {
+  id: string | number
+  slug?: string | null
+  user_id?: string | null
+  actualizado_en?: string | null
+  ubicacion_ciudad?: string | null
+  subcategoria?: string | null
+  marca?: string | null
+  es_demo?: boolean | null
+}
 
 // El blog vive en src/content/blog/*.md, no en una tabla de Supabase.
 function getBlogSlugs(): { slug: string; lastModified?: Date }[] {
@@ -40,47 +69,53 @@ function getBlogSlugs(): { slug: string; lastModified?: Date }[] {
     })
 }
 
-/** Productos activos y aprobados, excluyendo muestras que tienen noindex. */
-async function getProductos(supabase: any) {
+/**
+ * UNA sola pasada paginada sobre `productos`.
+ *
+ * Antes se hacían tres recorridos completos de la tabla (productos, conteos
+ * de ciudad y stock de marcas). En una función que Google puede pedir en
+ * frío eso multiplicaba la latencia y el riesgo de superar el tiempo máximo
+ * de ejecución —un 504 es exactamente lo que Search Console reporta como
+ * «no se ha podido obtener el sitemap»—. Ahora se lee una vez y se agrega
+ * en memoria.
+ *
+ * Se piden todos los anuncios visibles (incluidos los de muestra), porque
+ * las landings y las páginas de marca/modelo los cuentan igual que la web:
+ * así el sitemap y el `robots` de cada página usan el mismo criterio. Las
+ * fichas de producto sí excluyen los anuncios `es_demo`, que llevan noindex.
+ */
+async function getInventario(supabase: any): Promise<FilaProducto[]> {
   if (!supabase) return []
 
-  const moderacion = 'estado_moderacion.is.null,estado_moderacion.eq.aprobado'
-  const products: any[] = []
-  let legacySchema = false
+  for (const columnas of COLUMNAS) {
+    const filas: FilaProducto[] = []
+    let fallo = false
 
-  // Supabase puede limitar una respuesta a 1.000 filas aunque el límite pedido
-  // sea mayor; paginar evita dejar fuera anuncios del sitemap.
-  for (let offset = 0; offset < 4000; offset += PAGE_SIZE) {
-    let response = await supabase
-      .from('productos')
-      .select(legacySchema ? 'id, user_id, actualizado_en' : 'id, slug, user_id, actualizado_en')
-      .eq('activo', true)
-      .eq('es_demo', false)
-      .or(moderacion)
-      .order('id', { ascending: true })
-      .range(offset, offset + PAGE_SIZE - 1)
-
-    // Compatibilidad con instalaciones antiguas sin columna slug. Nunca se
-    // reintenta sin es_demo: esos productos declaran noindex.
-    if (response.error && !legacySchema && /slug/i.test(response.error.message || '')) {
-      legacySchema = true
-      response = await supabase
+    // Supabase puede limitar una respuesta a 1.000 filas aunque el límite
+    // pedido sea mayor; paginar evita dejar anuncios fuera del sitemap.
+    for (let offset = 0; offset < MAX_FILAS; offset += PAGE_SIZE) {
+      const { data, error } = await supabase
         .from('productos')
-        .select('id, user_id, actualizado_en')
+        .select(columnas)
         .eq('activo', true)
-        .eq('es_demo', false)
-        .or(moderacion)
+        .or(MODERACION)
         .order('id', { ascending: true })
         .range(offset, offset + PAGE_SIZE - 1)
+
+      if (error) {
+        fallo = true
+        break
+      }
+
+      const pagina = (data || []) as FilaProducto[]
+      filas.push(...pagina)
+      if (pagina.length < PAGE_SIZE) return filas
     }
 
-    if (response.error) return []
-    const page = response.data || []
-    products.push(...page)
-    if (page.length < PAGE_SIZE) break
+    if (!fallo) return filas
   }
 
-  return products
+  return []
 }
 
 function normalize(value: string | null | undefined) {
@@ -91,27 +126,22 @@ function normalize(value: string | null | undefined) {
     .replace(/[\u0300-\u036f]/g, '')
 }
 
-type IndexableLandings = {
-  cities: Set<string>
-  cityCategories: Set<string>
-}
-
-function emptyLandings(): IndexableLandings {
-  return { cities: new Set(), cityCategories: new Set() }
+type Analisis = {
+  /** Anuncios reales (sin `es_demo`): los únicos con ficha indexable. */
+  productos: FilaProducto[]
+  ciudades: Set<string>
+  ciudadCategorias: Set<string>
+  fabricantes: Set<string>
+  modelos: Set<string>
 }
 
 /**
- * Solo incluye landings locales con inventario suficiente
- * (>= MIN_ANUNCIOS_LANDING_LOCAL anuncios visibles, la misma regla que
- * decide el `robots` de esas páginas en seo-landings.ts). Se
- * consulta paginando para no depender del límite máximo de filas de Supabase.
- * Si la base de datos no está disponible, no se envían URLs locales vacías al
- * sitemap. Los anuncios de muestra siguen contando para la experiencia visual,
- * pero sus fichas se excluyen porque llevan noindex.
+ * Agrega el inventario en memoria:
+ *  · fichas de producto indexables (`es_demo` fuera)
+ *  · landings locales con inventario suficiente
+ *  · marcas/modelos con al menos un anuncio visible
  */
-async function getIndexableLandings(supabase: any): Promise<IndexableLandings> {
-  if (!supabase) return emptyLandings()
-
+function analizar(inventario: FilaProducto[]): Analisis {
   const cityByName = new Map<string, string>()
   for (const city of CIUDADES_SEO) {
     cityByName.set(normalize(city.nombre), city.slug)
@@ -121,93 +151,60 @@ async function getIndexableLandings(supabase: any): Promise<IndexableLandings> {
   const categoryByName = new Map(
     SUBCATEGORIAS_SEO.map((category) => [normalize(category.categoria), category.slug]),
   )
+  const modeloPorValor = new Map(MARCAS_MODELOS.map((modelo) => [modelo.valor, modelo]))
+
   const conteoCiudades = new Map<string, number>()
   const conteoCombos = new Map<string, number>()
-  const moderation = 'estado_moderacion.is.null,estado_moderacion.eq.aprobado'
+  const fabricantes = new Set<string>()
+  const modelos = new Set<string>()
+  const productos: FilaProducto[] = []
 
-  for (let offset = 0; ; offset += PAGE_SIZE) {
-    const { data, error } = await supabase
-      .from('productos')
-      .select('id, ubicacion_ciudad, subcategoria')
-      .eq('activo', true)
-      .or(moderation)
-      .order('id', { ascending: true })
-      .range(offset, offset + PAGE_SIZE - 1)
+  for (const producto of inventario) {
+    if (producto.es_demo !== true) productos.push(producto)
 
-    if (error) return emptyLandings()
-
-    for (const product of data || []) {
-      const citySlug = cityByName.get(normalize(product.ubicacion_ciudad))
-      if (!citySlug) continue
+    const citySlug = cityByName.get(normalize(producto.ubicacion_ciudad))
+    if (citySlug) {
       conteoCiudades.set(citySlug, (conteoCiudades.get(citySlug) || 0) + 1)
 
-      const categorySlug = categoryByName.get(normalize(product.subcategoria))
+      const categorySlug = categoryByName.get(normalize(producto.subcategoria))
       if (categorySlug && CATEGORIAS_POPULARES.includes(categorySlug)) {
         const combo = `${citySlug}/${categorySlug}`
         conteoCombos.set(combo, (conteoCombos.get(combo) || 0) + 1)
       }
     }
 
-    if (!data || data.length < PAGE_SIZE) break
-  }
-
-  const cities = new Set(
-    [...conteoCiudades].filter(([, n]) => n >= MIN_ANUNCIOS_LANDING_LOCAL).map(([slug]) => slug),
-  )
-  const cityCategories = new Set(
-    [...conteoCombos].filter(([, n]) => n >= MIN_ANUNCIOS_LANDING_LOCAL).map(([combo]) => combo),
-  )
-  return { cities, cityCategories }
-}
-
-type StockMarcasModelos = {
-  fabricantes: Set<string>
-  modelos: Set<string>
-}
-
-function emptyStock(): StockMarcasModelos {
-  return { fabricantes: new Set(), modelos: new Set() }
-}
-
-/**
- * Marcas/modelos con al menos un anuncio visible. Las páginas sin stock
- * quedan enlazables desde el directorio, pero fuera del sitemap y con
- * `noindex, follow` en su metadata: no aportan contenido único todavía.
- */
-async function getMarcasModelosConStock(supabase: any): Promise<StockMarcasModelos> {
-  if (!supabase) return emptyStock()
-
-  const porValor = new Map(MARCAS_MODELOS.map((modelo) => [modelo.valor, modelo]))
-  const stock = emptyStock()
-  const moderacion = 'estado_moderacion.is.null,estado_moderacion.eq.aprobado'
-
-  for (let offset = 0; ; offset += PAGE_SIZE) {
-    const { data, error } = await supabase
-      .from('productos')
-      .select('id, marca')
-      .eq('activo', true)
-      .or(moderacion)
-      .order('id', { ascending: true })
-      .range(offset, offset + PAGE_SIZE - 1)
-
-    if (error) return emptyStock()
-
-    for (const producto of data || []) {
-      const modelo = porValor.get(producto.marca)
-      if (!modelo) continue
-      stock.fabricantes.add(slugFabricante(modelo.fabricante))
-      stock.modelos.add(slugModelo(modelo))
+    const modelo = producto.marca ? modeloPorValor.get(producto.marca) : undefined
+    if (modelo) {
+      fabricantes.add(slugFabricante(modelo.fabricante))
+      modelos.add(slugModelo(modelo))
     }
-
-    if (!data || data.length < PAGE_SIZE) break
   }
 
-  return stock
+  return {
+    productos,
+    ciudades: new Set(
+      [...conteoCiudades].filter(([, n]) => n >= MIN_ANUNCIOS_LANDING_LOCAL).map(([slug]) => slug),
+    ),
+    ciudadCategorias: new Set(
+      [...conteoCombos].filter(([, n]) => n >= MIN_ANUNCIOS_LANDING_LOCAL).map(([combo]) => combo),
+    ),
+    fabricantes,
+    modelos,
+  }
 }
 
-export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const supabase = getSupabaseServerClient()
+/** Sin duplicados: Google descarta las entradas repetidas de un sitemap. */
+function sinDuplicados(urls: MetadataRoute.Sitemap): MetadataRoute.Sitemap {
+  const vistas = new Set<string>()
+  return urls.filter((entry) => {
+    if (vistas.has(entry.url)) return false
+    vistas.add(entry.url)
+    return true
+  })
+}
 
+/** URLs que no dependen de la base de datos: siempre publicables. */
+function urlsEditoriales(): MetadataRoute.Sitemap {
   const staticPaths: {
     path: string
     changeFrequency: MetadataRoute.Sitemap[number]['changeFrequency']
@@ -243,44 +240,41 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticUrls: MetadataRoute.Sitemap = staticPaths.map((page) => ({
     url: page.path ? `${BASE_URL}${page.path}` : `${BASE_URL}/`,
     changeFrequency: page.changeFrequency,
-    priority: page.priority }))
+    priority: page.priority,
+  }))
 
   // Familias (3) + subcategorías (12): las landings nacionales indexables.
   const categoryUrls: MetadataRoute.Sitemap = LANDINGS_CATEGORIA_LIST.map((category) => ({
     url: `${BASE_URL}/categoria/${category.slug}`,
     changeFrequency: 'daily',
-    priority: category.tipo === 'familia' ? 0.9 : 0.8 }))
-
-  const indexableLandings = await getIndexableLandings(supabase)
-  const cityUrls: MetadataRoute.Sitemap = CIUDADES_SEO
-    .filter((city) => indexableLandings.cities.has(city.slug))
-    .map((city) => ({
-      url: `${BASE_URL}/${city.slug}`,
-      changeFrequency: 'weekly',
-      priority: 0.7 }))
-
-  const cityCategoryUrls: MetadataRoute.Sitemap = []
-  for (const city of CIUDADES_SEO) {
-    for (const category of CATEGORIAS_POPULARES) {
-      if (!indexableLandings.cityCategories.has(`${city.slug}/${category}`)) continue
-      cityCategoryUrls.push({
-        url: `${BASE_URL}/${city.slug}/${category}`,
-        changeFrequency: 'weekly',
-        priority: 0.6 })
-    }
-  }
+    priority: category.tipo === 'familia' ? 0.9 : 0.8,
+  }))
 
   const blogUrls: MetadataRoute.Sitemap = getBlogSlugs().map((post) => ({
     url: `${BASE_URL}/blog/${post.slug}`,
     ...(post.lastModified ? { lastModified: post.lastModified } : {}),
     changeFrequency: 'monthly',
-    priority: 0.6 }))
+    priority: 0.6,
+  }))
 
-  let dynamicUrls: MetadataRoute.Sitemap = []
-  if (supabase) {
-    try {
-      const productos = await getProductos(supabase)
-      const productUrls: MetadataRoute.Sitemap = productos.map((product: any) => {
+  return [...staticUrls, ...categoryUrls, ...blogUrls]
+}
+
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const editoriales = urlsEditoriales()
+  let dinamicas: MetadataRoute.Sitemap = []
+
+  // Todo lo que depende de Supabase va aquí dentro: si la base de datos falla,
+  // el sitemap se sirve igualmente con las URLs editoriales (nunca un 500,
+  // que es lo que Search Console interpreta como sitemap ilegible).
+  try {
+    const supabase = getSupabaseServerClient()
+
+    if (supabase) {
+      const inventario = await getInventario(supabase)
+      const datos = analizar(inventario)
+
+      const productUrls: MetadataRoute.Sitemap = datos.productos.map((product) => {
         const lastModified = product.actualizado_en
           ? new Date(product.actualizado_en)
           : undefined
@@ -292,86 +286,123 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
           url: `${BASE_URL}/producto/${product.slug || product.id}`,
           ...(validLastModified ? { lastModified: validLastModified } : {}),
           changeFrequency: 'weekly',
-          priority: 0.8 }
+          priority: 0.8,
+        }
       })
 
-      const vendorIds = [
-        ...new Set((productos as any[]).map((product) => product.user_id).filter(Boolean)),
-      ].slice(0, 1000)
-      const vendorUrls: MetadataRoute.Sitemap = vendorIds.map((id) => ({
+      const sellerIds = [
+        ...new Set(datos.productos.map((product) => product.user_id).filter(Boolean)),
+      ] as string[]
+
+      const vendorUrls: MetadataRoute.Sitemap = sellerIds.slice(0, 1000).map((id) => ({
         url: `${BASE_URL}/vendedor/${id}`,
         changeFrequency: 'weekly',
-        priority: 0.5 }))
+        priority: 0.5,
+      }))
 
       const tiendaUrls: MetadataRoute.Sitemap = []
-      const sellerIds = [...new Set((productos as any[]).map((product) => product.user_id).filter(Boolean))]
       if (sellerIds.length > 0) {
-        const { data: tiendas, error: tiendasError } = await supabase
-          .from('perfiles')
-          .select('id, slug')
-          .eq('tienda_activa', true)
-          .not('slug', 'is', null)
-          .in('id', sellerIds.slice(0, 1000))
-          .limit(1000)
+        try {
+          const { data: tiendas, error: tiendasError } = await supabase
+            .from('perfiles')
+            .select('id, slug')
+            .eq('tienda_activa', true)
+            .not('slug', 'is', null)
+            .in('id', sellerIds.slice(0, 1000))
+            .limit(1000)
 
-        if (!tiendasError) {
-          for (const tienda of tiendas || []) {
-            if (!tienda.slug) continue
-            tiendaUrls.push({
-              url: `${BASE_URL}/tienda/${tienda.slug}`,
-              changeFrequency: 'daily',
-              priority: 0.7 })
+          if (!tiendasError) {
+            for (const tienda of tiendas || []) {
+              if (!tienda.slug) continue
+              tiendaUrls.push({
+                url: `${BASE_URL}/tienda/${tienda.slug}`,
+                changeFrequency: 'daily',
+                priority: 0.7,
+              })
+            }
           }
+        } catch {
+          // Sin tiendas: el resto del sitemap sigue siendo válido.
         }
       }
 
       // Hilos del foro visibles (RLS público): se descubren sin deploy.
-      const { data: foroHilos } = await supabase
-        .from('foro_hilos')
-        .select('id, actualizado_en')
-        .eq('estado_moderacion', 'aprobado')
-        .order('actualizado_en', { ascending: false })
-        .limit(1000)
-      const foroUrls: MetadataRoute.Sitemap = (foroHilos || []).map((hilo) => {
-        const lastModified = hilo.actualizado_en ? new Date(hilo.actualizado_en) : undefined
-        const validLastModified = lastModified && !Number.isNaN(lastModified.getTime())
-          ? lastModified
-          : undefined
-        return {
-          url: `${BASE_URL}/foro/hilo/${hilo.id}`,
-          ...(validLastModified ? { lastModified: validLastModified } : {}),
-          changeFrequency: 'daily' as const,
-          priority: 0.6 }
-      })
+      const foroUrls: MetadataRoute.Sitemap = []
+      try {
+        const { data: foroHilos } = await supabase
+          .from('foro_hilos')
+          .select('id, actualizado_en')
+          .eq('estado_moderacion', 'aprobado')
+          .order('actualizado_en', { ascending: false })
+          .limit(1000)
 
-      dynamicUrls = [...productUrls, ...vendorUrls, ...tiendaUrls, ...foroUrls]
-    } catch {
-      // Si Supabase falla, se mantienen las URLs estáticas y editoriales.
+        for (const hilo of foroHilos || []) {
+          const lastModified = hilo.actualizado_en ? new Date(hilo.actualizado_en) : undefined
+          const validLastModified = lastModified && !Number.isNaN(lastModified.getTime())
+            ? lastModified
+            : undefined
+          foroUrls.push({
+            url: `${BASE_URL}/foro/hilo/${hilo.id}`,
+            ...(validLastModified ? { lastModified: validLastModified } : {}),
+            changeFrequency: 'daily',
+            priority: 0.6,
+          })
+        }
+      } catch {
+        // Foro no disponible (tabla ausente o RLS): se omite sin romper nada.
+      }
+
+      const marcaUrls: MetadataRoute.Sitemap = fabricantesUnicos(MARCAS_MODELOS)
+        .filter((f) => datos.fabricantes.has(slugFabricante(f)))
+        .map((f) => ({
+          url: `${BASE_URL}/marca/${slugFabricante(f)}`,
+          changeFrequency: 'weekly',
+          priority: 0.7,
+        }))
+
+      const modeloUrls: MetadataRoute.Sitemap = MARCAS_MODELOS
+        .filter((model) => datos.modelos.has(slugModelo(model)))
+        .map((model) => ({
+          url: `${BASE_URL}/modelo/${slugModelo(model)}`,
+          changeFrequency: 'daily',
+          priority: 0.8,
+        }))
+
+      const cityUrls: MetadataRoute.Sitemap = CIUDADES_SEO
+        .filter((city) => datos.ciudades.has(city.slug))
+        .map((city) => ({
+          url: `${BASE_URL}/${city.slug}`,
+          changeFrequency: 'weekly',
+          priority: 0.7,
+        }))
+
+      const cityCategoryUrls: MetadataRoute.Sitemap = []
+      for (const city of CIUDADES_SEO) {
+        for (const category of CATEGORIAS_POPULARES) {
+          if (!datos.ciudadCategorias.has(`${city.slug}/${category}`)) continue
+          cityCategoryUrls.push({
+            url: `${BASE_URL}/${city.slug}/${category}`,
+            changeFrequency: 'weekly',
+            priority: 0.6,
+          })
+        }
+      }
+
+      dinamicas = [
+        ...marcaUrls,
+        ...modeloUrls,
+        ...cityUrls,
+        ...cityCategoryUrls,
+        ...productUrls,
+        ...vendorUrls,
+        ...tiendaUrls,
+        ...foroUrls,
+      ]
     }
+  } catch {
+    // Si Supabase falla, se mantienen las URLs estáticas y editoriales.
+    dinamicas = []
   }
 
-  const stockMarcasModelos = await getMarcasModelosConStock(supabase)
-  const marcaUrls: MetadataRoute.Sitemap = fabricantesUnicos(MARCAS_MODELOS)
-    .filter((f) => stockMarcasModelos.fabricantes.has(slugFabricante(f)))
-    .map((f) => ({
-      url: `${BASE_URL}/marca/${slugFabricante(f)}`,
-      changeFrequency: 'weekly',
-      priority: 0.7 }))
-  const modeloUrls: MetadataRoute.Sitemap = MARCAS_MODELOS
-    .filter((model) => stockMarcasModelos.modelos.has(slugModelo(model)))
-    .map((model) => ({
-      url: `${BASE_URL}/modelo/${slugModelo(model)}`,
-      changeFrequency: 'daily',
-      priority: 0.8 }))
-
-  return [
-    ...staticUrls,
-    ...marcaUrls,
-    ...modeloUrls,
-    ...categoryUrls,
-    ...cityUrls,
-    ...cityCategoryUrls,
-    ...blogUrls,
-    ...dynamicUrls,
-  ]
+  return sinDuplicados([...editoriales, ...dinamicas])
 }
