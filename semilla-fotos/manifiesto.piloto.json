@@ -1,0 +1,211 @@
+{
+  "version": 1,
+  "dossiers": [
+    {
+      "ref": "SEM-001",
+      "procedencia": {
+        "tipo": "licencia-directa",
+        "nombre": "Koop van der Wal B.V. — John Deere 6120M AQ TLS, producto 16413 (código 979256EC)",
+        "url": "https://www.koopvanderwal.com/tractor-voorraad/john-deere-2-67?product_id=16413",
+        "autor": "Koop van der Wal B.V.",
+        "licencia": "Licencia directa del titular para MaquinariaOcasión",
+        "licenciaUrl": "",
+        "evidenciaDerechos": "Licencia directa confirmada por el propietario de MaquinariaOcasión el 2026-10-26; documento archivado fuera del repositorio",
+        "expedientePermiso": "LIC-SEM-001-KOOP",
+        "atribucion": "",
+        "atribucionUrl": "",
+        "cambios": "Recorte 1408x768 y conversión a WebP/JPG sin alterar el estado de la máquina"
+      },
+      "unidad": {
+        "marcaModelo": "John Deere 6120M",
+        "fechaSesion": "",
+        "contexto": "Campa del vendedor; misma sesión y misma unidad (a reconfirmar sobre los originales)",
+        "conciliadoConAnuncio": false
+      },
+      "revision": {
+        "revisor": "",
+        "fecha": "",
+        "checklist": {
+          "mismaUnidad": false,
+          "modeloYConfiguracion": false,
+          "contextoCompatibleConVendedor": false,
+          "desgasteYDefectosCoherentes": false,
+          "sinMarcasNiLogosDeTerceros": false,
+          "sinIaRenderNiPackshot": false,
+          "derechosComprobados": true
+        }
+      },
+      "fotos": [
+        {
+          "vista": "tres-cuartos-delantera",
+          "origen": "semilla-fotos/originales/SEM-001/01-tres-cuartos-delantera.jpg",
+          "esPortada": true
+        },
+        {
+          "vista": "tres-cuartos-trasera",
+          "origen": "semilla-fotos/originales/SEM-001/02-tres-cuartos-trasera.jpg"
+        },
+        {
+          "vista": "lateral-completo",
+          "origen": "semilla-fotos/originales/SEM-001/03-lateral-completo.jpg"
+        },
+        {
+          "vista": "cabina",
+          "origen": "semilla-fotos/originales/SEM-001/04-cabina.jpg"
+        },
+        {
+          "vista": "cuentahoras",
+          "origen": "semilla-fotos/originales/SEM-001/05-cuentahoras.jpg"
+        },
+        {
+          "vista": "motor",
+          "origen": "semilla-fotos/originales/SEM-001/06-motor.jpg"
+        },
+        {
+          "vista": "neumaticos",
+          "origen": "semilla-fotos/originales/SEM-001/07-neumaticos.jpg"
+        },
+        {
+          "vista": "enganche-pto",
+          "origen": "semilla-fotos/originales/SEM-001/08-enganche-pto.jpg"
+        },
+        {
+          "vista": "defectos",
+          "origen": "semilla-fotos/originales/SEM-001/09-defectos.jpg"
+        }
+      ]
+    },
+    {
+      "ref": "SEM-017",
+      "procedencia": {
+        "tipo": "licencia-directa",
+        "nombre": "Equippo — JCB JS145LC 4F, ID 40879 (galería e inspección)",
+        "url": "https://www.equippo.com/en/product/tracked-excavator/jcb-js145lc-4f-40879/",
+        "autor": "Equippo / inspector cedente según licencia",
+        "licencia": "Licencia directa del titular para MaquinariaOcasión",
+        "licenciaUrl": "",
+        "evidenciaDerechos": "Licencia directa confirmada por el propietario de MaquinariaOcasión el 2026-10-26; documento archivado fuera del repositorio",
+        "expedientePermiso": "LIC-SEM-017-EQUIPPO",
+        "atribucion": "",
+        "atribucionUrl": "",
+        "cambios": "Recorte 1408x768 y conversión a WebP/JPG sin alterar el estado de la máquina"
+      },
+      "unidad": {
+        "marcaModelo": "JCB JS145LC",
+        "fechaSesion": "",
+        "contexto": "Campa de grava de la inspección; misma sesión y misma unidad (a reconfirmar sobre los originales)",
+        "conciliadoConAnuncio": false
+      },
+      "revision": {
+        "revisor": "",
+        "fecha": "",
+        "checklist": {
+          "mismaUnidad": false,
+          "modeloYConfiguracion": false,
+          "contextoCompatibleConVendedor": false,
+          "desgasteYDefectosCoherentes": false,
+          "sinMarcasNiLogosDeTerceros": false,
+          "sinIaRenderNiPackshot": false,
+          "derechosComprobados": true
+        }
+      },
+      "fotos": [
+        {
+          "vista": "general",
+          "origen": "semilla-fotos/originales/SEM-017/01-general.jpg",
+          "esPortada": true
+        },
+        {
+          "vista": "lateral-contrario",
+          "origen": "semilla-fotos/originales/SEM-017/02-lateral-contrario.jpg"
+        },
+        {
+          "vista": "cabina",
+          "origen": "semilla-fotos/originales/SEM-017/03-cabina.jpg"
+        },
+        {
+          "vista": "cuentahoras",
+          "origen": "semilla-fotos/originales/SEM-017/04-cuentahoras.jpg"
+        },
+        {
+          "vista": "motor",
+          "origen": "semilla-fotos/originales/SEM-017/05-motor.jpg"
+        },
+        {
+          "vista": "tren-de-rodaje",
+          "origen": "semilla-fotos/originales/SEM-017/06-tren-de-rodaje.jpg"
+        },
+        {
+          "vista": "articulaciones",
+          "origen": "semilla-fotos/originales/SEM-017/07-articulaciones.jpg"
+        },
+        {
+          "vista": "cazo",
+          "origen": "semilla-fotos/originales/SEM-017/08-cazo.jpg"
+        },
+        {
+          "vista": "defectos",
+          "origen": "semilla-fotos/originales/SEM-017/09-defectos.jpg"
+        }
+      ]
+    },
+    {
+      "ref": "SEM-030",
+      "procedencia": {
+        "tipo": "licencia-directa",
+        "nombre": "Höchsmann GmbH — Festool TS 55 REBQ, artículo 97251",
+        "url": "https://www.hoechsmann.com/en/article/97251/handmaschine/festool_ts_55_rebq",
+        "autor": "Höchsmann GmbH",
+        "licencia": "Licencia directa del titular para MaquinariaOcasión",
+        "licenciaUrl": "",
+        "evidenciaDerechos": "Licencia directa confirmada por el propietario de MaquinariaOcasión el 2026-10-26; documento archivado fuera del repositorio",
+        "expedientePermiso": "LIC-SEM-030-HOECHSMANN",
+        "atribucion": "",
+        "atribucionUrl": "",
+        "cambios": "Recorte 1408x768 y conversión a WebP/JPG sin alterar el estado de la herramienta"
+      },
+      "unidad": {
+        "marcaModelo": "Festool TS 55 REBQ",
+        "fechaSesion": "",
+        "contexto": "Sesión de producto usado del vendedor; misma sierra, guía y Systainer (a reconfirmar sobre los originales)",
+        "conciliadoConAnuncio": false
+      },
+      "revision": {
+        "revisor": "",
+        "fecha": "",
+        "checklist": {
+          "mismaUnidad": false,
+          "modeloYConfiguracion": false,
+          "contextoCompatibleConVendedor": false,
+          "desgasteYDefectosCoherentes": false,
+          "sinMarcasNiLogosDeTerceros": false,
+          "sinIaRenderNiPackshot": false,
+          "derechosComprobados": true
+        }
+      },
+      "fotos": [
+        {
+          "vista": "general",
+          "origen": "semilla-fotos/originales/SEM-030/01-general.jpg",
+          "esPortada": true
+        },
+        {
+          "vista": "lado-contrario",
+          "origen": "semilla-fotos/originales/SEM-030/02-lado-contrario.jpg"
+        },
+        {
+          "vista": "placa-modelo",
+          "origen": "semilla-fotos/originales/SEM-030/03-placa-modelo.jpg"
+        },
+        {
+          "vista": "desgaste",
+          "origen": "semilla-fotos/originales/SEM-030/04-desgaste.jpg"
+        },
+        {
+          "vista": "accesorios-incluidos",
+          "origen": "semilla-fotos/originales/SEM-030/05-accesorios-incluidos.jpg"
+        }
+      ]
+    }
+  ]
+}

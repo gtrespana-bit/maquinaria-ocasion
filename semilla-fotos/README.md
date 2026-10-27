@@ -57,7 +57,8 @@ npm run fotos:verificar
   licencia abierta exacta o un permiso/contrato trazable.
 - Si la licencia es CC BY o CC BY-SA, el expediente debe llevar atribución,
   descripción de cambios y URL pública bajo `/creditos-fotograficos`. Esa
-  página debe existir antes de aprobar el primer dossier CC BY/CC BY-SA.
+  página ya existe (`src/app/[locale]/creditos-fotograficos/page.tsx`), se
+  alimenta del registro de dossiers y admite anclas `#sem-xxx` por anuncio.
 - El número de serie completo se conserva en el expediente interno; en la
   galería pública basta una placa que acredite modelo sin exponer más datos
   de los necesarios.

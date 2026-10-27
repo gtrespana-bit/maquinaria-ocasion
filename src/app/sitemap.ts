@@ -225,6 +225,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...(hayDatosTitular()
       ? [{ path: '/aviso-legal', changeFrequency: 'yearly' as const, priority: 0.3 }]
       : []),
+    { path: '/creditos-fotograficos', changeFrequency: 'monthly', priority: 0.3 },
     { path: '/marcas', changeFrequency: 'weekly', priority: 0.8 },
     { path: '/tiendas', changeFrequency: 'daily', priority: 0.8 },
     { path: '/comprar-a-particulares', changeFrequency: 'daily', priority: 0.8 },

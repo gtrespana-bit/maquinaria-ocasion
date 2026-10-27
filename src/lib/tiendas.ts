@@ -53,7 +53,8 @@ export const SLUGS_RESERVADOS = [
   'admin', 'api', 'tienda', 'tiendas', 'catalogo', 'buscar', 'publicar',
   'dashboard', 'login', 'registro', 'chat', 'creditos', 'contacto', 'blog',
   'producto', 'vendedor', 'perfil', 'maquinariaocasion', 'soporte', 'ayuda',
-  'faq', 'legal', 'privacidad', 'cookies', 'aviso-legal', 'null', 'undefined',
+  'faq', 'legal', 'privacidad', 'cookies', 'aviso-legal', 'creditos-fotograficos',
+  'null', 'undefined',
 ] as const
 
 export function slugReservado(slug: string): boolean {

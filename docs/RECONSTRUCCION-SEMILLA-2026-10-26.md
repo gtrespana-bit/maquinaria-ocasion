@@ -140,8 +140,12 @@ El detalle está en `docs/SEMILLA-FOTOS-CANDIDATAS-2026-10-26.csv` y el brief
 para licenciar o encargar los dossiers en
 `docs/SEMILLA-FOTOS-BRIEF-ENCARGO-2026-10-26.md`. Para el piloto ya hay tres
 leads comerciales concretos —SEM-001, SEM-017 y SEM-030— con mensajes listos
-en `docs/SEMILLA-FOTOS-CONTACTOS-PILOTO-2026-10-26.md`, pero ninguno tiene
-todavía licencia ni originales. La importación queda
+en `docs/SEMILLA-FOTOS-CONTACTOS-PILOTO-2026-10-26.md`. El 2026-10-26 el
+propietario confirmó la licencia directa de las tres galerías; quedan
+pendientes los originales sin marca, el visionado completo y la conciliación
+editorial (esqueleto en `semilla-fotos/manifiesto.piloto.json`). La página
+pública `/creditos-fotograficos` ya existe para las licencias que exijan
+atribución. La importación queda
 mecanizada en `scripts/importar-dossiers-fotos.js`: registra procedencia,
 licencia, revisión visual, vistas y SHA-256 en
 `src/lib/semilla-dossiers.json`, y `analizarDossierFotos()` impide declarar

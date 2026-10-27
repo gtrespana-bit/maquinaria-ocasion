@@ -101,6 +101,7 @@ export function Footer() {
                 {hayDatosTitular() && (
                   <li><LocalLink href="/aviso-legal" className="hover:text-brand-signal transition">{t('footer.legalNotice')}</LocalLink></li>
                 )}
+                <li><LocalLink href="/creditos-fotograficos" className="hover:text-brand-signal transition">{t('footer.photoCredits')}</LocalLink></li>
               </ul>
               <p className="text-xs text-gray-300 mt-4">{t('footer.madeWithLove')}</p>
             </div>

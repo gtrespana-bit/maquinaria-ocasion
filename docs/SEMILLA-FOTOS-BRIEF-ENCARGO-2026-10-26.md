@@ -132,6 +132,11 @@ Si alguno de los titulares no licencia los originales o exige mantener su
 marca, el lead se cierra y se pasa a sesión encargada; no se descargan las
 copias públicas.
 
+**Actualización 2026-10-26:** el propietario confirmó la licencia directa de
+las tres galerías. El expediente de cada una queda esbozado en
+`semilla-fotos/manifiesto.piloto.json` a la espera de los originales sin
+marca, del visionado completo y de la conciliación editorial.
+
 Los tres mensajes personalizados están preparados en
 `docs/SEMILLA-FOTOS-CONTACTOS-PILOTO-2026-10-26.md`.
 
