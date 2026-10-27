@@ -131,7 +131,7 @@ function Serie({ puntos }: { puntos: { dia: string; visitas: number }[] }) {
           />
         ))}
       </div>
-      <div className="mt-2 flex justify-between text-[11px] text-ink/40">
+      <div className="mt-2 flex justify-between text-[12px] text-ink/40">
         <span>{puntos[0]?.dia}</span>
         <span>{total} visitas en el periodo</span>
         <span>{puntos[puntos.length - 1]?.dia}</span>
@@ -157,7 +157,7 @@ function Bloqueo({
         </span>
         <div className="min-w-0 flex-1">
           <p className="font-semibold text-ink">{titulo}</p>
-          <p className="mt-1 text-[12.5px] text-ink/55">{detalle}</p>
+          <p className="mt-1 text-[13px] text-ink/55">{detalle}</p>
           <div className="mt-3 flex flex-wrap items-center gap-3">
             <LocalLink
               href="/para-profesionales"
@@ -165,11 +165,11 @@ function Bloqueo({
             >
               Ver {esBasico ? 'Básico' : 'Profesional'} <ArrowRight size={14} />
             </LocalLink>
-            <span className="text-[11.5px] text-ink/45">{esBasico ? '19 €/mes' : '49 €/mes'} · sin permanencia</span>
+            <span className="text-[12.5px] text-ink/45">{esBasico ? '19 €/mes' : '49 €/mes'} · sin permanencia</span>
           </div>
         </div>
       </div>
-      <p className="mt-3 text-[11px] text-ink/40">Plan actual: {plan}</p>
+      <p className="mt-3 text-[12px] text-ink/40">Plan actual: {plan}</p>
     </div>
   )
 }
@@ -249,7 +249,7 @@ export default function TabRendimiento() {
 
   if (loading && !datos) {
     return (
-      <div className="flex items-center gap-2 border border-line bg-[#FBFAF5] p-6 text-[12.5px] text-ink/55">
+      <div className="flex items-center gap-2 border border-line bg-[#FBFAF5] p-6 text-[13px] text-ink/55">
         <Loader2 size={18} className="animate-spin" /> Calculando tus métricas…
       </div>
     )
@@ -273,7 +273,7 @@ export default function TabRendimiento() {
           <h2 className="flex items-center gap-2 t-display t-display-sm text-ink">
             <BarChart3 size={20} className="text-ink" /> Rendimiento
           </h2>
-          <p className="mt-1 text-[12.5px] text-ink/55">
+          <p className="mt-1 text-[13px] text-ink/55">
             Visitas, contactos y comparativa de tus anuncios. Datos de los últimos {datos.periodo} días.
           </p>
         </div>
@@ -314,7 +314,7 @@ export default function TabRendimiento() {
             <Eye size={13} /> Visitas
           </div>
           <p className="mt-1 t-display t-num text-[1.75rem] leading-none text-ink">{numero(resumen.visitas)}</p>
-          <p className="text-[11px] text-ink/40">en {datos.periodo} días</p>
+          <p className="text-[12px] text-ink/40">en {datos.periodo} días</p>
         </div>
 
         <div className="border border-line bg-[#FBFAF5] p-4">
@@ -324,7 +324,7 @@ export default function TabRendimiento() {
           <p className="mt-1 t-display t-num text-[1.75rem] leading-none text-ink">
             {caps.porAnuncio ? numero(resumen.contactos) : <Lock size={18} className="text-ink/40" />}
           </p>
-          <p className="text-[11px] text-ink/40">compradores que escribieron</p>
+          <p className="text-[12px] text-ink/40">compradores que escribieron</p>
         </div>
 
         <div className="border border-line bg-[#FBFAF5] p-4">
@@ -336,7 +336,7 @@ export default function TabRendimiento() {
               ? `${resumen.tasaContacto.toFixed(1)} %`
               : <Lock size={18} className="text-ink/40" />}
           </p>
-          <p className="text-[11px] text-ink/40">visitas que acaban en consulta</p>
+          <p className="text-[12px] text-ink/40">visitas que acaban en consulta</p>
         </div>
 
         <div className="border border-line bg-[#FBFAF5] p-4">
@@ -346,7 +346,7 @@ export default function TabRendimiento() {
           <p className="mt-1 t-display t-num text-[1.75rem] leading-none text-ink">
             {caps.porAnuncio ? numero(resumen.favoritos) : <Lock size={18} className="text-ink/40" />}
           </p>
-          <p className="text-[11px] text-ink/40">
+          <p className="text-[12px] text-ink/40">
             {resumen.activos} activos · {resumen.vendidos} vendidos
           </p>
         </div>
@@ -390,27 +390,27 @@ export default function TabRendimiento() {
 
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
               <div>
-                <p className="text-[11.5px] text-ink/45">Precio mediano</p>
+                <p className="text-[12.5px] text-ink/45">Precio mediano</p>
                 <p className="text-[15px] font-semibold tracking-[-0.015em] text-ink">{dinero(mercado.precioMediana)}</p>
               </div>
               <div>
-                <p className="text-[11.5px] text-ink/45">Días hasta vender</p>
+                <p className="text-[12.5px] text-ink/45">Días hasta vender</p>
                 <p className="text-[15px] font-semibold tracking-[-0.015em] text-ink">
                   {mercado.diasMediana != null ? `${mercado.diasMediana} d` : '—'}
                 </p>
               </div>
               <div>
-                <p className="text-[11.5px] text-ink/45">Tú tardas</p>
+                <p className="text-[12.5px] text-ink/45">Tú tardas</p>
                 <p className="text-[15px] font-semibold tracking-[-0.015em] text-ink">
                   {mercado.diasMios != null ? `${mercado.diasMios} d` : '—'}
                 </p>
               </div>
               <div>
-                <p className="text-[11.5px] text-ink/45">Anuncios activos</p>
+                <p className="text-[12.5px] text-ink/45">Anuncios activos</p>
                 <p className="text-[15px] font-semibold tracking-[-0.015em] text-ink">{numero(mercado.activos)}</p>
               </div>
             </div>
-            <p className="text-[11px] text-ink/40">
+            <p className="text-[12px] text-ink/40">
               Mediana de tu categoría, sin contar tus propios anuncios. {mercado.vendidos} vendidos en el
               último año.
             </p>
@@ -442,7 +442,7 @@ export default function TabRendimiento() {
         {!caps.porAnuncio ? (
           <Bloqueo capacidad="porAnuncio" plan={datos.plan} />
         ) : datos.anuncios.length === 0 ? (
-          <p className="py-6 text-center text-[12.5px] text-ink/55">
+          <p className="py-6 text-center text-[13px] text-ink/55">
             Aún no tienes anuncios.{' '}
             <LocalLink href="/publicar" className="font-semibold text-ink hover:underline">
               Publica el primero
@@ -466,7 +466,7 @@ export default function TabRendimiento() {
                     </LocalLink>
                     {a.diagnostico && (
                       <span
-                        className={`shrink-0 rounded-full border px-2 py-0.5 text-[10px] font-semibold ${tonoClase(
+                        className={`shrink-0 rounded-full border px-2 py-0.5 text-[11.5px] font-semibold ${tonoClase(
                           a.diagnostico.tono,
                         )}`}
                       >
@@ -474,7 +474,7 @@ export default function TabRendimiento() {
                       </span>
                     )}
                   </div>
-                  <p className="mt-0.5 text-[11px] text-ink/40">
+                  <p className="mt-0.5 text-[12px] text-ink/40">
                     {a.antiguedad}
                     {a.precio ? ` · ${dinero(a.precio)}` : ''}
                     {a.precioVsMercado != null && (
@@ -496,7 +496,7 @@ export default function TabRendimiento() {
                     )}
                   </p>
                   {a.diagnostico && (
-                    <p className="mt-1 text-[11.5px] text-ink/45">{a.diagnostico.sugerencia}</p>
+                    <p className="mt-1 text-[12.5px] text-ink/45">{a.diagnostico.sugerencia}</p>
                   )}
                 </div>
 
@@ -534,7 +534,7 @@ export default function TabRendimiento() {
             <CheckCircle2 size={17} className="text-ink" />
             Básico te enseña qué anuncio te trae compradores
           </p>
-          <p className="mt-1 text-[12.5px] text-ink/55">
+          <p className="mt-1 text-[13px] text-ink/55">
             Detalle por anuncio y contactos reales con Básico (19 €/mes). Profesional (49 €/mes)
             suma comparativa con el mercado, 90 días de histórico y exportación en CSV.
           </p>
@@ -554,7 +554,7 @@ export default function TabRendimiento() {
       )}
 
       {datos.parcial && (
-        <p className="flex items-center gap-1.5 text-[11px] text-ink/40">
+        <p className="flex items-center gap-1.5 text-[12px] text-ink/40">
           <AlertTriangle size={12} /> Los contactos y favoritos por anuncio necesitan la migración de
           rendimiento.
         </p>

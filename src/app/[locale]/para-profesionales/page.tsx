@@ -259,7 +259,7 @@ export default async function ParaProfesionalesPage({ params }: { params: Promis
               </tbody>
             </table>
           </div>
-          <p className="mt-3 text-[12px] text-muted">
+          <p className="mt-3 text-[13px] text-muted">
             El escaparate se abre con Básico o Profesional. Si ya tenías una tienda activa antes de este cambio, se mantiene.
           </p>
         </section>

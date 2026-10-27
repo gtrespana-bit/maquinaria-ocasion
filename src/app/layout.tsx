@@ -13,24 +13,16 @@ import CookieConsent from '@/components/CookieConsent'
 
 // ── Tipografía ──────────────────────────────────────────────────────────────
 // Archivo Variable (display + UI: grotesca de origen industrial con eje de
-// ancho), Instrument Serif (contrapunto editorial en itálica) y JetBrains Mono
-// (micro-etiquetas y datos). Autohospedadas desde /src/app/fonts: cero
-// peticiones a Google Fonts, cero CLS.
+// ancho) y JetBrains Mono (micro-etiquetas y datos). La serif itálica se
+// retiró: a tamaños pequeños se leía mal y el contrapunto del display se hace
+// ahora con el peso medio de Archivo. Autohospedadas desde /src/app/fonts:
+// cero peticiones a Google Fonts, cero CLS.
 const archivo = localFont({
   src: [{ path: './fonts/archivo-latin-var.woff2', weight: '100 900', style: 'normal' }],
   variable: '--font-archivo',
   display: 'swap',
   preload: true,
   declarations: [{ prop: 'font-stretch', value: '62% 125%' }] })
-
-const instrumentSerif = localFont({
-  src: [
-    { path: './fonts/instrument-serif-400-normal.woff2', weight: '400', style: 'normal' },
-    { path: './fonts/instrument-serif-400-italic.woff2', weight: '400', style: 'italic' },
-  ],
-  variable: '--font-serif',
-  display: 'swap',
-  preload: true })
 
 const jetbrainsMono = localFont({
   src: [{ path: './fonts/jetbrains-mono-latin-var.woff2', weight: '100 800', style: 'normal' }],
@@ -121,7 +113,7 @@ export default async function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="es" className={`${archivo.variable} ${instrumentSerif.variable} ${jetbrainsMono.variable}`} suppressHydrationWarning>
+    <html lang="es" className={`${archivo.variable} ${jetbrainsMono.variable}`} suppressHydrationWarning>
       <head>
         <GoogleAnalyticsScript />
         <link rel="preconnect" href={SUPABASE_ORIGIN} />

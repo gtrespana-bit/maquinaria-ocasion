@@ -614,7 +614,10 @@
     "reservarCta": "Reserve with a deposit",
     "reservadoBadge": "Reserved",
     "contratoCtaTitulo": "Sale contract",
-    "contratoCtaDesc": "Print-ready template prefilled with this machine’s details"
+    "contratoCtaDesc": "Print-ready template prefilled with this machine’s details",
+    "comparar": {
+      "cta": "Compare"
+    }
   },
   "creditos": {
     "title1": "Buy credits and",
@@ -833,7 +836,11 @@
     "tabReservations": "Reservations",
     "tabInspecciones": "Inspections",
     "sellerTypeLabel": "How will you sell?",
-    "sellerTypeHint": "Shown next to your listings so buyers know who is selling."
+    "sellerTypeHint": "Shown next to your listings so buyers know who is selling.",
+    "publishNew": "Post a listing",
+    "buyCredits": "Buy credits",
+    "yourPanel": "Your dashboard",
+    "greeting": "Hi, {name}"
   },
   "contact": {
     "title": "Contact Us",

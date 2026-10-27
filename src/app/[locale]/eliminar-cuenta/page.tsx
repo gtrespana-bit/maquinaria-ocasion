@@ -42,7 +42,7 @@ export default async function EliminarCuentaPage({ params }: { params: Promise<{
                 <li>{t('howLi1')}</li>
                 <li>{t('howLi2')}</li>
               </ul>
-              <p className="text-[12.5px] text-ink/50">{t('howP2')}</p>
+              <p className="text-[13px] text-ink/50">{t('howP2')}</p>
             </div>
           </section>
 
@@ -70,7 +70,7 @@ export default async function EliminarCuentaPage({ params }: { params: Promise<{
             >
               privacidad@maquinaria.click
             </a>
-            <p className="mt-3 text-[12px] leading-relaxed text-paper/50">{t('tagline')}</p>
+            <p className="mt-3 text-[13px] leading-relaxed text-paper/50">{t('tagline')}</p>
           </section>
         </div>
       </div>

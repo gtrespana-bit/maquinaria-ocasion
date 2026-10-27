@@ -150,7 +150,7 @@ export default function AdminExportar({ notify }: { notify: (msg: string) => voi
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h2 className="text-xl font-semibold text-ink">Exportar datos</h2>
-          <p className="text-[12.5px] leading-relaxed text-ink/55">Descarga respaldos y reportes operativos en CSV o JSON</p>
+          <p className="text-[13px] leading-relaxed text-ink/55">Descarga respaldos y reportes operativos en CSV o JSON</p>
         </div>
         <div className="flex gap-2">
           <div className="flex h-9 items-center rounded-xl border border-line bg-[#FBFAF5] px-1">
@@ -177,7 +177,7 @@ export default function AdminExportar({ notify }: { notify: (msg: string) => voi
               {exportando === opt.id && <Loader2 className="h-4 w-4 animate-spin text-ink" />}
             </div>
             <p className="mt-3 font-semibold text-ink">{opt.label}</p>
-            <p className="mt-0.5 text-[11.5px] text-ink/45">{opt.desc}</p>
+            <p className="mt-0.5 text-[12.5px] text-ink/45">{opt.desc}</p>
             <Button size="sm" variant="outline" className="mt-4" onClick={opt.action} disabled={exportando !== null}>
               <Download size={14} /> {exportando === opt.id ? 'Exportando…' : `Exportar ${tipo.toUpperCase()}`}
             </Button>

@@ -130,7 +130,7 @@ export default function RegalarPlanModal({
       }
     >
       <div className="space-y-5">
-        <div className="flex flex-wrap items-center gap-2 rounded-xl bg-paper-2 px-4 py-3 text-[11.5px] text-ink/45">
+        <div className="flex flex-wrap items-center gap-2 rounded-xl bg-paper-2 px-4 py-3 text-[12.5px] text-ink/45">
           <span className="font-semibold text-ink">Ahora mismo:</span>
           <span>
             {etiquetaPlan(usuario.plan_anuncios)}
@@ -160,7 +160,7 @@ export default function RegalarPlanModal({
                 <span className="flex items-center gap-2 text-[13px] font-medium text-ink">
                   {p.nombre}
                 </span>
-                <span className="mt-0.5 block text-[11px] text-ink/55">{p.detalle}</span>
+                <span className="mt-0.5 block text-[12px] text-ink/55">{p.detalle}</span>
               </button>
             ))}
           </div>
@@ -192,7 +192,7 @@ export default function RegalarPlanModal({
                   className="w-24 rounded-xl border border-line px-3 py-1.5 text-sm outline-none "
                 />
               </div>
-              <p className="mt-1 text-[11px] text-ink/35">Entre 1 y 3650 días (10 años).</p>
+              <p className="mt-1 text-[12px] text-ink/35">Entre 1 y 3650 días (10 años).</p>
             </div>
 
             <div>
@@ -205,7 +205,7 @@ export default function RegalarPlanModal({
                 value={modo}
                 onChange={setModo}
               />
-              <p className="mt-1 text-[11px] text-ink/35">
+              <p className="mt-1 text-[12px] text-ink/35">
                 {modo === 'extender'
                   ? 'Si ya tiene el mismo plan activo, los días se añaden al final; si no, empiezan ahora.'
                   : 'Los días empiezan a contar ahora, aunque tuviera plan pendiente.'}
@@ -226,7 +226,7 @@ export default function RegalarPlanModal({
         </div>
 
         {plan !== 'gratis' && (
-          <label className="flex items-start gap-2 rounded-xl bg-paper-2 px-3 py-2.5 text-[11.5px] text-ink/45">
+          <label className="flex items-start gap-2 rounded-xl bg-paper-2 px-3 py-2.5 text-[12.5px] text-ink/45">
             <input
               type="checkbox"
               checked={marcarProfesional}
@@ -249,7 +249,7 @@ export default function RegalarPlanModal({
                   ? 'La cuenta vuelve al plan gratuito'
                   : `${etiquetaPlan(previsualizacion.plan)} hasta el ${previsualizacion.planHasta?.toLocaleDateString('es-ES', { day: '2-digit', month: 'long', year: 'numeric' })}`}
               </p>
-              <p className="mt-0.5 text-[11.5px] text-ink/45">
+              <p className="mt-0.5 text-[12.5px] text-ink/45">
                 {previsualizacion.extendido
                   ? `Se suman ${dias} días al final del plan que ya tenía.`
                   : plan === 'gratis'

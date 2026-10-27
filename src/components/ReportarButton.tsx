@@ -14,7 +14,7 @@ const MOTIVOS = [
   { value: 'otro', label: 'Otro' },
 ]
 
-export default function ReportarButton({ productoId }: { productoId: string }) {
+export default function ReportarButton({ productoId, className = '' }: { productoId: string; className?: string }) {
   const [mostrar, setMostrar] = useState(false)
   const [motivo, setMotivo] = useState('')
   const [descripcion, setDescripcion] = useState('')
@@ -106,11 +106,11 @@ export default function ReportarButton({ productoId }: { productoId: string }) {
     <>
       <button
         onClick={() => setMostrar(true)}
-        className="flex items-center justify-center gap-1.5 py-2.5 rounded-xl border border-line text-sm font-medium text-muted hover:text-clay hover:border-clay/30 hover:bg-clay/[0.07] transition focus:outline-none focus:ring-2 focus:ring-signal-deep"
+        className={`flex w-full items-center justify-center gap-1.5 border border-line px-2 py-2.5 text-[13px] font-medium text-ink/60 transition-colors hover:border-clay/40 hover:bg-clay/[0.06] hover:text-clay focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink ${className}`}
         title="Reportar publicacion"
         aria-label="Reportar publicación"
       >
-        <Flag size={16} aria-hidden="true" /> Reportar
+        <Flag size={14} strokeWidth={1.6} aria-hidden="true" /> Reportar
       </button>
 
       {mostrar && (

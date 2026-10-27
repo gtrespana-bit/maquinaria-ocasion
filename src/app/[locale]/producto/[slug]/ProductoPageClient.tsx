@@ -478,7 +478,7 @@ function ProductoPageClientInner({
         </div>
 
         <div className="lg:col-span-4">
-          <div className="sticky top-28 border border-ink bg-[#FBFAF5] p-6">
+          <div className="top-[var(--header-offset)] border border-ink bg-[#FBFAF5] p-6 lg:sticky lg:z-10">
             <p className="t-label text-ink/45">Precio de venta</p>
             <p className="t-display mt-2 text-[2.6rem] leading-none text-ink t-num">{formatPrecio(producto.precio_usd || 0)}</p>
             {precioJusto && (
@@ -614,7 +614,7 @@ function ProductoPageClientInner({
             {pedirCuenta && !user && (
               <div className="mt-4 border border-line bg-paper-2/60 p-4">
                 <p className="text-[13.5px] font-semibold text-ink">{t('guestNudgeTitle')}</p>
-                <p className="mt-1 mb-3 text-[12.5px] text-muted">{t('guestNudgeDesc')}</p>
+                <p className="mt-1 mb-3 text-[13px] text-muted">{t('guestNudgeDesc')}</p>
                 <div className="flex flex-wrap gap-2">
                   <LocalLink
                     href={`/register?redirect=/producto/${slug}`}
@@ -653,11 +653,12 @@ function ProductoPageClientInner({
               </div>
             )}
 
-            <div className="flex gap-2 mt-3">
+            {/* Acciones: 2x2 para que ningún botón se salga de la caja */}
+            <div className="mt-4 grid grid-cols-2 gap-2">
               <button
                 onClick={toggleFavorito}
                 disabled={toggleandoFav}
-                className={`flex flex-1 items-center justify-center gap-1.5 border py-2.5 text-[12px] font-medium transition ${
+                className={`flex w-full items-center justify-center gap-1.5 border px-2 py-2.5 text-[13px] font-medium transition-colors ${
                   esFavorito ? 'border-clay/40 bg-clay/[0.06] text-clay' : 'border-line text-ink/70 hover:border-ink hover:text-ink'
                 }`}
               >
@@ -666,7 +667,7 @@ function ProductoPageClientInner({
               </button>
               <button
                 onClick={() => navigator.share?.({ title: producto.titulo, url: window.location.href })}
-                className="flex flex-1 items-center justify-center gap-1.5 border border-line py-2.5 text-[12px] font-medium text-ink/70 transition-colors hover:border-ink hover:text-ink"
+                className="flex w-full items-center justify-center gap-1.5 border border-line px-2 py-2.5 text-[13px] font-medium text-ink/70 transition-colors hover:border-ink hover:text-ink"
               >
                 <Share2 size={14} /> {t('shareBtn')}
               </button>
@@ -674,7 +675,7 @@ function ProductoPageClientInner({
                 type="button"
                 aria-pressed={lista.some(x => x.id === producto.id)}
                 onClick={() => alternar({ id: producto.id, slug: producto.slug ?? null, titulo: producto.titulo, precio_usd: producto.precio_usd ?? null, imagen_url: producto.imagen_url ?? null })}
-                className={`flex flex-1 items-center justify-center gap-1.5 border py-2.5 text-[12px] font-medium transition ${
+                className={`flex w-full items-center justify-center gap-1.5 border px-2 py-2.5 text-[13px] font-medium transition-colors ${
                   lista.some((x) => x.id === producto.id)
                     ? 'border-ink bg-signal font-semibold text-ink'
                     : 'border-line text-ink/70 hover:border-ink hover:text-ink'

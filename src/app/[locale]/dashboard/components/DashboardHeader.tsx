@@ -78,7 +78,7 @@ export default function DashboardHeader({
   const cfg = NIVELES[n]
 
   return (
-    <div className="mb-6 border border-line bg-[#FBFAF5] p-5 sm:p-6">
+    <div className="mb-6 border border-ink/15 border-t-2 border-t-ink bg-[#FBFAF5] p-5 sm:p-6">
       <div className="flex flex-col sm:flex-row items-start gap-4">
         <label className="relative group cursor-pointer flex-shrink-0">
           <Avatar nombre={nombre} fotoUrl={fotoUrl} size="lg" />
@@ -130,16 +130,16 @@ export default function DashboardHeader({
                           : 'border-line bg-paper hover:border-ink'
                       }`}
                     >
-                      <span className="block text-[12.5px] font-semibold text-ink">
+                      <span className="block text-[13px] font-semibold text-ink">
                         {tTipos(tipo)}
                       </span>
-                      <span className="mt-0.5 block text-[11px] leading-snug text-ink/55">
+                      <span className="mt-0.5 block text-[12px] leading-snug text-ink/55">
                         {tTipos(`${tipo}Desc`)}
                       </span>
                     </button>
                   ))}
                 </div>
-                <p className="mt-1.5 text-[11.5px] leading-relaxed text-ink/40">{t('sellerTypeHint')}</p>
+                <p className="mt-1.5 text-[12.5px] leading-relaxed text-ink/40">{t('sellerTypeHint')}</p>
               </div>
               <div className="flex gap-2">
                 <button onClick={handleGuardar} className="btn btn-ink btn-sm">
@@ -153,11 +153,11 @@ export default function DashboardHeader({
           ) : (
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
               <div>
-                <h2 className="text-[18px] font-semibold tracking-[-0.02em] text-ink">
-                  {nombre || <button onClick={() => setEditando(true)} className="text-[12px] font-medium text-ink underline underline-offset-4">{t('addName')}</button>}
+                <h2 className="text-[21px] font-semibold tracking-[-0.025em] text-ink">
+                  {nombre || <button onClick={() => setEditando(true)} className="text-[13px] font-medium text-ink underline underline-offset-4">{t('addName')}</button>}
                 </h2>
-                {user?.email && <p className="mt-1 flex items-center gap-1.5 text-[12.5px] text-ink/50"><Mail size={12} /> {user.email}</p>}
-                {(ciudad || estado) && <p className="flex items-center gap-1.5 text-[12.5px] text-ink/50"><MapPin size={12} /> {[ciudad, estado].filter(Boolean).join(', ')}</p>}
+                {user?.email && <p className="mt-1 flex items-center gap-1.5 text-[13px] text-ink/50"><Mail size={12} /> {user.email}</p>}
+                {(ciudad || estado) && <p className="flex items-center gap-1.5 text-[13px] text-ink/50"><MapPin size={12} /> {[ciudad, estado].filter(Boolean).join(', ')}</p>}
                 {/* Badges */}
                 <div className="mt-2 flex flex-wrap items-center gap-2">
                   <BadgeTipoVendedor tipo={tipoVendedor} />

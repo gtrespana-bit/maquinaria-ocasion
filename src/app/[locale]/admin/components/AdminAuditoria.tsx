@@ -89,7 +89,7 @@ export default function AdminAuditoria({ notify }: { notify: (msg: string) => vo
           <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-indigo-50 text-indigo-600"><History size={22} /></span>
           <div>
             <h2 className="text-xl font-semibold text-ink">Auditoría</h2>
-            <p className="text-[12.5px] leading-relaxed text-ink/55">{formatNumber(filtered.length)} eventos en los últimos {DIAS} días · {formatNumber(resumenTotal)} esta semana</p>
+            <p className="text-[13px] leading-relaxed text-ink/55">{formatNumber(filtered.length)} eventos en los últimos {DIAS} días · {formatNumber(resumenTotal)} esta semana</p>
           </div>
         </div>
         <RefreshButton onClick={() => load(true)} loading={refreshing} />
@@ -144,10 +144,10 @@ export default function AdminAuditoria({ notify }: { notify: (msg: string) => vo
             <tbody className="divide-y divide-line">
               {filtered.map((r) => (
                 <tr key={r.id} className="transition hover:bg-paper-2/70">
-                  <td className="whitespace-nowrap px-4 py-3 text-[11.5px] text-ink/45">{formatDateTime(r.fecha_registro)}</td>
+                  <td className="whitespace-nowrap px-4 py-3 text-[12.5px] text-ink/45">{formatDateTime(r.fecha_registro)}</td>
                   <td className="px-3 py-3 font-medium text-ink">{r.tabla_afectada}</td>
                   <td className="px-3 py-3"><Badge tone={r.operacion === 'INSERT' ? 'green' : r.operacion === 'UPDATE' ? 'yellow' : 'red'}>{r.operacion}</Badge></td>
-                  <td className="px-3 py-3 text-[11.5px] text-ink/45">{r.usuario_id || '—'}</td>
+                  <td className="px-3 py-3 text-[12.5px] text-ink/45">{r.usuario_id || '—'}</td>
                   <td className="px-3 py-3 text-right"><Button size="xs" variant="outline" onClick={() => setDetail(r)}><FileSearch size={12} /> Ver</Button></td>
                 </tr>
               ))}
@@ -169,25 +169,25 @@ export default function AdminAuditoria({ notify }: { notify: (msg: string) => vo
               {detail.datos_antiguos && (
                 <div>
                   <h4 className="mb-2 flex items-center gap-1 text-xs font-semibold uppercase tracking-wide text-clay"><Plus className="h-3 w-3 rotate-45" /> Antes</h4>
-                  <pre className="max-h-60 overflow-auto whitespace-pre-wrap break-all rounded-xl bg-clay/[0.07] p-3 text-[11px] text-clay">{JSON.stringify(detail.datos_antiguos, null, 2)}</pre>
+                  <pre className="max-h-60 overflow-auto whitespace-pre-wrap break-all rounded-xl bg-clay/[0.07] p-3 text-[12px] text-clay">{JSON.stringify(detail.datos_antiguos, null, 2)}</pre>
                 </div>
               )}
               {detail.datos_nuevos && (
                 <div>
                   <h4 className="mb-2 flex items-center gap-1 text-xs font-semibold uppercase tracking-wide text-moss"><Plus className="h-3 w-3" /> Después</h4>
-                  <pre className="max-h-60 overflow-auto whitespace-pre-wrap break-all rounded-xl bg-moss/10 p-3 text-[11px] text-moss">{JSON.stringify(detail.datos_nuevos, null, 2)}</pre>
+                  <pre className="max-h-60 overflow-auto whitespace-pre-wrap break-all rounded-xl bg-moss/10 p-3 text-[12px] text-moss">{JSON.stringify(detail.datos_nuevos, null, 2)}</pre>
                 </div>
               )}
             </div>
-            {!detail.datos_antiguos && !detail.datos_nuevos && <p className="text-[12.5px] leading-relaxed text-ink/55">No hay datos adjuntos en este evento.</p>}
+            {!detail.datos_antiguos && !detail.datos_nuevos && <p className="text-[13px] leading-relaxed text-ink/55">No hay datos adjuntos en este evento.</p>}
           </div>
         )}
       </Modal>
 
       <Modal open={cleanup} onClose={() => setCleanup(false)} title="Limpiar auditoría antigua" size="sm" footer={<><Button variant="outline" onClick={() => setCleanup(false)}>Cancelar</Button><Button variant="danger" onClick={runCleanup} disabled={cleanupBusy}><Trash2 size={14} /> {cleanupBusy ? 'Limpiando…' : 'Limpiar +90 días'}</Button></>}>
-        <div className="text-[12.5px] leading-relaxed text-ink/55">
+        <div className="text-[13px] leading-relaxed text-ink/55">
           <p className="mb-2 flex items-center gap-2"><Settings2 size={16} className="text-indigo-500" /> Eliminará registros de auditoría con más de 90 días para mantener la base ligera.</p>
-          <p className="text-[11.5px] text-ink/45">Esta acción no afecta los datos de negocio, únicamente el historial de cambios antiguo.</p>
+          <p className="text-[12.5px] text-ink/45">Esta acción no afecta los datos de negocio, únicamente el historial de cambios antiguo.</p>
         </div>
       </Modal>
     </div>

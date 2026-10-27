@@ -61,7 +61,7 @@ function AptasBadges({ m, subActual }: { m: MarcaModelo; subActual: SubSlug }) {
           <span
             key={slug}
             title={sub.label}
-            className="whitespace-nowrap border border-line bg-paper px-1.5 py-0.5 text-[10px] font-medium text-ink/55"
+            className="whitespace-nowrap border border-line bg-paper px-1.5 py-0.5 text-[11.5px] font-medium text-ink/55"
           >
             {sub.label}
           </span>
@@ -261,7 +261,7 @@ export default async function MarcasPage({ params }: { params: Promise<{ locale:
                               {soloFabricante ? (
                                 <div className="flex-1">
                                   {entrada.nota && (
-                                    <p className="text-[12px] leading-relaxed text-muted">{entrada.nota}</p>
+                                    <p className="text-[13px] leading-relaxed text-muted">{entrada.nota}</p>
                                   )}
                                   <div className="mt-2">
                                     <AptasBadges m={entrada} subActual={sub.slug} />
@@ -289,7 +289,7 @@ export default async function MarcasPage({ params }: { params: Promise<{ locale:
                                           />
                                         </span>
                                         {m.nota && (
-                                          <span className="mt-0.5 block text-[11.5px] leading-snug text-muted">{m.nota}</span>
+                                          <span className="mt-0.5 block text-[12.5px] leading-snug text-muted">{m.nota}</span>
                                         )}
                                         <AptasBadges m={m} subActual={sub.slug} />
                                       </LocalLink>

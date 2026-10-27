@@ -211,7 +211,7 @@ export default function AdminPublicaciones({ notify }: { notify: (msg: string) =
       <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
         <div>
           <h2 className="text-xl font-semibold text-ink">Publicaciones</h2>
-          <p className="text-[12.5px] leading-relaxed text-ink/55">{counts.visible} de {counts.total} publicaciones cargadas</p>
+          <p className="text-[13px] leading-relaxed text-ink/55">{counts.visible} de {counts.total} publicaciones cargadas</p>
         </div>
         <div className="flex gap-2">
           {selected.size > 0 && (
@@ -275,7 +275,7 @@ export default function AdminPublicaciones({ notify }: { notify: (msg: string) =
                       </div>
                       <div className="min-w-0">
                         <button onClick={() => setDetail(p)} className="block max-w-xs truncate text-left font-semibold text-ink hover:text-ink">{p.titulo || 'Sin título'}</button>
-                        <div className="mt-0.5 flex flex-wrap items-center gap-1.5 text-[11.5px] text-ink/45">
+                        <div className="mt-0.5 flex flex-wrap items-center gap-1.5 text-[12.5px] text-ink/45">
                           {p.subcategoria && <span>{p.subcategoria}</span>}
                           {p.ubicacion_ciudad && <span>· {p.ubicacion_ciudad}</span>}
                           {p.destacado && <Badge tone="brand">Destacado</Badge>}
@@ -291,7 +291,7 @@ export default function AdminPublicaciones({ notify }: { notify: (msg: string) =
                   <td className="whitespace-nowrap px-3 py-3 text-right font-semibold text-ink">{formatMoney(p.precio_usd)}</td>
                   <td className="px-3 py-3 text-center text-ink/55">{formatNumber(p.visitas)}</td>
                   <td className="px-3 py-3"><EstadoBadge p={p} /></td>
-                  <td className="whitespace-nowrap px-3 py-3 text-[11.5px] text-ink/45">{formatDate(p.creado_en)}</td>
+                  <td className="whitespace-nowrap px-3 py-3 text-[12.5px] text-ink/45">{formatDate(p.creado_en)}</td>
                   <td className="whitespace-nowrap px-3 py-3 text-right">
                     <div className="flex justify-end gap-1">
                       <button onClick={() => setDetail(p)} title="Ver detalle" className="rounded-lg p-1.5 text-ink/35 transition hover:bg-paper-2 hover:text-ink"><Eye size={15} /></button>
@@ -318,7 +318,7 @@ export default function AdminPublicaciones({ notify }: { notify: (msg: string) =
                 </div>
                 <div className="min-w-0 flex-1">
                   <button onClick={() => setDetail(p)} className="block w-full truncate text-left font-semibold text-ink">{p.titulo}</button>
-                  <p className="text-[11.5px] text-ink/45">{perfiles[p.user_id]?.nombre || '—'} · {formatDate(p.creado_en)}</p>
+                  <p className="text-[12.5px] text-ink/45">{perfiles[p.user_id]?.nombre || '—'} · {formatDate(p.creado_en)}</p>
                   <div className="mt-1.5 flex flex-wrap gap-1.5"><EstadoBadge p={p} /></div>
                 </div>
                 <button onClick={() => setSelected((prev) => { const n = new Set(prev); if (n.has(p.id)) n.delete(p.id); else n.add(p.id); return n })}>
@@ -345,7 +345,7 @@ export default function AdminPublicaciones({ notify }: { notify: (msg: string) =
       {/* pagination */}
       {filtered.length > PAGE_SIZE && (
         <div className="flex items-center justify-between rounded-2xl border border-line bg-[#FBFAF5] px-4 py-3">
-          <p className="text-[11.5px] text-ink/45">Página {page} de {totalPages}</p>
+          <p className="text-[12.5px] text-ink/45">Página {page} de {totalPages}</p>
           <div className="flex gap-1">
             <Button size="sm" variant="outline" disabled={page <= 1} onClick={() => setPage((p) => p - 1)}><ChevronLeft size={14} /> Anterior</Button>
             <Button size="sm" variant="outline" disabled={page >= totalPages} onClick={() => setPage((p) => p + 1)}>Siguiente <ChevronRight size={14} /></Button>
@@ -368,11 +368,11 @@ export default function AdminPublicaciones({ notify }: { notify: (msg: string) =
                   {detail.boosteado_en && <Badge tone="green"> Boosted</Badge>}
                 </div>
                 <p className="text-3xl font-semibold text-ink">{formatMoney(detail.precio_usd)}</p>
-                {detail.marca && <p className="text-[12.5px] leading-relaxed text-ink/55"><strong>Marca:</strong> {detail.marca}</p>}
-                {detail.modelo && <p className="text-[12.5px] leading-relaxed text-ink/55"><strong>Modelo:</strong> {detail.modelo}</p>}
-                {detail.subcategoria && <p className="text-[12.5px] leading-relaxed text-ink/55"><strong>Categoría:</strong> {detail.subcategoria}</p>}
-                <p className="text-[12.5px] leading-relaxed text-ink/55"><strong>Ubicación:</strong> {detail.ubicacion_ciudad || '—'}{detail.ubicacion_estado ? `, ${detail.ubicacion_estado}` : ''}</p>
-                <p className="text-[12.5px] leading-relaxed text-ink/55"><strong>Estado del artículo:</strong> {detail.estado || '—'}</p>
+                {detail.marca && <p className="text-[13px] leading-relaxed text-ink/55"><strong>Marca:</strong> {detail.marca}</p>}
+                {detail.modelo && <p className="text-[13px] leading-relaxed text-ink/55"><strong>Modelo:</strong> {detail.modelo}</p>}
+                {detail.subcategoria && <p className="text-[13px] leading-relaxed text-ink/55"><strong>Categoría:</strong> {detail.subcategoria}</p>}
+                <p className="text-[13px] leading-relaxed text-ink/55"><strong>Ubicación:</strong> {detail.ubicacion_ciudad || '—'}{detail.ubicacion_estado ? `, ${detail.ubicacion_estado}` : ''}</p>
+                <p className="text-[13px] leading-relaxed text-ink/55"><strong>Estado del artículo:</strong> {detail.estado || '—'}</p>
               </div>
             </div>
             {detail.descripcion && (

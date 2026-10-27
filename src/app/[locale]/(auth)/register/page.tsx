@@ -219,13 +219,13 @@ export default function RegisterPage() {
                   >
                     <span className="t-label block text-ink/40">{String(i + 1).padStart(2, '0')}</span>
                     <span className="mt-1 block text-[13px] font-semibold text-ink">{tTipos(tipo)}</span>
-                    <span className="mt-0.5 block text-[11px] leading-snug text-ink/55">
+                    <span className="mt-0.5 block text-[12px] leading-snug text-ink/55">
                       {tTipos(`${tipo}Desc`)}
                     </span>
                   </button>
                 ))}
               </div>
-              <p className="mt-2 text-[11.5px] leading-relaxed text-ink/45">{t('register.sellerTypeHint')}</p>
+              <p className="mt-2 text-[12.5px] leading-relaxed text-ink/45">{t('register.sellerTypeHint')}</p>
             </fieldset>
 
             <button

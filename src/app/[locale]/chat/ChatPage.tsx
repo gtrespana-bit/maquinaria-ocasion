@@ -499,13 +499,13 @@ export default function ChatPageClient() {
   return (
     <div className="mx-auto flex h-[calc(100dvh-56px-4rem)] max-w-[1180px] flex-col gap-3 px-5 py-4 md:h-[calc(100dvh-100px)] md:max-h-[820px] md:px-8">
       {toastMsg && (
-        <div role="alert" className="flex shrink-0 items-center justify-between border border-clay/40 bg-clay/[0.06] px-3 py-2 text-[12.5px] text-clay">
+        <div role="alert" className="flex shrink-0 items-center justify-between border border-clay/40 bg-clay/[0.06] px-3 py-2 text-[13px] text-clay">
           <span>{toastMsg}</span>
           <button type="button" onClick={() => setToastMsg(null)} className="t-label ml-3 shrink-0 underline underline-offset-4">Cerrar</button>
         </div>
       )}
       {reabrirChat && (
-        <div className="shrink-0 border border-line bg-paper-2 px-3 py-2 text-[12.5px] text-ink/60">
+        <div className="shrink-0 border border-line bg-paper-2 px-3 py-2 text-[13px] text-ink/60">
           El historial se conserva aquí. Las nuevas consultas las atiende MaquinariaOcasión.
           <LocalLink href={reabrirChat} className="ml-2 font-medium text-ink underline underline-offset-4">Abrir chat con el equipo</LocalLink>
         </div>
@@ -527,7 +527,7 @@ export default function ChatPageClient() {
                   value={busqueda}
                   onChange={e => setBusqueda(e.target.value)}
                   placeholder="Buscar conversación…"
-                  className="field h-9 pl-8 text-[12.5px]"
+                  className="field h-9 pl-8 text-[13px]"
                 />
               </div>
             </div>
@@ -548,8 +548,8 @@ export default function ChatPageClient() {
               ) : filtradas.length === 0 ? (
                 <div className="flex h-full flex-col items-center justify-center px-6 py-12 text-center">
                   <User size={22} strokeWidth={1.3} className="mb-3 text-ink/20" aria-hidden="true" />
-                  <p className="text-[12.5px] font-medium text-ink/70">{conversaciones.length === 0 ? 'No hay conversaciones' : 'Sin resultados'}</p>
-                  <p className="mt-1 text-[11.5px] leading-relaxed text-ink/40">Envía un mensaje a un vendedor desde cualquier anuncio</p>
+                  <p className="text-[13px] font-medium text-ink/70">{conversaciones.length === 0 ? 'No hay conversaciones' : 'Sin resultados'}</p>
+                  <p className="mt-1 text-[12.5px] leading-relaxed text-ink/40">Envía un mensaje a un vendedor desde cualquier anuncio</p>
                 </div>
               ) : (
                 filtradas.map(c => (
@@ -571,18 +571,18 @@ export default function ChatPageClient() {
                       <Avatar nombre={c.otro_nombre} fotoUrl={c.otro_foto} size="md" />
                       <div className="flex-1 min-w-0">
                         <div className="flex justify-between items-center">
-                          <p className="truncate text-[12.5px] font-semibold text-ink">{c.otro_nombre}</p>
+                          <p className="truncate text-[13px] font-semibold text-ink">{c.otro_nombre}</p>
                           {c.ultimo_mensaje_en && (
-                            <span className="t-num ml-2 shrink-0 text-[10px] text-ink/35">{formatTime(c.ultimo_mensaje_en)}</span>
+                            <span className="t-num ml-2 shrink-0 text-[11.5px] text-ink/35">{formatTime(c.ultimo_mensaje_en)}</span>
                           )}
                         </div>
-                        <p className="mt-0.5 truncate text-[11.5px] text-ink/50">{c.ultimo_mensaje || 'Sin mensajes'}</p>
+                        <p className="mt-0.5 truncate text-[12.5px] text-ink/50">{c.ultimo_mensaje || 'Sin mensajes'}</p>
                         {c.producto_titulo && c.producto_id && (
                           <a
                             href={`/producto/${c.producto_id}`}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="mt-1 inline-flex max-w-[92%] items-center gap-1 truncate text-[10.5px] text-ink/40 hover:text-ink hover:underline"
+                            className="mt-1 inline-flex max-w-[92%] items-center gap-1 truncate text-[12px] text-ink/40 hover:text-ink hover:underline"
                             onClick={(e) => e.stopPropagation()}
                             title={t('viewProductNewTab')}
                           >
@@ -591,7 +591,7 @@ export default function ChatPageClient() {
                         )}
                       </div>
                       {c.no_leidos > 0 && (
-                        <span className="t-num flex h-5 min-w-5 shrink-0 items-center justify-center bg-ink px-1 text-[10px] text-paper">{c.no_leidos}</span>
+                        <span className="t-num flex h-5 min-w-5 shrink-0 items-center justify-center bg-ink px-1 text-[11.5px] text-paper">{c.no_leidos}</span>
                       )}
                     </button>
                   </div>
@@ -605,8 +605,8 @@ export default function ChatPageClient() {
             {!convId ? (
               <div className="flex flex-1 flex-col items-center justify-center p-8 text-center">
                 <MessageSquare size={24} strokeWidth={1.2} className="mb-3 text-ink/20" aria-hidden="true" />
-                <p className="text-[12.5px] font-medium text-ink/70">Selecciona una conversación</p>
-                <p className="mt-1 text-[11.5px] text-ink/40">O escribe a un vendedor desde un anuncio</p>
+                <p className="text-[13px] font-medium text-ink/70">Selecciona una conversación</p>
+                <p className="mt-1 text-[12.5px] text-ink/40">O escribe a un vendedor desde un anuncio</p>
               </div>
             ) : (
               <>
@@ -623,7 +623,7 @@ export default function ChatPageClient() {
                         {convActual.producto_titulo && convActual.producto_id && (
                           <LocalLink
                             href={`/producto/${convActual.producto_id}`}
-                            className="flex items-center gap-1 truncate text-[10.5px] text-ink/45 transition-colors hover:text-ink"
+                            className="flex items-center gap-1 truncate text-[12px] text-ink/45 transition-colors hover:text-ink"
                           >
                             <span className="truncate">{convActual.producto_titulo}</span>
                             <ExternalLink size={9} className="shrink-0" />
@@ -661,7 +661,7 @@ export default function ChatPageClient() {
                   )}
                   {enviando && (
                     <div className="flex justify-end">
-                      <div className="bg-ink/60 px-3.5 py-2.5 text-[12.5px] text-paper">
+                      <div className="bg-ink/60 px-3.5 py-2.5 text-[13px] text-paper">
                         Enviando…
                       </div>
                     </div>
@@ -736,7 +736,7 @@ export default function ChatPageClient() {
                   >
                     <div className="w-full max-w-md border border-line-strong bg-[#FBFAF5] p-6" onClick={e => e.stopPropagation()}>
                       <h3 id="resena-titulo" className="text-[15px] font-semibold tracking-[-0.015em] text-ink">Deja tu reseña</h3>
-                      <p className="mb-4 mt-1 text-[12.5px] text-ink/50">¿Cómo fue tu experiencia con {convActual?.otro_nombre}?</p>
+                      <p className="mb-4 mt-1 text-[13px] text-ink/50">¿Cómo fue tu experiencia con {convActual?.otro_nombre}?</p>
 
                       <div className="flex justify-center gap-1 mb-4">
                         {[1,2,3,4,5].map(i => (

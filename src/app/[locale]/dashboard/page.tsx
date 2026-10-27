@@ -4,7 +4,7 @@ import { useEffect, useState, lazy, Suspense } from 'react'
 import { useRouter, usePathname } from 'next/navigation'
 import { useAuth } from '@/components/AuthProvider'
 import { useTranslations } from 'next-intl'
-import { X } from 'lucide-react'
+import { Plus, X } from 'lucide-react'
 import LocalLink from '@/components/LocalLink'
 import { routing } from '@/i18n/routing'
 
@@ -71,7 +71,7 @@ function PasswordModal({ user, setToast, onClose }: { user: any; setToast: (s: s
           <h3 className="text-[16px] font-semibold tracking-[-0.02em] text-ink">{t('passwordTitle')}</h3>
           <button onClick={onClose} className="text-ink/40 transition-colors hover:text-ink" aria-label="Cerrar"><X size={16} /></button>
         </div>
-        {pwError && <div className="mb-4 border border-clay/40 bg-clay/[0.05] px-3 py-2 text-[12.5px] text-clay">{pwError}</div>}
+        {pwError && <div className="mb-4 border border-clay/40 bg-clay/[0.05] px-3 py-2 text-[13px] text-clay">{pwError}</div>}
         <form onSubmit={handleCambiarPassword} className="space-y-4">
           <div>
             <label className="t-label mb-1 block text-ink/45">{t('pwCurrent')}</label>
@@ -235,7 +235,7 @@ export default function DashboardPage() {
     <div className="shell max-w-[1180px] py-8 md:py-10">
       {/* Toast */}
       {data.toast && (
-        <div className="fixed right-4 top-4 z-50 max-w-xs border border-ink bg-ink px-5 py-3 text-[12.5px] font-medium text-paper">
+        <div className="fixed right-4 top-4 z-50 max-w-xs border border-ink bg-ink px-5 py-3 text-[13px] font-medium text-paper">
           {data.toast}
         </div>
       )}
@@ -261,6 +261,43 @@ export default function DashboardPage() {
         <PasswordModal user={user} setToast={data.setToast} onClose={() => setCambiarPw(false)} />
       )}
 
+      {/* Portada del panel: banda de tinta con lo importante de un vistazo */}
+      <section className="mb-6 bg-ink text-paper">
+        <div className="flex flex-wrap items-end justify-between gap-5 px-5 py-6 sm:px-7">
+          <div>
+            <p className="t-label text-paper/45">{t('yourPanel')}</p>
+            <h1 className="t-display t-display-md mt-2 text-paper">
+              Hola, {(data.nombre || user?.email?.split('@')[0] || '').split(' ')[0] || 'vendedor'}
+            </h1>
+          </div>
+          <div className="flex flex-wrap items-center gap-2">
+            <LocalLink href="/publicar" className="btn btn-signal btn-sm justify-between">
+              {t('publishNew')}
+              <Plus size={14} strokeWidth={2} />
+            </LocalLink>
+            <button
+              type="button"
+              onClick={() => setActiveTab('creditos')}
+              className="btn btn-outline-light btn-sm"
+            >
+              {t('buyCredits')}
+            </button>
+          </div>
+        </div>
+        <dl className="grid grid-cols-3 gap-px border-t border-paper/15 bg-paper/15">
+          {[
+            { valor: data.visitasTotales, etiqueta: t('totalViews') },
+            { valor: data.pubCount, etiqueta: t('activeProducts') },
+            { valor: data.creditos, etiqueta: t('creditsLabel') },
+          ].map(celda => (
+            <div key={celda.etiqueta} className="bg-ink px-5 py-4 sm:px-7">
+              <dd className="t-display t-num text-[1.85rem] leading-none text-signal">{celda.valor}</dd>
+              <dt className="t-label mt-2 text-paper/50">{celda.etiqueta}</dt>
+            </div>
+          ))}
+        </dl>
+      </section>
+
       {/* Header */}
       <DashboardHeader
         user={user}
@@ -284,7 +321,7 @@ export default function DashboardPage() {
       <PlanBar onAbrirPlan={setActiveTab} />
 
       {/* Resumen */}
-      <section className="mb-6 border border-line bg-[#FBFAF5]" aria-labelledby="rendimiento-titulo">
+      <section className="mb-6 border border-ink/15 bg-paper shadow-[0_1px_0_rgba(12,14,13,0.06)]" aria-labelledby="rendimiento-titulo">
         <div className="flex flex-wrap items-baseline justify-between gap-2 border-b border-ink px-5 pb-3 pt-4">
           <h3 id="rendimiento-titulo" className="t-eyebrow text-ink">{t('performance')}</h3>
           <span className="t-label text-ink/35">{t('pubProgress', { count: data.pubCount })}</span>
@@ -298,14 +335,14 @@ export default function DashboardPage() {
             { valor: data.favoritosCount, etiqueta: t('favorites') },
             { valor: data.creditos, etiqueta: t('creditsLabel') },
           ].map(celda => (
-            <div key={celda.etiqueta} className="bg-paper px-4 py-4">
-              <dd className="t-display t-num text-[1.5rem] leading-none text-ink">{celda.valor}</dd>
-              <dt className="t-label mt-2 text-ink/45">{celda.etiqueta}</dt>
+            <div key={celda.etiqueta} className="bg-paper px-4 py-4 transition-colors hover:bg-paper-2/60">
+              <dd className="t-display t-num text-[1.9rem] leading-none text-ink">{celda.valor}</dd>
+              <dt className="t-label mt-2 text-ink/50">{celda.etiqueta}</dt>
             </div>
           ))}
         </dl>
         <div className="flex flex-col gap-3 border-t border-line px-5 py-3 sm:flex-row sm:items-center sm:justify-between">
-          <p className="text-[12.5px] text-ink/60">{t('freeCredit')}</p>
+          <p className="text-[13px] text-ink/60">{t('freeCredit')}</p>
           <div className="flex items-center gap-2.5">
             <span className="t-label text-ink/40">{t('pubProgress', { count: data.pubCount })}</span>
             <div className="h-1 w-24 bg-line">

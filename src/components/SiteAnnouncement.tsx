@@ -42,7 +42,7 @@ export default function SiteAnnouncement() {
     <div className="on-dark bg-ink text-paper">
       <div className="shell flex min-h-[38px] items-center gap-3 py-2">
         <span aria-hidden="true" className="hidden h-1.5 w-1.5 shrink-0 bg-signal sm:block" />
-        <p className="min-w-0 flex-1 text-[12.5px] leading-snug text-paper/80">
+        <p className="min-w-0 flex-1 text-[13px] leading-snug text-paper/80">
           <span className="t-label mr-2 text-signal">{anuncio.titulo}</span>
           {anuncio.mensaje}
           {anuncio.enlace && (

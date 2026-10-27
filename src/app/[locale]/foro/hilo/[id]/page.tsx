@@ -107,12 +107,12 @@ export default async function HiloPage({ params }: Props) {
           </div>
 
           {enRevision && (
-            <p className="mt-5 border border-signal-deep/40 bg-signal-soft/40 px-3 py-2 text-[12.5px] text-ink/70">
+            <p className="mt-5 border border-signal-deep/40 bg-signal-soft/40 px-3 py-2 text-[13px] text-ink/70">
               {t('foro.pendingNote')}
             </p>
           )}
           {hilo.cerrado && (
-            <p className="mt-5 border border-line bg-paper-2/60 px-3 py-2 text-[12.5px] text-ink/60">
+            <p className="mt-5 border border-line bg-paper-2/60 px-3 py-2 text-[13px] text-ink/60">
               {t('foro.closedNotice')}
             </p>
           )}
@@ -123,7 +123,7 @@ export default async function HiloPage({ params }: Props) {
         <section className="mt-12" aria-labelledby="respuestas-titulo">
           <h2 id="respuestas-titulo" className="t-eyebrow flex items-baseline justify-between border-b border-ink pb-3 text-ink">
             {t('foro.answersTitle')}
-            <span className="t-num text-[11px] text-ink/40">{mensajes.length}</span>
+            <span className="t-num text-[12px] text-ink/40">{mensajes.length}</span>
           </h2>
 
           {mensajes.length === 0 ? (

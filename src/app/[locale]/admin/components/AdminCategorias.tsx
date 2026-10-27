@@ -87,7 +87,7 @@ export default function AdminCategorias({ notify }: { notify: (msg: string) => v
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h2 className="text-xl font-semibold text-ink">Categorías</h2>
-          <p className="text-[12.5px] leading-relaxed text-ink/55">{items.length} categorías · {formatNumber(totalProducts)} publicaciones asignadas</p>
+          <p className="text-[13px] leading-relaxed text-ink/55">{items.length} categorías · {formatNumber(totalProducts)} publicaciones asignadas</p>
         </div>
         <RefreshButton onClick={() => load(true)} loading={refreshing} />
       </div>
@@ -117,7 +117,7 @@ export default function AdminCategorias({ notify }: { notify: (msg: string) => v
               </div>
             </div>
             <p className="mt-3 truncate text-sm font-bold capitalize text-ink">{c.nombre}</p>
-            <div className="mt-1 flex items-center justify-between text-[11.5px] text-ink/45">
+            <div className="mt-1 flex items-center justify-between text-[12.5px] text-ink/45">
               <span>{formatNumber(c.count)} publicaciones</span>
               <Badge tone="gray">ID {c.id}</Badge>
             </div>
@@ -138,7 +138,7 @@ export default function AdminCategorias({ notify }: { notify: (msg: string) => v
             {deleteCat.count ? (
               <p className="rounded-xl bg-clay/[0.07] p-3 text-xs text-clay">No se puede eliminar porque tiene {deleteCat.count} publicaciones asignadas. Primero mueve o elimina esas publicaciones.</p>
             ) : (
-              <p className="text-[12.5px] leading-relaxed text-ink/55">Esta categoría está vacía y puede eliminarse de forma segura.</p>
+              <p className="text-[13px] leading-relaxed text-ink/55">Esta categoría está vacía y puede eliminarse de forma segura.</p>
             )}
           </div>
         )}

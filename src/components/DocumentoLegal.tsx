@@ -48,7 +48,7 @@ export default function DocumentoLegal({
             <p className="t-label border-b border-line pb-2 text-ink/40">Índice</p>
             <ul className="mt-3 space-y-1.5">
               {documento.secciones.map((seccion) => (
-                <li key={seccion.titulo} className="text-[12.5px] leading-snug text-ink/60">
+                <li key={seccion.titulo} className="text-[13px] leading-snug text-ink/60">
                   {seccion.titulo}
                 </li>
               ))}

@@ -120,7 +120,7 @@ export default function MetricasTab() {
               <card.icon size={20} className={card.color} />
             </div>
             <p className="text-2xl font-semibold text-ink">{card.value ?? 0}</p>
-            <p className="text-[11.5px] text-ink/45 mt-1">{card.label}</p>
+            <p className="text-[12.5px] text-ink/45 mt-1">{card.label}</p>
           </div>
         ))}
       </div>
@@ -137,22 +137,22 @@ export default function MetricasTab() {
               <div key={p.id} className="px-5 py-3 flex items-center justify-between">
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-medium text-ink truncate">{p.titulo}</p>
-                  <p className="text-[11.5px] text-ink/45">
+                  <p className="text-[12.5px] text-ink/45">
                     {formatPrecio(p.precio_usd || 0)} · {p.seller_nombre}
                   </p>
                 </div>
                 <div className="text-right ml-4">
-                  <p className="text-[11.5px] text-ink/45">
+                  <p className="text-[12.5px] text-ink/45">
                     {new Intl.DateTimeFormat('es-ES', { year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date(p.creado_en))}
                   </p>
-                  <p className="text-[11.5px] text-ink/45 flex items-center gap-1 justify-end">
+                  <p className="text-[12.5px] text-ink/45 flex items-center gap-1 justify-end">
                     <Eye size={10} /> {p.visitas || 0}
                   </p>
                 </div>
               </div>
             ))}
             {recentActivity.length === 0 && (
-              <p className="px-5 py-8 text-center text-[12.5px] leading-relaxed text-ink/55">No hay publicaciones aún</p>
+              <p className="px-5 py-8 text-center text-[13px] leading-relaxed text-ink/55">No hay publicaciones aún</p>
             )}
           </div>
         </div>
@@ -173,7 +173,7 @@ export default function MetricasTab() {
                   </span>
                   <div>
                     <p className="text-sm font-medium text-ink">{s.nombre}</p>
-                    <p className="text-[11.5px] text-ink/45">{s.activeProducts} activos de {s.totalProducts}</p>
+                    <p className="text-[12.5px] text-ink/45">{s.activeProducts} activos de {s.totalProducts}</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-1.5 text-[13px] font-medium text-ink">
@@ -183,7 +183,7 @@ export default function MetricasTab() {
               </div>
             ))}
             {topSellers.length === 0 && (
-              <p className="px-5 py-8 text-center text-[12.5px] leading-relaxed text-ink/55">No hay datos aún</p>
+              <p className="px-5 py-8 text-center text-[13px] leading-relaxed text-ink/55">No hay datos aún</p>
             )}
           </div>
         </div>
@@ -198,15 +198,15 @@ export default function MetricasTab() {
           </div>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
             <div>
-              <p className="text-[12.5px] leading-relaxed text-ink/55">Si 20% compran el paquete 5 €</p>
+              <p className="text-[13px] leading-relaxed text-ink/55">Si 20% compran el paquete 5 €</p>
               <p className="text-2xl font-semibold text-moss">${(stats.totalTransactions * 0.2 * 5).toFixed(2)}</p>
             </div>
             <div>
-              <p className="text-[12.5px] leading-relaxed text-ink/55">Si 20% compran el paquete 10 €</p>
+              <p className="text-[13px] leading-relaxed text-ink/55">Si 20% compran el paquete 10 €</p>
               <p className="text-2xl font-semibold text-moss">${(stats.totalTransactions * 0.2 * 10).toFixed(2)}</p>
             </div>
             <div>
-              <p className="text-[12.5px] leading-relaxed text-ink/55">Si 20% compran el paquete 20 €</p>
+              <p className="text-[13px] leading-relaxed text-ink/55">Si 20% compran el paquete 20 €</p>
               <p className="text-2xl font-semibold text-moss">${(stats.totalTransactions * 0.2 * 20).toFixed(2)}</p>
             </div>
           </div>

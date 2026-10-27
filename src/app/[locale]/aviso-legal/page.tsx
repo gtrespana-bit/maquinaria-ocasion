@@ -63,7 +63,7 @@ export default async function AvisoLegalPage({ params }: { params: Promise<{ loc
             ))}
           </dl>
           {!hayDatosTitular() && (
-            <p className="mt-4 border border-signal-deep/40 bg-signal-soft/40 px-3 py-2 text-[12px] leading-relaxed text-ink/70">
+            <p className="mt-4 border border-signal-deep/40 bg-signal-soft/40 px-3 py-2 text-[13px] leading-relaxed text-ink/70">
               {esIngles
                 ? 'This page is not yet linked from the footer or indexed by search engines: the owner’s identification details are being completed.'
                 : 'Esta página aún no se enlaza desde el pie ni se indexa en buscadores: se están completando los datos identificativos del titular.'}

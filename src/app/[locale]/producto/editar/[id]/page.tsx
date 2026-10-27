@@ -352,8 +352,8 @@ export default function EditarPage() {
       <p className="mb-6 text-[13.5px] text-muted">Modifica los campos que necesites</p>
 
       {/* Alerts */}
-      {error && <div className="mb-4 flex items-center gap-2 border border-clay/40 bg-clay/[0.06] px-3 py-2 text-[12.5px] text-clay"><AlertCircle size={18} /> {error}</div>}
-      {success && <div className="mb-4 flex items-center gap-2 border border-moss/30 bg-moss-soft px-3 py-2 text-[12.5px] text-moss">{success}</div>}
+      {error && <div className="mb-4 flex items-center gap-2 border border-clay/40 bg-clay/[0.06] px-3 py-2 text-[13px] text-clay"><AlertCircle size={18} /> {error}</div>}
+      {success && <div className="mb-4 flex items-center gap-2 border border-moss/30 bg-moss-soft px-3 py-2 text-[13px] text-moss">{success}</div>}
 
       <div className="border border-line bg-[#FBFAF5] p-6 space-y-5">
         {/* Título */}
@@ -374,7 +374,7 @@ export default function EditarPage() {
           <div>
             <label className="t-label mb-1.5 block text-ink/45">{t('priceEur') || 'Precio (€)'}</label>
             <input type="number" value={precioUsd} onChange={e => setPrecioUsd(e.target.value)} className="field text-[14px]" />
-            <p className="mt-1.5 text-[11.5px] text-ink/45">
+            <p className="mt-1.5 text-[12.5px] text-ink/45">
               <LocalLink href="/tasador" className="font-bold text-brand-darkNav underline decoration-brand-signal decoration-2 underline-offset-2 hover:text-brand-signal-dark">
                 {t('estimatePriceCta')}
               </LocalLink>
@@ -467,7 +467,7 @@ export default function EditarPage() {
         {camposEspeciales.length > 0 && (
           <div className="border border-line bg-paper-2 p-5 space-y-4">
             <h3 className="font-semibold text-ink">{t('specs')}</h3>
-            <p className="mt-1 text-[11.5px] leading-relaxed text-ink/45">{t('specsHint')}</p>
+            <p className="mt-1 text-[12.5px] leading-relaxed text-ink/45">{t('specsHint')}</p>
             {camposEspeciales.map((campo: any) => (
               <div key={campo.label}>
                 <label className="t-label mb-1.5 block text-ink/45">{campo.label}</label>
@@ -589,12 +589,12 @@ export default function EditarPage() {
             {procesando ? (
               <>
                 <div className="h-4 w-4 animate-spin border border-line border-t-ink" />
-                <span className="text-[12.5px] text-ink/55">Optimizando imágenes…</span>
+                <span className="text-[13px] text-ink/55">Optimizando imágenes…</span>
               </>
             ) : (
               <>
                 <Camera size={18} strokeWidth={1.4} className="text-ink/30" />
-                <span className="text-[12.5px] text-ink/55">Seleccionar fotos…</span>
+                <span className="text-[13px] text-ink/55">Seleccionar fotos…</span>
               </>
             )}
             <input type="file" accept="image/*" multiple onChange={handleNewImages} className="hidden" disabled={procesando} />
@@ -615,7 +615,7 @@ export default function EditarPage() {
         <div className="flex items-center gap-3">
           <label className="flex items-center gap-2 cursor-pointer">
             <input type="checkbox" checked={activo} onChange={e => setActivo(e.target.checked)} className="h-4 w-4 border-line-strong text-ink" />
-            <span className="text-[12.5px] font-medium text-ink">Publicación {activo ? 'activa' : 'pausada'}</span>
+            <span className="text-[13px] font-medium text-ink">Publicación {activo ? 'activa' : 'pausada'}</span>
           </label>
         </div>
 

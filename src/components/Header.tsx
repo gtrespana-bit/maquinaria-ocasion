@@ -178,7 +178,7 @@ export function Header() {
     }
   }, [user])
 
-  const navLink = 'group relative flex items-center gap-1.5 px-3 py-2 text-[11px] font-medium uppercase tracking-[0.16em] text-ink/75 transition-colors hover:text-ink'
+  const navLink = 'group relative flex items-center gap-1.5 px-3 py-2 text-[12px] font-medium uppercase tracking-[0.12em] text-ink/75 transition-colors hover:text-ink'
 
   return (
     <>
@@ -226,9 +226,9 @@ export function Header() {
 
         {/* ── Capa 2: barra principal ───────────────────────────────────── */}
         <div
-          className={`border-b border-line transition-colors duration-300 ${
-            scrolled ? 'bg-paper/95 backdrop-blur-md' : 'bg-paper'
-          }`}
+          /* Opaco a propósito: al hacer scroll, las columnas sticky de la
+             página pasan por debajo y no deben transparentarse. */
+          className="border-b border-line bg-paper"
         >
           <div className="shell flex h-[62px] items-center gap-4 md:h-[74px]">
             <button
@@ -349,7 +349,7 @@ export function Header() {
           </div>
 
           {/* ── Capa 3: raíl de taxonomía ──────────────────────────────── */}
-          <div className="hidden border-t border-line/80 md:block">
+          <div className="hidden border-t border-line/80 bg-paper md:block">
             <div className="shell flex h-10 items-center gap-1 overflow-x-auto hide-scrollbar">
               <LocalLink
                 href="/catalogo"
@@ -369,7 +369,7 @@ export function Header() {
                     <LocalLink
                       key={tipo.id}
                       href={tipo.href}
-                      className="shrink-0 px-2 py-2 text-[12.5px] font-medium text-ink/70 transition-colors hover:text-ink"
+                      className="shrink-0 px-2 py-2 text-[13px] font-medium text-ink/70 transition-colors hover:text-ink"
                     >
                       {tipo.nombre}
                     </LocalLink>
@@ -486,7 +486,7 @@ export function Header() {
                   <LocalLink
                     key={q}
                     href={`/buscar?q=${encodeURIComponent(q)}`}
-                    className="border border-line px-2.5 py-1.5 text-[12px] text-ink/70 transition-colors hover:border-ink hover:text-ink"
+                    className="border border-line px-2.5 py-1.5 text-[13px] text-ink/70 transition-colors hover:border-ink hover:text-ink"
                   >
                     {q}
                   </LocalLink>
@@ -564,7 +564,7 @@ export function Header() {
                   key={f.key}
                   href={`/categoria/${f.key}`}
                   onClick={() => setMobileOpen(false)}
-                  className="border border-line-dark px-3 py-2 text-[12px] text-paper/70"
+                  className="border border-line-dark px-3 py-2 text-[13px] text-paper/70"
                 >
                   {f.nombre}
                 </LocalLink>

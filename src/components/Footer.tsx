@@ -97,7 +97,7 @@ export function Footer() {
                       <li key={c.label}>
                         <LocalLink
                           href={c.href}
-                          className="text-[12.5px] leading-6 text-paper/50 transition-colors hover:text-paper"
+                          className="text-[13px] leading-6 text-paper/50 transition-colors hover:text-paper"
                         >
                           {c.label}
                         </LocalLink>

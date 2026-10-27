@@ -205,7 +205,7 @@ export default function VerificacionTab({ notify }: { notify: (msg: string) => v
                       </div>
                     )}
 
-                    <p className="text-[11.5px] text-ink/45 mt-2">
+                    <p className="text-[12.5px] text-ink/45 mt-2">
                       Solicitada: {new Intl.DateTimeFormat('es-ES', { year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date(sol.creada_en))}
                     </p>
                   </div>
@@ -213,7 +213,7 @@ export default function VerificacionTab({ notify }: { notify: (msg: string) => v
                   {/* Bucket `cedulas` = documentos DNI/NIE (nombre legado, privado, URL firmada 5 min) */}
                   {(sol.cedula_foto_frente_url || sol.cedula_foto_dorso_url) && (
                     <div className="flex-shrink-0 min-w-28">
-                      <p className="text-[11.5px] text-ink/45 mb-1.5">DNI/NIE:</p>
+                      <p className="text-[12.5px] text-ink/45 mb-1.5">DNI/NIE:</p>
                       <div className="flex flex-col gap-1.5">
                         {sol.cedula_foto_frente_url && (
                           <button

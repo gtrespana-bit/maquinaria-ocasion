@@ -214,7 +214,7 @@ export default function AdminPage() {
   return (
     <div className="min-h-screen bg-paper">
       {toast && (
-        <div role="status" aria-live="polite" aria-atomic="true" className="fixed right-4 top-4 z-[100] max-w-xs border border-ink bg-ink px-4 py-2.5 text-[12.5px] font-medium text-paper">
+        <div role="status" aria-live="polite" aria-atomic="true" className="fixed right-4 top-4 z-[100] max-w-xs border border-ink bg-ink px-4 py-2.5 text-[13px] font-medium text-paper">
           {toast}
         </div>
       )}
@@ -237,7 +237,7 @@ export default function AdminPage() {
                 key={n.id}
                 type="button"
                 onClick={() => navigate(n.id)}
-                className={`flex items-center gap-2 border px-2.5 py-2 text-left text-[11.5px] font-medium transition-colors ${tab === n.id ? 'border-ink bg-ink text-paper' : 'border-line bg-paper text-ink/60'}`}
+                className={`flex items-center gap-2 border px-2.5 py-2 text-left text-[12.5px] font-medium transition-colors ${tab === n.id ? 'border-ink bg-ink text-paper' : 'border-line bg-paper text-ink/60'}`}
               >
                 <n.icon size={13} strokeWidth={1.6} /> {n.label}
               </button>
@@ -259,7 +259,7 @@ export default function AdminPage() {
           <div className="mb-6 flex shrink-0 items-center gap-3 px-2">
             <span className="flex h-9 w-9 items-center justify-center bg-ink text-paper"><Sparkles size={15} strokeWidth={1.6} /></span>
             <div>
-              <p className="text-[12.5px] font-semibold tracking-[-0.01em] text-ink">Admin MaquinariaOcasión</p>
+              <p className="text-[13px] font-semibold tracking-[-0.01em] text-ink">Admin MaquinariaOcasión</p>
               <p className="t-label mt-0.5 text-ink/35">Control total</p>
             </div>
           </div>
@@ -280,8 +280,8 @@ export default function AdminPage() {
               >
                 <n.icon size={14} strokeWidth={1.6} />
                 <span className="flex-1">
-                  <span className="block text-[12.5px] font-medium">{n.label}</span>
-                  <span className={`block text-[10.5px] leading-snug ${tab === n.id ? 'text-ink/45' : 'text-ink/30'}`}>{n.description}</span>
+                  <span className="block text-[13px] font-medium">{n.label}</span>
+                  <span className={`block text-[12px] leading-snug ${tab === n.id ? 'text-ink/45' : 'text-ink/30'}`}>{n.description}</span>
                 </span>
                 {badgeFor(n.id) ? <Badge tone={tab === n.id ? 'dark' : 'red'}>{badgeFor(n.id)}</Badge> : null}
               </button>
@@ -290,7 +290,7 @@ export default function AdminPage() {
 
           <div className="mt-4 shrink-0 space-y-2 border-t border-line pt-4">
             <div className="border border-line bg-paper px-2.5 py-2">
-              <p className="truncate text-[11.5px] font-medium text-ink/70">{user.email}</p>
+              <p className="truncate text-[12.5px] font-medium text-ink/70">{user.email}</p>
               <p className="t-label mt-0.5 text-ink/30">Administrador</p>
             </div>
             <div className="flex gap-2">

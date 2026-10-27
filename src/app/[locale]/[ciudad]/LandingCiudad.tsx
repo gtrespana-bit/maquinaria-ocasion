@@ -298,7 +298,7 @@ export default async function LandingCiudad({ slug, nombre, municipio, estado, d
                 </li>
               ))}
             </ul>
-            <p className="mt-3 text-[12.5px] text-muted">
+            <p className="mt-3 text-[13px] text-muted">
               También puedes explorar modelos concretos en la{' '}
               <LocalLink href="/marcas" className="font-medium text-ink underline underline-offset-4">
                 guía de marcas y modelos de maquinaria

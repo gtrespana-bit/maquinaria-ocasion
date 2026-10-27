@@ -141,7 +141,7 @@ export default function AdminTransacciones({
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h2 className="text-xl font-semibold text-ink">Transacciones y créditos</h2>
-          <p className="text-[12.5px] leading-relaxed text-ink/55">{formatNumber(ingresos)} € aprobados · {formatNumber(creditosAprobados)} créditos emitidos</p>
+          <p className="text-[13px] leading-relaxed text-ink/55">{formatNumber(ingresos)} € aprobados · {formatNumber(creditosAprobados)} créditos emitidos</p>
         </div>
         <RefreshButton onClick={() => load(true)} loading={refreshing} />
       </div>
@@ -149,16 +149,16 @@ export default function AdminTransacciones({
       {/* metrics */}
       <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
         <Card bodyClassName="p-4">
-          <div className="flex items-center gap-3"><span className="flex h-9 w-9 items-center justify-center rounded-xl bg-clay/[0.07] text-clay"><Wallet size={17} /></span><div><p className="text-2xl font-semibold text-ink">{items.filter((t) => t.estado === 'pendiente').length}</p><p className="text-[11.5px] text-ink/45">Pendientes</p></div></div>
+          <div className="flex items-center gap-3"><span className="flex h-9 w-9 items-center justify-center rounded-xl bg-clay/[0.07] text-clay"><Wallet size={17} /></span><div><p className="text-2xl font-semibold text-ink">{items.filter((t) => t.estado === 'pendiente').length}</p><p className="text-[12.5px] text-ink/45">Pendientes</p></div></div>
         </Card>
         <Card bodyClassName="p-4">
-          <div className="flex items-center gap-3"><span className="flex h-9 w-9 items-center justify-center rounded-xl bg-moss/10 text-moss"><Check size={17} /></span><div><p className="text-2xl font-semibold text-ink">{approved.length}</p><p className="text-[11.5px] text-ink/45">Aprobadas</p></div></div>
+          <div className="flex items-center gap-3"><span className="flex h-9 w-9 items-center justify-center rounded-xl bg-moss/10 text-moss"><Check size={17} /></span><div><p className="text-2xl font-semibold text-ink">{approved.length}</p><p className="text-[12.5px] text-ink/45">Aprobadas</p></div></div>
         </Card>
         <Card bodyClassName="p-4">
-          <div className="flex items-center gap-3"><span className="flex h-9 w-9 items-center justify-center rounded-xl bg-paper-2 text-signal-deep"><CreditCard size={17} /></span><div><p className="text-2xl font-semibold text-ink">{formatMoney(ingresos)}</p><p className="text-[11.5px] text-ink/45">Ingresos (€)</p></div></div>
+          <div className="flex items-center gap-3"><span className="flex h-9 w-9 items-center justify-center rounded-xl bg-paper-2 text-signal-deep"><CreditCard size={17} /></span><div><p className="text-2xl font-semibold text-ink">{formatMoney(ingresos)}</p><p className="text-[12.5px] text-ink/45">Ingresos (€)</p></div></div>
         </Card>
         <Card bodyClassName="p-4">
-          <div className="flex items-center gap-3"><span className="flex h-9 w-9 items-center justify-center rounded-xl bg-purple-50 text-ink"><DollarSign size={17} /></span><div><p className="text-2xl font-semibold text-ink">{formatNumber(creditosAprobados)}</p><p className="text-[11.5px] text-ink/45">Créditos emitidos</p></div></div>
+          <div className="flex items-center gap-3"><span className="flex h-9 w-9 items-center justify-center rounded-xl bg-purple-50 text-ink"><DollarSign size={17} /></span><div><p className="text-2xl font-semibold text-ink">{formatNumber(creditosAprobados)}</p><p className="text-[12.5px] text-ink/45">Créditos emitidos</p></div></div>
         </Card>
       </div>
 
@@ -189,9 +189,9 @@ export default function AdminTransacciones({
                       <span className="text-lg font-semibold text-ink">+{t.monto} créditos</span>
                       <Badge tone={pendiente ? 'yellow' : t.estado === 'aprobado' ? 'green' : 'red'}>{t.estado}</Badge>
                     </div>
-                    <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-[12.5px] leading-relaxed text-ink/55">
+                    <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-[13px] leading-relaxed text-ink/55">
                       <span className="font-semibold text-ink">{perfil.nombre || 'Usuario'}</span>
-                      {perfil.email && <span className="text-[11.5px] text-ink/45">{perfil.email}</span>}
+                      {perfil.email && <span className="text-[12.5px] text-ink/45">{perfil.email}</span>}
                       <span>·</span>
                       <span>{t.metodo_pago || '—'}</span>
                       <span>·</span>
@@ -219,7 +219,7 @@ export default function AdminTransacciones({
 
       {filtered.length > PAGE_SIZE && (
         <div className="flex items-center justify-between rounded-2xl border border-line bg-[#FBFAF5] px-4 py-3">
-          <p className="text-[11.5px] text-ink/45">Página {page} de {totalPages}</p>
+          <p className="text-[12.5px] text-ink/45">Página {page} de {totalPages}</p>
           <div className="flex gap-1">
             <Button size="sm" variant="outline" disabled={page <= 1} onClick={() => setPage((p) => p - 1)}><ChevronLeft size={14} /> Anterior</Button>
             <Button size="sm" variant="outline" disabled={page >= totalPages} onClick={() => setPage((p) => p + 1)}>Siguiente <ChevronRight size={14} /></Button>

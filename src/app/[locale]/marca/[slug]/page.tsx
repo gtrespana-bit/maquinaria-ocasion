@@ -306,13 +306,13 @@ export default async function MarcaPage({ params }: Props) {
                 <p className="text-[15px] font-semibold leading-tight tracking-[-0.01em] text-ink">
                   {etiquetaModelo(m)}
                 </p>
-                {m.nota && <p className="mt-1 flex-1 text-[11.5px] leading-snug text-muted">{m.nota}</p>}
+                {m.nota && <p className="mt-1 flex-1 text-[12.5px] leading-snug text-muted">{m.nota}</p>}
                 <div className="mt-3 flex flex-wrap gap-1">
                   {m.aptoPara.map(s => {
                     const sub = TODAS_LAS_SUBS.find(x => x.slug === s)
                     if (!sub) return null
                     return (
-                      <span key={s} className="whitespace-nowrap border border-line px-1.5 py-0.5 text-[10px] font-medium text-ink/55">
+                      <span key={s} className="whitespace-nowrap border border-line px-1.5 py-0.5 text-[11.5px] font-medium text-ink/55">
                         {sub.label}
                       </span>
                     )
