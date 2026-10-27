@@ -43,8 +43,7 @@ export async function POST(req: NextRequest) {
     if (!rl.ok) {
       return NextResponse.json({
         error: `Demasiados hilos seguidos. Espera ${Math.ceil(rl.resetIn / 60000)} min`,
-        resetIn: rl.resetIn,
-      }, { status: 429 })
+        resetIn: rl.resetIn }, { status: 429 })
     }
 
     const sb = createClient(
@@ -74,8 +73,7 @@ export async function POST(req: NextRequest) {
       titulo,
       cuerpo,
       estado_moderacion: estado,
-      motivo_moderacion: estado === 'pendiente' ? 'Revisión automática: términos sospechosos' : null,
-    }).select('id, estado_moderacion').single()
+      motivo_moderacion: estado === 'pendiente' ? 'Revisión automática: términos sospechosos' : null }).select('id, estado_moderacion').single()
 
     if (error || !data) {
       return NextResponse.json({ error: 'No se pudo crear el hilo' }, { status: 500 })

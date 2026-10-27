@@ -60,7 +60,7 @@ export default function ImageGallery({ images, alt }: ImageGalleryProps) {
     <>
       {/* ====== Main image ====== */}
       <div
-        className="aspect-square md:aspect-[16/10] bg-gray-100 relative cursor-pointer group"
+        className="aspect-square md:aspect-[16/10] bg-paper-2 relative cursor-pointer group"
         onClick={() => openLightbox(activeIndex)}
       >
         <Image
@@ -83,16 +83,16 @@ export default function ImageGallery({ images, alt }: ImageGalleryProps) {
             <button
               onClick={e => { e.stopPropagation(); goPrev() }}
               aria-label="Imagen anterior"
-              className="absolute left-2 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/80 backdrop-blur rounded-full flex items-center justify-center shadow-lg opacity-0 group-hover:opacity-100 hover:bg-white transition"
+              className="absolute left-2 top-1/2 -translate-y-1/2 w-10 h-10 bg-[#FBFAF5] backdrop-blur rounded-full flex items-center justify-center shadow-lg opacity-0 group-hover:opacity-100 hover:bg-[#FBFAF5] transition"
             >
-              <ChevronLeft size={20} className="text-gray-800" />
+              <ChevronLeft size={20} className="text-ink" />
             </button>
             <button
               onClick={e => { e.stopPropagation(); goNext() }}
               aria-label="Siguiente imagen"
-              className="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/80 backdrop-blur rounded-full flex items-center justify-center shadow-lg opacity-0 group-hover:opacity-100 hover:bg-white transition"
+              className="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 bg-[#FBFAF5] backdrop-blur rounded-full flex items-center justify-center shadow-lg opacity-0 group-hover:opacity-100 hover:bg-[#FBFAF5] transition"
             >
-              <ChevronRight size={20} className="text-gray-800" />
+              <ChevronRight size={20} className="text-ink" />
             </button>
 
             <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5">
@@ -102,7 +102,7 @@ export default function ImageGallery({ images, alt }: ImageGalleryProps) {
                 onClick={e => { e.stopPropagation(); setActiveIndex(i) }}
                 aria-label={`Imagen ${i + 1} de ${images.length}`}
                 className={`w-2 h-2 rounded-full transition ${
-                    i === activeIndex ? 'bg-white scale-110' : 'bg-white/40'
+                    i === activeIndex ? 'bg-[#FBFAF5] scale-110' : 'bg-[#FBFAF5]'
                   }`}
               />
               ))}
@@ -111,7 +111,7 @@ export default function ImageGallery({ images, alt }: ImageGalleryProps) {
         )}
 
         <div className="absolute top-3 right-3 bg-black/40 backdrop-blur rounded-full p-1.5 opacity-0 group-hover:opacity-100 transition">
-          <ZoomIn size={16} className="text-white" />
+          <ZoomIn size={16} className="text-paper" />
         </div>
       </div>
 
@@ -123,7 +123,7 @@ export default function ImageGallery({ images, alt }: ImageGalleryProps) {
               key={i}
               onClick={() => setActiveIndex(i)}
               className={`w-20 h-20 rounded-lg overflow-hidden flex-shrink-0 border-2 transition ${
-                i === activeIndex ? 'border-brand-accent shadow-sm' : 'border-transparent hover:border-gray-300'
+                i === activeIndex ? 'border-ink shadow-sm' : 'border-transparent hover:border-line-strong'
               }`}
             >
               <Image
@@ -150,12 +150,12 @@ export default function ImageGallery({ images, alt }: ImageGalleryProps) {
           <button
             onClick={() => setLightboxOpen(false)}
             aria-label="Cerrar visor de imágenes"
-            className="absolute top-4 right-4 z-10 w-10 h-10 bg-white/10 backdrop-blur rounded-full flex items-center justify-center hover:bg-white/20 transition"
+            className="absolute top-4 right-4 z-10 w-10 h-10 bg-[#FBFAF5] backdrop-blur rounded-full flex items-center justify-center hover:bg-[#FBFAF5] transition"
           >
-            <X size={20} className="text-white" />
+            <X size={20} className="text-paper" />
           </button>
 
-          <div className="absolute top-5 left-5 text-white/70 text-sm font-medium">
+          <div className="absolute top-5 left-5 text-paper/70 text-sm font-medium">
             {activeIndex + 1} / {images.length}
           </div>
 
@@ -164,16 +164,16 @@ export default function ImageGallery({ images, alt }: ImageGalleryProps) {
               <button
                 onClick={e => { e.stopPropagation(); goPrev() }}
                 aria-label="Imagen anterior"
-                className="absolute left-4 z-10 w-12 h-12 bg-white/10 backdrop-blur rounded-full flex items-center justify-center hover:bg-white/20 transition"
+                className="absolute left-4 z-10 w-12 h-12 bg-[#FBFAF5] backdrop-blur rounded-full flex items-center justify-center hover:bg-[#FBFAF5] transition"
               >
-                <ChevronLeft size={24} className="text-white" />
+                <ChevronLeft size={24} className="text-paper" />
               </button>
               <button
                 onClick={e => { e.stopPropagation(); goNext() }}
                 aria-label="Siguiente imagen"
-                className="absolute right-4 z-10 w-12 h-12 bg-white/10 backdrop-blur rounded-full flex items-center justify-center hover:bg-white/20 transition"
+                className="absolute right-4 z-10 w-12 h-12 bg-[#FBFAF5] backdrop-blur rounded-full flex items-center justify-center hover:bg-[#FBFAF5] transition"
               >
-                <ChevronRight size={24} className="text-white" />
+                <ChevronRight size={24} className="text-paper" />
               </button>
             </>
           )}
@@ -203,7 +203,7 @@ export default function ImageGallery({ images, alt }: ImageGalleryProps) {
                 onClick={e => { e.stopPropagation(); setActiveIndex(i) }}
                 aria-label={`Ver imagen ${i + 1}`}
                 className={`w-16 h-16 rounded-lg overflow-hidden flex-shrink-0 border-2 transition ${
-                    i === activeIndex ? 'border-brand-accent' : 'border-transparent opacity-50 hover:opacity-100'
+                    i === activeIndex ? 'border-ink' : 'border-transparent opacity-50 hover:opacity-100'
                   }`}
                 >
                   <Image

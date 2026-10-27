@@ -13,15 +13,16 @@ const sizeMap = {
   sm: { w: 8, h: 8, text: 'text-sm' },
   md: { w: 12, h: 12, text: 'text-lg' },
   lg: { w: 16, h: 16, text: 'text-2xl' },
-  xl: { w: 24, h: 24, text: 'text-4xl' },
-}
+  xl: { w: 24, h: 24, text: 'text-4xl' } }
 
 export default function Avatar({ nombre, fotoUrl, size = 'md', className = '' }: AvatarProps) {
   const s = sizeMap[size]
   const initials = nombre ? nombre.charAt(0).toUpperCase() : '?'
+  // Paleta contenida: la identidad del vendedor no debe competir con la
+  // tipografía ni con el amarillo de señal.
   const bgColors = [
-    'bg-brand-primary', 'bg-green-600', 'bg-purple-600',
-    'bg-orange-500', 'bg-pink-600', 'bg-teal-600', 'bg-indigo-600',
+    'bg-ink', 'bg-ink-3', 'bg-[#3D4A3E]', 'bg-[#4A3F35]',
+    'bg-[#2F3B44]', 'bg-[#4B3A3A]', 'bg-[#3A3A46]',
   ]
   const colorIndex = (nombre || '').charCodeAt(0) % bgColors.length
   const bgColor = bgColors[colorIndex]
@@ -29,7 +30,7 @@ export default function Avatar({ nombre, fotoUrl, size = 'md', className = '' }:
   if (!fotoUrl) {
     return (
       <div
-        className={`rounded-full ${bgColor} text-white flex items-center justify-center font-bold ${s.text} flex-shrink-0 ${className}`}
+        className={`rounded-full ${bgColor} text-paper flex items-center justify-center font-bold ${s.text} flex-shrink-0 ${className}`}
         style={{ width: `${s.w * 4}px`, height: `${s.h * 4}px` }}
       >
         {initials}
@@ -58,7 +59,7 @@ export default function Avatar({ nombre, fotoUrl, size = 'md', className = '' }:
           target.style.display = 'none'
           const parent = target.parentElement
           if (parent) {
-            parent.classList.add(bgColor, 'text-white', 'flex', 'items-center', 'justify-center', 'font-bold', s.text)
+            parent.classList.add(bgColor, 'text-paper', 'flex', 'items-center', 'justify-center', 'font-bold', s.text)
             parent.innerHTML = initials
           }
         }}

@@ -1,5 +1,3 @@
-'use server'
-
 import nodemailer from 'nodemailer'
 import { Resend } from 'resend'
 import { emailLayout, card, priceLine, COLORS } from '@/lib/email-layout'
@@ -53,8 +51,7 @@ function getTransporter() {
     port,
     secure: port === 465,
     auth: user ? { user, pass } : undefined,
-    tls: { rejectUnauthorized: false },
-  })
+    tls: { rejectUnauthorized: false } })
 }
 
 // ─── Diagnóstico (sin exponer secretos) ────────────────────
@@ -73,8 +70,7 @@ export async function canalEmailInfo(): Promise<CanalEmailInfo> {
     smtp: !!(user && pass),
     from: FROM,
     smtpHost: host,
-    smtpPort: port,
-  }
+    smtpPort: port }
 }
 
 /** ¿Hay al menos un canal de envío configurado? */
@@ -117,8 +113,7 @@ export async function enviarEmailDetallado(
           subject: subjectSafe,
           html,
           ...(optsSafe.replyTo ? { replyTo: optsSafe.replyTo } : {}),
-          ...(optsSafe.text ? { text: optsSafe.text } : {}),
-        })
+          ...(optsSafe.text ? { text: optsSafe.text } : {}) })
         if (error) {
           const msg =
             (error as any)?.message || JSON.stringify(error) || 'Error Resend'
@@ -161,8 +156,7 @@ export async function enviarEmailDetallado(
       subject: subjectSafe,
       html,
       ...(optsSafe.replyTo ? { replyTo: optsSafe.replyTo } : {}),
-      ...(optsSafe.text ? { text: optsSafe.text } : {}),
-    })
+      ...(optsSafe.text ? { text: optsSafe.text } : {}) })
     return { ok: true, canal: 'smtp', id: (info as any)?.messageId }
   } catch (e: any) {
     const msg = e?.message || String(e)

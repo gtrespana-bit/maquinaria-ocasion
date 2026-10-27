@@ -7,12 +7,11 @@ import { supabase } from '@/lib/supabase'
 import LocalLink from '@/components/LocalLink'
 import { productUrl } from '@/lib/product-url'
 import { Badge, Button, Card, Empty, Loading, Modal, RefreshButton, SearchInput, Segmented, formatDate, formatMoney, timeAgo } from './AdminUi'
-import { apiJson, type Denuncia, type Producto } from './admin-utils'
+import {apiJson, type Denuncia, type Producto } from './admin-utils'
 
 export default function AdminModeracion({
   notify,
-  adminEmail,
-}: {
+  adminEmail }: {
   notify: (msg: string) => void
   adminEmail: string
 }) {
@@ -49,7 +48,7 @@ export default function AdminModeracion({
       setPendientes((pends || []) as Producto[])
       setRevisados((json.revisados || []) as Denuncia[])
     } catch (e: any) {
-      notify('❌ ' + (e?.message || 'Error cargando moderación'))
+      notify( (e?.message || 'Error cargando moderación'))
     }
     setLoading(false)
     setRefreshing(false)
@@ -63,8 +62,7 @@ export default function AdminModeracion({
     const res = await fetch('/api/admin/denuncias', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ action, id }),
-    })
+      body: JSON.stringify({ action, id }) })
     const json = await res.json().catch(() => ({}))
     if (!res.ok || !json.ok) throw new Error(json.error || 'No se pudo actualizar la denuncia')
   }
@@ -73,10 +71,10 @@ export default function AdminModeracion({
     setBusyId(id)
     try {
       await updateDenuncia(id, 'ignorar')
-      notify('✅ Denuncia descartada')
+      notify('Denuncia descartada')
       setDenuncias((prev) => prev.filter((d) => d.id !== id))
     } catch (e: any) {
-      notify('❌ ' + e.message)
+      notify( e.message)
     }
     setBusyId(null)
   }
@@ -89,13 +87,12 @@ export default function AdminModeracion({
       await apiJson('/api/admin/moderar-producto', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ productId: d.producto_id, action: 'rechazar', adminEmail }),
-      })
-      notify('🚫 Producto bloqueado')
+        body: JSON.stringify({ productId: d.producto_id, action: 'rechazar', adminEmail }) })
+      notify('Producto bloqueado')
       setDenuncias((prev) => prev.filter((x) => x.id !== d.id))
       await load(true)
     } catch (e: any) {
-      notify('❌ ' + e.message)
+      notify( e.message)
     }
     setBusyId(null)
   }
@@ -106,12 +103,11 @@ export default function AdminModeracion({
       await apiJson('/api/admin/moderar-producto', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ productId: id, action: 'aprobar', adminEmail }),
-      })
-      notify('✅ Publicación aprobada')
+        body: JSON.stringify({ productId: id, action: 'aprobar', adminEmail }) })
+      notify('Publicación aprobada')
       setPendientes((prev) => prev.filter((p) => p.id !== id))
     } catch (e: any) {
-      notify('❌ ' + e.message)
+      notify( e.message)
     }
     setBusyId(null)
   }
@@ -122,12 +118,11 @@ export default function AdminModeracion({
       await apiJson('/api/admin/moderar-producto', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ productId: id, action: 'rechazar', adminEmail }),
-      })
-      notify('🚫 Publicación rechazada')
+        body: JSON.stringify({ productId: id, action: 'rechazar', adminEmail }) })
+      notify('Publicación rechazada')
       setPendientes((prev) => prev.filter((p) => p.id !== id))
     } catch (e: any) {
-      notify('❌ ' + e.message)
+      notify( e.message)
     }
     setBusyId(null)
   }
@@ -158,10 +153,10 @@ export default function AdminModeracion({
     <div className="space-y-5">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-3">
-          <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-yellow-50 text-yellow-700"><ShieldAlert size={22} /></span>
+          <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-paper-2 text-yellow-700"><ShieldAlert size={22} /></span>
           <div>
-            <h2 className="text-xl font-black text-gray-900">Moderación</h2>
-            <p className="text-sm text-gray-500">{denuncias.length} denuncias activas · {pendientes.length} publicaciones por revisar</p>
+            <h2 className="text-xl font-semibold text-ink">Moderación</h2>
+            <p className="text-[12.5px] leading-relaxed text-ink/55">{denuncias.length} denuncias activas · {pendientes.length} publicaciones por revisar</p>
           </div>
         </div>
         <RefreshButton onClick={() => load(true)} loading={refreshing} />
@@ -169,27 +164,27 @@ export default function AdminModeracion({
 
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <Segmented items={[
-          { id: 'denuncias' as const, label: `🚨 Denuncias (${denuncias.length})` },
-          { id: 'pendientes' as const, label: `⏳ Pendientes (${pendientes.length})` },
+          { id: 'denuncias' as const, label: `Denuncias (${denuncias.length})` },
+          { id: 'pendientes' as const, label: `Pendientes (${pendientes.length})` },
         ]} value={tab} onChange={setTab} />
         <SearchInput value={query} onChange={setQuery} placeholder="Buscar en la cola…" className="w-full sm:w-72" />
       </div>
 
       {tab === 'denuncias' && (
         <div className="space-y-3">
-          {filteredDenuncias.length === 0 && <Empty icon="✅" title="Sin denuncias activas" subtitle="Todo el contenido reportado se ha resuelto." />}
+          {filteredDenuncias.length === 0 && <Empty title="Sin denuncias activas" subtitle="Todo el contenido reportado se ha resuelto." />}
                   {filteredDenuncias.map((d) => (
             <Card key={d.id} bodyClassName="p-4">
               <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
                 <div className="flex flex-1 items-start gap-4">
-                  <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-red-50 text-red-600"><AlertTriangle size={18} /></span>
+                  <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-clay/[0.07] text-clay"><AlertTriangle size={18} /></span>
                   <div className="min-w-0">
                     <div className="flex flex-wrap items-center gap-2">
-                      <button onClick={() => setDetail({ product: null, denuncia: d })} className="font-bold text-gray-800 hover:text-brand-primary">{d.producto?.titulo || 'Producto desconocido'}</button>
+                      <button onClick={() => setDetail({ product: null, denuncia: d })} className="font-semibold text-ink hover:text-ink">{d.producto?.titulo || 'Producto desconocido'}</button>
                       <Badge tone="red">{d.motivo || 'Reporte'}</Badge>
                     </div>
-                    <p className="mt-1 text-xs text-gray-500">{d.reportante?.nombre || 'Desconocido'} reportó {timeAgo(d.creada_en)}</p>
-                    {d.descripcion && <p className="mt-2 text-sm text-gray-600">{d.descripcion}</p>}
+                    <p className="mt-1 text-[11.5px] text-ink/45">{d.reportante?.nombre || 'Desconocido'} reportó {timeAgo(d.creada_en)}</p>
+                    {d.descripcion && <p className="mt-2 text-[12.5px] leading-relaxed text-ink/55">{d.descripcion}</p>}
                   </div>
                 </div>
                 <div className="flex flex-wrap gap-2">
@@ -205,23 +200,23 @@ export default function AdminModeracion({
 
       {tab === 'pendientes' && (
         <div className="space-y-3">
-          {filteredPendientes.length === 0 && <Empty icon="🎉" title="Sin publicaciones por revisar" subtitle="La cola de moderación está limpia." />}
+          {filteredPendientes.length === 0 && <Empty title="Sin publicaciones por revisar" subtitle="La cola de moderación está limpia." />}
           {filteredPendientes.map((p) => (
             <Card key={p.id} bodyClassName="p-4">
               <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
                 <button className="flex flex-1 items-start gap-4 text-left" onClick={() => setDetail({ product: p, denuncia: null })}>
-                  <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center overflow-hidden rounded-xl bg-gray-100">
-                    {p.imagen_url ? <Image src={p.imagen_url} alt="" width={56} height={56} className="object-cover" /> : <span className="text-xl">📦</span>}
+                  <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center overflow-hidden rounded-xl bg-paper-2">
+                    {p.imagen_url ? <Image src={p.imagen_url} alt="" width={56} height={56} className="object-cover" /> : <span className="text-xl"></span>}
                   </div>
                   <div className="min-w-0">
-                    <p className="font-bold text-gray-800 hover:text-brand-primary">{p.titulo}</p>
-                    <p className="mt-0.5 text-sm font-bold text-brand-primary">{formatMoney(p.precio_usd)}</p>
-                    <div className="mt-1 flex flex-wrap gap-2 text-xs text-gray-500">
+                    <p className="font-semibold text-ink hover:text-ink">{p.titulo}</p>
+                    <p className="mt-0.5 text-[13px] font-medium text-ink">{formatMoney(p.precio_usd)}</p>
+                    <div className="mt-1 flex flex-wrap gap-2 text-[11.5px] text-ink/45">
                       <span>{p.subcategoria || '—'}</span>
                       <span>· {p.ubicacion_ciudad || 'España'}</span>
                       <span>· {formatDate(p.creado_en)}</span>
                     </div>
-                    {p.motivo_moderacion && <p className="mt-2 rounded-lg bg-orange-50 px-2.5 py-1.5 text-xs text-orange-700">⚠️ {p.motivo_moderacion}</p>}
+                    {p.motivo_moderacion && <p className="mt-2 rounded-lg bg-orange-50 px-2.5 py-1.5 text-xs text-orange-700"> {p.motivo_moderacion}</p>}
                   </div>
                 </button>
                 <div className="flex flex-wrap gap-2">
@@ -238,15 +233,15 @@ export default function AdminModeracion({
 
       {/* revisadas */}
       <Card title="Denuncias resueltas recientes" subtitle="Historial de moderación" bodyClassName="p-0">
-        <div className="divide-y divide-gray-50">
-          {revisados.length === 0 && <p className="px-5 py-8 text-center text-sm text-gray-500">Aún no hay denuncias resueltas.</p>}
+        <div className="divide-y divide-line">
+          {revisados.length === 0 && <p className="px-5 py-8 text-center text-[12.5px] leading-relaxed text-ink/55">Aún no hay denuncias resueltas.</p>}
           {revisados.map((d) => (
             <div key={d.id} className="flex items-center justify-between px-5 py-3 text-sm">
               <div className="flex min-w-0 items-center gap-3">
-                <span className={`flex h-8 w-8 items-center justify-center rounded-lg ${d.estado === 'resuelta' ? 'bg-green-50 text-green-600' : 'bg-gray-100 text-gray-500'}`}>{d.estado === 'resuelta' ? <Check size={15} /> : <X size={15} />}</span>
+                <span className={`flex h-8 w-8 items-center justify-center rounded-lg ${d.estado === 'resuelta' ? 'bg-signal/10 text-moss' : 'bg-paper-2 text-ink/55'}`}>{d.estado === 'resuelta' ? <Check size={15} /> : <X size={15} />}</span>
                 <div className="min-w-0">
-                  <p className="truncate font-medium text-gray-700">{d.motivo || 'Reporte'}</p>
-                  <p className="text-xs text-gray-400">{formatDate(d.creada_en)} · {d.estado}</p>
+                  <p className="truncate font-medium text-ink">{d.motivo || 'Reporte'}</p>
+                  <p className="t-label text-ink/35">{formatDate(d.creada_en)} · {d.estado}</p>
                 </div>
               </div>
               <Badge tone={d.estado === 'resuelta' ? 'green' : 'gray'}>{d.estado}</Badge>
@@ -261,29 +256,29 @@ export default function AdminModeracion({
           <div className="space-y-5">
             {detail.product && (
               <>
-                {detail.product.imagen_url && <div className="flex aspect-video items-center justify-center overflow-hidden rounded-xl bg-gray-100"><Image src={detail.product.imagen_url} alt="" width={640} height={400} className="object-cover" /></div>}
-                <div className="grid grid-cols-2 gap-3 rounded-xl bg-gray-50 p-4 text-sm sm:grid-cols-4">
-                  <div><span className="text-gray-400">Precio</span><p className="font-bold text-brand-primary">{formatMoney(detail.product.precio_usd)}</p></div>
-                  <div><span className="text-gray-400">Categoría</span><p className="font-semibold">{detail.product.subcategoria || '—'}</p></div>
-                  <div><span className="text-gray-400">Ubicación</span><p className="font-semibold">{detail.product.ubicacion_ciudad || '—'}</p></div>
-                  <div><span className="text-gray-400">Visitas</span><p className="font-semibold">{detail.product.visitas || 0}</p></div>
+                {detail.product.imagen_url && <div className="flex aspect-video items-center justify-center overflow-hidden rounded-xl bg-paper-2"><Image src={detail.product.imagen_url} alt="" width={640} height={400} className="object-cover" /></div>}
+                <div className="grid grid-cols-2 gap-3 rounded-xl bg-paper-2 p-4 text-sm sm:grid-cols-4">
+                  <div><span className="text-ink/35">Precio</span><p className="font-semibold text-ink">{formatMoney(detail.product.precio_usd)}</p></div>
+                  <div><span className="text-ink/35">Categoría</span><p className="font-semibold">{detail.product.subcategoria || '—'}</p></div>
+                  <div><span className="text-ink/35">Ubicación</span><p className="font-semibold">{detail.product.ubicacion_ciudad || '—'}</p></div>
+                  <div><span className="text-ink/35">Visitas</span><p className="font-semibold">{detail.product.visitas || 0}</p></div>
                 </div>
-                {detail.product.descripcion && <p className="whitespace-pre-line rounded-xl bg-gray-50 p-4 text-sm text-gray-600">{detail.product.descripcion}</p>}
+                {detail.product.descripcion && <p className="whitespace-pre-line rounded-xl bg-paper-2 p-4 text-[12.5px] leading-relaxed text-ink/55">{detail.product.descripcion}</p>}
                 <div className="flex flex-wrap gap-2">
                   <Button size="sm" variant="success" disabled={busyId === detail.product.id} onClick={() => { aprobarProducto(detail.product!.id); setDetail(null) }}><Check size={14} /> Aprobar</Button>
                   <Button size="sm" variant="danger" disabled={busyId === detail.product.id} onClick={() => { rechazarProducto(detail.product!.id); setDetail(null) }}><X size={14} /> Rechazar</Button>
-                  <a href={productUrl(detail.product)} target="_blank" rel="noopener noreferrer" className="inline-flex h-8 items-center gap-1.5 rounded-xl border border-gray-300 px-3 text-xs font-semibold text-gray-700 transition hover:bg-gray-50">Ver sitio</a>
+                  <a href={productUrl(detail.product)} target="_blank" rel="noopener noreferrer" className="inline-flex h-8 items-center gap-1.5 rounded-xl border border-line-strong px-3 t-label text-ink/45 transition hover:bg-paper-2">Ver sitio</a>
                 </div>
               </>
             )}
             {detail.denuncia && (
               <>
-                <div className="grid grid-cols-2 gap-3 rounded-xl bg-gray-50 p-4 text-sm">
-                  <div><span className="text-gray-400">Motivo</span><p className="font-semibold">{detail.denuncia.motivo || '—'}</p></div>
-                  <div><span className="text-gray-400">Reportante</span><p className="font-semibold">{detail.denuncia.reportante?.nombre || '—'}</p></div>
-                  <div className="col-span-2"><span className="text-gray-400">Producto</span><p className="font-semibold">{detail.denuncia.producto?.titulo || '—'}</p></div>
+                <div className="grid grid-cols-2 gap-3 rounded-xl bg-paper-2 p-4 text-sm">
+                  <div><span className="text-ink/35">Motivo</span><p className="font-semibold">{detail.denuncia.motivo || '—'}</p></div>
+                  <div><span className="text-ink/35">Reportante</span><p className="font-semibold">{detail.denuncia.reportante?.nombre || '—'}</p></div>
+                  <div className="col-span-2"><span className="text-ink/35">Producto</span><p className="font-semibold">{detail.denuncia.producto?.titulo || '—'}</p></div>
                 </div>
-                {detail.denuncia.descripcion && <p className="rounded-xl bg-gray-50 p-4 text-sm text-gray-600">{detail.denuncia.descripcion}</p>}
+                {detail.denuncia.descripcion && <p className="rounded-xl bg-paper-2 p-4 text-[12.5px] leading-relaxed text-ink/55">{detail.denuncia.descripcion}</p>}
                 <div className="flex flex-wrap gap-2">
                   <Button size="sm" variant="ghost" disabled={busyId === detail.denuncia.id} onClick={() => { ignorarDenuncia(detail.denuncia!.id); setDetail(null) }}><X size={14} /> Ignorar</Button>
                   <Button size="sm" variant="danger" disabled={busyId === detail.denuncia.id} onClick={() => { bloquearDenuncia(detail.denuncia!); setDetail(null) }}><ShieldCheck size={14} /> Bloquear publicación</Button>

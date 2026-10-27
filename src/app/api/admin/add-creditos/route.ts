@@ -35,8 +35,7 @@ export async function POST(request: NextRequest) {
     const { data: result, error } = await supabaseAdmin.rpc('agregar_creditos_admin', {
       p_user_id: userId,
       p_cantidad: cantidadNum,
-      p_motivo: motivo || 'Manual admin',
-    })
+      p_motivo: motivo || 'Manual admin' })
     if (error || !result?.ok) {
       return NextResponse.json({ error: result?.error || error?.message || 'No se pudieron agregar créditos' }, { status: 500 })
     }
@@ -49,8 +48,7 @@ export async function POST(request: NextRequest) {
       body: `Recibiste ${cantidadNum} ${cantidadNum === 1 ? 'crédito' : 'créditos'} en tu cuenta MaquinariaOcasión. Nuevo balance: ${nuevoBalance}.`,
       tag: 'creditos',
       icon: '/icon-192.png',
-      click_url: '/creditos',
-    })
+      click_url: '/creditos' })
 
     return NextResponse.json({ ok: true, nuevoBalance })
   } catch (err: any) {

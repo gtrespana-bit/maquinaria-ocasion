@@ -51,8 +51,7 @@ async function avisarPagoFallido(userId: string, plan: string | null, fechaFin: 
     if (!email) return
     await enviarEmailPagoFallido(email, perfil?.nombre || '', {
       plan: plan ? etiquetaPlan(plan) : 'tu plan Profesional',
-      fechaFin,
-    })
+      fechaFin })
   } catch (e: any) {
     // Un fallo del correo no debe hacer que Stripe reintente el webhook: el
     // cobro ya está registrado y el aviso se reintenta en el cron diario.
@@ -105,8 +104,7 @@ export async function POST(req: NextRequest) {
             clave: `baja:${new Date().toISOString().slice(0, 10)}`,
             // El plan va en `tipo` para que el email pueda nombrarlo.
             tipo: planAnterior || 'baja',
-            canal: 'sistema',
-          })
+            canal: 'sistema' })
         } catch {
           /* migración pendiente: sin fila no hay win-back, pero la baja se aplica */
         }
@@ -125,8 +123,7 @@ export async function POST(req: NextRequest) {
         stripeSubscriptionId: sub.id,
         // Un particular que contrata un pack pasa a profesional: es la única
         // forma de que reciba de verdad el cupo que está pagando.
-        promoverAProfesional: true,
-      })
+        promoverAProfesional: true })
       return NextResponse.json({ recibido: true, plan })
     }
     return NextResponse.json({ recibido: true, status: sub.status })
@@ -168,8 +165,7 @@ export async function POST(req: NextRequest) {
                 user_id: userId,
                 clave: `pago_fallido_1d:${marcado.slice(0, 10)}`,
                 tipo: 'pago_fallido_1d',
-                canal: 'email',
-              })
+                canal: 'email' })
             } catch {
               /* migración pendiente */
             }
@@ -186,8 +182,7 @@ export async function POST(req: NextRequest) {
           hasta,
           stripeCustomerId: typeof sub.customer === 'string' ? sub.customer : sub.customer?.id,
           stripeSubscriptionId: sub.id,
-          promoverAProfesional: true,
-        })
+          promoverAProfesional: true })
         return NextResponse.json({ recibido: true, plan, factura: evento.type })
       }
       return NextResponse.json({ recibido: true, status: sub.status, factura: evento.type })
@@ -227,8 +222,7 @@ export async function POST(req: NextRequest) {
       hasta,
       stripeCustomerId: typeof session.customer === 'string' ? session.customer : session.customer?.id,
       stripeSubscriptionId: subId || null,
-      promoverAProfesional: true,
-    })
+      promoverAProfesional: true })
     const codigo = session.metadata?.cupon
     if (codigo) {
       const sbC = sbAdmin()
@@ -293,8 +287,7 @@ export async function POST(req: NextRequest) {
     p_session_id: session.id,
     p_payment_intent: paymentIntent,
     p_importe_eur: importeEur,
-    p_factura_url: facturaUrl,
-  })
+    p_factura_url: facturaUrl })
 
   if (error) {
     // 500 para que Stripe reintente: el usuario ha pagado y tiene que recibir
@@ -338,9 +331,7 @@ export async function POST(req: NextRequest) {
             `💳 Pago con Stripe confirmado\n\n` +
             `📦 ${creditos} créditos — ${((session.amount_total || 0) / 100).toFixed(2)} €\n` +
             `👤 ${session.customer_details?.email || userId}\n` +
-            `🧾 ${session.id}`,
-        }),
-      })
+            `🧾 ${session.id}` }) })
     } catch {
       // Nunca fallar el webhook por una notificación.
     }

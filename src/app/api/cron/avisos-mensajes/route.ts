@@ -15,7 +15,7 @@
  */
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
-import { agruparAvisos, HORAS_MAXIMO_AVISO, type MensajePendiente } from '@/lib/avisos-mensajes'
+import { agruparAvisos, HORAS_MAXIMO_AVISO, type MensajePendiente} from '@/lib/avisos-mensajes'
 import { enviarEmailMensaje } from '@/email/server-email'
 
 export const dynamic = 'force-dynamic'

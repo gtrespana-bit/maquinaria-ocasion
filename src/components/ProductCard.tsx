@@ -1,4 +1,5 @@
 'use client'
+
 import { formatPrecio } from '@/lib/precio'
 import { boostVigente } from '@/lib/catalog-consulta'
 
@@ -7,7 +8,7 @@ import BadgeTipoVendedor from '@/components/BadgeTipoVendedor'
 import Image from 'next/image'
 import { useTranslations } from 'next-intl'
 import { productUrl } from '@/lib/product-url'
-import { MapPin, Zap, Star } from 'lucide-react'
+import { MapPin, ArrowUpRight } from 'lucide-react'
 import BotonComparar from '@/components/BotonComparar'
 
 export interface ProductCardData {
@@ -28,56 +29,57 @@ export interface ProductCardData {
   /**
    * Anuncio sembrado por la plataforma. La tarjeta NO lo etiqueta: se muestra
    * igual que cualquier otro anuncio (ver tests/unit/anuncios-sembrados.test.tsx).
-   * El campo se conserva porque viene en las filas del catálogo.
    */
   es_demo?: boolean | null
 }
 
-const PLACEHOLDER_IMAGES = [
-  '/placeholder-product.webp',
-]
+const PLACEHOLDER_IMAGES = ['/placeholder-product.webp']
 
-export default function ProductCard({ p, isPromoted, isFeatured, priority }: { p: ProductCardData; isPromoted?: boolean; isFeatured?: boolean; priority?: boolean }) {
+/**
+ * Ficha de anuncio.
+ *
+ * Lenguaje: foto 4:3 en marco de 1 px, precio en display con cifras tabulares
+ * y metadatos en monoespaciada. La foto se apaga ligeramente en reposo y
+ * recupera color al pasar el ratón: el gesto es intencionado, no decorativo —
+ * centra la atención en la máquina solo cuando el usuario la señala.
+ */
+export default function ProductCard({
+  p,
+  isPromoted,
+  isFeatured,
+  priority,
+  className = '' }: {
+  p: ProductCardData
+  isPromoted?: boolean
+  isFeatured?: boolean
+  priority?: boolean
+  className?: string
+}) {
   const t = useTranslations()
-  // El boost dura BOOST_DIAS (la misma regla que ordena el catálogo):
-  // si no se comprueba aquí, la etiqueta ⚡ quedaría para siempre.
   const isBoosted = boostVigente(p.boosteado_en)
-  const promoted = isPromoted ?? (isBoosted || isFeatured)
-
-  const imgUrl = p.imagen_url || PLACEHOLDER_IMAGES[p.titulo.charCodeAt(0) % PLACEHOLDER_IMAGES.length]
+  const promoted = isPromoted ?? (isBoosted || isFeatured || Boolean(p.destacado))
+  const imgUrl = p.imagen_url || PLACEHOLDER_IMAGES[0]
+  const ubicacion = p.ubicacion_ciudad || p.ubicacion_estado || 'España'
 
   return (
     <LocalLink
       href={productUrl(p)}
-      className={`bg-white rounded-2xl overflow-hidden group block border transition-all duration-200
-        ${promoted
-          ? 'border-brand-signal shadow-card hover:shadow-card-hover hover:-translate-y-1.5'
-          : 'border-gray-200/80 shadow-card hover:shadow-card-hover hover:-translate-y-1.5 hover:border-brand-signal/70'
-        }`}
+      className={`group/card relative flex flex-col border bg-[#FBFAF5] transition-[border-color,transform,box-shadow] duration-300 ease-editorial hover:-translate-y-1 hover:border-ink hover:shadow-card-hover ${
+        promoted ? 'border-ink' : 'border-line'
+      } ${className}`}
     >
-      <div className="aspect-square bg-gray-100 relative overflow-hidden">
-        <BotonComparar item={{ id: p.id, slug: p.slug ?? null, titulo: p.titulo, precio_usd: p.precio_usd ?? null, imagen_url: p.imagen_url ?? null }} className="absolute bottom-2 right-2" />
-        {isFeatured && (
-          <div className="absolute top-3 left-3 z-10 bg-brand-signal text-brand-darkNav text-[10px] font-black uppercase tracking-wide px-2.5 py-1 rounded-lg shadow-md flex items-center gap-1">
-            <Star size={11} className="fill-current" /> {t('productCard.featured')}
-          </div>
-        )}
-        {isBoosted && !isFeatured && (
-          <div className="absolute top-3 left-3 z-10 bg-brand-darkNav text-brand-signal text-[10px] font-black uppercase tracking-wide px-2.5 py-1 rounded-lg shadow-md flex items-center gap-1">
-            <Zap size={11} className="fill-current" /> {t('productCard.boost')}
-          </div>
-        )}
+      <div className="relative aspect-[4/3] overflow-hidden bg-paper-2">
         <Image
           src={imgUrl}
           alt={p.titulo}
-          width={400}
-          height={400}
-          sizes="(max-width: 768px) 50vw, 25vw"
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+          fill
+          sizes="(max-width: 640px) 92vw, (max-width: 1024px) 45vw, 24vw"
+          className="object-cover saturate-[0.92] transition-[transform,filter] duration-700 ease-editorial group-hover/card:scale-[1.035] group-hover/card:saturate-100"
           loading={priority ? 'eager' : 'lazy'}
           priority={priority}
           fetchPriority={priority ? 'high' : undefined}
           decoding="async"
+          quality={78}
           onError={(e) => {
             const target = e.target as HTMLImageElement
             if (!target.src.includes('/placeholder-product.webp')) {
@@ -85,41 +87,71 @@ export default function ProductCard({ p, isPromoted, isFeatured, priority }: { p
             }
           }}
         />
-        {/* Precio sobre la foto: lo primero que se mira en un marketplace */}
-        <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-brand-darkNav/90 via-brand-darkNav/50 to-transparent p-3 pt-8">
-          <p className="text-2xl font-black tracking-tight text-white leading-none">
-            {formatPrecio(p.precio_usd || 0)}
-          </p>
-        </div>
-      </div>
-      <div className="p-4">
-        <h3 className="font-bold text-gray-900 truncate group-hover:text-brand-darkNav transition-colors leading-snug">
-          {p.titulo}
-        </h3>
-        <div className="mt-2 flex flex-wrap items-center gap-1.5">
-          {p.reservado && (
-            <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wide text-amber-900 bg-amber-100 border border-amber-300 px-2 py-0.5 rounded-md">
-              <svg width={10} height={10} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                <rect x="3" y="11" width="18" height="10" rx="2" />
-                <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-              </svg>
-              {t('productCard.reserved')}
+
+        {/* Etiquetas */}
+        <div className="absolute left-0 top-0 flex flex-col items-start">
+          {isFeatured && (
+            <span className="t-label bg-signal px-2 py-1.5 text-ink">
+              {t('productCard.featured')}
             </span>
           )}
-          {p.vendedor_tipo && <BadgeTipoVendedor tipo={p.vendedor_tipo} />}
+          {isBoosted && !isFeatured && (
+            <span className="t-label bg-ink px-2 py-1.5 text-signal">{t('productCard.boost')}</span>
+          )}
+        </div>
+
+        {p.reservado && (
+          <span className="t-label absolute right-2 top-2 border border-ink bg-paper/95 px-2 py-1 text-ink">
+            {t('productCard.reserved')}
+          </span>
+        )}
+
+        <BotonComparar
+          item={{
+            id: p.id,
+            slug: p.slug ?? null,
+            titulo: p.titulo,
+            precio_usd: p.precio_usd ?? null,
+            imagen_url: p.imagen_url ?? null }}
+          className="absolute bottom-2 right-2 opacity-0 transition-opacity duration-300 group-hover/card:opacity-100 focus-visible:opacity-100"
+        />
+      </div>
+
+      <div className="flex flex-1 flex-col p-4">
+        <div className="flex items-start justify-between gap-3">
+          <h3 className="line-clamp-2 text-[15px] font-semibold leading-snug tracking-[-0.01em] text-ink">
+            {p.titulo}
+          </h3>
+          <ArrowUpRight
+            size={15}
+            strokeWidth={1.6}
+            aria-hidden="true"
+            className="mt-0.5 shrink-0 text-ink/25 transition-all duration-300 group-hover/card:text-ink"
+          />
+        </div>
+
+        <p className="t-label mt-2 flex items-center gap-1.5 truncate text-ink/45">
+          <MapPin size={10} strokeWidth={1.8} className="shrink-0" />
+          {[p.estado, ubicacion].filter(Boolean).join(' · ')}
+        </p>
+
+        <div className="mt-3 flex flex-wrap items-center gap-1.5">
           {p.vendedor_verificado && (
-            <span className="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-md">
-              <svg width={10} height={10} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" /><polyline points="22 4 12 14.01 9 11.01" />
+            <span className="t-label inline-flex items-center gap-1 border border-moss/30 bg-moss-soft px-1.5 py-1 text-moss">
+              <svg width={8} height={8} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <polyline points="20 6 9 17 4 12" />
               </svg>
               {t('productCard.verified')}
             </span>
           )}
+          {p.vendedor_tipo && <BadgeTipoVendedor tipo={p.vendedor_tipo} />}
         </div>
-        <p className="text-xs text-gray-500 mt-2 truncate flex items-center gap-1">
-          <MapPin size={12} className="shrink-0 text-brand-signal-dark" />
-          {p.estado}{p.ubicacion_ciudad ? ` · ${p.ubicacion_ciudad}` : ''}
-        </p>
+
+        <div className="mt-auto flex items-end justify-between gap-2 pt-4">
+          <p className="t-display t-num text-[1.35rem] leading-none text-ink">
+            {formatPrecio(p.precio_usd || 0)}
+          </p>
+        </div>
       </div>
     </LocalLink>
   )
@@ -127,12 +159,12 @@ export default function ProductCard({ p, isPromoted, isFeatured, priority }: { p
 
 export function ProductCardSkeleton() {
   return (
-    <div className="bg-white rounded-2xl overflow-hidden border border-gray-200/80 shadow-card animate-pulse">
-      <div className="aspect-square bg-gray-200" />
-      <div className="p-4 space-y-2">
-        <div className="h-4 bg-gray-200 rounded w-3/4" />
-        <div className="h-6 bg-gray-200 rounded w-1/2" />
-        <div className="h-3 bg-gray-200 rounded w-1/3" />
+    <div className="border border-line bg-[#FBFAF5]">
+      <div className="aspect-[4/3] bg-paper-2" />
+      <div className="space-y-3 p-4">
+        <div className="skeleton skeleton-title" />
+        <div className="skeleton skeleton-text w-1/2" />
+        <div className="skeleton skeleton-price" />
       </div>
     </div>
   )

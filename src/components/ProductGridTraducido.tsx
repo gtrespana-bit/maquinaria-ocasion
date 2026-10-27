@@ -35,8 +35,7 @@ interface ProductoGrid {
 export default function ProductGridTraducido({
   productos,
   currentPage,
-  itemsPerPage,
-}: {
+  itemsPerPage }: {
   productos: ProductoGrid[]
   currentPage: number
   itemsPerPage: number

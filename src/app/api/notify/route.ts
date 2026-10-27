@@ -34,18 +34,15 @@ export async function POST(req: NextRequest) {
 
   const payload: Record<string, any> = {
     chat_id: CHAT_ID,
-    text: text,
-  }
+    text: text }
 
   if (inlineKeyboard && txId) {
     payload.reply_markup = {
       inline_keyboard: inlineKeyboard.map(row =>
         row.map(btn => ({
           text: btn.text,
-          callback_data: `${btn.callback_data}:${txId}`,
-        }))
-      ),
-    }
+          callback_data: `${btn.callback_data}:${txId}` }))
+      ) }
   }
 
   try {
@@ -53,8 +50,7 @@ export async function POST(req: NextRequest) {
     const res = await fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
-    })
+      body: JSON.stringify(payload) })
     const data = await res.json()
     if (!res.ok || data?.ok !== true) {
       return NextResponse.json(

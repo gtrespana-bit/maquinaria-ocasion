@@ -1,7 +1,8 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { X, Link2 } from 'lucide-react'
+import { X, ArrowRight } from 'lucide-react'
+import LocalLink from '@/components/LocalLink'
 
 type Announcement = {
   id: string
@@ -13,10 +14,10 @@ type Announcement = {
 }
 
 /**
- * Banner global administrable desde el panel admin.
+ * Banda de anuncio administrable desde el panel.
  *
- * Lee `/api/anuncios/active` y se oculta si no hay un anuncio activo o si la
- * tabla todavía no fue creada en Supabase (permitiendo despliegues graduales).
+ * Se oculta si no hay anuncio activo (o si la tabla todavía no existe), para
+ * que la home nunca arranque con un hueco.
  */
 export default function SiteAnnouncement() {
   const [anuncio, setAnuncio] = useState<Announcement | null>(null)
@@ -26,38 +27,41 @@ export default function SiteAnnouncement() {
     let cancelled = false
     fetch('/api/anuncios/active')
       .then((r) => (r.ok ? r.json() : { anuncio: null }))
-      .then((d) => { if (!cancelled) setAnuncio(d?.anuncio || null) })
+      .then((d) => {
+        if (!cancelled) setAnuncio(d?.anuncio || null)
+      })
       .catch(() => {})
-    return () => { cancelled = true }
+    return () => {
+      cancelled = true
+    }
   }, [])
 
   if (!anuncio || dismissed) return null
 
   return (
-    <div className="border-b border-brand-primary/10 bg-gradient-to-r from-brand-primary/95 via-brand-dark to-brand-primary px-4 py-2 text-white shadow-sm">
-      <div className="mx-auto flex max-w-7xl items-center gap-3 px-1 sm:px-2">
-        <span className="text-base leading-none sm:text-lg" aria-hidden="true">{anuncio.emoji || '📢'}</span>
-        <div className="min-w-0 flex-1 text-center text-xs font-medium sm:text-sm">
-          <span className="mr-1.5 font-black text-brand-accent">{anuncio.titulo}</span>
-          <span className="opacity-90">{anuncio.mensaje}</span>
+    <div className="on-dark bg-ink text-paper">
+      <div className="shell flex min-h-[38px] items-center gap-3 py-2">
+        <span aria-hidden="true" className="hidden h-1.5 w-1.5 shrink-0 bg-signal sm:block" />
+        <p className="min-w-0 flex-1 text-[12.5px] leading-snug text-paper/80">
+          <span className="t-label mr-2 text-signal">{anuncio.titulo}</span>
+          {anuncio.mensaje}
           {anuncio.enlace && (
-            <a
+            <LocalLink
               href={anuncio.enlace}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="ml-2 inline-flex items-center gap-1 font-bold text-brand-accent underline-offset-2 hover:underline"
+              className="ml-2 inline-flex items-baseline gap-1 border-b border-signal/60 font-medium text-paper hover:border-signal"
             >
-              <Link2 size={12} /> {anuncio.enlace_texto || 'Ver más'}
-            </a>
+              {anuncio.enlace_texto || 'Ver más'}
+              <ArrowRight size={11} />
+            </LocalLink>
           )}
-        </div>
+        </p>
         <button
           type="button"
           onClick={() => setDismissed(true)}
           aria-label="Cerrar anuncio"
-          className="rounded-lg p-1 text-white/80 transition hover:bg-white/10 hover:text-white"
+          className="shrink-0 p-1 text-paper/50 transition-colors hover:text-paper"
         >
-          <X size={15} />
+          <X size={14} strokeWidth={1.8} />
         </button>
       </div>
     </div>

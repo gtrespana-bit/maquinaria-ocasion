@@ -43,8 +43,7 @@ function getPosts(): Post[] {
       readTime: limpiarComillas(readTimeMatch?.[1]) || '5 min',
       tags: tagsMatch ? tagsMatch[1].split(',').map(t => t.trim()) : [],
       category: limpiarComillas(categoryMatch?.[1]) || 'General',
-      featured: featuredMatch?.[1] === 'true',
-    }
+      featured: featuredMatch?.[1] === 'true' }
   }).sort((a, b) => {
     if (a.featured && !b.featured) return -1
     if (!a.featured && b.featured) return 1
@@ -59,21 +58,16 @@ export const metadata: Metadata = {
     canonical: 'https://maquinaria.click/blog',
     languages: {
       'es-ES': 'https://maquinaria.click/blog',
-      'x-default': 'https://maquinaria.click/blog',
-    },
+      'x-default': 'https://maquinaria.click/blog' },
     types: {
-      'application/rss+xml': 'https://maquinaria.click/feed.xml',
-    },
-  },
+      'application/rss+xml': 'https://maquinaria.click/feed.xml' } },
   openGraph: {
     title: 'Guías de compra y venta de maquinaria',
     description: 'Guías de compra de maquinaria: precios, documentación y consejos para elegir.',
     url: 'https://maquinaria.click/blog',
     siteName: 'MaquinariaOcasión',
     type: 'website',
-    locale: 'es_ES',
-  },
-}
+    locale: 'es_ES' } }
 
 const categoryIcons: Record<string, string> = {
   'Guías': '🧭',
@@ -82,8 +76,7 @@ const categoryIcons: Record<string, string> = {
   'Emprendimiento': '🚀',
   'Consejos': '💡',
   'Seguridad': '🛡️',
-  'Tendencias': '📊',
-}
+  'Tendencias': '📊' }
 
 export default async function BlogPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params
@@ -100,8 +93,7 @@ export default async function BlogPage({ params }: { params: Promise<{ locale: s
     itemListElement: [
       { '@type': 'ListItem', position: 1, name: 'Inicio', item: SITIO + '/' },
       { '@type': 'ListItem', position: 2, name: 'Blog', item: SITIO + '/blog' },
-    ],
-  }
+    ] }
   const collectionJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
@@ -111,8 +103,7 @@ export default async function BlogPage({ params }: { params: Promise<{ locale: s
     url: SITIO + '/blog',
     isPartOf: { '@id': SITIO + '/#website' },
     breadcrumb: { '@id': SITIO + '/blog#breadcrumb' },
-    mainEntity: posts.length > 0 ? { '@id': SITIO + '/blog#itemlist' } : undefined,
-  }
+    mainEntity: posts.length > 0 ? { '@id': SITIO + '/blog#itemlist' } : undefined }
   const itemListJsonLd = posts.length > 0 ? {
     '@context': 'https://schema.org',
     '@type': 'ItemList',
@@ -123,98 +114,123 @@ export default async function BlogPage({ params }: { params: Promise<{ locale: s
       '@type': 'ListItem',
       position: i + 1,
       url: SITIO + '/blog/' + post.slug,
-      name: post.title,
-    })),
-  } : null
+      name: post.title })) } : null
   const graphJsonLd = {
     '@context': 'https://schema.org',
-    '@graph': [breadcrumbJsonLd, collectionJsonLd, ...(itemListJsonLd ? [itemListJsonLd] : [])],
-  }
+    '@graph': [breadcrumbJsonLd, collectionJsonLd, ...(itemListJsonLd ? [itemListJsonLd] : [])] }
 
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: serializeJsonLd(graphJsonLd) }} />
-      <div className="min-h-screen bg-white">
-      {/* Hero */}
-      <section className="bg-gradient-to-br from-brand-primary to-brand-dark py-12 md:py-16">
-        <div className="max-w-4xl mx-auto px-4 text-center">
-          <h1 className="text-3xl md:text-5xl font-black text-white mb-4">
-            {t('title')} <span className="text-brand-accent">MaquinariaOcasión</span>
-          </h1>
-          <p className="text-lg text-blue-200 max-w-2xl mx-auto">
-            {t('subtitle')}
-          </p>
-        </div>
-      </section>
-
-      {/* Featured Posts */}
-      {featured.length > 0 && (
-        <section className="max-w-7xl mx-auto px-4 py-8">
-          <div className="flex items-center gap-2 mb-6">
-            <TrendingUp size={20} className="text-brand-primary" />
-            <h2 className="text-xl font-bold text-gray-800">{t('featured')}</h2>
+      <header className="border-b border-line bg-paper">
+        <div className="shell pb-12 pt-10 md:pb-16 md:pt-14">
+          <p className="t-eyebrow text-ink/45">Guías de compra</p>
+          <div className="mt-6 grid grid-cols-1 gap-8 lg:grid-cols-12 lg:items-end">
+            <h1 className="t-display t-display-lg text-ink lg:col-span-8">
+              {t('title')}{' '}
+              <span className="t-serif-italic">MaquinariaOcasión</span>
+            </h1>
+            <p className="text-[15px] leading-relaxed text-muted lg:col-span-4 lg:border-l lg:border-line lg:pl-6">
+              {t('subtitle')}
+            </p>
           </div>
-          <div className="grid md:grid-cols-2 gap-6">
-            {featured.map(post => (
-              <LocalLink key={post.slug} href={`/blog/${post.slug}`} className="group block bg-gradient-to-br from-brand-primary/5 to-brand-accent/5 rounded-2xl border-2 border-brand-accent/20 p-6 hover:border-brand-accent/40 transition shadow-sm hover:shadow-lg">
-                <div className="flex items-center gap-2 mb-3">
-                  <span className="text-sm">{categoryIcons[post.category] || '📝'}</span>
-                  <span className="text-xs font-semibold text-brand-primary bg-brand-accent/20 px-2 py-0.5 rounded-full">{post.category}</span>
-                </div>
-                <h3 className="text-xl font-bold text-gray-800 group-hover:text-brand-primary transition mb-2">{post.title}</h3>
-                <p className="text-sm text-gray-600 mb-4">{post.excerpt}</p>
-                <div className="flex items-center gap-4 text-xs text-gray-500">
-                  <span className="flex items-center gap-1"><Calendar size={12} /> {post.date}</span>
-                  <span className="flex items-center gap-1"><Clock size={12} /> {post.readTime}</span>
-                </div>
-              </LocalLink>
-            ))}
+        </div>
+      </header>
+
+      {/* Destacados */}
+      {featured.length > 0 && (
+        <section className="border-b border-line bg-paper-2/50">
+          <div className="shell py-12 md:py-16">
+            <div className="flex items-baseline gap-3 border-b border-ink pb-3">
+              <TrendingUp size={13} strokeWidth={1.8} className="text-ink" />
+              <h2 className="t-eyebrow text-ink">{t('featured')}</h2>
+            </div>
+            <div className="mt-8 grid gap-6 md:grid-cols-2">
+              {featured.map((post) => (
+                <LocalLink
+                  key={post.slug}
+                  href={`/blog/${post.slug}`}
+                  className="group/f block border border-line bg-[#FBFAF5] p-6 transition-colors hover:border-ink md:p-8"
+                >
+                  <div className="flex items-center gap-2">
+                    <span className="t-label bg-signal px-2 py-1 text-ink">{post.category}</span>
+                  </div>
+                  <h3 className="t-display t-display-sm mt-5 text-ink">{post.title}</h3>
+                  <p className="mt-3 text-[14px] leading-relaxed text-muted line-clamp-3">{post.excerpt}</p>
+                  <div className="t-label mt-5 flex items-center gap-4 text-ink/40">
+                    <span className="flex items-center gap-1.5">
+                      <Calendar size={11} /> {post.date}
+                    </span>
+                    <span className="flex items-center gap-1.5">
+                      <Clock size={11} /> {post.readTime}
+                    </span>
+                  </div>
+                </LocalLink>
+              ))}
+            </div>
           </div>
         </section>
       )}
 
-      {/* All Posts */}
-      <section className="max-w-7xl mx-auto px-4 py-8 pb-16">
-        {featured.length > 0 && (
-          <h2 className="text-xl font-bold text-gray-800 mb-6">{t('allArticles')}</h2>
-        )}
-        {regular.length === 0 && featured.length === 0 && (
-          <div className="text-center py-12">
-            <p className="text-gray-500">{t('comingSoon')}</p>
+      {/* Todos */}
+      <section className="bg-paper">
+        <div className="shell py-12 md:py-16">
+          {featured.length > 0 && (
+            <div className="mb-8 flex items-baseline gap-3 border-b border-ink pb-3">
+              <h2 className="t-eyebrow text-ink">{t('allArticles')}</h2>
+            </div>
+          )}
+          {regular.length === 0 && featured.length === 0 && (
+            <p className="py-12 text-center text-sm text-muted">{t('comingSoon')}</p>
+          )}
+          <div className="border-t border-line">
+            {regular.map((post, i) => (
+              <LocalLink
+                key={post.slug}
+                href={`/blog/${post.slug}`}
+                className="group/r flex items-start gap-5 border-b border-line py-6 md:gap-8"
+              >
+                <span className="t-label mt-1.5 shrink-0 text-ink/30">
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+                <div className="min-w-0 flex-1">
+                  <p className="t-label text-ink/45">{post.category}</p>
+                  <h3 className="mt-2 text-[19px] font-semibold leading-snug tracking-[-0.02em] text-ink group-hover/r:underline group-hover/r:underline-offset-4">
+                    {post.title}
+                  </h3>
+                  <p className="mt-2 line-clamp-2 text-[13.5px] leading-relaxed text-muted">{post.excerpt}</p>
+                  <div className="t-label mt-3 flex items-center gap-4 text-ink/35">
+                    <span className="flex items-center gap-1.5">
+                      <Calendar size={10} /> {post.date}
+                    </span>
+                    <span className="flex items-center gap-1.5">
+                      <Clock size={10} /> {post.readTime}
+                    </span>
+                  </div>
+                </div>
+                <ArrowRight
+                  size={16}
+                  strokeWidth={1.5}
+                  className="mt-1 shrink-0 text-ink/25 transition-transform duration-300 group-hover/r:translate-x-1 group-hover/r:text-ink"
+                />
+              </LocalLink>
+            ))}
           </div>
-        )}
-        <div className="grid md:grid-cols-3 gap-6">
-          {regular.map(post => (
-            <LocalLink key={post.slug} href={`/blog/${post.slug}`} className="group block bg-white rounded-2xl border border-gray-100 p-6 hover:shadow-lg transition hover:border-brand-accent/30">
-              <div className="flex items-center gap-2 mb-3">
-                <span className="text-sm">{categoryIcons[post.category] || '📝'}</span>
-                <span className="text-xs font-semibold text-gray-600 bg-gray-100 px-2 py-0.5 rounded-full">{post.category}</span>
-              </div>
-              <h3 className="text-lg font-bold text-gray-800 group-hover:text-brand-primary transition mb-2">{post.title}</h3>
-              <p className="text-sm text-gray-600 mb-4 line-clamp-3">{post.excerpt}</p>
-              <div className="flex items-center justify-between text-xs text-gray-500">
-                <span className="flex items-center gap-1"><Calendar size={12} /> {post.date}</span>
-                <span className="flex items-center gap-1"><Clock size={12} /> {post.readTime}</span>
-              </div>
-              <div className="mt-4 flex items-center gap-1 text-sm font-semibold text-brand-primary group-hover:translate-x-1 transition-transform">
-                {t('readMore')} <ArrowRight size={14} />
-              </div>
-            </LocalLink>
-          ))}
         </div>
       </section>
 
       {/* CTA */}
-      <section className="bg-brand-dark py-12">
-        <div className="max-w-4xl mx-auto px-4 text-center">
-          <h2 className="text-2xl font-black text-white mb-3">{t('ctaTitle')}</h2>
-          <p className="text-gray-500 mb-6">{t('ctaDesc')}</p>
-          <LocalLink href="/publicar" className="inline-flex items-center gap-2 bg-brand-accent text-white px-8 py-3 rounded-xl font-bold text-lg hover:bg-accent/90 transition shadow-lg">
-            {t('ctaButton')} <ArrowRight size={20} />
+      <section className="on-dark bg-ink text-paper">
+        <div className="shell flex flex-col gap-6 py-14 md:flex-row md:items-center md:justify-between">
+          <div className="max-w-xl">
+            <h2 className="t-display t-display-sm text-paper">{t('ctaTitle')}</h2>
+            <p className="mt-3 text-[14px] leading-relaxed text-paper/60">{t('ctaDesc')}</p>
+          </div>
+          <LocalLink href="/publicar" className="btn btn-signal btn-lg shrink-0">
+            {t('ctaButton')} <ArrowRight size={16} />
           </LocalLink>
         </div>
       </section>
-    </div>
     </>
   )
 }

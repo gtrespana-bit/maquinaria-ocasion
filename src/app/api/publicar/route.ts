@@ -8,6 +8,7 @@ import { revalidarListadosPublicos } from '@/lib/revalidar'
 import { mensajeCupoLleno } from '@/lib/planes-anuncios'
 import { cupoDeUsuario } from '@/lib/planes-servidor'
 import { normalizarVideoUrl } from '@/lib/video-embed'
+import { emailProductoPublicado } from '@/lib/server-email'
 
 /**
  * Devuelve el id de una categoría por nombre, creándola si no existe.
@@ -204,8 +205,22 @@ export async function POST(req: NextRequest) {
     revalidarListadosPublicos({
       ubicacionCiudad: data.ubicacion_ciudad,
       ubicacionEstado: data.ubicacion_estado,
-      subcategoria: data.subcategoria,
-    })
+      subcategoria: data.subcategoria })
+
+    // Confirmación por email al anunciante. Nunca debe romper la publicación:
+    // si el proveedor de correo falla, el anuncio ya está creado y publicado.
+    try {
+      const nombrePublicador = auth.user.email?.split('@')[0] || 'Usuario'
+      await emailProductoPublicado(
+        auth.user.email || '',
+        nombrePublicador,
+        String(data.titulo || sanitizedData.titulo || ''),
+        String(data.precio ?? sanitizedData.precio ?? ''),
+        String(data.slug || data.id || '')
+      )
+    } catch (e) {
+      console.error('Error email publicación:', e)
+    }
 
     // Telegram alert if the server-side moderation marked the product pending.
     // Plain text avoids HTML/Markdown injection through user content.
@@ -218,9 +233,7 @@ export async function POST(req: NextRequest) {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             chat_id: CHAT,
-            text: `ALERTA MODERACIÓN — SOSPECHOSO\n\nTítulo: ${String(sanitizedData.titulo || '').slice(0, 200)}\nUsuario: ${auth.user.email || userId}\nPalabras: ${moderacion.palabras.join(', ')}`,
-          }),
-        }).catch(() => {})
+            text: `ALERTA MODERACIÓN — SOSPECHOSO\n\nTítulo: ${String(sanitizedData.titulo || '').slice(0, 200)}\nUsuario: ${auth.user.email || userId}\nPalabras: ${moderacion.palabras.join(', ')}` }) }).catch(() => {})
       }
     }
 

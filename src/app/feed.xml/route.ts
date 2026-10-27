@@ -39,8 +39,7 @@ function getPosts(): Post[] {
         slug,
         title: fm('title') || slug,
         excerpt: fm('excerpt') || '',
-        date: fm('date') || '2026-01-01',
-      }
+        date: fm('date') || '2026-01-01' }
     })
     .sort((a, b) => (a.date < b.date ? 1 : -1))
     .slice(0, 20)
@@ -83,7 +82,5 @@ ${items}
   return new Response(xml, {
     headers: {
       'Content-Type': 'application/rss+xml; charset=utf-8',
-      'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=86400',
-    },
-  })
+      'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=86400' } })
 }

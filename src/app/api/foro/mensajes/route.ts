@@ -40,8 +40,7 @@ export async function POST(req: NextRequest) {
     if (!rl.ok) {
       return NextResponse.json({
         error: `Demasiadas respuestas seguidas. Espera ${Math.ceil(rl.resetIn / 60000)} min`,
-        resetIn: rl.resetIn,
-      }, { status: 429 })
+        resetIn: rl.resetIn }, { status: 429 })
     }
 
     const sb = createClient(
@@ -73,8 +72,7 @@ export async function POST(req: NextRequest) {
       user_id: userId,
       cuerpo,
       estado_moderacion: estado,
-      motivo_moderacion: estado === 'pendiente' ? 'Revisión automática: términos sospechosos' : null,
-    }).select('id, estado_moderacion').single()
+      motivo_moderacion: estado === 'pendiente' ? 'Revisión automática: términos sospechosos' : null }).select('id, estado_moderacion').single()
 
     if (error || !data) {
       return NextResponse.json({ error: 'No se pudo enviar la respuesta' }, { status: 500 })
@@ -85,8 +83,7 @@ export async function POST(req: NextRequest) {
         .from('foro_hilos')
         .update({
           mensajes_count: (hilo.mensajes_count || 0) + 1,
-          actualizado_en: new Date().toISOString(),
-        })
+          actualizado_en: new Date().toISOString() })
         .eq('id', hiloId)
     } catch {
       // El contador y el orden son cosméticos: la respuesta ya se guardó.

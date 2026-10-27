@@ -1,14 +1,12 @@
-'use client';
+'use client'
 
 import { Ruler } from 'lucide-react';
 import { gruposDeFiltros, RANGOS_NUMERICOS } from '@/lib/filtros-tecnicos';
 import { RANGOS_SUGERIDOS } from '@/lib/catalog-consulta';
 
-const selectClass =
-  'w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm text-gray-800 bg-white font-medium focus:outline-none focus:ring-2 focus:ring-brand-accent';
-const labelClass = 'block text-sm font-bold text-gray-900 mb-1.5';
-const inputClass =
-  'w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm text-gray-800 bg-white focus:outline-none focus:ring-2 focus:ring-brand-accent';
+const selectClass = 'field pr-6 text-[13.5px] font-medium';
+const labelClass = 't-label mb-1 block text-ink/50';
+const inputClass = 'field t-num text-[13.5px]';
 
 interface FiltrosTecnicosPanelProps {
   /**
@@ -40,15 +38,14 @@ export const FiltrosTecnicosPanel = ({
   filtrosTecnicos,
   rangos,
   t,
-  onSetParam,
-}: FiltrosTecnicosPanelProps) => {
+  onSetParam }: FiltrosTecnicosPanelProps) => {
   return (
     <>
       {/* Filtros por opción de la familia activa (transversales + específicos). */}
       {gruposDeFiltros(categoria).map(grupo => (
-        <div key={grupo.grupo} className="mb-5 border-t border-gray-100 pt-4 first:border-t-0 first:pt-0">
-          <h4 className="text-xs font-black uppercase tracking-wide text-gray-500 mb-3">
-            {grupo.icono} {t(grupo.i18n)}
+        <div key={grupo.grupo} className="mb-5 border-t border-line pt-4 first:border-t-0 first:pt-0">
+          <h4 className="t-label mb-3 flex items-center gap-1.5 text-ink/45">
+            <span aria-hidden="true">{grupo.icono}</span> {t(grupo.i18n)}
           </h4>
           {grupo.filtros.map(filtro => (
             <div className="mb-4" key={filtro.param}>
@@ -74,8 +71,8 @@ export const FiltrosTecnicosPanel = ({
       {/* Rangos numéricos transversales (horas de uso máximas, año mínimo).
           La comparación se hace sobre las columnas generadas
           (espec_horas / espec_anio). */}
-      <div className="mb-5 border-t border-gray-100 pt-4">
-        <h4 className="text-xs font-black uppercase tracking-wide text-gray-500 mb-3">
+      <div className="mb-5 border-t border-line pt-4">
+        <h4 className="t-label mb-3 text-ink/45">
           <span className="inline-flex items-center gap-1">
             <Ruler size={12} aria-hidden="true" /> {t('catalog.filters.rangeTitle')}
           </span>
@@ -100,7 +97,7 @@ export const FiltrosTecnicosPanel = ({
                   placeholder={rango.operador === 'lte' ? t('catalog.max') : t('catalog.min')}
                   className={`${inputClass} pr-12`}
                 />
-                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-400 pointer-events-none">
+                <span className="pointer-events-none absolute right-0 top-1/2 -translate-y-1/2 text-[11px] text-ink/40">
                   {rango.unidad}
                 </span>
               </div>
@@ -111,3 +108,6 @@ export const FiltrosTecnicosPanel = ({
     </>
   );
 };
+
+  'w-full border border-line-strong rounded-lg px-3 py-2.5 text-sm text-ink bg-[#FBFAF5] font-medium focus:outline-none focus:ring-2 focus:ring-signal-deep';
+  'w-full border border-line-strong rounded-lg px-3 py-2.5 text-sm text-ink bg-[#FBFAF5] focus:outline-none focus:ring-2 focus:ring-signal-deep';

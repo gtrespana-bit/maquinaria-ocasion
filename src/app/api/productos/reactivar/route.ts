@@ -52,8 +52,7 @@ export async function POST(request: NextRequest) {
           ? 'No se pudo reactivar el producto.'
           : `Tu plan permite ${resumen.max} anuncio${resumen.max === 1 ? '' : 's'} activo${resumen.max === 1 ? '' : 's'}. Pausa otro o amplía el pack.`,
         codigo: 'CUPO',
-        cupo: { max: resumen.max, usados: resumen.usados },
-      },
+        cupo: { max: resumen.max, usados: resumen.usados } },
       { status: 403 },
     )
   }
@@ -66,8 +65,7 @@ export async function POST(request: NextRequest) {
       vendido_en: null,
       comprador_id: null,
       pausado_por_plan: false,
-      pausado_en: null,
-    })
+      pausado_en: null })
     .eq('id', body.productoId)
     .eq('user_id', auth.user.id)
 

@@ -8,8 +8,14 @@ import BadgeVerificado from '@/components/BadgeVerificado'
 import BadgeTipoVendedor from '@/components/BadgeTipoVendedor'
 import { getPrecioEur, formatPrecio } from '@/lib/precio'
 import {
-  Globe, MapPin, Clock, Star, Store, Share2, Check, Search,
-} from 'lucide-react'
+  Globe,
+  MapPin,
+  Clock,
+  Star,
+  Store,
+  Share2,
+  Check,
+  Search } from 'lucide-react'
 
 interface Perfil {
   id: string
@@ -32,8 +38,7 @@ export default function TiendaClient({
   perfil,
   productos,
   totalResenas,
-  promedio,
-}: {
+  promedio }: {
   perfil: Perfil
   productos: any[]
   totalResenas: number
@@ -77,65 +82,65 @@ export default function TiendaClient({
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Portada */}
-      <div className="relative h-40 md:h-60 bg-gradient-to-br from-brand-primary to-brand-dark">
-        {perfil.portada_url && (
+    <div className="bg-paper">
+      {/* Portada: imagen si existe, si no un campo de trama sobre tinta */}
+      <div className="relative h-40 overflow-hidden border-b border-line bg-ink md:h-56">
+        {perfil.portada_url ? (
           <Image
             src={perfil.portada_url}
             alt=""
             fill
-            className="object-cover"
+            className="object-cover opacity-80"
             sizes="100vw"
             priority
           />
+        ) : (
+          <div aria-hidden="true" className="blueprint absolute inset-0 opacity-50" />
         )}
       </div>
 
-      <div className="max-w-6xl mx-auto px-4">
+      <div className="shell">
         {/* Cabecera */}
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 -mt-12 md:-mt-16 relative p-6 mb-8">
-          <div className="flex flex-col md:flex-row md:items-start gap-5">
-            <div className="w-24 h-24 rounded-2xl overflow-hidden bg-gray-100 border-4 border-white shadow-md shrink-0 -mt-16 md:-mt-20">
+        <div className="relative -mt-12 border border-line bg-[#FBFAF5] p-6 md:-mt-14 md:p-8">
+          <div className="flex flex-col gap-6 md:flex-row md:items-start">
+            <div className="h-20 w-20 shrink-0 overflow-hidden border border-line bg-paper md:h-24 md:w-24">
               {perfil.foto_perfil_url ? (
                 <Image
                   src={perfil.foto_perfil_url}
                   alt={perfil.nombre || 'Logo'}
                   width={96}
                   height={96}
-                  className="w-full h-full object-cover"
+                  className="h-full w-full object-cover"
                 />
               ) : (
-                <div className="w-full h-full grid place-items-center text-gray-400">
-                  <Store size={32} />
+                <div className="grid h-full w-full place-items-center text-ink/25">
+                  <Store size={26} strokeWidth={1.3} />
                 </div>
               )}
             </div>
 
-            <div className="flex-1 min-w-0">
-              <div className="flex flex-wrap items-center gap-2 mb-1">
-                <h1 className="text-2xl md:text-3xl font-black text-gray-900">
-                  {perfil.nombre || 'Tienda'}
-                </h1>
+            <div className="min-w-0 flex-1">
+              <div className="flex flex-wrap items-center gap-2">
+                <h1 className="t-display t-display-md text-ink">{perfil.nombre || 'Tienda'}</h1>
                 {perfil.verificado && <BadgeVerificado size="md" />}
                 <BadgeTipoVendedor tipo={perfil.tipo_vendedor} size="md" />
               </div>
 
-              <p className="text-sm text-gray-500 mb-3">
+              <p className="t-label mt-2 text-ink/45">
                 {esTaller ? 'Taller de maquinaria' : 'Vendedor profesional'}
-                {anoAlta ? ` · En MaquinariaOcasión desde ${anoAlta}` : ''}
+                {anoAlta ? ` · Desde ${anoAlta}` : ''}
               </p>
 
-              <div className="flex flex-wrap gap-x-5 gap-y-2 text-sm text-gray-600">
+              <div className="mt-4 flex flex-wrap gap-x-5 gap-y-2 text-[12.5px] text-ink/60">
                 {ubicacion && (
                   <span className="inline-flex items-center gap-1.5">
-                    <MapPin size={15} className="text-brand-accent" />
+                    <MapPin size={12} strokeWidth={1.6} className="text-ink/35" />
                     {perfil.direccion ? `${perfil.direccion}, ${ubicacion}` : ubicacion}
                   </span>
                 )}
                 {perfil.horario && (
                   <span className="inline-flex items-center gap-1.5">
-                    <Clock size={15} className="text-brand-accent" />
+                    <Clock size={12} strokeWidth={1.6} className="text-ink/35" />
                     {perfil.horario}
                   </span>
                 )}
@@ -144,17 +149,17 @@ export default function TiendaClient({
                     href={perfil.web}
                     target="_blank"
                     rel="noopener noreferrer nofollow"
-                    className="inline-flex items-center gap-1.5 text-brand-primary hover:underline font-medium"
+                    className="inline-flex items-center gap-1.5 font-medium text-ink underline underline-offset-4"
                   >
-                    <Globe size={15} />
+                    <Globe size={12} strokeWidth={1.6} />
                     Web oficial
                   </a>
                 )}
                 {totalResenas > 0 && (
                   <span className="inline-flex items-center gap-1.5">
-                    <Star size={15} className="text-amber-500 fill-amber-500" />
-                    <strong>{promedio}</strong>
-                    <span className="text-gray-400">
+                    <Star size={12} className="fill-signal text-signal" />
+                    <strong className="t-num font-semibold text-ink">{promedio}</strong>
+                    <span className="text-ink/40">
                       ({totalResenas} {totalResenas === 1 ? 'reseña' : 'reseñas'})
                     </span>
                   </span>
@@ -162,89 +167,91 @@ export default function TiendaClient({
               </div>
             </div>
 
-            <div className="flex md:flex-col gap-2 shrink-0">
-              <button
-                onClick={compartir}
-                className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl border border-gray-200 text-sm font-semibold text-gray-700 hover:bg-gray-50 transition"
-              >
-                {copiado ? <Check size={16} className="text-brand-accent" /> : <Share2 size={16} />}
+            <div className="flex shrink-0 gap-2 md:flex-col">
+              <button onClick={compartir} className="btn btn-outline btn-sm justify-center">
+                {copiado ? <Check size={14} className="text-moss" /> : <Share2 size={14} />}
                 {copiado ? 'Enlace copiado' : 'Compartir'}
               </button>
-              <LocalLink
-                href={`/vendedor/${perfil.id}`}
-                className="inline-flex items-center justify-center px-4 py-2 rounded-xl bg-brand-primary text-white text-sm font-semibold hover:bg-brand-dark transition"
-              >
+              <LocalLink href={`/vendedor/${perfil.id}`} className="btn btn-ink btn-sm justify-center">
                 Contactar
               </LocalLink>
             </div>
           </div>
 
           {perfil.descripcion && (
-            <p className="text-gray-700 mt-5 pt-5 border-t border-gray-100 whitespace-pre-line leading-relaxed">
+            <p className="mt-6 whitespace-pre-line border-t border-line pt-5 text-[13.5px] leading-relaxed text-ink/70">
               {perfil.descripcion}
             </p>
           )}
         </div>
 
         {/* Resumen del stock */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-          <Dato valor={String(productos.length)} etiqueta={productos.length === 1 ? 'anuncio en stock' : 'anuncios en stock'} />
-          {minimo > 0 && <Dato valor={formatPrecio(minimo)} etiqueta="desde" />}
-          {maximo > 0 && <Dato valor={formatPrecio(maximo)} etiqueta="hasta" />}
-          {totalResenas > 0 && <Dato valor={`${promedio}★`} etiqueta={`${totalResenas} valoraciones`} />}
-        </div>
+        <dl className="mt-6 grid grid-cols-2 gap-px border border-line bg-line md:grid-cols-4">
+          <div className="bg-paper px-4 py-4">
+            <dd className="t-display t-num text-[1.5rem] leading-none text-ink">{productos.length}</dd>
+            <dt className="t-label mt-2 text-ink/45">
+              {productos.length === 1 ? 'anuncio en stock' : 'anuncios en stock'}
+            </dt>
+          </div>
+          {minimo > 0 && (
+            <div className="bg-paper px-4 py-4">
+              <dd className="t-display t-num text-[1.5rem] leading-none text-ink">{formatPrecio(minimo)}</dd>
+              <dt className="t-label mt-2 text-ink/45">desde</dt>
+            </div>
+          )}
+          {maximo > 0 && (
+            <div className="bg-paper px-4 py-4">
+              <dd className="t-display t-num text-[1.5rem] leading-none text-ink">{formatPrecio(maximo)}</dd>
+              <dt className="t-label mt-2 text-ink/45">hasta</dt>
+            </div>
+          )}
+          {totalResenas > 0 && (
+            <div className="bg-signal px-4 py-4">
+              <dd className="t-display t-num text-[1.5rem] leading-none text-ink">{promedio}</dd>
+              <dt className="t-label mt-2 text-ink/55">{totalResenas} valoraciones</dt>
+            </div>
+          )}
+        </dl>
 
         {/* Stock */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5">
-          <h2 className="text-xl font-bold text-gray-900">
-            Stock de {perfil.nombre || 'la tienda'}
-          </h2>
+        <div className="mt-14 flex flex-wrap items-end justify-between gap-4 border-b border-ink pb-3">
+          <h2 className="t-display t-display-sm text-ink">Stock de {perfil.nombre || 'la tienda'}</h2>
           {productos.length > 4 && (
-            <div className="relative sm:w-72">
-              <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+            <div className="relative w-full sm:w-72">
+              <Search size={14} strokeWidth={1.6} className="absolute left-0 top-1/2 -translate-y-1/2 text-ink/35" aria-hidden="true" />
               <input
                 type="search"
                 value={busqueda}
                 onChange={e => setBusqueda(e.target.value)}
                 placeholder="Buscar en este stock…"
                 aria-label="Buscar en el stock de la tienda"
-                className="w-full pl-9 pr-3 py-2 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-brand-accent/40"
+                className="field pl-6 text-[13px]"
               />
             </div>
           )}
         </div>
 
         {filtrados.length === 0 ? (
-          <div className="bg-white rounded-2xl border border-gray-100 p-10 text-center mb-12">
-            <Store size={36} className="mx-auto text-gray-300 mb-3" />
-            <p className="text-gray-600 font-medium">
+          <div className="mt-6 mb-16 border border-line bg-[#FBFAF5] px-6 py-14 text-center">
+            <p className="mx-auto max-w-md text-[14px] leading-relaxed text-muted">
               {productos.length === 0
                 ? 'Esta tienda todavía no tiene anuncios publicados.'
                 : 'Ningún anuncio coincide con tu búsqueda.'}
             </p>
             {productos.length > 0 && (
-              <button onClick={() => setBusqueda('')} className="text-brand-primary font-semibold text-sm mt-2 hover:underline">
+              <button onClick={() => setBusqueda('')} className="btn btn-outline mt-5">
                 Ver todo el stock
               </button>
             )}
           </div>
         ) : (
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-12">
+          <div className="mb-16 mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3 xl:grid-cols-4">
             {filtrados.map((p: ProductCardData) => (
               <ProductCard key={p.id} p={p} />
             ))}
           </div>
         )}
       </div>
-    </div>
-  )
-}
-
-function Dato({ valor, etiqueta }: { valor: string; etiqueta: string }) {
-  return (
-    <div className="bg-white rounded-2xl border border-gray-100 p-4 text-center">
-      <p className="text-2xl font-black text-gray-900">{valor}</p>
-      <p className="text-xs text-gray-500 mt-0.5">{etiqueta}</p>
     </div>
   )
 }

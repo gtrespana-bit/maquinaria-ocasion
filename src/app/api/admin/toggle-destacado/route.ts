@@ -60,8 +60,7 @@ export async function POST(request: NextRequest) {
         body: `"${product.titulo}" ahora está destacado y llegará a más compradores.`,
         tag: 'destacado',
         icon: '/icon-192.png',
-        click_url: `/producto/${product.slug || productId}`,
-      })
+        click_url: `/producto/${product.slug || productId}` })
     }
 
     return NextResponse.json({ ok: true, update })

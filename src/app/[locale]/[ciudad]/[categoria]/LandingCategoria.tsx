@@ -2,7 +2,7 @@ import LocalLink from '@/components/LocalLink'
 import Image from 'next/image'
 import { supabase } from '@/lib/supabase-server-client'
 import { aplicarOrdenCatalogo } from '@/lib/catalog-consulta'
-import { ChevronRight, ArrowRight } from 'lucide-react'
+import { ArrowRight } from 'lucide-react'
 import { getTranslations } from 'next-intl/server'
 import { productUrl } from '@/lib/product-url'
 import { SUBCATEGORIAS_SEO, getSubcategoriaSEO } from '@/lib/categorias-seo'
@@ -64,32 +64,49 @@ const CATEGORIA_NAMES: Record<string, string> = Object.fromEntries(
 function ProductosGrid({ productos, categoriaNombre, ciudadNombre, t }: { productos: any[], categoriaNombre: string, ciudadNombre: string, t: any }) {
   if (productos.length === 0) {
     return (
-      <div className="text-center py-16 text-gray-500">
-        <p className="text-xl mb-2">{t('noAds', { category: categoriaNombre.toLowerCase(), city: ciudadNombre })}</p>
-        <p className="mb-4">{t('beFirst')}</p>
-        <LocalLink href="/publicar" className="inline-block bg-brand-primary text-white px-6 py-3 rounded-lg font-bold">{t('postFree')}</LocalLink>
+      <div className="border border-line bg-[#FBFAF5] px-6 py-16 text-center">
+        <p className="t-display t-display-sm text-ink/30">
+          {t('noAds', { category: categoriaNombre.toLowerCase(), city: ciudadNombre })}
+        </p>
+        <p className="mx-auto mt-3 max-w-sm text-[13.5px] text-muted">{t('beFirst')}</p>
+        <LocalLink href="/publicar" className="btn btn-ink mt-6">{t('postFree')}</LocalLink>
       </div>
     )
   }
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3 xl:grid-cols-4">
       {productos.map((p: any) => (
-        <LocalLink key={p.id} href={productUrl(p)} className="bg-white rounded-xl overflow-hidden shadow-sm border hover:shadow-lg transition group block">
-          <div className="aspect-square bg-gray-100 relative overflow-hidden">
+        <LocalLink
+          key={p.id}
+          href={productUrl(p)}
+          className="group/card flex flex-col border border-line bg-[#FBFAF5] transition-colors hover:border-ink"
+        >
+          <div className="relative aspect-[4/3] overflow-hidden bg-paper-2">
             {p.destacado && new Date(p.destacado_hasta) > new Date() && (
-              <div className="absolute top-2 left-2 z-10 bg-brand-accent text-white text-[10px] font-bold px-2 py-0.5 rounded-full">⭐ {t('featured')}</div>
+              <span className="t-label absolute left-0 top-0 z-10 bg-signal px-2 py-1.5 text-ink">{t('featured')}</span>
             )}
             {p.imagen_url ? (
-              <Image src={p.imagen_url} alt={p.titulo} width={300} height={300} className="w-full h-full object-cover group-hover:scale-105 transition-transform" loading="lazy" />
+              <Image
+                src={p.imagen_url}
+                alt={p.titulo}
+                width={400}
+                height={300}
+                className="h-full w-full object-cover saturate-[0.92] transition-[transform,filter] duration-700 group-hover/card:scale-[1.035] group-hover/card:saturate-100"
+                loading="lazy"
+              />
             ) : (
-              <div className="w-full h-full flex items-center justify-center text-gray-500 text-4xl"></div>
+              <div className="h-full w-full bg-paper-2" />
             )}
           </div>
-          <div className="p-3">
-            <h3 className="font-semibold text-gray-900 text-sm truncate">{p.titulo}</h3>
-            <p className="text-lg font-black text-brand-primary mt-1">{formatPrecio(p.precio_usd || 0)}</p>
-            <p className="text-xs text-gray-500">{p.estado} · {p.subcategoria}</p>
+          <div className="flex flex-1 flex-col p-4">
+            <h3 className="truncate text-[13.5px] font-medium text-ink">{p.titulo}</h3>
+            <p className="t-label mt-1.5 text-ink/45">
+              {[p.estado, p.subcategoria].filter(Boolean).join(' · ')}
+            </p>
+            <p className="t-display t-num mt-auto pt-3 text-[1.15rem] leading-none text-ink">
+              {formatPrecio(p.precio_usd || 0)}
+            </p>
           </div>
         </LocalLink>
       ))}
@@ -134,12 +151,10 @@ export default async function LandingCategoria({ ciudadSlug, ciudadNombre, ciuda
       respuesta:
         precioTexto && rangoTexto
           ? `En ${ciudadNombre} (${estado}) el precio medio de una ${categoriaNombre.toLowerCase()} de ocasión es ${precioTexto}, con anuncios que van ${rangoTexto} según año, horas de uso y equipamiento. Filtra el catálogo por rango de precio para ajustar la búsqueda y, si la máquina está matriculada, comprueba el ITP de tu comunidad antes de comprar.`
-          : `El precio de una ${categoriaNombre.toLowerCase()} de ocasión en ${ciudadNombre} depende del año, las horas de uso y el equipamiento. Filtra el catálogo por rango de precio para ajustar la búsqueda y, si está matriculada, comprueba el ITP de tu comunidad antes de comprar.`,
-    },
+          : `El precio de una ${categoriaNombre.toLowerCase()} de ocasión en ${ciudadNombre} depende del año, las horas de uso y el equipamiento. Filtra el catálogo por rango de precio para ajustar la búsqueda y, si está matriculada, comprueba el ITP de tu comunidad antes de comprar.` },
     {
       pregunta: `¿Dónde veo todas las ${categoriaNombre.toLowerCase()} de ${ciudadNombre}?`,
-      respuesta: `Esta landing muestra las ${stats.total > 0 ? stats.total : 'principales'} ${categoriaNombre.toLowerCase()} de ocasión en ${ciudadNombre}. Para ver el listado completo con todos los filtros (precio, horas de uso, año, estado y documentación), entra al catálogo filtrado por ${ciudadNombre}.`,
-    },
+      respuesta: `Esta landing muestra las ${stats.total > 0 ? stats.total : 'principales'} ${categoriaNombre.toLowerCase()} de ocasión en ${ciudadNombre}. Para ver el listado completo con todos los filtros (precio, horas de uso, año, estado y documentación), entra al catálogo filtrado por ${ciudadNombre}.` },
   ]
 
   const faqJsonLd = {
@@ -151,92 +166,119 @@ export default async function LandingCategoria({ ciudadSlug, ciudadNombre, ciuda
       name: f.pregunta,
       acceptedAnswer: {
         '@type': 'Answer',
-        text: f.respuesta,
-      },
-    })),
-  }
+        text: f.respuesta } })) }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8">
+    <div className="bg-paper">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: serializeJsonLd(faqJsonLd) }}
       />
-      <nav className="flex items-center gap-1.5 text-sm text-gray-500 mb-6 flex-wrap">
-        <LocalLink href="/" className="hover:text-brand-primary">{t('breadcrumb')}</LocalLink>
-        <ChevronRight size={14} />
-        <LocalLink href={`/${ciudadSlug}`} className="hover:text-brand-primary">{ciudadNombre}</LocalLink>
-        <ChevronRight size={14} />
-        <span className="text-gray-800 font-medium">{categoriaNombre}</span>
-      </nav>
 
-      <h1 className="text-2xl md:text-3xl font-black text-gray-900 mb-2">
-        {categoriaNombre} en {ciudadNombre}
-      </h1>
-      <p className="text-gray-500 mb-6">
-        {t('desc', { category: categoriaNombre.toLowerCase(), city: ciudadNombre })}
-      </p>
+      <header className="border-b border-line">
+        <div className="shell pb-10 pt-8 md:pb-14 md:pt-12">
+          <nav aria-label="Migas de pan" className="t-eyebrow flex flex-wrap items-center gap-2 text-ink/40">
+            <LocalLink href="/" className="transition-colors hover:text-ink">{t('breadcrumb')}</LocalLink>
+            <span className="text-ink/25">/</span>
+            <LocalLink href={`/${ciudadSlug}`} className="transition-colors hover:text-ink">{ciudadNombre}</LocalLink>
+            <span className="text-ink/25">/</span>
+            <span aria-current="page" className="text-ink">{categoriaNombre}</span>
+          </nav>
 
-      {/* Categorias en esta ciudad */}
-      <div className="flex flex-wrap gap-2 mb-8">
-        {categoriasRelacionadas.map((cat) => (
-          <LocalLink key={cat.slug} href={`/${ciudadSlug}/${cat.slug}`} className="text-sm bg-gray-100 text-gray-600 px-3 py-1 rounded-full hover:bg-brand-primary hover:text-white transition">
-            {t('title', { category: cat.nombre, city: ciudadNombre })}
-          </LocalLink>
-        ))}
-      </div>
-
-      {/* ── Contenido único por ciudad + categoría ── */}
-      {(stats.total > 0 || seoCat?.introduccion) && (
-        <section className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 md:p-8 mb-8">
-          {stats.total > 0 && (
-            <p className="text-gray-700 leading-relaxed mb-4">
-              <strong>{stats.total} {stats.total === 1 ? 'anuncio' : 'anuncios'} de {categoriaNombre.toLowerCase()}</strong> de ocasión en {ciudadNombre} ({estado})
-              {precioTexto ? <> con un precio medio de <strong>{formatPrecio(stats.precioMedio)}</strong></> : ''}
-              {rangoTexto ? <> (rango {rangoTexto})</> : ''}.
-              {stats.porMarca.length > 0 && (
-                <> Las marcas más habituales en {ciudadNombre} para esta categoría: {stats.porMarca.slice(0, 4).map(m => m.marca).join(', ')}.</>
-              )}
+          <div className="mt-8 grid grid-cols-1 gap-8 lg:grid-cols-12 lg:items-end">
+            <h1 className="t-display t-display-lg text-ink lg:col-span-8">
+              {categoriaNombre} en {ciudadNombre}
+            </h1>
+            <p className="text-[14.5px] leading-relaxed text-muted lg:col-span-4 lg:border-l lg:border-line lg:pl-6">
+              {t('desc', { category: categoriaNombre.toLowerCase(), city: ciudadNombre })}
             </p>
-          )}
-          {seoCat?.introduccion?.map((parrafo, i) => (
-            <p key={i} className="text-gray-700 leading-relaxed mb-4">{parrafo}</p>
-          ))}
-        </section>
-      )}
+          </div>
 
-      {/* Sin <Suspense>: los productos ya están cargados (await arriba) y el
-          Suspense alrededor de un Server Component con thenables de next-intl
-          causaba "Expected a suspended thenable" en Next 16. */}
-      <ProductosGrid productos={productos} categoriaNombre={categoriaNombre} ciudadNombre={ciudadNombre} t={t} />
-
-      {/* ── FAQ (La gente también pregunta) ── */}
-      <section className="mt-12">
-        <h2 className="text-xl md:text-2xl font-black text-gray-900 mb-4">
-          Preguntas frecuentes: {categoriaNombre} en {ciudadNombre}
-        </h2>
-        <div className="space-y-3">
-          {faqs.map((f, i) => (
-            <details key={i} className="bg-white border border-gray-200 rounded-xl p-4 group">
-              <summary className="font-bold text-gray-900 cursor-pointer list-none flex justify-between items-center gap-4">
-                {f.pregunta}
-                <ArrowRight size={16} className="text-brand-accent shrink-0 transition-transform group-open:rotate-90" />
-              </summary>
-              <p className="mt-3 text-sm text-gray-700 leading-relaxed">{f.respuesta}</p>
-            </details>
-          ))}
+          <div className="hide-scrollbar mt-8 flex gap-1 overflow-x-auto border-y border-line py-2">
+            {categoriasRelacionadas.map((cat) => (
+              <LocalLink
+                key={cat.slug}
+                href={`/${ciudadSlug}/${cat.slug}`}
+                className="t-label shrink-0 whitespace-nowrap px-2.5 py-1.5 text-ink/55 transition-colors hover:bg-paper-2 hover:text-ink"
+              >
+                {cat.nombre}
+              </LocalLink>
+            ))}
+          </div>
         </div>
-      </section>
+      </header>
 
-      {/* ── Enlazado interno: volver a la provincia y al catálogo ── */}
-      <section className="mt-10 flex flex-wrap gap-3">
-        <LocalLink href={`/${ciudadSlug}`} className="inline-flex items-center gap-1.5 text-sm font-bold text-brand-primary hover:underline">
-          <ArrowRight size={14} className="rotate-180" /> Toda la maquinaria de ocasión en {ciudadNombre}
-        </LocalLink>
-        <LocalLink href={`/catalogo?subcategoria=${encodeURIComponent(subLabel || categoriaNombre)}`} className="inline-flex items-center gap-1.5 text-sm font-semibold text-gray-600 hover:text-brand-primary">
-          Ver todas las {categoriaNombre.toLowerCase()} de España <ArrowRight size={14} />
-        </LocalLink>
-      </section>
+      <div className="shell py-12 md:py-16">
+        {(stats.total > 0 || seoCat?.introduccion) && (
+          <section className="grid grid-cols-1 gap-8 lg:grid-cols-12">
+            <div className="lg:col-span-4">
+              <h2 className="t-eyebrow border-b border-ink pb-3 text-ink">
+                {stats.total > 0 ? `${stats.total} ${stats.total === 1 ? 'anuncio' : 'anuncios'}` : 'Mercado'}
+              </h2>
+              {stats.total > 0 && (
+                <p className="mt-4 text-[13px] leading-relaxed text-ink/65">
+                  De {categoriaNombre.toLowerCase()} de ocasión en {ciudadNombre} ({estado})
+                  {precioTexto ? <> con un precio medio de <strong className="font-semibold text-ink">{formatPrecio(stats.precioMedio)}</strong></> : ''}
+                  {rangoTexto ? <> (rango {rangoTexto})</> : ''}.
+                  {stats.porMarca.length > 0 && (
+                    <> Las marcas más habituales aquí: {stats.porMarca.slice(0, 4).map(m => m.marca).join(', ')}.</>
+                  )}
+                </p>
+              )}
+            </div>
+            <div className="space-y-4 text-[14px] leading-relaxed text-ink/70 lg:col-span-8 lg:border-l lg:border-line lg:pl-8">
+              {seoCat?.introduccion?.map((parrafo, i) => (
+                <p key={i}>{parrafo}</p>
+              ))}
+            </div>
+          </section>
+        )}
+
+        <div className="mt-12">
+          {/* Sin <Suspense>: los productos ya están cargados (await arriba) y el
+              Suspense alrededor de un Server Component con thenables de next-intl
+              causaba "Expected a suspended thenable" en Next 16. */}
+          <ProductosGrid productos={productos} categoriaNombre={categoriaNombre} ciudadNombre={ciudadNombre} t={t} />
+        </div>
+
+        <section className="mt-14 max-w-4xl">
+          <h2 className="t-display t-display-sm text-ink">
+            Preguntas frecuentes: {categoriaNombre} en {ciudadNombre}
+          </h2>
+          <div className="mt-5 divide-y divide-line border-y border-line">
+            {faqs.map((f, i) => (
+              <details key={i} className="group py-4">
+                <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-[15px] font-medium text-ink">
+                  <span className="flex items-baseline gap-3">
+                    <span className="t-label text-ink/30">{String(i + 1).padStart(2, '0')}</span>
+                    {f.pregunta}
+                  </span>
+                  <span aria-hidden="true" className="relative h-3 w-3 shrink-0 transition-transform duration-300 group-open:rotate-45">
+                    <span className="absolute left-0 top-1/2 h-px w-3 -translate-y-1/2 bg-ink" />
+                    <span className="absolute left-1/2 top-0 h-3 w-px -translate-x-1/2 bg-ink" />
+                  </span>
+                </summary>
+                <p className="mt-2 pl-8 text-[13.5px] leading-relaxed text-muted">{f.respuesta}</p>
+              </details>
+            ))}
+          </div>
+        </section>
+
+        <section className="mt-12 flex flex-col gap-3 border-t border-line pt-6 sm:flex-row sm:gap-8">
+          <LocalLink
+            href={`/${ciudadSlug}`}
+            className="t-label inline-flex items-center gap-2 text-ink hover:underline hover:underline-offset-4"
+          >
+            <ArrowRight size={12} className="rotate-180" /> Toda la maquinaria en {ciudadNombre}
+          </LocalLink>
+          <LocalLink
+            href={`/catalogo?subcategoria=${encodeURIComponent(subLabel || categoriaNombre)}`}
+            className="t-label inline-flex items-center gap-2 text-ink/55 transition-colors hover:text-ink"
+          >
+            Ver todas las {categoriaNombre.toLowerCase()} de España <ArrowRight size={12} />
+          </LocalLink>
+        </section>
+      </div>
     </div>
   )
 }

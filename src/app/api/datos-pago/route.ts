@@ -47,14 +47,12 @@ export async function GET() {
       ? { iban, banco: env.PAGO_BANCO || undefined, receptor }
       : null,
     bizum: bizumTelefono ? { telefono: bizumTelefono, receptor } : null,
-    paypal: paypalEmail ? { email: paypalEmail } : null,
-  }
+    paypal: paypalEmail ? { email: paypalEmail } : null }
 
   const configurado = {
     transferencia: metodos.transferencia !== null,
     bizum: metodos.bizum !== null,
-    paypal: metodos.paypal !== null,
-  }
+    paypal: metodos.paypal !== null }
 
   const nota = env.PAGO_INSTRUCCIONES || null
 
@@ -63,6 +61,5 @@ export async function GET() {
     configurado,
     // true cuando al menos un método puede usarse de verdad
     algunoConfigurado: configurado.transferencia || configurado.bizum || configurado.paypal,
-    nota,
-  })
+    nota })
 }

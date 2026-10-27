@@ -2,8 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import {
   extraerRefDeUrl,
   inspeccionarClave,
-  redactarDiagnostico,
-} from '@/lib/supabase-diagnostico'
+  redactarDiagnostico } from '@/lib/supabase-diagnostico'
 import { getSessionUser } from '@/lib/require-auth'
 
 /**
@@ -90,8 +89,7 @@ async function probar(
     const res = await fetch(`${url.replace(/\/$/, '')}/rest/v1/productos?select=id&limit=1`, {
       headers,
       cache: 'no-store',
-      signal: controller.signal,
-    })
+      signal: controller.signal })
 
     let mensaje: string | null = null
     try {
@@ -109,8 +107,7 @@ async function probar(
     return {
       status: null,
       mensaje: err instanceof Error ? err.message.slice(0, 200) : 'sin respuesta',
-      ms: Date.now() - inicio,
-    }
+      ms: Date.now() - inicio }
   } finally {
     clearTimeout(timer)
   }
@@ -122,8 +119,7 @@ export async function GET(request: NextRequest) {
       {
         ok: false,
         error: 'No autorizado',
-        como: 'Entra con tu cuenta de admin o envía Authorization: Bearer <CRON_SECRET> desde un cliente seguro.',
-      },
+        como: 'Entra con tu cuenta de admin o envía Authorization: Bearer <CRON_SECRET> desde un cliente seguro.' },
       { status: 401 },
     )
   }
@@ -149,8 +145,7 @@ export async function GET(request: NextRequest) {
     publica,
     privada,
     pruebaPublica,
-    pruebaPrivada,
-  })
+    pruebaPrivada })
 
   const pasos = [
     'Supabase → Settings → API Keys → copia la clave pública (publishable o legacy anon).',
@@ -180,25 +175,21 @@ export async function GET(request: NextRequest) {
       proyecto: {
         url: url || null,
         urlDefinida: !!url,
-        ref: refEsperado,
-      },
+        ref: refEsperado },
       variables: {
         NEXT_PUBLIC_SUPABASE_URL: !!url,
         NEXT_PUBLIC_SUPABASE_ANON_KEY: !!anonKey,
         SUPABASE_SERVICE_ROLE_KEY: !!serviceKey,
         CRON_SECRET: !!process.env.CRON_SECRET,
-        variablesNuevasSinUsar: malConfiguradas,
-      },
+        variablesNuevasSinUsar: malConfiguradas },
       claves: { publica, privada },
       pruebas: {
         // status 200 = la clave es aceptada; 401/403 = inválida; null = no se pudo llamar.
         publica: pruebaPublica,
-        privada: pruebaPrivada,
-      },
+        privada: pruebaPrivada },
       diagnostico,
       pasos,
-      nota: 'Este endpoint no devuelve el valor de ninguna clave. Bórralo cuando el sitio esté estable: src/app/api/diagnostico/supabase/route.ts',
-    },
+      nota: 'Este endpoint no devuelve el valor de ninguna clave. Bórralo cuando el sitio esté estable: src/app/api/diagnostico/supabase/route.ts' },
     { status: 200, headers: { 'Cache-Control': 'no-store' } },
   )
 }

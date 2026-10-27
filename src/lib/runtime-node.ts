@@ -22,8 +22,7 @@ function leerRango(engines: string = ENGINES_NODE): Rango {
   }
   return {
     minimo: [Number(m[1]), Number(m[2]), Number(m[3])],
-    maxExclusivo: Number(m[4]),
-  }
+    maxExclusivo: Number(m[4]) }
 }
 
 /** Compara dos versiones `x.y.z`. Devuelve <0, 0 o >0. */
@@ -76,6 +75,5 @@ export function leerRuntimeNode(version: string = process.versions.node): Runtim
     entorno: process.env.VERCEL_ENV || process.env.NODE_ENV || 'desconocido',
     region: process.env.VERCEL_REGION || null,
     commit: process.env.VERCEL_GIT_COMMIT_SHA?.slice(0, 7) || null,
-    despliegue: process.env.VERCEL_URL || null,
-  }
+    despliegue: process.env.VERCEL_URL || null }
 }

@@ -12,8 +12,7 @@ type AuthContextType = {
 const AuthContext = createContext<AuthContextType>({
   session: null,
   user: null,
-  loading: true,
-})
+  loading: true })
 
 export function AuthProvider({ children, initialUser }: { children: React.ReactNode; initialUser?: User | null }) {
   const [session, setSession] = useState<Session | null>(null)
@@ -35,8 +34,7 @@ export function AuthProvider({ children, initialUser }: { children: React.ReactN
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ access_token: s.access_token, refresh_token: s.refresh_token }),
-      keepalive: true,
-    })
+      keepalive: true })
       .then((res) => {
         // 409 = el servidor lo rechazó por estar a punto de expirar; el próximo
         // TOKEN_REFRESHED traerá uno fresco, así que permitimos reintentar.

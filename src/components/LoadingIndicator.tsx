@@ -1,4 +1,4 @@
-'use client';
+'use client'
 
 import { useTranslations } from 'next-intl';
 
@@ -10,17 +10,14 @@ export const LoadingIndicator = ({ count = 6 }: LoadingIndicatorProps) => {
   const t = useTranslations('common');
   
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 xl:grid-cols-3">
       {Array.from({ length: count }).map((_, i) => (
-        <div 
-          key={i} 
-          className="bg-white rounded-xl overflow-hidden border border-gray-100 shadow-sm animate-pulse"
-        >
-          <div className="aspect-square bg-gray-200" />
-          <div className="p-4 space-y-2">
-            <div className="h-4 bg-gray-200 rounded w-3/4" />
-            <div className="h-6 bg-gray-200 rounded w-1/2" />
-            <div className="h-3 bg-gray-200 rounded w-1/3" />
+        <div key={i} className="border border-line bg-[#FBFAF5]">
+          <div className="skeleton aspect-[4/3] rounded-none" />
+          <div className="space-y-3 p-4">
+            <div className="skeleton h-3.5 w-3/4" />
+            <div className="skeleton h-3 w-1/2" />
+            <div className="skeleton h-6 w-2/5" />
           </div>
         </div>
       ))}

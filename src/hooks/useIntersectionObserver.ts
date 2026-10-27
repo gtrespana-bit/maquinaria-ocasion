@@ -1,4 +1,4 @@
-'use client';
+'use client'
 
 import { useState, useEffect, useRef } from 'react';
 
@@ -23,8 +23,7 @@ export function useIntersectionObserver(options: IntersectionObserverOptions = {
       {
         threshold: options.threshold || 0.1,
         rootMargin: options.rootMargin || '0px',
-        root: options.root || null,
-      }
+        root: options.root || null }
     );
 
     observerRef.current.observe(element);

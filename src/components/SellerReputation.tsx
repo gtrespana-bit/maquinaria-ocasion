@@ -17,24 +17,22 @@ interface SellerReputationProps {
 
 const NIVELES: Record<number, { nombre: string; desc: string; bg: string; text: string; border: string }> = {
   0: { nombre: 'Bronce', desc: 'Vendedor Novel', bg: 'bg-orange-50', text: 'text-orange-800', border: 'border-orange-200' },
-  1: { nombre: 'Plata', desc: 'Vendedor en Ascenso', bg: 'bg-gray-100', text: 'text-gray-700', border: 'border-gray-300' },
-  2: { nombre: 'Oro', desc: 'Vendedor Confiable', bg: 'bg-yellow-50', text: 'text-yellow-800', border: 'border-yellow-300' },
+  1: { nombre: 'Plata', desc: 'Vendedor en Ascenso', bg: 'bg-paper-2', text: 'text-ink/75', border: 'border-line-strong' },
+  2: { nombre: 'Oro', desc: 'Vendedor Confiable', bg: 'bg-paper-2', text: 'text-ink', border: 'border-yellow-300' },
   3: { nombre: 'Platino', desc: 'Vendedor Premium', bg: 'bg-sky-50', text: 'text-sky-800', border: 'border-sky-200' },
-  4: { nombre: 'Diamante', desc: 'Vendedor Élite', bg: 'bg-purple-50', text: 'text-purple-800', border: 'border-purple-200' },
-  5: { nombre: 'Maestro', desc: 'Vendedor Legendario', bg: 'bg-gradient-to-r from-yellow-50 to-purple-50', text: 'text-purple-900', border: 'border-purple-300' },
-}
+  4: { nombre: 'Diamante', desc: 'Vendedor Élite', bg: 'bg-purple-50', text: 'text-purple-800', border: 'border-line' },
+  5: { nombre: 'Maestro', desc: 'Vendedor Legendario', bg: 'bg-signal/15', text: 'text-ink', border: 'border-line-strong' } }
 
 const BADGE_CONFIG: Record<string, { label: string; color: string; tooltip: string }> = {
-  vendedor_activo: { label: '🟢 Vendedor Activo', color: 'bg-green-100 text-green-800 border-green-200', tooltip: 'Publicó en los últimos 7 días' },
-  '10_ventas': { label: '📦 10+ ventas', color: 'bg-blue-100 text-blue-700 border-blue-200', tooltip: 'Más de 10 ventas' },
-  '20_ventas': { label: '📦 20+ ventas', color: 'bg-blue-100 text-blue-800 border-blue-200', tooltip: 'Más de 20 ventas' },
-  '50_ventas': { label: '🏆 50+ ventas', color: 'bg-purple-100 text-purple-800 border-purple-200', tooltip: 'Más de 50 ventas' },
-  '20_publicaciones': { label: '📋 20+ publicaciones', color: 'bg-gray-100 text-gray-700 border-gray-200', tooltip: 'Más de 20 publicaciones' },
-  '50_publicaciones': { label: '📋 50+ publicaciones', color: 'bg-gray-100 text-gray-800 border-gray-200', tooltip: 'Más de 50 publicaciones' },
-  '100_publicaciones': { label: '⭐ 100+ publicaciones', color: 'bg-yellow-100 text-yellow-800 border-yellow-200', tooltip: 'Más de 100 publicaciones en total' },
-  buena_reputacion: { label: '⭐ Buena reputación', color: 'bg-amber-100 text-amber-800 border-amber-200', tooltip: '5+ reseñas con promedio 4.0+' },
-  top_vendedor: { label: '👑 Top Vendedor', color: 'bg-yellow-100 text-amber-900 border-amber-300', tooltip: '10+ reseñas con promedio 4.5+' },
-}
+  vendedor_activo: { label: '🟢 Vendedor Activo', color: 'bg-moss/10 text-moss border-line', tooltip: 'Publicó en los últimos 7 días' },
+  '10_ventas': { label: '📦 10+ ventas', color: 'bg-paper-2 text-ink border-line', tooltip: 'Más de 10 ventas' },
+  '20_ventas': { label: '📦 20+ ventas', color: 'bg-paper-2 text-blue-800 border-line', tooltip: 'Más de 20 ventas' },
+  '50_ventas': { label: '🏆 50+ ventas', color: 'bg-paper-2 text-purple-800 border-line', tooltip: 'Más de 50 ventas' },
+  '20_publicaciones': { label: '📋 20+ publicaciones', color: 'bg-paper-2 text-ink/75 border-line', tooltip: 'Más de 20 publicaciones' },
+  '50_publicaciones': { label: '📋 50+ publicaciones', color: 'bg-paper-2 text-ink border-line', tooltip: 'Más de 50 publicaciones' },
+  '100_publicaciones': { label: '⭐ 100+ publicaciones', color: 'bg-signal/15 text-ink border-line', tooltip: 'Más de 100 publicaciones en total' },
+  buena_reputacion: { label: '⭐ Buena reputación', color: 'bg-signal/15 text-ink border-line', tooltip: '5+ reseñas con promedio 4.0+' },
+  top_vendedor: { label: '👑 Top Vendedor', color: 'bg-signal/15 text-ink border-amber-300', tooltip: '10+ reseñas con promedio 4.5+' } }
 
 function getLastActivityText(ultimaActividad: string | null): string {
   if (!ultimaActividad) return ''
@@ -49,8 +47,7 @@ function getLastActivityText(ultimaActividad: string | null): string {
 export default function SellerReputation({
   nivel, numResenas, promedioResenas, numPubsActivas,
   numPubsVendidas, antiguedadDias, ultimaActividad,
-  verificado, badges, size = 'md',
-}: SellerReputationProps) {
+  verificado, badges, size = 'md' }: SellerReputationProps) {
   const isCompact = size === 'sm'
   const ICONOS: Record<number, string> = { 0: '🥉', 1: '🥈', 2: '🥇', 3: '💎', 4: '💠', 5: '👑' }
   const cfg = NIVELES[Math.min(nivel, 5)]
@@ -73,7 +70,7 @@ export default function SellerReputation({
           )}
         </div>
         {numResenas > 0 && (
-          <span className="inline-flex items-center gap-1 text-xs text-gray-500">
+          <span className="inline-flex items-center gap-1 text-xs text-muted">
             <Star size={12} className="text-yellow-400 fill-yellow-400" />
             {promedioResenas.toFixed(1)} · {numResenas} reseña{numResenas !== 1 ? 's' : ''}
           </span>
@@ -101,7 +98,7 @@ export default function SellerReputation({
 
       {/* Fila 3: Info adicional (solo md/lg) */}
       {!isCompact && (
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 text-xs text-gray-500 pt-3 border-t border-gray-100">
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 text-xs text-muted pt-3 border-t border-line">
           <div>📦 {numPubsActivas} activas, {numPubsVendidas} vendidas</div>
           <div>
             {verificado ? '✅ Verificado · ' : ''}{getLastActivityText(ultimaActividad) || `Miembro hace ${Math.floor(antiguedadDias / 30 || 0)} meses`}

@@ -36,8 +36,7 @@ export interface DocumentoLegal {
 
 const ACTUALIZADO: Record<IdiomaLegal, string> = {
   es: 'Última actualización: octubre de 2026',
-  en: 'Last updated: October 2026',
-}
+  en: 'Last updated: October 2026' }
 
 const BUZON_PRIVACIDAD = 'privacidad@maquinaria.click'
 const BUZON_LEGAL = 'legal@maquinaria.click'
@@ -58,57 +57,48 @@ export const AVISO_LEGAL: Record<IdiomaLegal, DocumentoLegal> = {
         titulo: '1. Datos del titular',
         parrafos: [
           'Los datos identificativos del titular de maquinaria.click se muestran a continuación. Para cualquier comunicación puedes usar el correo indicado o el formulario de contacto.',
-        ],
-      },
+        ] },
       {
         titulo: '2. Objeto',
         parrafos: [
           'MaquinariaOcasión es un servicio de intermediación en línea: un tablón donde particulares, talleres y profesionales publican anuncios de maquinaria y herramienta de ocasión, y donde los compradores los encuentran y contactan con ellos.',
           'El acceso y uso del sitio atribuye la condición de usuario y supone la aceptación de este aviso legal, de los términos y condiciones y de la política de privacidad.',
-        ],
-      },
+        ] },
       {
         titulo: '3. Condición de intermediario',
         parrafos: [
           'MaquinariaOcasión no es el vendedor de la maquinaria y herramientas anunciadas ni forma parte de la compraventa: no fija los precios, no cobra el importe de la operación, no entrega los bienes y no responde de su estado, cargas o documentación. El contrato de compraventa se celebra directamente entre el vendedor y el comprador.',
           'Los servicios de pago que se ofrecen en la web (destacar un anuncio o subirlo al primer puesto) son servicios de visibilidad que contrata el propio vendedor con la plataforma y no tienen relación con el precio del bien anunciado.',
           'Los vendedores profesionales y los talleres son los únicos responsables de cumplir las obligaciones que les correspondan como empresarios, incluida la garantía legal frente a consumidores; identificarse como profesionales es obligatorio al publicar.',
-        ],
-      },
+        ] },
       {
         titulo: '4. Propiedad intelectual e industrial',
         parrafos: [
           'El diseño, el código, los textos, las bases de datos y los elementos gráficos de este sitio pertenecen a su titular o se utilizan con autorización. Las fotografías y descripciones de cada anuncio pertenecen al usuario que los publica; al publicarlos, el usuario concede a MaquinariaOcasión una licencia no exclusiva para mostrarlos en la plataforma y en sus canales de difusión (redes sociales y buscadores) con el fin de dar a conocer el anuncio.',
-        ],
-      },
+        ] },
       {
         titulo: '5. Contenidos de los usuarios',
         parrafos: [
           'El titular no es autor de los anuncios publicados y actúa como prestador de servicios de intermediación. No obstante, aplica moderación previa o posterior y retira de forma diligente los contenidos ilícitos, engañosos o que incumplen estas condiciones, en cuanto tiene conocimiento efectivo de ellos.',
           'Cualquier persona puede comunicar un contenido ilícito escribiendo a ' + BUZON_LEGAL + '; se revisará y, en su caso, se retirará.',
-        ],
-      },
+        ] },
       {
         titulo: '6. Enlaces',
         parrafos: [
           'El sitio puede incluir enlaces a páginas de terceros. El titular no controla esos contenidos ni responde de ellos.',
-        ],
-      },
+        ] },
       {
         titulo: '7. Protección de datos y cookies',
         parrafos: [
           'El tratamiento de datos personales se describe en la política de privacidad, y el uso de cookies y almacenamiento en el navegador, en la política de cookies.',
-        ],
-      },
+        ] },
       {
         titulo: '8. Legislación aplicable y reclamaciones',
         parrafos: [
           'Este aviso legal se rige por la legislación española. Para cualquier controversia con consumidores son competentes los tribunales que determine la normativa de consumo, sin que esta cláusula prive al consumidor de los derechos que le reconoce la ley de su domicilio.',
           'Puedes dirigir cualquier reclamación a ' + BUZON_LEGAL + ' o a través de la página de contacto; se contestará en el plazo más breve posible y, en todo caso, en los plazos legales. También puedes acudir a los organismos públicos de consumo de tu comunidad autónoma.',
-        ],
-      },
-    ],
-  },
+        ] },
+    ] },
   en: {
     titulo: 'Legal notice',
     actualizado: ACTUALIZADO.en,
@@ -119,58 +109,48 @@ export const AVISO_LEGAL: Record<IdiomaLegal, DocumentoLegal> = {
         titulo: '1. Owner details',
         parrafos: [
           'The identifying details of the owner of maquinaria.click are shown below. You can reach us at the email address provided or through the contact form.',
-        ],
-      },
+        ] },
       {
         titulo: '2. Purpose',
         parrafos: [
           'MaquinariaOcasión is an online intermediation service: a noticeboard where private sellers, workshops and dealers publish listings for second-hand machinery and tools, and where buyers find them and contact the sellers.',
           'By accessing or using the site you become a user and accept this legal notice, the terms and conditions and the privacy policy.',
-        ],
-      },
+        ] },
       {
         titulo: '3. Intermediary status',
         parrafos: [
           'MaquinariaOcasión is not the seller of the advertised machinery and tools and is not part of the sale: it does not set prices, does not collect the purchase price, does not deliver the goods and is not responsible for their condition, charges or paperwork. The sale contract is entered into directly between the seller and the buyer.',
           'The paid services offered on the site (featuring a listing or moving it to the top) are visibility services that the seller contracts with the platform and have no relation to the price of the advertised item.',
           'Professional sellers and workshops are solely responsible for complying with their obligations as businesses, including the legal guarantee owed to consumers; identifying themselves as professionals when publishing is mandatory.',
-        ],
-      },
+        ] },
       {
         titulo: '4. Intellectual and industrial property',
         parrafos: [
           'The design, code, texts, databases and graphic elements of this site belong to its owner or are used with permission. The photographs and descriptions in each listing belong to the user who publishes them; by publishing, the user grants MaquinariaOcasión a non-exclusive licence to display them on the platform and in its distribution channels (social networks and search engines) in order to promote the listing.',
-        ],
-      },
+        ] },
       {
         titulo: '5. User content',
         parrafos: [
           'The owner is not the author of the published listings and acts as an intermediary service provider. It does moderate content and diligently removes unlawful or misleading content, or content that breaches these conditions, as soon as it has actual knowledge of it.',
           'Anyone can report unlawful content by writing to ' + BUZON_LEGAL + '; it will be reviewed and, where appropriate, removed.',
-        ],
-      },
+        ] },
       {
         titulo: '6. Links',
         parrafos: [
           'The site may include links to third-party pages. The owner does not control and is not responsible for their content.',
-        ],
-      },
+        ] },
       {
         titulo: '7. Data protection and cookies',
         parrafos: [
           'How personal data is processed is described in the privacy policy, and the use of cookies and browser storage in the cookie policy.',
-        ],
-      },
+        ] },
       {
         titulo: '8. Governing law and complaints',
         parrafos: [
           'This legal notice is governed by Spanish law. For any dispute with consumers, the courts designated by consumer law shall have jurisdiction, without depriving the consumer of the rights granted by the law of their place of residence.',
           'You can send any complaint to ' + BUZON_LEGAL + ' or through the contact page; we will reply as soon as possible and always within the legal deadlines. You may also turn to the public consumer authorities of your region.',
-        ],
-      },
-    ],
-  },
-}
+        ] },
+    ] } }
 
 /* ══════════════════════════════════════════════════════════════════════════
    POLÍTICA DE PRIVACIDAD — RGPD arts. 13-14
@@ -187,8 +167,7 @@ export const POLITICA_PRIVACIDAD: Record<IdiomaLegal, DocumentoLegal> = {
         titulo: '1. Responsable del tratamiento',
         parrafos: [
           'El responsable del tratamiento es el titular de maquinaria.click, cuyos datos identificativos figuran en el aviso legal. Para cualquier cuestión sobre privacidad puedes escribir a ' + BUZON_PRIVACIDAD + '.',
-        ],
-      },
+        ] },
       {
         titulo: '2. Qué datos tratamos',
         lista: [
@@ -200,8 +179,7 @@ export const POLITICA_PRIVACIDAD: Record<IdiomaLegal, DocumentoLegal> = {
           'Reservas: datos necesarios para gestionar una reserva con señal.',
           'Créditos: saldo, movimientos y la referencia del pago. No tratamos números de tarjeta: los pagos con tarjeta se realizan en la pasarela del proveedor de pago.',
           'Datos técnicos: dirección IP, tipo de dispositivo y navegador, y páginas visitadas, con la finalidad de seguridad, prevención de abuso y medición agregada del servicio.',
-        ],
-      },
+        ] },
       {
         titulo: '3. Para qué y con qué base jurídica',
         lista: [
@@ -211,8 +189,7 @@ export const POLITICA_PRIVACIDAD: Record<IdiomaLegal, DocumentoLegal> = {
           'Medición de tráfico y notificaciones push: consentimiento, que puedes retirar cuando quieras (ver la política de cookies).',
           'Facturación y obligaciones fiscales de los servicios de pago: cumplimiento de obligaciones legales.',
           'Avisos por email imprescindibles para el servicio (confirmación de cuenta, avisos de seguridad): ejecución del contrato; no son publicidad.',
-        ],
-      },
+        ] },
       {
         titulo: '4. Cuánto tiempo los conservamos',
         lista: [
@@ -221,8 +198,7 @@ export const POLITICA_PRIVACIDAD: Record<IdiomaLegal, DocumentoLegal> = {
           'Mensajes de chat: mientras el anuncio esté activo y el tiempo necesario para gestionar posibles incidencias.',
           'Facturación de servicios de pago: los plazos de conservación contable y fiscal (con carácter general, seis años).',
           'Registros técnicos y de seguridad: un plazo breve y proporcionado, no superior al necesario para investigar abusos.',
-        ],
-      },
+        ] },
       {
         titulo: '5. Quién más trata tus datos',
         parrafos: [
@@ -237,48 +213,40 @@ export const POLITICA_PRIVACIDAD: Record<IdiomaLegal, DocumentoLegal> = {
           'Telegram, únicamente para avisos internos de moderación: si escribes en un chat de la plataforma datos de contacto, el aviso interno puede incluirlos.',
           'Proveedores de pago, si contratas servicios de visibilidad con tarjeta: son responsables independientes del tratamiento del pago.',
           'Autoridades públicas, cuando exista una obligación legal de comunicar información.',
-        ],
-      },
+        ] },
       {
         titulo: '6. Transferencias internacionales',
         parrafos: [
           'Algunos proveedores pertenecen a grupos con sede en Estados Unidos. Cuando el tratamiento implica una transferencia fuera del Espacio Económico Europeo, se ampara en una decisión de adecuación de la Comisión Europea o en las cláusulas contractuales tipo, junto con medidas adicionales de seguridad.',
-        ],
-      },
+        ] },
       {
         titulo: '7. Tus derechos',
         parrafos: [
           'Puedes ejercer los derechos de acceso, rectificación, supresión, oposición, limitación del tratamiento y portabilidad, así como retirar tu consentimiento en cualquier momento (sin que ello afecte a la licitud del tratamiento previo), escribiendo a '
             + BUZON_PRIVACIDAD + ' desde la dirección con la que te registraste o desde el propio panel, donde puedes editar tus datos y eliminar tu cuenta.',
           'Si consideras que no hemos atendido correctamente tu solicitud, puedes reclamar ante la Agencia Española de Protección de Datos (www.aepd.es).',
-        ],
-      },
+        ] },
       {
         titulo: '8. Menores de edad',
         parrafos: [
           'El servicio está dirigido a personas mayores de 18 años. No se recogen conscientemente datos de menores; si detectas una cuenta de un menor, avísanos y se eliminará.',
-        ],
-      },
+        ] },
       {
         titulo: '9. Seguridad',
         parrafos: [
           'Aplicamos medidas técnicas y organizativas proporcionadas al riesgo: conexiones cifradas (HTTPS), control de acceso por filas en la base de datos, almacenamiento privado de la documentación sensible y URLs firmadas de validez limitada para revisarla. Ningún sistema es infalible, pero limitamos la recogida a lo necesario y restringimos quién puede ver cada dato.',
-        ],
-      },
+        ] },
       {
         titulo: '10. Cookies y almacenamiento local',
         parrafos: [
           'Usamos cookies y almacenamiento del navegador imprescindibles para mantener tu sesión y recordar tus preferencias; la medición de tráfico solo se carga si la aceptas. El detalle y la forma de cambiar tu decisión están en la política de cookies.',
-        ],
-      },
+        ] },
       {
         titulo: '11. Cambios en esta política',
         parrafos: [
           'Si cambiamos la forma de tratar tus datos, actualizaremos esta política y, cuando el cambio sea relevante, te avisaremos por email o dentro de la web antes de aplicarlo.',
-        ],
-      },
-    ],
-  },
+        ] },
+    ] },
   en: {
     titulo: 'Privacy policy',
     actualizado: ACTUALIZADO.en,
@@ -289,8 +257,7 @@ export const POLITICA_PRIVACIDAD: Record<IdiomaLegal, DocumentoLegal> = {
         titulo: '1. Data controller',
         parrafos: [
           'The controller is the owner of maquinaria.click, whose identifying details appear in the legal notice. For any privacy question you can write to ' + BUZON_PRIVACIDAD + '.',
-        ],
-      },
+        ] },
       {
         titulo: '2. What data we process',
         lista: [
@@ -302,8 +269,7 @@ export const POLITICA_PRIVACIDAD: Record<IdiomaLegal, DocumentoLegal> = {
           'Reservations: data needed to manage a reservation with a deposit.',
           'Credits: balance, transactions and the payment reference. We do not process card numbers: card payments are made on the payment provider’s checkout.',
           'Technical data: IP address, device and browser type, and pages visited, for security, abuse prevention and aggregate measurement of the service.',
-        ],
-      },
+        ] },
       {
         titulo: '3. Why and on what legal basis',
         lista: [
@@ -313,8 +279,7 @@ export const POLITICA_PRIVACIDAD: Record<IdiomaLegal, DocumentoLegal> = {
           'Traffic measurement and push notifications: consent, which you can withdraw at any time (see the cookie policy).',
           'Invoicing and tax obligations for paid services: compliance with legal obligations.',
           'Essential service emails (account confirmation, security alerts): performance of the contract; they are not marketing.',
-        ],
-      },
+        ] },
       {
         titulo: '4. How long we keep it',
         lista: [
@@ -323,8 +288,7 @@ export const POLITICA_PRIVACIDAD: Record<IdiomaLegal, DocumentoLegal> = {
           'Chat messages: while the listing is active and as long as needed to handle incidents.',
           'Invoicing of paid services: accounting and tax retention periods (generally six years).',
           'Technical and security logs: a short, proportionate period, no longer than needed to investigate abuse.',
-        ],
-      },
+        ] },
       {
         titulo: '5. Who else processes your data',
         parrafos: [
@@ -339,49 +303,40 @@ export const POLITICA_PRIVACIDAD: Record<IdiomaLegal, DocumentoLegal> = {
           'Telegram, only for internal moderation alerts: if you write contact details in a platform chat, the internal alert may include them.',
           'Payment providers, if you buy visibility services by card: they are independent controllers of the payment processing.',
           'Public authorities, where there is a legal obligation to disclose information.',
-        ],
-      },
+        ] },
       {
         titulo: '6. International transfers',
         parrafos: [
           'Some providers belong to groups headquartered in the United States. Where processing involves a transfer outside the European Economic Area, it relies on a European Commission adequacy decision or on standard contractual clauses, together with additional security measures.',
-        ],
-      },
+        ] },
       {
         titulo: '7. Your rights',
         parrafos: [
           'You can exercise your rights of access, rectification, erasure, objection, restriction of processing and portability, and withdraw your consent at any time (without affecting the lawfulness of prior processing), by writing to '
             + BUZON_PRIVACIDAD + ' from the address you registered with or from your dashboard, where you can edit your data and delete your account.',
           'If you believe we have not handled your request properly, you can complain to the Spanish Data Protection Agency (www.aepd.es).',
-        ],
-      },
+        ] },
       {
         titulo: '8. Minors',
         parrafos: [
           'The service is intended for people over 18. We do not knowingly collect data from minors; if you become aware of a minor’s account, let us know and it will be deleted.',
-        ],
-      },
+        ] },
       {
         titulo: '9. Security',
         parrafos: [
           'We apply technical and organisational measures proportionate to the risk: encrypted connections (HTTPS), row-level access control in the database, private storage for sensitive documentation and short-lived signed URLs for reviewing it. No system is infallible, but we collect only what is needed and restrict who can see each piece of data.',
-        ],
-      },
+        ] },
       {
         titulo: '10. Cookies and local storage',
         parrafos: [
           'We use cookies and browser storage that are essential to keep your session and remember your preferences; traffic measurement is only loaded if you accept it. Details and how to change your decision are in the cookie policy.',
-        ],
-      },
+        ] },
       {
         titulo: '11. Changes to this policy',
         parrafos: [
           'If we change how we process your data, we will update this policy and, where the change is significant, we will notify you by email or on the site before applying it.',
-        ],
-      },
-    ],
-  },
-}
+        ] },
+    ] } }
 
 /* ══════════════════════════════════════════════════════════════════════════
    POLÍTICA DE COOKIES — LSSI art. 22.2 y guía de la AEPD
@@ -405,30 +360,25 @@ export const POLITICA_COOKIES: Record<IdiomaLegal, DocumentoLegal> = {
           'Aviso de instalación de la app (necesaria): recuerda si ya cerraste el aviso para no repetirlo.',
           'Medición de tráfico y rendimiento (opcional): Vercel Analytics y Speed Insights miden visitas y tiempos de carga de forma agregada, y la medición propia de audiencia anota qué páginas se ven, cuánto tiempo y desde qué web se llega. La medición propia usa un identificador aleatorio guardado en el navegador y **no** guarda tu IP ni tu user-agent. Se carga **solo si pulsas «Aceptar»**; si rechazas o no decides, no se descarga su código.',
           'Google Analytics 4 (opcional): cookies `_ga` y `_ga_*` de Google que distinguen visitantes y sesiones mediante un identificador aleatorio, para elaborar estadísticas de uso (páginas vistas, origen de la visita, dispositivo y zona geográfica aproximada). Caducan a los 13 meses. Está configurado **sin Google Signals ni personalización de anuncios**, y Google Analytics 4 no almacena direcciones IP. Como el resto de la medición, se carga **solo si pulsas «Aceptar»**; si después cambias de opinión, deja de enviar datos al instante.',
-        ],
-      },
+        ] },
       {
         titulo: '2. Qué no usamos',
         lista: [
           'No usamos cookies publicitarias ni de perfilado.',
           'No vendemos ni cedemos datos de navegación a terceros con fines publicitarios.',
           'No hacemos seguimiento entre sitios distintos.',
-        ],
-      },
+        ] },
       {
         titulo: '3. Cómo cambiar tu decisión',
         parrafos: [
           'Puedes cambiar de opinión en cualquier momento con el botón de abajo: se borrará tu elección y volverás a ver el aviso. Si aceptas medición y después la rechazas, el código de medición se descarga solo tras volver a aceptar.',
-        ],
-      },
+        ] },
       {
         titulo: '4. Cómo desactivarlas en tu navegador',
         parrafos: [
           'Todos los navegadores permiten bloquear o eliminar cookies desde su configuración (Privacidad y seguridad). Ten en cuenta que bloquear las necesarias impide iniciar sesión o publicar anuncios.',
-        ],
-      },
-    ],
-  },
+        ] },
+    ] },
   en: {
     titulo: 'Cookie policy',
     actualizado: ACTUALIZADO.en,
@@ -446,31 +396,25 @@ export const POLITICA_COOKIES: Record<IdiomaLegal, DocumentoLegal> = {
           'App install notice (essential): remembers that you already dismissed the notice so it is not shown again.',
           'Traffic and performance measurement (optional): Vercel Analytics and Speed Insights measure visits and load times in aggregate, and our own audience measurement records which pages are viewed, for how long and which website referred you. Our own measurement uses a random identifier stored in your browser and does **not** store your IP or user-agent. It is loaded **only if you press “Accept”**; if you reject or do not decide, its code is not downloaded.',
           'Google Analytics 4 (optional): Google’s `_ga` and `_ga_*` cookies, which tell visitors and sessions apart using a random identifier in order to produce usage statistics (pages viewed, where the visit came from, device and approximate region). They expire after 13 months. It is configured **without Google Signals or ad personalization**, and Google Analytics 4 does not store IP addresses. Like the rest of the measurement, it is loaded **only if you press “Accept”**; if you change your mind later, it stops sending data immediately.',
-        ],
-      },
+        ] },
       {
         titulo: '2. What we do not use',
         lista: [
           'We do not use advertising or profiling cookies.',
           'We do not sell or share browsing data with third parties for advertising purposes.',
           'We do not track you across different sites.',
-        ],
-      },
+        ] },
       {
         titulo: '3. How to change your decision',
         parrafos: [
           'You can change your mind at any time with the button below: your choice will be cleared and the notice will be shown again. If you accept measurement and later reject it, the measurement code only loads again after you accept.',
-        ],
-      },
+        ] },
       {
         titulo: '4. How to turn them off in your browser',
         parrafos: [
           'All browsers allow you to block or delete cookies in their settings (Privacy and security). Note that blocking the essential ones prevents signing in or publishing listings.',
-        ],
-      },
-    ],
-  },
-}
+        ] },
+    ] } }
 
 /* ══════════════════════════════════════════════════════════════════════════
    TÉRMINOS Y CONDICIONES
@@ -488,8 +432,7 @@ export const TERMINOS: Record<IdiomaLegal, DocumentoLegal> = {
         parrafos: [
           'MaquinariaOcasión es un tablón de anuncios de maquinaria y herramienta de ocasión en España. Actúa como intermediario: pone en contacto a quien vende con quien compra, pero no vende las máquinas ni participa en la compraventa (ver el aviso legal).',
           'Al crear una cuenta aceptas estas condiciones y la política de privacidad. Debes ser mayor de 18 años.',
-        ],
-      },
+        ] },
       {
         titulo: '2. Publicar anuncios',
         parrafos: [
@@ -500,28 +443,24 @@ export const TERMINOS: Record<IdiomaLegal, DocumentoLegal> = {
           'Las fotos y la descripción son veraces, actuales y corresponden al bien real anunciado.',
           'Si eres taller o profesional, indicas tu condición de empresario y cumples tus obligaciones (facturación, garantía legal y demás normativa aplicable).',
           'No publicas maquinaria o herramientas robadas, con daños relevantes o cargas no comunicadas, ni anuncios duplicados o engañosos.',
-        ],
-      },
+        ] },
       {
         titulo: '3. Moderación y retirada de anuncios',
         parrafos: [
           'Revisamos los anuncios y podemos rechazarlos, ocultarlos o retirarlos si incumplen estas condiciones, si detectamos indicios de fraude o si lo exige una autoridad. Cuando un anuncio se retira, se explica el motivo y se puede solicitar una revisión.',
           'Puedes denunciar un anuncio desde su propia ficha o escribiendo a ' + BUZON_LEGAL + '.',
-        ],
-      },
+        ] },
       {
         titulo: '4. Verificación documental',
         parrafos: [
           'El sello de verificado indica que hemos comprobado la identidad del vendedor con la documentación aportada, y el sello de documentación verificada, que la documentación del anuncio ha sido revisada (factura, ficha técnica y manual). Son comprobaciones documentales: no equivalen a una tasación ni garantizan el estado mecánico de la máquina.',
           'Las transacciones se realizan directamente entre las partes: MaquinariaOcasión no custodia fondos ni participa en la compraventa.',
-        ],
-      },
+        ] },
       {
         titulo: '5. Reservas con señal',
         parrafos: [
           'Una reserva con señal es un acuerdo entre comprador y vendedor: el comprador ingresa una cantidad para bloquear el anuncio y el vendedor debe confirmarla. MaquinariaOcasión facilita el acuerdo y deja constancia de él, pero no custodia el dinero de la señal ni el precio de compra. Si surge un conflicto, se puede cancelar la reserva desde la plataforma y reclamar a la otra parte.',
-        ],
-      },
+        ] },
       {
         titulo: '6. Servicios de pago (créditos)',
         parrafos: [
@@ -531,42 +470,35 @@ export const TERMINOS: Record<IdiomaLegal, DocumentoLegal> = {
           'Destacar un anuncio 12, 24 o 48 horas.',
           'Subir un anuncio al primer puesto durante 7 días.',
           'Incluye lo que la ley exija en materia de precios, impuestos y facturación. Los precios se muestran en euros antes de contratar.',
-        ],
-      },
+        ] },
       {
         titulo: '7. Desistimiento y devoluciones de créditos',
         parrafos: [
           'Si contratas como consumidor, tienes derecho de desistimiento en los términos de la ley. Al tratarse de contenido digital de ejecución inmediata, ese derecho se pierde cuando el crédito se consume con tu consentimiento expreso previo.',
           'En la práctica, y como política comercial: **si un crédito comprado no se ha consumido, se devuelve**. Basta con escribir a ' + BUZON_LEGAL + ' en los 14 días siguientes a la compra indicando la referencia del pago. Si un servicio promocionado no llegó a aplicarse por un error nuestro, se repone el crédito.',
-        ],
-      },
+        ] },
       {
         titulo: '8. Conducta del usuario',
         parrafos: [
           'No se permite el spam, la suplantación de identidad, el acoso, la recogida de datos de otros usuarios, las estafas, ni publicar contenido ilícito, ofensivo o que vulnere derechos de terceros. El uso indebido puede suponer la suspensión de la cuenta, sin perjuicio de las acciones legales que correspondan.',
-        ],
-      },
+        ] },
       {
         titulo: '9. Responsabilidad',
         parrafos: [
           'MaquinariaOcasión no garantiza la veracidad de los anuncios de los usuarios ni el estado de la maquinaria y herramientas anunciadas, y no responde de los acuerdos entre usuarios. Como servicio de intermediación, responde de sus propios servicios (por ejemplo, las herramientas de verificación y las promociones de pago) conforme a la ley, y no del contenido ajeno del que no tenga conocimiento efectivo.',
-        ],
-      },
+        ] },
       {
         titulo: '10. Ley aplicable y reclamaciones',
         parrafos: [
           'Estas condiciones se rigen por la legislación española. Si eres consumidor, conservas todos los derechos que te reconoce la normativa de tu país de residencia y puedes reclamar ante los organismos públicos de consumo o los tribunales que te correspondan.',
           'Reclamaciones y dudas: ' + BUZON_LEGAL + '.',
-        ],
-      },
+        ] },
       {
         titulo: '11. Cambios',
         parrafos: [
           'Podemos actualizar estas condiciones para adaptarlas a cambios legales o del servicio. Los cambios se publican en esta página y, si son relevantes, se avisan dentro de la web o por email con antelación razonable.',
-        ],
-      },
-    ],
-  },
+        ] },
+    ] },
   en: {
     titulo: 'Terms and conditions',
     actualizado: ACTUALIZADO.en,
@@ -578,8 +510,7 @@ export const TERMINOS: Record<IdiomaLegal, DocumentoLegal> = {
         parrafos: [
           'MaquinariaOcasión is a noticeboard for second-hand machinery and tools in Spain. It acts as an intermediary: it connects sellers and buyers, but it does not sell the machines and takes no part in the sale (see the legal notice).',
           'By creating an account you accept these terms and the privacy policy. You must be over 18.',
-        ],
-      },
+        ] },
       {
         titulo: '2. Publishing listings',
         parrafos: ['Publishing is free. By publishing you declare that:'],
@@ -588,28 +519,24 @@ export const TERMINOS: Record<IdiomaLegal, DocumentoLegal> = {
           'The photos and description are truthful, current and match the actual advertised item.',
           'If you are a workshop or dealer, you state that you are a business and comply with your obligations (invoicing, legal guarantee and other applicable rules).',
           'You are not publishing stolen machinery or tools, items with undisclosed serious damage or charges, or duplicate or misleading listings.',
-        ],
-      },
+        ] },
       {
         titulo: '3. Moderation and removal of listings',
         parrafos: [
           'We review listings and may reject, hide or remove them if they breach these terms, if we detect signs of fraud or if an authority requires it. When a listing is removed, the reason is given and a review can be requested.',
           'You can report a listing from its own page or by writing to ' + BUZON_LEGAL + '.',
-        ],
-      },
+        ] },
       {
         titulo: '4. Document verification',
         parrafos: [
           'The verified badge means we have checked the seller’s identity against the documents provided, and the verified-documents badge means the listing paperwork has been reviewed. These are documentary checks: they are not a valuation and do not guarantee the mechanical or operating condition of the machine or tool.',
           'Transactions happen directly between the parties: MaquinariaOcasión does not hold funds and takes no part in the sale.',
-        ],
-      },
+        ] },
       {
         titulo: '5. Reservations with a deposit',
         parrafos: [
           'A reservation with a deposit is an agreement between buyer and seller: the buyer pays a deposit to hold the listing and the seller must confirm it. MaquinariaOcasión facilitates the agreement and records it, but does not hold the deposit money or the purchase price. If a conflict arises, the reservation can be cancelled from the platform and you can claim against the other party.',
-        ],
-      },
+        ] },
       {
         titulo: '6. Paid services (credits)',
         parrafos: [
@@ -619,49 +546,40 @@ export const TERMINOS: Record<IdiomaLegal, DocumentoLegal> = {
           'Featuring a listing for 12, 24 or 48 hours.',
           'Moving a listing to the top for 7 days.',
           'Prices are shown in euros before you buy, with the taxes and invoicing required by law.',
-        ],
-      },
+        ] },
       {
         titulo: '7. Withdrawal and credit refunds',
         parrafos: [
           'If you buy as a consumer, you have a right of withdrawal under the law. As this is digital content supplied immediately, that right is lost once the credit is used with your prior express consent.',
           'In practice, as a commercial policy: **if a purchased credit has not been used, it is refunded**. Just write to ' + BUZON_LEGAL + ' within 14 days of purchase with the payment reference. If a promoted service was never applied due to our mistake, the credit is restored.',
-        ],
-      },
+        ] },
       {
         titulo: '8. User conduct',
         parrafos: [
           'Spam, impersonation, harassment, scraping other users’ data, scams, and publishing unlawful or offensive content or content that infringes third-party rights are not allowed. Misuse may lead to account suspension, without prejudice to any legal action.',
-        ],
-      },
+        ] },
       {
         titulo: '9. Liability',
         parrafos: [
           'MaquinariaOcasión does not guarantee the truthfulness of users’ listings or the condition of the items listed, and is not responsible for agreements between users. As an intermediary service, it is liable for its own services (for example, the verification tools and paid promotions) under the law, and not for third-party content of which it has no actual knowledge.',
-        ],
-      },
+        ] },
       {
         titulo: '10. Governing law and complaints',
         parrafos: [
           'These terms are governed by Spanish law. If you are a consumer, you keep all rights granted by the law of your country of residence and may complain to public consumer authorities or the competent courts.',
           'Complaints and questions: ' + BUZON_LEGAL + '.',
-        ],
-      },
+        ] },
       {
         titulo: '11. Changes',
         parrafos: [
           'We may update these terms to adapt them to legal or service changes. Changes are published on this page and, if significant, notified on the site or by email with reasonable notice.',
-        ],
-      },
-    ],
-  },
-}
+        ] },
+    ] } }
 
 /** Textos de los enlaces del pie y títulos de las páginas legales. */
 export const ENLACES_LEGALES = {
   es: { avisoLegal: 'Aviso legal', cookies: 'Cookies', privacidad: 'Privacidad', terminos: 'Términos' },
-  en: { avisoLegal: 'Legal notice', cookies: 'Cookies', privacidad: 'Privacy', terminos: 'Terms' },
-} as const
+  en: { avisoLegal: 'Legal notice', cookies: 'Cookies', privacidad: 'Privacy', terminos: 'Terms' } } as const
 
 /**
  * Inserta la identidad real del responsable en la sección 1 de la política de
@@ -693,6 +611,5 @@ export function politicaPrivacidadCon(
       indice === 0
         ? { ...seccion, parrafos: [identidad, ...(seccion.parrafos || [])] }
         : seccion,
-    ),
-  }
+    ) }
 }

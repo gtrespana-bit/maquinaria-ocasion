@@ -31,9 +31,7 @@ export function getSupabaseServerClient() {
       auth: {
         persistSession: false,
         autoRefreshToken: false,
-        detectSessionInUrl: false,
-      },
-    })
+        detectSessionInUrl: false } })
   }
   return globalServerSupabase as any
 }

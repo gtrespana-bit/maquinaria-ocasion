@@ -4,8 +4,7 @@ import { requireAdmin } from '@/lib/require-auth'
 import { checkRateLimit, getClientIp, rateLimitResponse } from '@/lib/rate-limit'
 import {
   isTelegramAdminCallbackAuthorized,
-  isTelegramWebhookAuthorized,
-} from '@/lib/telegram-webhook-auth'
+  isTelegramWebhookAuthorized } from '@/lib/telegram-webhook-auth'
 
 export const runtime = 'nodejs'
 
@@ -66,14 +65,12 @@ export async function POST(req: NextRequest) {
       const result = await procesarAprobacion(txId, supabaseUrl, supabaseKey)
       await tgFetch(BOT_TOKEN, '/answerCallbackQuery', { callback_query_id: callbackQueryId, text: result.alert, show_alert: false })
       await tgFetch(BOT_TOKEN, '/editMessageText', {
-        chat_id: chatId, message_id: messageId, text: result.text, parse_mode: 'HTML',
-      })
+        chat_id: chatId, message_id: messageId, text: result.text, parse_mode: 'HTML' })
     } else if (accion === 'rechazar' && txId) {
       const result = await procesarRechazo(txId, supabaseUrl, supabaseKey)
       await tgFetch(BOT_TOKEN, '/answerCallbackQuery', { callback_query_id: callbackQueryId, text: result.alert, show_alert: false })
       await tgFetch(BOT_TOKEN, '/editMessageText', {
-        chat_id: chatId, message_id: messageId, text: result.text, parse_mode: 'HTML',
-      })
+        chat_id: chatId, message_id: messageId, text: result.text, parse_mode: 'HTML' })
     }
 
     return NextResponse.json({ ok: true })
@@ -104,8 +101,7 @@ function tgFetch(token: string, method: string, body: object) {
   return fetch(`https://api.telegram.org/bot${token}${method}`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(body),
-  })
+    body: JSON.stringify(body) })
 }
 
 async function procesarAprobacion(txId: string, url: string, key: string) {
@@ -120,20 +116,17 @@ async function procesarAprobacion(txId: string, url: string, key: string) {
 
   const { data: result, error: approvalError } = await sb.rpc('aprobar_transaccion', {
     p_transaccion_id: txId,
-    p_admin_id: null,
-  })
+    p_admin_id: null })
 
   if (approvalError || !result?.ok) {
     return {
       alert: '❌ No aprobada',
-      text: `❌ No se pudo aprobar: ${result?.error || approvalError?.message || 'error interno'}`,
-    }
+      text: `❌ No se pudo aprobar: ${result?.error || approvalError?.message || 'error interno'}` }
   }
 
   return {
     alert: `✅ +${tx.monto} créditos aprobados`,
-    text: `✅ <b>APROBADO</b>\n+${tx.monto} créditos\nUsuario: ${tx.user_id}\nMétodo: ${tx.metodo_pago || 'N/A'}\n\n<i>Procesado desde Telegram</i>`,
-  }
+    text: `✅ <b>APROBADO</b>\n+${tx.monto} créditos\nUsuario: ${tx.user_id}\nMétodo: ${tx.metodo_pago || 'N/A'}\n\n<i>Procesado desde Telegram</i>` }
 }
 
 async function procesarRechazo(txId: string, url: string, key: string) {
@@ -150,12 +143,10 @@ async function procesarRechazo(txId: string, url: string, key: string) {
   if (error || !data) {
     return {
       alert: '❌ No rechazada',
-      text: `❌ La transacción ya fue procesada o no existe: ${txId}`,
-    }
+      text: `❌ La transacción ya fue procesada o no existe: ${txId}` }
   }
 
   return {
     alert: '❌ Rechazada',
-    text: `❌ <b>RECHAZADA</b>\nTransacción: ${txId}\nCréditos NO añadidos\n\n<i>Procesado desde Telegram</i>`,
-  }
+    text: `❌ <b>RECHAZADA</b>\nTransacción: ${txId}\nCréditos NO añadidos\n\n<i>Procesado desde Telegram</i>` }
 }

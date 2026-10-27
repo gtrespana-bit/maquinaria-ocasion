@@ -44,18 +44,14 @@ export const CATEGORIAS_SEO: Record<string, CategoriaSEO> = {
     faq: [
       {
         pregunta: '¿Qué maquinaria agrícola se puede comprar de segunda mano?',
-        respuesta: 'Tractores, cosechadoras y empacadoras, arados, sembradoras, cultivadores, pulverizadoras, segadoras y aperos de forraje, así como equipos de ganadería como ordenadoras, comederos y vallados. En MaquinariaOcasión encontrarás anuncios de todo el mercado español con ficha técnica por horas de uso y potencia.',
-      },
+        respuesta: 'Tractores, cosechadoras y empacadoras, arados, sembradoras, cultivadores, pulverizadoras, segadoras y aperos de forraje, así como equipos de ganadería como ordenadoras, comederos y vallados. En MaquinariaOcasión encontrarás anuncios de todo el mercado español con ficha técnica por horas de uso y potencia.' },
       {
         pregunta: '¿Qué horas de uso es "mucho" en un tractor de ocasión?',
-        respuesta: 'Depende del motor y del mantenimiento, pero como referencia: un tractor de finca con 5.000–8.000 horas suele estar en la mitad de su vida útil si se ha cuidado; por encima de 12.000–15.000 horas conviene revisar motor, transmisión y hidráulica antes de comprar. Revisa siempre el libro de mantenimiento y pide las horas registradas en el diagnóstico.',
-      },
+        respuesta: 'Depende del motor y del mantenimiento, pero como referencia: un tractor de finca con 5.000–8.000 horas suele estar en la mitad de su vida útil si se ha cuidado; por encima de 12.000–15.000 horas conviene revisar motor, transmisión y hidráulica antes de comprar. Revisa siempre el libro de mantenimiento y pide las horas registradas en el diagnóstico.' },
       {
         pregunta: '¿Qué papeles necesita la compra de una máquina agrícola?',
-        respuesta: 'Factura o albarán de compra, ficha técnica o declaración CE del fabricante, y en tractores, la tarjeta de inscripción (ficha ITV) en vigor. Verifica que el número de bastidor o el número de serie coincidan con la documentación, y comprueba la declaración CE si la máquina es de importación.',
-      },
-    ],
-  },
+        respuesta: 'Factura o albarán de compra, ficha técnica o declaración CE del fabricante, y en tractores, la tarjeta de inscripción (ficha ITV) en vigor. Verifica que el número de bastidor o el número de serie coincidan con la documentación, y comprueba la declaración CE si la máquina es de importación.' },
+    ] },
   obra: {
     slug: 'obra',
     nombre: CAT_OBRA.label,
@@ -78,18 +74,14 @@ export const CATEGORIAS_SEO: Record<string, CategoriaSEO> = {
     faq: [
       {
         pregunta: '¿Qué maquinaria de obra se encuentra en ocasión?',
-        respuesta: 'Excavadoras y retroexcavadoras, cargadoras frontales y minicargadoras (skid-steer), telecargadores, rodillos y apisonadores, dumperes articulados, y plataformas elevadoras (telescópicas, articuladas y verticales). Los anuncios indican horas de uso, estado y documentación (factura, libro y declaración CE).',
-      },
+        respuesta: 'Excavadoras y retroexcavadoras, cargadoras frontales y minicargadoras (skid-steer), telecargadores, rodillos y apisonadores, dumperes articulados, y plataformas elevadoras (telescópicas, articuladas y verticales). Los anuncios indican horas de uso, estado y documentación (factura, libro y declaración CE).' },
       {
         pregunta: '¿Cómo sé si una excavadora de segunda mano está bien?',
-        respuesta: 'Revisa las horas certificadas, el desgaste de cadenas y platillas, fugas de cilindros y mangueras, el estado del volquete y la articulación, y pide historial de mantenimiento. Una prueba de excavación con el motor frío y caliente revela problemas de bombeo que no se ven en fotos.',
-      },
+        respuesta: 'Revisa las horas certificadas, el desgaste de cadenas y platillas, fugas de cilindros y mangueras, el estado del volquete y la articulación, y pide historial de mantenimiento. Una prueba de excavación con el motor frío y caliente revela problemas de bombeo que no se ven en fotos.' },
       {
         pregunta: '¿Necesito permiso especial para mover maquinaria por carretera?',
-        respuesta: 'Depende del peso y de las medidas: maquinaria sobre oruga o de gran envergadura requiere transporte especial (permiso de escolta según normativa vigente). Las medidas de transporte indicadas en el anuncio ayudan a valorar si cabe en tu remolque o necesitas empresa de transporte dedicada.',
-      },
-    ],
-  },
+        respuesta: 'Depende del peso y de las medidas: maquinaria sobre oruga o de gran envergadura requiere transporte especial (permiso de escolta según normativa vigente). Las medidas de transporte indicadas en el anuncio ayudan a valorar si cabe en tu remolque o necesitas empresa de transporte dedicada.' },
+    ] },
   herramientas: {
     slug: 'herramientas',
     nombre: CAT_HERRAMIENTAS.label,
@@ -112,15 +104,11 @@ export const CATEGORIAS_SEO: Record<string, CategoriaSEO> = {
     faq: [
       {
         pregunta: '¿Qué conviene revisar antes de comprar herramienta de segunda mano?',
-        respuesta: 'El estado de carbones y rodamientos, la línea de corte en amoladoras y motosierras, la holgura del husillo en taladros y la prueba real bajo carga. En generadores y compresores, comprueba horas de funcionamiento, fugas y tensión estable. Un anuncio con factura y libro de instrucciones da más garantía.',
-      },
+        respuesta: 'El estado de carbones y rodamientos, la línea de corte en amoladoras y motosierras, la holgura del husillo en taladros y la prueba real bajo carga. En generadores y compresores, comprueba horas de funcionamiento, fugas y tensión estable. Un anuncio con factura y libro de instrucciones da más garantía.' },
       {
         pregunta: '¿Merece la pena un generador eléctrico de ocasión?',
-        respuesta: 'Sí si necesitas respaldo en obra o eventos: un grupo electrónico bien mantenido dura miles de horas. Compara la potencia útil en VA/W con tu consumo total, el tipo de combustible (diésel, gasolina o gas) y las horas registradas; prioriza modelos con mantenimiento documentado como Himoinsa, Cummins, Perkins o Honda.',
-      },
-    ],
-  },
-}
+        respuesta: 'Sí si necesitas respaldo en obra o eventos: un grupo electrónico bien mantenido dura miles de horas. Compara la potencia útil en VA/W con tu consumo total, el tipo de combustible (diésel, gasolina o gas) y las horas registradas; prioriza modelos con mantenimiento documentado como Himoinsa, Cummins, Perkins o Honda.' },
+    ] } }
 
 export const CATEGORIAS_SEO_LIST = Object.values(CATEGORIAS_SEO)
 
@@ -165,14 +153,11 @@ const SUBS_BASE: Record<string, InfoSubSEO> = {
     faq: [
       {
         pregunta: '¿Cuántas horas puede durar un tractor de ocasión?',
-        respuesta: 'Un tractor bien mantenido supera con frecuencia las 8.000–12.000 horas de trabajo antes de una reparación mayor de motor o transmisión. Clave: historial de cambios de aceite, estado del turbo (si lleva) y desgaste de embrague. Contrasta el horómetro con el historial de mantenimiento.',
-      },
+        respuesta: 'Un tractor bien mantenido supera con frecuencia las 8.000–12.000 horas de trabajo antes de una reparación mayor de motor o transmisión. Clave: historial de cambios de aceite, estado del turbo (si lleva) y desgaste de embrague. Contrasta el horómetro con el historial de mantenimiento.' },
       {
         pregunta: '¿Qué potencia (CV) necesito para mi finca?',
-        respuesta: 'Como orientación: labores ligeras y huerto con 30–60 CV; arado y trabajos exigentes en medianas de 80–120 CV; grandes extensiones y aperos pesados, 140–200 CV. Unos pocos CV de más no gastan mucho combustible, pero un tractor infradimensionado fuerza motor y embrague.',
-      },
-    ],
-  },
+        respuesta: 'Como orientación: labores ligeras y huerto con 30–60 CV; arado y trabajos exigentes en medianas de 80–120 CV; grandes extensiones y aperos pesados, 140–200 CV. Unos pocos CV de más no gastan mucho combustible, pero un tractor infradimensionado fuerza motor y embrague.' },
+    ] },
   'cosechadoras': {
     descripcion: 'Cosechadoras y empacadoras de ocasión: Claas Lexion, New Holland CR/CX, Case IH Axial-Flow, John Deere S Series, Krone y McHale. Segunda mano con ancho de corte y horas.',
     terminos: ['cosechadora de segunda mano', 'cosechadora Claas ocasión', 'empacadora usada', 'ensiladora de ocasión', 'cosechadora de grano barata'],
@@ -183,14 +168,11 @@ const SUBS_BASE: Record<string, InfoSubSEO> = {
     faq: [
       {
         pregunta: '¿Qué revisar en una cosechadora de segunda mano?',
-        respuesta: 'Horas totales y de rotor o cilindro, desgaste de cribos y martillos de trilla, estado de barredora y mesa, fugas hidráulicas y condición de cadenas y rodamientos. Una prueba corta en cultivo revela pérdidas en el rastrojo y problemas de alimentación que no se ven parada.',
-      },
+        respuesta: 'Horas totales y de rotor o cilindro, desgaste de cribos y martillos de trilla, estado de barredora y mesa, fugas hidráulicas y condición de cadenas y rodamientos. Una prueba corta en cultivo revela pérdidas en el rastrojo y problemas de alimentación que no se ven parada.' },
       {
         pregunta: '¿Cosechadora o empacadora: cuál me conviene?',
-        respuesta: 'Si produces grano (trigo, cebada, maíz para grano), la cosechadora. Si el destino es forraje o heno paja, la empacadora (fardos grandes o circulares) o la ensiladora (maíz). Elige según el cultivo y la superficie: en fincas pequeñas a menudo sale mejor contratar el servicio a un profesional.',
-      },
-    ],
-  },
+        respuesta: 'Si produces grano (trigo, cebada, maíz para grano), la cosechadora. Si el destino es forraje o heno paja, la empacadora (fardos grandes o circulares) o la ensiladora (maíz). Elige según el cultivo y la superficie: en fincas pequeñas a menudo sale mejor contratar el servicio a un profesional.' },
+    ] },
   'maquinaria-agricola': {
     descripcion: 'Aperos y maquinaria agrícola de ocasión: arados, sembradoras, cultivadores, pulverizadoras, rastrillos y segadoras. Kuhn, Amazone, Lemken, Kverneland, Vaderstad y Horsch de segunda mano.',
     terminos: ['arado de ocasión', 'sembradora de segunda mano', 'pulverizadora usada', 'cultivador agrícola ocasión', 'aperos y labranza baratos'],
@@ -201,14 +183,11 @@ const SUBS_BASE: Record<string, InfoSubSEO> = {
     faq: [
       {
         pregunta: '¿Qué ancho de trabajo necesito para mi tractor?',
-        respuesta: 'Regla práctica: el ancho del apero debe aprovechar el potencia disponible sin forzar el motor. Un tractor de 100 CV mueve cómodamente arados de 3–4 discos y cultivadores de 3–4 m; revisa la ficha técnica de tu tractor (CV y potencia a la toma de fuerza) y compárala con el ancho de trabajo del anuncio.',
-      },
+        respuesta: 'Regla práctica: el ancho del apero debe aprovechar el potencia disponible sin forzar el motor. Un tractor de 100 CV mueve cómodamente arados de 3–4 discos y cultivadores de 3–4 m; revisa la ficha técnica de tu tractor (CV y potencia a la toma de fuerza) y compárala con el ancho de trabajo del anuncio.' },
       {
         pregunta: '¿Cómo sé si una pulverizadora está en buen estado?',
-        respuesta: 'Revisa boquillas (cambiarlas por juego nuevo es barato), filtro, manómetro y ausencia de fugas en el circuito. Los tanques deben estar limpios y sin residuos cristalizados de producto; pide prueba de presión y comprueba que la barra se despliega y pliega sin holguras.',
-      },
-    ],
-  },
+        respuesta: 'Revisa boquillas (cambiarlas por juego nuevo es barato), filtro, manómetro y ausencia de fugas en el circuito. Los tanques deben estar limpios y sin residuos cristalizados de producto; pide prueba de presión y comprueba que la barra se despliega y pliega sin holguras.' },
+    ] },
   'ganaderia': {
     descripcion: 'Equipos de ganadería de ocasión: ordenadoras, provocadoras de celo, comederos, bebederos y vallados. Lely, DeLaval, GEA y BouMatic de segunda mano en España.',
     terminos: ['ordenadora de ocasión', 'equipos de ganadería segunda mano', 'provocadora de celo usada', 'comedero ganadero ocasión', 'maquinaria de explotación lechera'],
@@ -219,14 +198,11 @@ const SUBS_BASE: Record<string, InfoSubSEO> = {
     faq: [
       {
         pregunta: '¿Cuánto dura una ordenadora de segunda mano?',
-        respuesta: 'Los pulsoriles y tetinas se cambian por desgaste (cada 1.500–2.500 horas según fabricante); el resto del equipo (bomba, enfriador, sala) puede durar años si se mantiene. Verifica el número de puestos, el año y el estado de las gomas antes de decidir.',
-      },
+        respuesta: 'Los pulsoriles y tetinas se cambian por desgaste (cada 1.500–2.500 horas según fabricante); el resto del equipo (bomba, enfriador, sala) puede durar años si se mantiene. Verifica el número de puestos, el año y el estado de las gomas antes de decidir.' },
       {
         pregunta: '¿Qué necesito para montar un corral o vallado nuevo?',
-        respuesta: 'Comederos y bebederos con capacidad para el número de cabezas, vallados resistentes al ambiente (galvanizado o inoxidable) y, si manejas semovientes, portones con cierre seguro. En el catálogo puedes filtrar por tipo de equipo y número de puestos para dimensionar la compra.',
-      },
-    ],
-  },
+        respuesta: 'Comederos y bebederos con capacidad para el número de cabezas, vallados resistentes al ambiente (galvanizado o inoxidable) y, si manejas semovientes, portones con cierre seguro. En el catálogo puedes filtrar por tipo de equipo y número de puestos para dimensionar la compra.' },
+    ] },
 
   // ── Obra ──
   'excavadoras': {
@@ -239,14 +215,11 @@ const SUBS_BASE: Record<string, InfoSubSEO> = {
     faq: [
       {
         pregunta: '¿Qué tamaño de excavadora necesito?',
-        respuesta: 'Miniexcavadora de 1,5–3,5 t para zonas estrechas, jardinería y canalizaciones; de 6–13 t para urbanización y cimentaciones; de 20–35 t para movimiento de tierras y demolición ligera. El peso y las medidas de transporte del anuncio te dicen si puedes moverla con tu remolque.',
-      },
+        respuesta: 'Miniexcavadora de 1,5–3,5 t para zonas estrechas, jardinería y canalizaciones; de 6–13 t para urbanización y cimentaciones; de 20–35 t para movimiento de tierras y demolición ligera. El peso y las medidas de transporte del anuncio te dicen si puedes moverla con tu remolque.' },
       {
         pregunta: '¿Sobre oruga o sobre ruedas?',
-        respuesta: 'La oruga da estabilidad, flotación y durabilidad en terreno blando o en continuo; las ruedas permiten desplazarse por vía pública entre puntos de obra sin camión. Para trabajo mixto urbano, hay retroexcavadoras y modelos sobre ruedas de 8–15 t que son el término medio habitual.',
-      },
-    ],
-  },
+        respuesta: 'La oruga da estabilidad, flotación y durabilidad en terreno blando o en continuo; las ruedas permiten desplazarse por vía pública entre puntos de obra sin camión. Para trabajo mixto urbano, hay retroexcavadoras y modelos sobre ruedas de 8–15 t que son el término medio habitual.' },
+    ] },
   'cargadoras': {
     descripcion: 'Cargadoras frontales, minicargadoras y telecargadores de ocasión: Bobcat, Manitou, Merlo, JCB, Caterpillar, Volvo y New Holland. Skid-steer, frontales y telescópicas de segunda mano.',
     terminos: ['cargadora de segunda mano', 'minicargadora Bobcat ocasión', 'telecargador usado', 'cargadora frontal barata', 'cargadora sobre ruedas ocasión'],
@@ -257,14 +230,11 @@ const SUBS_BASE: Record<string, InfoSubSEO> = {
     faq: [
       {
         pregunta: '¿Cuánta carga puede mover una minicargadora?',
-        respuesta: 'Las skid-steer compactas (Bobcat S60/S70) mueven en torno a 700–1.000 kg; las medianas, 1.200–1.500 kg; y las frontales articuladas grandes superan los 3 t. Comprueba la capacidad junto con el peso operativo: la estabilidad depende del contraequilibrio, no solo del cifrado de fábrica.',
-      },
+        respuesta: 'Las skid-steer compactas (Bobcat S60/S70) mueven en torno a 700–1.000 kg; las medianas, 1.200–1.500 kg; y las frontales articuladas grandes superan los 3 t. Comprueba la capacidad junto con el peso operativo: la estabilidad depende del contraequilibrio, no solo del cifrado de fábrica.' },
       {
         pregunta: '¿Qué es un telecargador y cuándo merece la pena?',
-        respuesta: 'Un telecargador (Manitou, Merlo, JCB Loadall) combina brazo telescópico y ruedas: carga paquetes a altura, alza palés en andamio y llega donde la cargadora frontal no. Es la máquina más versátil si trabajas en obra y almacenamiento; comprueba el estado del cilindro del brazo y de las horquillas.',
-      },
-    ],
-  },
+        respuesta: 'Un telecargador (Manitou, Merlo, JCB Loadall) combina brazo telescópico y ruedas: carga paquetes a altura, alza palés en andamio y llega donde la cargadora frontal no. Es la máquina más versátil si trabajas en obra y almacenamiento; comprueba el estado del cilindro del brazo y de las horquillas.' },
+    ] },
   'compactacion': {
     descripcion: 'Rodillos, apisonadores y dumperes de ocasión: Bomag, Hamm, Dynapac, Caterpillar, Sakai, Thwaites, Bell y Astra. Compactación de suelo y transporte en obra de segunda mano.',
     terminos: ['rodillo compactador ocasión', 'apisonador de segunda mano', 'dumper articulado usado', 'pavibradora ocasión', 'compactadora de suelo barata'],
@@ -275,14 +245,11 @@ const SUBS_BASE: Record<string, InfoSubSEO> = {
     faq: [
       {
         pregunta: '¿Qué rodillo elijo para compactar?',
-        respuesta: 'Tandem doble tambor para firmes asfálticos y rodaduras; articulado para terraplenes y suelos cohesivos; apisonador de plataforma para zanjas y espacios reducidos. El peso estático y la fuerza centrífuga del anuncio indican la potencia de compactación real.',
-      },
+        respuesta: 'Tandem doble tambor para firmes asfálticos y rodaduras; articulado para terraplenes y suelos cohesivos; apisonador de plataforma para zanjas y espacios reducidos. El peso estático y la fuerza centrífuga del anuncio indican la potencia de compactación real.' },
       {
         pregunta: '¿Cuánta carga mueve un dumper articulado?',
-        respuesta: 'Los dumperes pequeños mueven 2–3 t; los medianos de cantera, 25–30 t; los grandes de mina superan las 40 t. Para urbanización, lo habitual son unidades de 6–10 t que caben en plataforma sin permisos especiales de movimiento.',
-      },
-    ],
-  },
+        respuesta: 'Los dumperes pequeños mueven 2–3 t; los medianos de cantera, 25–30 t; los grandes de mina superan las 40 t. Para urbanización, lo habitual son unidades de 6–10 t que caben en plataforma sin permisos especiales de movimiento.' },
+    ] },
   'plataformas': {
     descripcion: 'Plataformas elevadoras de ocasión: telescópicas, articuladas (tijera) y verticales. Genie, JCB, Manitou, Haulotte, Skyjack, Niftylift, Snorkel y Magni de segunda mano.',
     terminos: ['plataforma elevadora ocasión', 'plataforma de tijera usada', 'manlift de segunda mano', 'plataforma telescópica barata', 'plataforma elevadora obra'],
@@ -293,14 +260,11 @@ const SUBS_BASE: Record<string, InfoSubSEO> = {
     faq: [
       {
         pregunta: '¿Qué tipo de plataforma necesito para mi trabajo?',
-        respuesta: 'En planta y almacén, una vertical de tijera; en fachada y jardinería con obstáculos, una articulada de brazo; en grandes alturas y terreno irregular, una telescópica o de ruedas con estabilizadores. Comprueba en el anuncio la altura de trabajo y la capacidad de la cesta frente al peso de personas y material.',
-      },
+        respuesta: 'En planta y almacén, una vertical de tijera; en fachada y jardinería con obstáculos, una articulada de brazo; en grandes alturas y terreno irregular, una telescópica o de ruedas con estabilizadores. Comprueba en el anuncio la altura de trabajo y la capacidad de la cesta frente al peso de personas y material.' },
       {
         pregunta: '¿Se puede trabajar con plataforma elevadora sin formación?',
-        respuesta: 'No: la normativa exige formación específica del operador y uso del arnés con línea de vida en altura. Antes de comprar, verifica el mantenimiento anual y las certificaciones de la máquina (las plataformas requieren revisiones periódicas) y ten en cuenta el coste de esa revisión anual.',
-      },
-    ],
-  },
+        respuesta: 'No: la normativa exige formación específica del operador y uso del arnés con línea de vida en altura. Antes de comprar, verifica el mantenimiento anual y las certificaciones de la máquina (las plataformas requieren revisiones periódicas) y ten en cuenta el coste de esa revisión anual.' },
+    ] },
 
   // ── Herramientas ──
   'herramienta-electrica': {
@@ -313,14 +277,11 @@ const SUBS_BASE: Record<string, InfoSubSEO> = {
     faq: [
       {
         pregunta: '¿Merece la pena comprar herramienta profesional de segunda mano?',
-        respuesta: 'Sí, si el uso anterior fue industrial pero cuidado: los motores brushless (sin escobillas) duran mucho y las baterías Li-Ion se degradan con el tiempo. Comprueba la holgura del rodamiento, la línea de corte y pide prueba bajo carga; evita herramientas con carcasa astillada por caídas.',
-      },
+        respuesta: 'Sí, si el uso anterior fue industrial pero cuidado: los motores brushless (sin escobillas) duran mucho y las baterías Li-Ion se degradan con el tiempo. Comprueba la holgura del rodamiento, la línea de corte y pide prueba bajo carga; evita herramientas con carcasa astillada por caídas.' },
       {
         pregunta: '¿Qué diferencia hay entre 230 V y 400 V en herramienta?',
-        respuesta: 'Los 230 V (monofásico) cubren taladros, amoladoras y sierras de taller; los 400 V (trifásico) son necesarios en máquinas industriales de mayor potencia (sierras de banco, compresores grandes, soldadoras industriales). Comprueba la tensión de tu instalación antes de comprar un anuncio de 400 V.',
-      },
-    ],
-  },
+        respuesta: 'Los 230 V (monofásico) cubren taladros, amoladoras y sierras de taller; los 400 V (trifásico) son necesarios en máquinas industriales de mayor potencia (sierras de banco, compresores grandes, soldadoras industriales). Comprueba la tensión de tu instalación antes de comprar un anuncio de 400 V.' },
+    ] },
   'motores': {
     descripcion: 'Generadores, grupos electrógenos, compresores y equipos de soldadura de ocasión: Himoinsa, Cummins, Perkins, Honda, Pramac, Atlas Copco, Kaeser, Lincoln Electric, ESAB y Fronius.',
     terminos: ['generador de segunda mano', 'grupo electrógeno ocasión', 'compresor de aire usado', 'soldadora de ocasión barata', 'motor industrial de segunda mano'],
@@ -331,14 +292,11 @@ const SUBS_BASE: Record<string, InfoSubSEO> = {
     faq: [
       {
         pregunta: '¿Qué potencia de generador necesito?',
-        respuesta: 'Suma la potencia de todos los equipos simultáneos y añade margen (20–30 %). Un compresor pequeño y unas luces pueden ir en un generador inverter de 2–3 kVA; para obra, soldadora y herramienta de 400 V, se necesitan 10–30 kVA. La ficha indica vatios útiles y tensión de salida.',
-      },
+        respuesta: 'Suma la potencia de todos los equipos simultáneos y añade margen (20–30 %). Un compresor pequeño y unas luces pueden ir en un generador inverter de 2–3 kVA; para obra, soldadora y herramienta de 400 V, se necesitan 10–30 kVA. La ficha indica vatios útiles y tensión de salida.' },
       {
         pregunta: '¿Cuántas horas dura un compresor de aire industrial?',
-        respuesta: 'Un compresor de tornillo bien mantenido supera las 20.000–40.000 horas con cambios regulares de aceite y separadores; los alternativos de pistón duran menos horas pero son más sencillos. Pide las horas registradas, estado del aceite y prueba de presión máxima.',
-      },
-    ],
-  },
+        respuesta: 'Un compresor de tornillo bien mantenido supera las 20.000–40.000 horas con cambios regulares de aceite y separadores; los alternativos de pistón duran menos horas pero son más sencillos. Pide las horas registradas, estado del aceite y prueba de presión máxima.' },
+    ] },
   'sierra-poda': {
     descripcion: 'Motosierras, desbrozadoras, podadoras y cortacésped de ocasión: Stihl, Husqvarna, Oleo-Mac, Shindaiwa, RedMax, Makita y Bosch. Maquinaria de jardinería de segunda mano.',
     terminos: ['motosierra de ocasión', 'desbrozadora usada barata', 'Stihl de segunda mano', 'cortacésped ocasión', 'maquinaria de jardinería usada'],
@@ -349,14 +307,11 @@ const SUBS_BASE: Record<string, InfoSubSEO> = {
     faq: [
       {
         pregunta: '¿Qué revisar en una motosierra de segunda mano?',
-        respuesta: 'Prueba de arranque en frío y en caliente, compresión, estado de espada y cadena (si la espada está mellada, es señal de uso duro), embrague y freno de cadena. En motosierras profesionales, pide las horas si el modelo las registra en el cuentahoras.',
-      },
+        respuesta: 'Prueba de arranque en frío y en caliente, compresión, estado de espada y cadena (si la espada está mellada, es señal de uso duro), embrague y freno de cadena. En motosierras profesionales, pide las horas si el modelo las registra en el cuentahoras.' },
       {
         pregunta: '¿Motosierra de gasolina o eléctrica/batería?',
-        respuesta: 'Gasolina para trabajo forestal, poda alejada de la red y potencia máxima; eléctrica 230 V o de batería para jardín urbano, menos ruido y mantenimiento. En catálogo puedes filtrar por combustible (Gasolina, Eléctrico o Batería) y por potencia en watios.',
-      },
-    ],
-  },
+        respuesta: 'Gasolina para trabajo forestal, poda alejada de la red y potencia máxima; eléctrica 230 V o de batería para jardín urbano, menos ruido y mantenimiento. En catálogo puedes filtrar por combustible (Gasolina, Eléctrico o Batería) y por potencia en watios.' },
+    ] },
   'taller-manual': {
     descripcion: 'Herramienta manual y de taller de ocasión: juegos de llaves, destornilladores, alicates, gatas y equipos de elevación. Knipex, Wera, Bahco, Facom, Gedore, Hazet, Stanley y Würth.',
     terminos: ['juego de llaves de ocasión', 'herramienta manual segunda mano', 'alicates Knipex ocasión', 'utillaje de taller barato', 'gata hidráulica usada'],
@@ -367,15 +322,11 @@ const SUBS_BASE: Record<string, InfoSubSEO> = {
     faq: [
       {
         pregunta: '¿Cómo saber si una herramienta manual es de calidad?',
-        respuesta: 'Fíjate en el material (acero cromo-vanadio o acero S2), la marca del fabricante y el acabado de las mordazas. Marcas como Knipex, Bahco, Facom o Wera publican garantía de por vida en muchos productos; una herramienta usada sin deformaciones sigue siendo una buena compra.',
-      },
+        respuesta: 'Fíjate en el material (acero cromo-vanadio o acero S2), la marca del fabricante y el acabado de las mordazas. Marcas como Knipex, Bahco, Facom o Wera publican garantía de por vida en muchos productos; una herramienta usada sin deformaciones sigue siendo una buena compra.' },
       {
         pregunta: '¿Qué necesito para un taller de bricolaje básico?',
-        respuesta: 'Un juego de llaves combinadas y tubo (8–19 mm), alicates universal y de presión, destornilladores de estrella y plano, un juego de llaves allen y torx, martillo, cinta métrica y, si hay que elevar, una gata de 2 toneladas con soporte. Añade multímetro si tocas la eléctrica del coche.',
-      },
-    ],
-  },
-}
+        respuesta: 'Un juego de llaves combinadas y tubo (8–19 mm), alicates universal y de presión, destornilladores de estrella y plano, un juego de llaves allen y torx, martillo, cinta métrica y, si hay que elevar, una gata de 2 toneladas con soporte. Añade multímetro si tocas la eléctrica del coche.' },
+    ] } }
 
 const TODAS_SUBS = Object.values(categoriasData).flatMap(cat => cat.subs)
 
@@ -393,8 +344,7 @@ const SUBS: SubcategoriaSEO[] = TODAS_SUBS.map((sub) => {
     descripcion: info.descripcion,
     terminos: info.terminos,
     introduccion: info.introduccion,
-    faq: info.faq,
-  }
+    faq: info.faq }
 })
 
 export const SUBCATEGORIAS_SEO: SubcategoriaSEO[] = SUBS
@@ -445,8 +395,7 @@ function landingDeSub(sub: SubcategoriaSEO): LandingCategoriaSEO | undefined {
     tipo: 'subcategoria',
     familiaSlug: familia.key,
     familiaNombre: familia.label,
-    subEtiqueta: sub.categoria,
-  }
+    subEtiqueta: sub.categoria }
 }
 
 export const LANDINGS_CATEGORIA_LIST: LandingCategoriaSEO[] = [

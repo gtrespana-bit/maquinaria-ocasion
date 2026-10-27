@@ -21,12 +21,8 @@
  * que es la fuente única de verdad de filtros, /publicar y la página /marcas.
  */
 
-import {
-  modelosDeSubcategoria,
-  valoresUnicos,
-  type MarcaModelo,
-  type SubSlug,
-} from './marcas'
+import { modelosDeSubcategoria,
+  valoresUnicos, type SubSlug, type MarcaModelo} from './marcas'
 
 export interface CatField {
   label: string
@@ -78,20 +74,17 @@ export const FAMILIAS: Familia[] = [
     key: 'agricola',
     label: 'Maquinaria agrícola',
     icon: '🚜',
-    subs: ['tractores', 'cosechadoras', 'maquinaria-agricola', 'ganaderia'],
-  },
+    subs: ['tractores', 'cosechadoras', 'maquinaria-agricola', 'ganaderia'] },
   {
     key: 'obra',
     label: 'Maquinaria de obra',
     icon: '🏗️',
-    subs: ['excavadoras', 'cargadoras', 'compactacion', 'plataformas'],
-  },
+    subs: ['excavadoras', 'cargadoras', 'compactacion', 'plataformas'] },
   {
     key: 'herramientas',
     label: 'Herramientas y motores',
     icon: '🔧',
-    subs: ['herramienta-electrica', 'motores', 'sierra-poda', 'taller-manual'],
-  },
+    subs: ['herramienta-electrica', 'motores', 'sierra-poda', 'taller-manual'] },
 ]
 
 /** Familia a la que pertenece un tipo (slug de subcategoría). */
@@ -192,8 +185,7 @@ const camposHerramientas = (): CatField[] => [
 ]
 
 const campoTipo = (tipos: string[]): CatField => ({
-  label: 'Tipo', type: 'select', placeholder: 'Selecciona...', options: tipos,
-})
+  label: 'Tipo', type: 'select', placeholder: 'Selecciona...', options: tipos })
 
 // ── Categorías (familias) y subcategorías ────────────────────────────────
 
@@ -208,8 +200,7 @@ export const categoriasData: Record<string, CatConfig> = {
         icon: '🚜',
         slug: 'tractores',
         marcas: modelosDeSubcategoria('tractores'),
-        campos: [...camposTransversales(), ...camposAgricola()],
-      },
+        campos: [...camposTransversales(), ...camposAgricola()] },
       {
         label: 'Cosechadoras',
         icon: '🌾',
@@ -220,8 +211,7 @@ export const categoriasData: Record<string, CatConfig> = {
           ...camposAgricola(),
           campoTipo(['Cosechadora', 'Empacadora', 'Ensiladora']),
           { label: 'Ancho de corte (m)', type: 'number', placeholder: 'Ej: 6' },
-        ],
-      },
+        ] },
       {
         label: 'Maquinaria agrícola',
         icon: '🛠️',
@@ -232,8 +222,7 @@ export const categoriasData: Record<string, CatConfig> = {
           ...camposAgricola(),
           campoTipo(['Arado', 'Sembradora', 'Cultivador', 'Pulverizadora', 'Rastrillo', 'Segadora']),
           { label: 'Ancho de trabajo (m)', type: 'number', placeholder: 'Ej: 3' },
-        ],
-      },
+        ] },
       {
         label: 'Ganadería',
         icon: '🐄',
@@ -244,10 +233,8 @@ export const categoriasData: Record<string, CatConfig> = {
           ...camposAgricola(),
           campoTipo(['Ordenadora', 'Provocadora de celo', 'Comedero', 'Bebedero', 'Vallado']),
           { label: 'Número de puestos', type: 'number', placeholder: 'Ej: 50' },
-        ],
-      },
-    ],
-  },
+        ] },
+    ] },
   obra: {
     label: 'Maquinaria de obra',
     icon: '🏗️',
@@ -263,8 +250,7 @@ export const categoriasData: Record<string, CatConfig> = {
           ...camposObra(),
           campoTipo(['Excavadora sobre oruga', 'Retroexcavadora', 'Miniestacadora']),
           { label: 'Profundidad máx. (m)', type: 'number', placeholder: 'Ej: 6' },
-        ],
-      },
+        ] },
       {
         label: 'Cargadoras',
         icon: '🚚',
@@ -275,8 +261,7 @@ export const categoriasData: Record<string, CatConfig> = {
           ...camposObra(),
           campoTipo(['Minicargadora (skid-steer)', 'Cargadora frontal', 'Telecargador']),
           { label: 'Capacidad de carga', type: 'select', placeholder: 'Selecciona...', options: selectDe(OPCIONES_CAPACIDAD_CARGA) },
-        ],
-      },
+        ] },
       {
         label: 'Compactación',
         icon: '🛞',
@@ -287,8 +272,7 @@ export const categoriasData: Record<string, CatConfig> = {
           ...camposObra(),
           campoTipo(['Rodillo', 'Apisonador', 'Miniapisonador', 'Dumper articulado']),
           { label: 'Capacidad de carga', type: 'select', placeholder: 'Selecciona...', options: selectDe(OPCIONES_CAPACIDAD_CARGA) },
-        ],
-      },
+        ] },
       {
         label: 'Plataformas elevadoras',
         icon: '🪜',
@@ -300,10 +284,8 @@ export const categoriasData: Record<string, CatConfig> = {
           campoTipo(['Telescópica', 'Articulada (tijera)', 'Vertical móvil', 'Rotativa']),
           { label: 'Altura máx. trabajo (m)', type: 'number', placeholder: 'Ej: 14' },
           { label: 'Capacidad de la cesta (kg)', type: 'number', placeholder: 'Ej: 250' },
-        ],
-      },
-    ],
-  },
+        ] },
+    ] },
   herramientas: {
     label: 'Herramientas y motores',
     icon: '🔧',
@@ -318,8 +300,7 @@ export const categoriasData: Record<string, CatConfig> = {
           ...camposTransversales(),
           ...camposHerramientas(),
           campoTipo(['Taladro', 'Amoladora', 'Sierra circular', 'Husillo', 'Rotomartillo', 'Multifunción']),
-        ],
-      },
+        ] },
       {
         label: 'Motores y generadores',
         icon: '⚙️',
@@ -329,8 +310,7 @@ export const categoriasData: Record<string, CatConfig> = {
           ...camposTransversales(),
           ...camposHerramientas(),
           campoTipo(['Generador', 'Grupo electrógeno', 'Compresor', 'Soldadora']),
-        ],
-      },
+        ] },
       {
         label: 'Sierra y poda',
         icon: '🌲',
@@ -341,8 +321,7 @@ export const categoriasData: Record<string, CatConfig> = {
           ...camposHerramientas(),
           campoTipo(['Motosierra', 'Desbrozadora', 'Podadora', 'Cortacésped', 'Multiherramienta']),
           { label: 'Largo de espada (cm)', type: 'number', placeholder: 'Ej: 45' },
-        ],
-      },
+        ] },
       {
         label: 'Taller manual',
         icon: '🔧',
@@ -352,11 +331,8 @@ export const categoriasData: Record<string, CatConfig> = {
           ...camposTransversales(),
           ...camposHerramientas(),
           campoTipo(['Juego de llaves', 'Destornilladores', 'Alicates', 'Gatas y elevación', 'Otros']),
-        ],
-      },
-    ],
-  },
-}
+        ] },
+    ] } }
 
 // ── Helpers de navegación y formulario ───────────────────────────────────
 
@@ -475,23 +451,19 @@ export const GRUPOS_FICHA_TECNICA: { titulo: string; icon: string; campos: strin
       'Altura máx. trabajo (m)',
       'Largo de espada (cm)',
       'Número de puestos',
-    ],
-  },
+    ] },
   {
     titulo: 'Estado',
     icon: '✅',
-    campos: ['Estado'],
-  },
+    campos: ['Estado'] },
   {
     titulo: 'Documentación',
     icon: '📄',
-    campos: ['Documentación'],
-  },
+    campos: ['Documentación'] },
   {
     titulo: 'Logística',
     icon: '🚚',
-    campos: ['¿Incluye transporte?'],
-  },
+    campos: ['¿Incluye transporte?'] },
 ]
 
 /**

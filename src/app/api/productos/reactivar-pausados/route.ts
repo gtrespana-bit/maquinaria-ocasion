@@ -49,6 +49,5 @@ export async function POST(req: NextRequest) {
     ok: true,
     reactivados,
     restantes: Math.max(0, (pausados || 0) - reactivados),
-    cupo: { max: resumen.max, usados: resumen.usados },
-  })
+    cupo: { max: resumen.max, usados: resumen.usados } })
 }

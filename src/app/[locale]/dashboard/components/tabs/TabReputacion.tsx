@@ -1,4 +1,4 @@
-"use client"
+'use client'
 
 import { Star, ShieldCheck, Activity } from 'lucide-react'
 import BadgeVerificado from '@/components/BadgeVerificado'
@@ -14,8 +14,7 @@ export default function TabReputacion({
   numPubsActivas,
   numPubsVendidas,
   creadoEn,
-  ultimaActividad,
-}: {
+  ultimaActividad }: {
   verificado: boolean
   nivelConfianza: number
   badgesAuto: string[]
@@ -36,7 +35,7 @@ export default function TabReputacion({
       <Star
         key={i}
         size={size}
-        className={i < Math.round(rating) ? 'fill-yellow-400 text-yellow-400' : 'text-gray-500'}
+        className={i < Math.round(rating) ? 'fill-yellow-400 text-yellow-400' : 'text-ink/60'}
       />
     ))
   }
@@ -44,9 +43,9 @@ export default function TabReputacion({
   return (
     <div className="space-y-6">
       {/* Resumen: lo que otros ven */}
-      <div className="bg-white rounded-2xl shadow-sm border p-6">
-        <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-          <ShieldCheck size={20} className="text-brand-primary" />
+      <div className="bg-[#FBFAF5]  border p-6">
+        <h3 className="text-[15px] font-semibold tracking-[-0.015em] text-ink mb-4 flex items-center gap-2">
+          <ShieldCheck size={20} className="text-ink" />
           {t('yourReputation')}
         </h3>
         <SellerReputation
@@ -64,13 +63,13 @@ export default function TabReputacion({
       </div>
 
       {/* Reseñas recibidas */}
-      <div className="bg-white rounded-2xl shadow-sm border p-6">
-        <h3 className="text-lg font-bold flex items-center gap-2 mb-4">
+      <div className="bg-[#FBFAF5]  border p-6">
+        <h3 className="text-lg font-semibold flex items-center gap-2 mb-4">
           <Star size={20} className="text-yellow-400 fill-yellow-400" />
           {t('reviews')} ({resenas.length})
         </h3>
         {resenas.length === 0 ? (
-          <p className="text-gray-500 text-sm text-center py-8">{t('noReviews')}</p>
+          <p className="text-ink/60 text-sm text-center py-8">{t('noReviews')}</p>
         ) : (
           <div className="space-y-4">
             {resenas.map((r: any) => (
@@ -80,11 +79,11 @@ export default function TabReputacion({
                     {estrellasRender(r.puntuacion, 14)}
                     <span className="text-sm font-medium ml-2">{r.puntuacion}/5</span>
                   </div>
-                  <span className="text-xs text-gray-500">
+                  <span className="text-[11.5px] text-ink/45">
                     {new Date(r.creado_en).toLocaleDateString('es-ES', { day: '2-digit', month: 'short', year: 'numeric' })}
                   </span>
                 </div>
-                {r.comentario && <p className="text-sm text-gray-600">{r.comentario}</p>}
+                {r.comentario && <p className="text-[12.5px] text-ink/55">{r.comentario}</p>}
               </div>
             ))}
           </div>
@@ -92,27 +91,27 @@ export default function TabReputacion({
       </div>
 
       {/* Estadísticas */}
-      <div className="bg-white rounded-2xl shadow-sm border p-6">
-        <h3 className="text-lg font-bold flex items-center gap-2 mb-4">
-          <Activity size={20} className="text-brand-primary" />
+      <div className="bg-[#FBFAF5]  border p-6">
+        <h3 className="text-lg font-semibold flex items-center gap-2 mb-4">
+          <Activity size={20} className="text-ink" />
           {t('stats')}
         </h3>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">
-          <div className="bg-gray-50 rounded-xl p-4">
-            <p className="text-3xl font-black text-brand-primary">{numPubsActivas}</p>
-            <p className="text-xs text-gray-500 mt-1">{t('activeListings')}</p>
+          <div className="bg-paper-2 rounded-xl p-4">
+            <p className="text-3xl font-semibold text-ink">{numPubsActivas}</p>
+            <p className="text-[11.5px] text-ink/45 mt-1">{t('activeListings')}</p>
           </div>
-          <div className="bg-gray-50 rounded-xl p-4">
-            <p className="text-3xl font-black text-green-600">{numPubsVendidas}</p>
-            <p className="text-xs text-gray-500 mt-1">{t('soldPaused')}</p>
+          <div className="bg-paper-2 rounded-xl p-4">
+            <p className="text-3xl font-semibold text-moss">{numPubsVendidas}</p>
+            <p className="text-[11.5px] text-ink/45 mt-1">{t('soldPaused')}</p>
           </div>
-          <div className="bg-gray-50 rounded-xl p-4">
-            <p className="text-3xl font-black text-yellow-500">{antiguedadDias}</p>
-            <p className="text-xs text-gray-500 mt-1">{t('daysOnPlatform')}</p>
+          <div className="bg-paper-2 rounded-xl p-4">
+            <p className="text-3xl font-semibold text-yellow-500">{antiguedadDias}</p>
+            <p className="text-[11.5px] text-ink/45 mt-1">{t('daysOnPlatform')}</p>
           </div>
-          <div className="bg-gray-50 rounded-xl p-4">
-            <p className="text-3xl font-black text-purple-600">{verificado ? '✅' : '⏳'}</p>
-            <p className="text-xs text-gray-500 mt-1">{t('verification')}</p>
+          <div className="bg-paper-2 rounded-xl p-4">
+            <p className="text-3xl font-semibold text-ink">{verificado ? '✅' : '⏳'}</p>
+            <p className="text-[11.5px] text-ink/45 mt-1">{t('verification')}</p>
           </div>
         </div>
       </div>

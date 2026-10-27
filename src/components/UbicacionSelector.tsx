@@ -1,6 +1,6 @@
 'use client'
 
-import { ESTADOS, getMunicipiosNombres, getMunicipios, Municipio } from '@/lib/ubicaciones'
+import { ESTADOS, getMunicipiosNombres, getMunicipios } from '@/lib/ubicaciones'
 
 interface UbicacionSelectorProps {
   estado: string
@@ -19,20 +19,20 @@ export default function UbicacionSelector({ estado, ciudad, onChange, showCapita
     : null
 
   return (
-    <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
+    <div className="border border-line bg-paper p-3">
       {/* ✅ ACCESIBILIDAD: h3 → h2 para orden secuencial */}
-      <h2 className="text-sm font-bold text-gray-900 mb-3 flex items-center gap-2">
-        📍 Ubicación en España
+      <h2 className="t-label mb-2.5 text-ink/50">
+        Ubicación en España
       </h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         {/* ✅ ACCESIBILIDAD: htmlFor + id para vincular label con select */}
         <div>
-          <label htmlFor="ubicacion-estado" className="block text-xs font-medium text-gray-700 mb-1">Comunidad Autónoma</label>
+          <label htmlFor="ubicacion-estado" className="t-label mb-1 block text-ink/45">Comunidad Autónoma</label>
           <select
             id="ubicacion-estado"
             value={estado}
             onChange={(e) => { onChange(e.target.value, '') }}
-            className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm text-gray-800 bg-white focus:outline-none focus:ring-2 focus:ring-brand-accent"
+            className="field text-[12.5px]"
           >
             <option value="">Toda España</option>
             {ESTADOS.map((e) => (
@@ -43,7 +43,7 @@ export default function UbicacionSelector({ estado, ciudad, onChange, showCapita
 
         {/* ✅ ACCESIBILIDAD: htmlFor + id para vincular label con select */}
         <div>
-          <label htmlFor="ubicacion-municipio" className="block text-xs font-medium text-gray-700 mb-1">
+          <label htmlFor="ubicacion-municipio" className="t-label mb-1 block text-ink/45">
             Provincia
           </label>
           <select
@@ -51,7 +51,7 @@ export default function UbicacionSelector({ estado, ciudad, onChange, showCapita
             value={ciudad}
             onChange={(e) => { onChange(estado, e.target.value) }}
             disabled={!estado}
-            className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm text-gray-800 bg-white focus:outline-none focus:ring-2 focus:ring-brand-accent disabled:bg-gray-100 disabled:text-gray-500"
+            className="field text-[12.5px] disabled:opacity-45"
           >
             <option value="">Todas las provincias</option>
             {municipios.map((m) => (
@@ -62,7 +62,7 @@ export default function UbicacionSelector({ estado, ciudad, onChange, showCapita
             ))}
           </select>
           {capitalSeleccionada && (
-            <p className="text-xs text-gray-500 mt-1">Capital: {capitalSeleccionada}</p>
+            <p className="t-label mt-1 text-ink/35">Capital: {capitalSeleccionada}</p>
           )}
         </div>
 
@@ -71,7 +71,7 @@ export default function UbicacionSelector({ estado, ciudad, onChange, showCapita
           <button
             onClick={() => onChange('', '')}
             aria-label="Limpiar filtro de ubicación"
-            className="col-span-1 sm:col-span-2 text-xs text-red-500 hover:text-red-700 py-1.5 border border-red-200 rounded-lg hover:bg-red-50 transition text-center"
+            className="t-label col-span-1 border border-clay/30 py-1.5 text-center text-clay transition-colors hover:bg-clay/[0.05] sm:col-span-2"
           >
             ✕ Limpiar ubicación
           </button>

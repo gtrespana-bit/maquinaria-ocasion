@@ -12,8 +12,7 @@
  */
 const FORMATTER = new Intl.NumberFormat('es-ES', {
   minimumFractionDigits: 0,
-  maximumFractionDigits: 2,
-})
+  maximumFractionDigits: 2 })
 
 /** Formatea un importe en euros como "38.500 €". */
 export function formatPrecio(euros: number | string | null | undefined): string {

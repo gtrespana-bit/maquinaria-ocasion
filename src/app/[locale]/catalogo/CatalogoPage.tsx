@@ -1,15 +1,14 @@
 'use client'
-import { serializeJsonLd } from '@/lib/serialize-json-ld'
-import { formatPrecio } from '@/lib/precio'
 
-import { useEffect, useMemo, useState, useRef, memo } from 'react'
+import { serializeJsonLd } from '@/lib/serialize-json-ld'
+import { useEffect, useMemo, useState, useRef } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import { usePathname } from 'next/navigation'
 import { useTranslations } from 'next-intl'
 import LocalLink from '@/components/LocalLink'
 import BotonComparar from '@/components/BotonComparar'
 import Image from 'next/image'
-import { Search, ChevronRight, XCircle } from 'lucide-react'
+import { Search, ChevronRight, XCircle, ArrowRight } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
 import { TODAS_LAS_SUBS, familiaDeSub, categoriaDeSubcategoria } from '@/lib/categorias'
 import UbicacionSelector from '@/components/UbicacionSelector'
@@ -27,12 +26,10 @@ import {
   hayFiltrosTecnicos,
   hayFiltrosRango,
   leerFiltrosTecnicos,
-  leerFiltrosRango,
-} from '@/lib/filtros-tecnicos'
+  leerFiltrosRango } from '@/lib/filtros-tecnicos'
 import { FILTRO_VENDEDOR_PARAM } from '@/lib/catalog-consulta'
 import { LoadingIndicator } from '@/components/LoadingIndicator'
 import { usePrefetch } from '@/hooks/usePrefetch'
-import { productUrl } from '@/lib/product-url'
 import { esErrorDeCredenciales, esErrorDeRed } from '@/lib/supabase-diagnostico'
 
 type Producto = {
@@ -59,104 +56,6 @@ interface CatalogoPageProps {
   initialCount?: number
 }
 
-const PLACEHOLDER_IMAGES = [
-  '/placeholder-product.webp',
-]
-
-const BLUR_DATA_URL = 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAADAAQDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k='
-
-function getPlaceholderImage(titulo: string) {
-  return PLACEHOLDER_IMAGES[Math.abs(titulo.charCodeAt(0)) % PLACEHOLDER_IMAGES.length]
-}
-
-function ProductCardSkeleton() {
-  return (
-    <div className="bg-white rounded-xl overflow-hidden border border-gray-100 shadow-sm animate-pulse">
-      <div className="aspect-square bg-gray-200" />
-      <div className="p-4 space-y-2">
-        <div className="h-4 bg-gray-200 rounded w-3/4" />
-        <div className="h-6 bg-gray-200 rounded w-1/2" />
-        <div className="h-3 bg-gray-200 rounded w-1/3" />
-      </div>
-    </div>
-  )
-}
-
-const ProductCard = memo(({ p, priority = false, t }: { p: Producto; priority?: boolean; t: (key: string) => string }) => {
-  const isBoosted = p.boosteado_en != null
-  // Usar flag pre-computado del servidor para evitar hydration mismatch
-  // Si no existe (datos frescos del cliente), calcular en el cliente
-  const isFeatured = (p as any)._isFeatured !== undefined
-    ? (p as any)._isFeatured
-    : !!(p.destacado && p.destacado_hasta && new Date(p.destacado_hasta) > new Date())
-  const isPromoted = isBoosted || isFeatured
-
-  const imgUrl = p.imagen_url || getPlaceholderImage(p.titulo)
-
-  return (
-    <LocalLink href={productUrl(p)} className={`bg-white rounded-xl overflow-hidden transition-all duration-200 group block border ${isPromoted ? 'border-2 border-brand-accent shadow-md hover:shadow-xl hover:-translate-y-1' : 'border-gray-100 shadow-sm hover:shadow-lg hover:-translate-y-1 hover:border-gray-200'}`}>
-      <div className="aspect-square bg-gray-100 relative overflow-hidden">
-        <BotonComparar item={{ id: p.id, slug: p.slug ?? null, titulo: p.titulo, precio_usd: p.precio_usd ?? null, imagen_url: p.imagen_url ?? null }} className="absolute bottom-2 right-2" />
-        {isFeatured && (
-          <div className="absolute top-2 left-2 z-10 bg-brand-accent text-white text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1 shadow-sm">
-            ⭐ {t('product.featured')}
-          </div>
-        )}
-        {isBoosted && !isFeatured && (
-          <div className="absolute top-2 left-2 z-10 bg-green-700 text-white text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1 shadow-sm">
-            ⚡ <span className="text-white">Boost</span>
-          </div>
-        )}
-        <Image
-          src={imgUrl}
-          alt={p.titulo}
-          width={300}  // Reducir tamaño para optimización
-          height={300}
-          sizes="(max-width: 768px) 50vw, (max-width: 1200px) 25vw, 20vw"
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-          loading={priority ? 'eager' : 'lazy'}
-          priority={priority}
-          decoding="async"
-          placeholder="blur"
-          blurDataURL={BLUR_DATA_URL}
-          fetchPriority={priority ? 'high' : 'low'} // Cambiar a 'low' para no prioritarios
-          onError={(e) => {
-            // ✅ CORREGIDO: Previene loop infinito
-            const target = e.target as HTMLImageElement
-            if (!target.src.includes('/placeholder-product.webp')) {
-              target.src = '/placeholder-product.webp'
-            }
-          }}
-        />
-      </div>
-      <div className="p-4">
-        <h3 className="font-semibold text-gray-900 truncate group-hover:text-brand-primary transition-colors">{p.titulo}</h3>
-        <p className="text-xl font-black text-brand-primary mt-1">{formatPrecio(p.precio_usd || 0)}</p>
-        {p.reservado && (
-          <div className="mt-1">
-            <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-amber-800 bg-amber-50 border border-amber-200 px-1.5 py-0.5 rounded-full">
-              🔒 {t('productCard.reserved')}
-            </span>
-          </div>
-        )}
-        {p.vendedor_tipo && (
-          <div className="mt-1">
-            <BadgeTipoVendedor tipo={p.vendedor_tipo} />
-          </div>
-        )}
-        {p.vendedor_verificado && (
-          <div className="inline-flex items-center gap-1 text-[10px] font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 px-1.5 py-0.5 rounded-full mt-1">
-            <svg width={10} height={10} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-            {t('product.verified')}
-          </div>
-        )}
-        <p className="text-xs text-gray-500 mt-1">{p.ubicacion_ciudad || p.ubicacion_estado || 'España'}</p>
-      </div>
-    </LocalLink>
-  )
-})
-
-ProductCard.displayName = 'ProductCard'
 
 export default function CatalogoClient({ initialProducts = [], initialCount = 0 }: CatalogoPageProps) {
   const tc = useTranslations('catalog')
@@ -181,6 +80,9 @@ export default function CatalogoClient({ initialProducts = [], initialCount = 0 
   const searchParams = useSearchParams()
   const pathname = usePathname()
   const router = useRouter()
+  // En móvil la columna de filtros se pliega: es larga y empujaría el listado
+  // fuera de la primera pantalla.
+  const [filtrosAbiertos, setFiltrosAbiertos] = useState(false)
 
   // Usar hook de paginación
   const { currentPage, itemsPerPage, goToPage } = useProductPagination({ itemsPerPage: CATALOG_PAGE_SIZE })
@@ -381,126 +283,167 @@ export default function CatalogoClient({ initialProducts = [], initialCount = 0 
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: serializeJsonLd(breadcrumbSchema) }}
       />
-      <div className="max-w-7xl mx-auto px-4 py-8">
-        {/* Breadcrumbs visuales */}
-        <nav className="flex items-center gap-2 text-sm text-gray-500 mb-6 flex-wrap" aria-label="Breadcrumb">
-          {breadcrumbs.map((item, index) => (
-            <span key={index} className="flex items-center gap-2">
-              {index > 0 && <ChevronRight size={14} className="text-gray-500" />}
-              {item.href ? (
-                <LocalLink 
-                  href={item.href} 
-                  className="hover:text-brand-primary transition"
-                >
-                  {item.label}
-                </LocalLink>
-              ) : (
-                <span className="text-gray-900 font-medium">{item.label}</span>
-              )}
-            </span>
-          ))}
-        </nav>
+      {/* Cabecera del catálogo */}
+      <div className="border-b border-line bg-paper">
+        <div className="shell pt-5 pb-7 md:pt-7 md:pb-9">
+          <nav className="t-eyebrow flex flex-wrap items-center gap-2 text-ink/40" aria-label="Breadcrumb">
+            {breadcrumbs.map((item, index) => (
+              <span key={index} className="flex items-center gap-2">
+                {index > 0 && <span aria-hidden="true" className="text-ink/25">/</span>}
+                {item.href ? (
+                  <LocalLink href={item.href} className="transition-colors hover:text-ink">
+                    {item.label.replace(/^[^ ]+ /, '')}
+                  </LocalLink>
+                ) : (
+                  <span className="text-ink">{item.label.replace(/^[^ ]+ /, '')}</span>
+                )}
+              </span>
+            ))}
+          </nav>
 
-      <div className="flex flex-col lg:flex-row gap-6">
-        <aside className="w-full lg:w-72 flex-shrink-0">
-          <CatalogFilters
-            categoria={categoriaFiltros}
-            subcategoria={subcategoria}
-            marca={marca}
-            precioMin={precioMin}
-            precioMax={precioMax}
-            ubicacionEstado={ubicacionEstado}
-            ubicacionCiudad={ubicacionCiudad}
-            filtrosTecnicos={filtrosTecnicos}
-            rangos={rangosEnBruto}
-            vendedor={vendedor}
-            t={t}
-          />
-        </aside>
-
-        <div className="flex-1">
-          <div className="bg-white rounded-xl p-4 mb-4 shadow-sm">
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-              <div>
-                <h1 className="text-xl font-bold text-gray-900">{tituloMostrar}</h1>
-                <p className="text-sm text-gray-500 mt-1">
-                  {loading ? t('common.loading') : t('catalog.results', { count: totalCountToUse || 0 })}
-                </p>
+          <div className="mt-6 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+            <div>
+              <h1 className="t-display t-display-lg text-ink">{tituloMostrar}</h1>
+              <p className="t-label mt-3 text-muted">
+                {loading ? t('common.loading') : t('catalog.results', { count: totalCountToUse || 0 })}
+              </p>
+            </div>
+            <form action="/buscar" method="GET" className="flex w-full items-center gap-2 md:w-auto">
+              <label htmlFor="catalogo-q" className="sr-only">
+                {t('common.search')}
+              </label>
+              <div className="flex flex-1 items-center gap-2 border-b border-line-strong focus-within:border-ink md:w-64">
+                <Search size={15} strokeWidth={1.6} className="shrink-0 text-ink/35" />
+                <input
+                  id="catalogo-q"
+                  name="q"
+                  defaultValue={q}
+                  placeholder={t('catalog.searchLabel')}
+                  className="w-full bg-transparent py-2 text-sm text-ink placeholder:text-ink/35 focus:outline-none"
+                />
               </div>
-              <form action="/buscar" method="GET" className="flex gap-2 w-full sm:w-auto">
-                <input name="q" defaultValue={q} placeholder={`${t('common.search')}...`} className="w-full sm:w-60 border rounded-lg px-4 py-2 text-sm" />
-                <button type="submit" className="bg-brand-primary text-white px-4 rounded-lg font-bold text-sm hover:bg-brand-dark transition">{t('common.search')}</button>
-              </form>
-            </div>
+              <button type="submit" className="btn btn-ink btn-sm shrink-0">
+                {t('common.search')}
+              </button>
+            </form>
           </div>
-
-          <div className="mb-4">
-            <UbicacionSelector
-              estado={ubicacionEstado}
-              ciudad={ubicacionCiudad}
-              onChange={(estado, ciudad) => {
-                const params = new URLSearchParams(searchParams.toString())
-                if (estado) params.set('estado', estado); else params.delete('estado')
-                if (ciudad) params.set('ciudad', ciudad); else params.delete('ciudad')
-                router.push(`${pathname}?${params.toString()}`)
-              }}
-            />
-          </div>
-
-          {error && (
-            <div className="bg-red-50 border border-red-200 text-red-700 rounded-xl p-6 mb-4 flex items-start gap-3" role="alert">
-              <XCircle size={20} className="flex-shrink-0 mt-0.5" />
-              <div>
-                <p className="font-semibold">{t('catalog.loadErrorTitle')}</p>
-                {/* Nunca se muestra el mensaje técnico de Supabase ("Invalid
-                    API key", "JWT expired", "fetch failed"...): o es un
-                    problema de configuración del despliegue o es transitorio;
-                    en ningún caso es información útil para el visitante. */}
-                <p className="text-sm mt-1">
-                  {esErrorDeCredenciales(error) || esErrorDeRed(error)
-                    ? t('catalog.serviceUnavailable')
-                    : error}
-                </p>
-                <button
-                  onClick={() => loadPage({ page: currentPage, pageSize: itemsPerPage, filters: { categoria, subcategoria, marca, q, precioMin, precioMax, ubicacionEstado, ubicacionCiudad, [FILTRO_VENDEDOR_PARAM]: vendedor || undefined, ...filtrosTecnicos, ...filtrosRango } })}
-                  className="mt-3 text-sm font-semibold text-red-700 underline hover:text-red-900"
-                >
-                  {t('catalog.retry')}
-                </button>
-              </div>
-            </div>
-          )}
-
-          {loading ? (
-            <LoadingIndicator count={6} />
-          ) : !error && productosToShow.length === 0 ? (
-            <div className="bg-white rounded-xl p-16 text-center shadow-sm border">
-              <Search size={48} className="text-gray-500 mx-auto mb-4" />
-              <h3 className="text-xl font-bold text-gray-800 mb-2">{t('catalog.empty')}</h3>
-              <p className="text-gray-500 mb-4">{t('catalog.emptyCta')}</p>
-              <LocalLink href="/publicar" className="inline-block bg-brand-accent text-white px-6 py-3 rounded-lg font-bold hover:bg-accent/90 transition">
-                {t('catalog.publishFree')}
-              </LocalLink>
-            </div>
-          ) : (
-            <OptimizedProductGrid
-              productos={productosToShow}
-              t={t}
-              currentPage={currentPage}
-              itemsPerPage={itemsPerPage}
-            />
-          )}
         </div>
       </div>
 
-      {/* Componente de paginación optimizado */}
-      <Pagination 
-        currentPage={currentPage} 
-        totalPages={totalPages}
-        itemsPerPage={itemsPerPage}
-        totalItems={totalCountToUse} 
-      />
-    </div>
+      <div className="shell py-8 md:py-10">
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-[264px_1fr] lg:gap-10">
+          {/* Filtros */}
+          <aside className="w-full">
+            <button
+              type="button"
+              onClick={() => setFiltrosAbiertos((v) => !v)}
+              aria-expanded={filtrosAbiertos}
+              className="mb-4 flex w-full items-center justify-between border border-line px-4 py-3 text-left lg:hidden"
+            >
+              <span className="t-eyebrow text-ink">{t('catalog.filtersTitle')}</span>
+              <ChevronRight
+                size={15}
+                className={`text-ink/50 transition-transform ${filtrosAbiertos ? 'rotate-90' : ''}`}
+              />
+            </button>
+            <div className={`${filtrosAbiertos ? 'block' : 'hidden'} lg:block`}>
+              <CatalogFilters
+                categoria={categoriaFiltros}
+                subcategoria={subcategoria}
+                marca={marca}
+                precioMin={precioMin}
+                precioMax={precioMax}
+                ubicacionEstado={ubicacionEstado}
+                ubicacionCiudad={ubicacionCiudad}
+                filtrosTecnicos={filtrosTecnicos}
+                rangos={rangosEnBruto}
+                vendedor={vendedor}
+                t={t}
+              />
+              <div className="mt-4">
+                <UbicacionSelector
+                  estado={ubicacionEstado}
+                  ciudad={ubicacionCiudad}
+                  onChange={(estado, ciudad) => {
+                    const params = new URLSearchParams(searchParams.toString())
+                    if (estado) params.set('estado', estado)
+                    else params.delete('estado')
+                    if (ciudad) params.set('ciudad', ciudad)
+                    else params.delete('ciudad')
+                    router.push(`${pathname}?${params.toString()}`)
+                  }}
+                />
+              </div>
+            </div>
+          </aside>
+
+          {/* Resultados */}
+          <div className="min-w-0">
+            {error && (
+              <div
+                className="mb-6 flex items-start gap-3 border border-clay/40 bg-clay/[0.04] p-5 text-clay"
+                role="alert"
+              >
+                <XCircle size={18} strokeWidth={1.8} className="mt-0.5 shrink-0" />
+                <div>
+                  <p className="text-sm font-semibold">{t('catalog.loadErrorTitle')}</p>
+                  {/* Nunca se muestra el mensaje técnico de Supabase. */}
+                  <p className="mt-1 text-[13px] text-ink/70">
+                    {esErrorDeCredenciales(error) || esErrorDeRed(error)
+                      ? t('catalog.serviceUnavailable')
+                      : error}
+                  </p>
+                  <button
+                    onClick={() =>
+                      loadPage({
+                        page: currentPage,
+                        pageSize: itemsPerPage,
+                        filters: {
+                          categoria, subcategoria, marca, q, precioMin, precioMax,
+                          ubicacionEstado, ubicacionCiudad,
+                          [FILTRO_VENDEDOR_PARAM]: vendedor || undefined,
+                          ...filtrosTecnicos, ...filtrosRango } })
+                    }
+                    className="t-eyebrow mt-3 border-b border-clay pb-0.5 text-clay"
+                  >
+                    {t('catalog.retry')}
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {loading ? (
+              <LoadingIndicator count={6} />
+            ) : !error && productosToShow.length === 0 ? (
+              <div className="flex flex-col items-start gap-4 border border-dashed border-line-strong px-6 py-14 md:px-10">
+                <span className="flex h-11 w-11 items-center justify-center border border-line">
+                  <Search size={18} strokeWidth={1.5} className="text-ink/40" />
+                </span>
+                <h2 className="t-display t-display-sm text-ink">{t('catalog.empty')}</h2>
+                <p className="max-w-md text-sm text-muted">{t('catalog.emptyCta')}</p>
+                <LocalLink href="/publicar" className="btn btn-signal btn-sm mt-1">
+                  {t('catalog.publishFree')}
+                  <ArrowRight size={14} />
+                </LocalLink>
+              </div>
+            ) : (
+              <OptimizedProductGrid
+                productos={productosToShow}
+                t={t}
+                currentPage={currentPage}
+                itemsPerPage={itemsPerPage}
+              />
+            )}
+
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              itemsPerPage={itemsPerPage}
+              totalItems={totalCountToUse}
+            />
+          </div>
+        </div>
+      </div>
     </>
   )
 }

@@ -33,8 +33,8 @@ export function BotonDescargarApp({ variant = 'default' }: BotonDescargarAppProp
   if (!showButton) return null
 
   const className = variant === 'light'
-    ? 'inline-flex items-center gap-2 bg-white/20 border-2 border-white/50 text-white px-6 py-3 rounded-xl font-bold text-base hover:bg-white/30 transition'
-    : 'inline-flex items-center gap-2 bg-white/10 border-2 border-white/30 text-white px-6 py-3 rounded-xl font-bold text-base hover:bg-white/20 transition'
+    ? 'inline-flex items-center gap-2 bg-[#FBFAF5] border-2 border-white/50 text-paper px-6 py-3 rounded-xl font-bold text-base hover:bg-[#FBFAF5] transition'
+    : 'inline-flex items-center gap-2 bg-[#FBFAF5] border-2 border-white/30 text-paper px-6 py-3 rounded-xl font-bold text-base hover:bg-[#FBFAF5] transition'
 
   return (
     <LocalLink

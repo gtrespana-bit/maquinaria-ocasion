@@ -12,8 +12,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     title: t('tasador.title'),
     description: t('tasador.subtitle'),
     alternates: alternatesSeo('/tasador'),
-    robots: { index: true, follow: true },
-  }
+    robots: { index: true, follow: true } }
 }
 
 export default async function TasadorPage({ params }: { params: Promise<{ locale: string }> }) {

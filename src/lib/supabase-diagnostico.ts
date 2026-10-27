@@ -174,8 +174,7 @@ export function inspeccionarClave(
     expirada: false,
     formatoOk: false,
     problemas: ['La variable no está definida (o está vacía) en este entorno.'],
-    refCoincide: null,
-  }
+    refCoincide: null }
 
   if (typeof clave !== 'string' || clave.length === 0) return vacia
 
@@ -195,8 +194,7 @@ export function inspeccionarClave(
     expirada: false,
     formatoOk: false,
     problemas: [],
-    refCoincide: null,
-  }
+    refCoincide: null }
 
   // ── Claves nuevas (2026): sb_publishable_xxx / sb_secret_xxx ──
   if (trimmed.startsWith('sb_publishable_')) {
@@ -363,13 +361,11 @@ export function esErrorDeRed(error: unknown): boolean {
 
 const MENSAJE_PUBLICO: Record<'es' | 'en', string> = {
   es: 'El catálogo no está disponible en este momento. Inténtalo de nuevo en unos minutos.',
-  en: 'The catalogue is temporarily unavailable. Please try again in a few minutes.',
-}
+  en: 'The catalogue is temporarily unavailable. Please try again in a few minutes.' }
 
 const MENSAJE_GENERICO: Record<'es' | 'en', string> = {
   es: 'No se pudieron cargar los productos. Inténtalo de nuevo.',
-  en: 'We could not load the products. Please try again.',
-}
+  en: 'We could not load the products. Please try again.' }
 
 /**
  * Texto apto para mostrar a un visitante. Nunca devuelve el mensaje técnico

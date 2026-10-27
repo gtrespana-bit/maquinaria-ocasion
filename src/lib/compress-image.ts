@@ -91,8 +91,7 @@ export async function compressImage(file: File): Promise<File> {
     const baseName = file.name.replace(/\.[^.]+$/, '') || 'imagen'
     const compressed = new File([blob], `${baseName}.webp`, {
       type: WEBP_MIME,
-      lastModified: Date.now(),
-    })
+      lastModified: Date.now() })
     return compressed
   } catch (err) {
     console.error('[compress] No se pudo optimizar la imagen:', err)

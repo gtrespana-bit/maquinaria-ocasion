@@ -2,27 +2,39 @@
 
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import {
-  Activity, AlertTriangle, BarChart3, Clock, Download, Eye, FileText, Gift,
-  Heart, MessageSquare, Monitor, Smartphone, Tablet,
-  UserPlus, Users, Package, Globe, MousePointerClick,
-} from 'lucide-react'
+  Activity,
+  AlertTriangle,
+  BarChart3,
+  Clock,
+  Download,
+  Eye,
+  Heart,
+  MessageSquare,
+  Monitor,
+  Smartphone,
+  Tablet,
+  UserPlus,
+  Users,
+  Package,
+  Globe,
+  MousePointerClick } from 'lucide-react'
 import LocalLink from '@/components/LocalLink'
 import { productUrl } from '@/lib/product-url'
 import {
-  Badge, Button, Card, Empty, Loading, RefreshButton, Segmented, StatCard,
-  formatDate, formatNumber, timeAgo,
-} from './AdminUi'
+  Badge,
+  Button,
+  Card,
+  Empty,
+  Loading,
+  RefreshButton,
+  Segmented,
+  StatCard,
+  formatDate,
+  formatNumber,
+  timeAgo } from './AdminUi'
 import { apiJson } from './admin-utils'
-import {
-  PRESETS_RANGO,
-  formatearDuracion,
-  type Bucket,
-  type FilaRanking,
-  type Granularidad,
-  type InformeAudiencia,
-  type PresetRango,
-  type ResumenVisitas,
-} from '@/lib/analitica'
+import { PRESETS_RANGO,
+  formatearDuracion, type PresetRango, type Bucket, type ResumenVisitas, type InformeAudiencia, type Granularidad, type FilaRanking} from '@/lib/analitica'
 
 type Respuesta = {
   ok: boolean
@@ -42,8 +54,7 @@ type Respuesta = {
 function Barras({
   datos,
   color,
-  altura = 96,
-}: {
+  altura = 96 }: {
   datos: { etiqueta: string; corta: string; valor: number }[]
   color: string
   altura?: number
@@ -57,7 +68,7 @@ function Barras({
             className={`w-full rounded-t ${color}`}
             style={{ height: `${Math.max(3, (d.valor / maximo) * altura)}px` }}
           />
-          <span className="text-[9px] leading-tight text-gray-400">{datos.length <= 32 ? d.corta : ''}</span>
+          <span className="text-[9px] leading-tight text-ink/35">{datos.length <= 32 ? d.corta : ''}</span>
         </div>
       ))}
     </div>
@@ -69,8 +80,7 @@ function ListaRanking({
   icono,
   filas,
   vacio = 'Sin datos en el periodo.',
-  sufijo = 'visitas',
-}: {
+  sufijo = 'visitas' }: {
   titulo: string
   icono: React.ReactNode
   filas: (FilaRanking & { etiqueta?: string; url?: string | null })[]
@@ -80,29 +90,29 @@ function ListaRanking({
   const maximo = Math.max(1, ...filas.map((f) => f.visitas))
   return (
     <div>
-      <h4 className="mb-3 flex items-center gap-2 text-sm font-bold text-gray-900">
+      <h4 className="mb-3 flex items-center gap-2 text-[13px] font-medium text-ink">
         {icono} {titulo}
       </h4>
       {filas.length === 0 ? (
-        <p className="text-sm text-gray-500">{vacio}</p>
+        <p className="text-[12.5px] leading-relaxed text-ink/55">{vacio}</p>
       ) : (
         <div className="space-y-2">
           {filas.map((f, i) => (
             <div key={`${f.clave}-${i}`} className="space-y-1">
               <div className="flex items-center justify-between gap-3 text-xs">
                 {f.url ? (
-                  <LocalLink href={f.url} className="truncate font-medium text-gray-700 hover:text-brand-primary">
+                  <LocalLink href={f.url} className="truncate font-medium text-ink hover:text-ink">
                     {f.etiqueta || f.clave}
                   </LocalLink>
                 ) : (
-                  <span className="truncate font-medium text-gray-700">{f.etiqueta || f.clave}</span>
+                  <span className="truncate font-medium text-ink">{f.etiqueta || f.clave}</span>
                 )}
-                <span className="flex-shrink-0 font-bold text-gray-900">{formatNumber(f.visitas)}</span>
+                <span className="flex-shrink-0 font-semibold text-ink">{formatNumber(f.visitas)}</span>
               </div>
-              <div className="h-1.5 w-full overflow-hidden rounded-full bg-gray-100">
-                <div className="h-full rounded-full bg-brand-primary/70" style={{ width: `${(f.visitas / maximo) * 100}%` }} />
+              <div className="h-1.5 w-full overflow-hidden rounded-full bg-paper-2">
+                <div className="h-full rounded-full bg-ink/70" style={{ width: `${(f.visitas / maximo) * 100}%` }} />
               </div>
-              <p className="text-[10px] text-gray-400">
+              <p className="text-[10px] text-ink/35">
                 {formatNumber(f.visitas)} {sufijo} · {formatNumber(f.visitantes)} visitantes únicos
               </p>
             </div>
@@ -117,8 +127,7 @@ const ICONO_DISPOSITIVO: Record<string, React.ReactNode> = {
   movil: <Smartphone size={13} />,
   tablet: <Tablet size={13} />,
   escritorio: <Monitor size={13} />,
-  desconocido: <Monitor size={13} />,
-}
+  desconocido: <Monitor size={13} /> }
 
 const NOMBRE_DIA = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo']
 
@@ -157,7 +166,7 @@ export default function AdminAudiencia({ notify }: { notify: (msg: string) => vo
         const res = await apiJson<Respuesta>(`/api/admin/estadisticas?${params.toString()}`)
         setData(res)
       } catch (e: any) {
-        notify('❌ ' + e.message)
+        notify( e.message)
       }
       setLoading(false)
       setRefreshing(false)
@@ -198,8 +207,7 @@ export default function AdminAudiencia({ notify }: { notify: (msg: string) => vo
       cupones: a.cuponesSerie[i] ?? 0,
       creditos: a.creditosSerie[i] ?? 0,
       resenas: a.resenasSerie?.[i] ?? 0,
-      denuncias: a.denunciasSerie?.[i] ?? 0,
-    }))
+      denuncias: a.denunciasSerie?.[i] ?? 0 }))
   }, [informe, visitas])
 
   function exportarCsv() {
@@ -228,7 +236,7 @@ export default function AdminAudiencia({ notify }: { notify: (msg: string) => vo
   if (loading) return <Loading label="Calculando audiencia…" />
 
   if (!informe || !visitas) {
-    return <Empty icon="📊" title="Sin datos" subtitle="No se pudo calcular el informe. Prueba a refrescar." />
+    return <Empty title="Sin datos" subtitle="No se pudo calcular el informe. Prueba a refrescar." />
   }
 
   const { actividad, estado, comparativa } = informe
@@ -240,8 +248,8 @@ export default function AdminAudiencia({ notify }: { notify: (msg: string) => vo
       <div className="flex flex-col gap-3">
         <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
           <div>
-            <h2 className="text-xl font-black text-gray-900">Audiencia y actividad</h2>
-            <p className="text-sm text-gray-500">
+            <h2 className="text-xl font-semibold text-ink">Audiencia y actividad</h2>
+            <p className="text-[12.5px] leading-relaxed text-ink/55">
               {informe.rango.etiqueta} · {informe.rango.dias} días ·{' '}
               {informe.rango.granularidad === 'dia' ? 'por día' : informe.rango.granularidad === 'semana' ? 'por semana' : 'por mes'}
             </p>
@@ -269,7 +277,7 @@ export default function AdminAudiencia({ notify }: { notify: (msg: string) => vo
             type="button"
             onClick={() => setPersonalizado((v) => !v)}
             className={`rounded-xl border px-3 py-1.5 text-xs font-semibold transition ${
-              personalizado ? 'border-brand-primary bg-brand-primary text-white' : 'border-gray-200 bg-white text-gray-600 hover:bg-gray-50'
+              personalizado ? 'border-brand-primary bg-ink text-paper' : 'border-line bg-[#FBFAF5] text-ink/55 hover:bg-paper-2'
             }`}
           >
             Rango personalizado
@@ -286,14 +294,14 @@ export default function AdminAudiencia({ notify }: { notify: (msg: string) => vo
         </div>
 
         {personalizado && (
-          <div className="flex flex-wrap items-center gap-2 rounded-xl border border-gray-200 bg-white px-3 py-2 text-xs">
+          <div className="flex flex-wrap items-center gap-2 rounded-xl border border-line bg-[#FBFAF5] px-3 py-2 text-xs">
             <label className="flex items-center gap-2">
               Desde
-              <input type="date" value={desde} onChange={(e) => setDesde(e.target.value)} className="rounded-lg border border-gray-200 px-2 py-1" />
+              <input type="date" value={desde} onChange={(e) => setDesde(e.target.value)} className="rounded-lg border border-line px-2 py-1" />
             </label>
             <label className="flex items-center gap-2">
               Hasta
-              <input type="date" value={hasta} onChange={(e) => setHasta(e.target.value)} className="rounded-lg border border-gray-200 px-2 py-1" />
+              <input type="date" value={hasta} onChange={(e) => setHasta(e.target.value)} className="rounded-lg border border-line px-2 py-1" />
             </label>
             <Button
               size="xs"
@@ -307,7 +315,7 @@ export default function AdminAudiencia({ notify }: { notify: (msg: string) => vo
       </div>
 
       {(informe.degradado || informe.aviso || informe.filasTruncadas) && (
-        <div className="flex flex-wrap items-start gap-3 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
+        <div className="flex flex-wrap items-start gap-3 rounded-2xl border border-line bg-signal/10 px-4 py-3 text-sm text-ink">
           <AlertTriangle size={17} className="mt-0.5 flex-shrink-0" />
           <div className="space-y-1">
             {informe.aviso && <p>{informe.aviso}</p>}
@@ -318,7 +326,7 @@ export default function AdminAudiencia({ notify }: { notify: (msg: string) => vo
         </div>
       )}
 
-      <p className="text-xs text-gray-400">
+      <p className="t-label text-ink/35">
         Las visitas solo cuentan a quien ha aceptado la medición en el aviso de cookies, sin IP ni datos personales.
       </p>
 
@@ -328,7 +336,7 @@ export default function AdminAudiencia({ notify }: { notify: (msg: string) => vo
           label="Visitantes únicos"
           value={formatNumber(visitas.visitantes)}
           icon={Users}
-          accent="bg-blue-50 text-blue-600"
+          accent="bg-blue-50 text-ink"
           trend={comparativa.visitantes != null ? { value: `${(data?.variacion.visitantes ?? 0) >= 0 ? '+' : ''}${data?.variacion.visitantes ?? 0}%`, positive: (data?.variacion.visitantes ?? 0) >= 0 } : undefined}
           helper={comparativa.visitantes != null ? `periodo anterior: ${formatNumber(comparativa.visitantes)}` : 'sin comparativa'}
         />
@@ -336,7 +344,7 @@ export default function AdminAudiencia({ notify }: { notify: (msg: string) => vo
           label="Páginas vistas"
           value={formatNumber(visitas.visitas)}
           icon={Eye}
-          accent="bg-brand-primary/10 text-brand-primary"
+          accent="bg-ink/10 text-ink"
           trend={comparativa.visitas != null ? { value: `${(data?.variacion.visitas ?? 0) >= 0 ? '+' : ''}${data?.variacion.visitas ?? 0}%`, positive: (data?.variacion.visitas ?? 0) >= 0 } : undefined}
           helper={comparativa.visitas != null ? `periodo anterior: ${formatNumber(comparativa.visitas)}` : 'sin comparativa'}
         />
@@ -344,21 +352,21 @@ export default function AdminAudiencia({ notify }: { notify: (msg: string) => vo
           label="Sesiones"
           value={formatNumber(visitas.sesiones)}
           icon={Activity}
-          accent="bg-purple-50 text-purple-600"
+          accent="bg-purple-50 text-ink"
           helper={visitas.paginasPorVisita != null ? `${visitas.paginasPorVisita} páginas por visitante` : undefined}
         />
         <StatCard
           label="Tiempo medio por página"
           value={formatearDuracion(visitas.duracionMedia)}
           icon={Clock}
-          accent="bg-emerald-50 text-emerald-600"
+          accent="bg-moss/10 text-moss"
           helper={visitas.nuevos != null ? `${formatNumber(visitas.nuevos)} nuevos · ${formatNumber(visitas.recurrente || 0)} recurrentes` : undefined}
         />
         <StatCard
           label="Registros"
           value={formatNumber(actividad.registros)}
           icon={UserPlus}
-          accent="bg-amber-50 text-amber-600"
+          accent="bg-signal/10 text-amber-600"
           trend={data ? { value: `${(data.variacion.registros ?? 0) >= 0 ? '+' : ''}${data.variacion.registros ?? 0}%`, positive: (data.variacion.registros ?? 0) >= 0 } : undefined}
           helper={`${formatNumber(actividad.nuevosProfesionales)} profesionales o talleres`}
         />
@@ -397,25 +405,25 @@ export default function AdminAudiencia({ notify }: { notify: (msg: string) => vo
         >
           {sinVisitasSinDatos ? (
             <Empty
-              icon="👣"
+             
               title="Todavía no hay visitas registradas"
               subtitle="La medición empieza en cuanto alguien navegue con el aviso de cookies aceptado. Si acabas de desplegar la migración, dale unas horas."
             />
           ) : (
             <div className="space-y-5">
               <div>
-                <div className="mb-2 flex items-center justify-between text-xs font-semibold text-gray-500">
+                <div className="mb-2 flex items-center justify-between t-label text-ink/45/55">
                   <span>Páginas vistas</span>
-                  <span className="text-gray-800">{formatNumber(visitas.visitas)} en total</span>
+                  <span className="text-ink">{formatNumber(visitas.visitas)} en total</span>
                 </div>
-                <Barras datos={serieChart} color="bg-gradient-to-t from-brand-primary/80 to-brand-primary" />
+                <Barras datos={serieChart} color="bg-ink" />
               </div>
               <div>
-                <div className="mb-2 flex items-center justify-between text-xs font-semibold text-gray-500">
+                <div className="mb-2 flex items-center justify-between t-label text-ink/45/55">
                   <span>Visitantes únicos</span>
-                  <span className="text-gray-800">{formatNumber(visitas.visitantes)} en total</span>
+                  <span className="text-ink">{formatNumber(visitas.visitantes)} en total</span>
                 </div>
-                <Barras datos={visitantesChart} color="bg-gradient-to-t from-blue-500 to-blue-400" altura={64} />
+                <Barras datos={visitantesChart} color="bg-ink/70" altura={64} />
               </div>
             </div>
           )}
@@ -428,18 +436,18 @@ export default function AdminAudiencia({ notify }: { notify: (msg: string) => vo
               return (
                 <div key={f.clave}>
                   <div className="flex items-center justify-between text-xs">
-                    <span className="font-medium text-gray-700">{f.etiqueta}</span>
-                    <span className="text-gray-500">
+                    <span className="font-medium text-ink">{f.etiqueta}</span>
+                    <span className="text-ink/55">
                       {formatNumber(f.visitas)} · {Math.round((f.visitas / total) * 100)}%
                     </span>
                   </div>
-                  <div className="mt-1 h-1.5 w-full overflow-hidden rounded-full bg-gray-100">
+                  <div className="mt-1 h-1.5 w-full overflow-hidden rounded-full bg-paper-2">
                     <div className="h-full rounded-full bg-emerald-500/80" style={{ width: `${(f.visitas / total) * 100}%` }} />
                   </div>
                 </div>
               )
             })}
-            {(data?.fuentesAgrupadas || []).length === 0 && <p className="text-sm text-gray-500">Sin datos de origen todavía.</p>}
+            {(data?.fuentesAgrupadas || []).length === 0 && <p className="text-[12.5px] leading-relaxed text-ink/55">Sin datos de origen todavía.</p>}
           </div>
         </Card>
       </div>
@@ -450,14 +458,14 @@ export default function AdminAudiencia({ notify }: { notify: (msg: string) => vo
         subtitle="Todo lo que ha pasado en cada día, semana o mes del rango elegido"
         bodyClassName="p-0"
         actions={
-          <span className="text-xs text-gray-400">
+          <span className="t-label text-ink/35">
             {filasTabla.length} {informe.rango.granularidad === 'dia' ? 'días' : informe.rango.granularidad === 'semana' ? 'semanas' : 'meses'}
           </span>
         }
       >
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
-            <thead className="border-b border-gray-100 bg-gray-50/70 text-xs uppercase tracking-wide text-gray-500">
+            <thead className="border-b border-line bg-paper-2/70 text-xs uppercase tracking-wide text-ink/55">
               <tr>
                 <th className="px-4 py-3 text-left font-semibold">Periodo</th>
                 <th className="px-3 py-3 text-right font-semibold">Visitantes</th>
@@ -473,26 +481,26 @@ export default function AdminAudiencia({ notify }: { notify: (msg: string) => vo
                 <th className="px-3 py-3 text-right font-semibold">Denuncias</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-50">
+            <tbody className="divide-y divide-line">
               {filasTabla.map((f) => (
-                <tr key={f.periodo} className="hover:bg-gray-50/60">
-                  <td className="whitespace-nowrap px-4 py-2.5 font-medium text-gray-800">{f.corta || f.periodo}</td>
-                  <td className="px-3 py-2.5 text-right font-bold text-blue-600">{formatNumber(f.visitantes)}</td>
-                  <td className="px-3 py-2.5 text-right text-gray-700">{formatNumber(f.visitas)}</td>
-                  <td className="px-3 py-2.5 text-right text-gray-500">{formatNumber(f.sesiones)}</td>
-                  <td className="px-3 py-2.5 text-right text-gray-700">{formatNumber(f.registros)}</td>
-                  <td className="px-3 py-2.5 text-right text-gray-700">{formatNumber(f.publicaciones)}</td>
-                  <td className="px-3 py-2.5 text-right text-gray-500">{formatNumber(f.mensajes)}</td>
-                  <td className="px-3 py-2.5 text-right text-gray-500">{formatNumber(f.favoritos)}</td>
-                  <td className="px-3 py-2.5 text-right text-gray-500">{formatNumber(f.cupones)}</td>
-                  <td className="px-3 py-2.5 text-right text-gray-500">{formatNumber(f.creditos)}</td>
-                  <td className="px-3 py-2.5 text-right text-gray-500">{formatNumber(f.resenas)}</td>
-                  <td className="px-3 py-2.5 text-right text-gray-500">{formatNumber(f.denuncias)}</td>
+                <tr key={f.periodo} className="hover:bg-paper-2/60">
+                  <td className="whitespace-nowrap px-4 py-2.5 font-medium text-ink">{f.corta || f.periodo}</td>
+                  <td className="px-3 py-2.5 text-right font-bold text-ink">{formatNumber(f.visitantes)}</td>
+                  <td className="px-3 py-2.5 text-right text-ink">{formatNumber(f.visitas)}</td>
+                  <td className="px-3 py-2.5 text-right text-ink/55">{formatNumber(f.sesiones)}</td>
+                  <td className="px-3 py-2.5 text-right text-ink">{formatNumber(f.registros)}</td>
+                  <td className="px-3 py-2.5 text-right text-ink">{formatNumber(f.publicaciones)}</td>
+                  <td className="px-3 py-2.5 text-right text-ink/55">{formatNumber(f.mensajes)}</td>
+                  <td className="px-3 py-2.5 text-right text-ink/55">{formatNumber(f.favoritos)}</td>
+                  <td className="px-3 py-2.5 text-right text-ink/55">{formatNumber(f.cupones)}</td>
+                  <td className="px-3 py-2.5 text-right text-ink/55">{formatNumber(f.creditos)}</td>
+                  <td className="px-3 py-2.5 text-right text-ink/55">{formatNumber(f.resenas)}</td>
+                  <td className="px-3 py-2.5 text-right text-ink/55">{formatNumber(f.denuncias)}</td>
                 </tr>
               ))}
             </tbody>
           </table>
-          {filasTabla.length === 0 && <Empty icon="📅" title="Sin periodos en el rango" />}
+          {filasTabla.length === 0 && <Empty title="Sin periodos en el rango" />}
         </div>
       </Card>
 
@@ -501,7 +509,7 @@ export default function AdminAudiencia({ notify }: { notify: (msg: string) => vo
         <Card title="Páginas más vistas" bodyClassName="p-5">
           <ListaRanking
             titulo="Rutas del sitio"
-            icono={<MousePointerClick size={15} className="text-brand-primary" />}
+            icono={<MousePointerClick size={15} className="text-ink" />}
             filas={visitas.topPaginas.map((p) => ({ ...p, etiqueta: p.clave, url: p.tipo === 'home' ? '/' : p.clave }))}
           />
         </Card>
@@ -515,8 +523,7 @@ export default function AdminAudiencia({ notify }: { notify: (msg: string) => vo
               etiqueta: p.titulo || p.slug,
               visitas: Number(p.visitas) || 0,
               visitantes: Number(p.visitantes) || 0,
-              url: productUrl({ id: p.productoId, slug: p.slug }),
-            }))}
+              url: productUrl({ id: p.productoId, slug: p.slug }) }))}
             vacio="Ningún anuncio ha recibido visitas en el periodo."
             sufijo="visitas"
           />
@@ -525,70 +532,70 @@ export default function AdminAudiencia({ notify }: { notify: (msg: string) => vo
         <Card title="Dispositivos, idioma y horarios" bodyClassName="p-5">
           <div className="space-y-5">
             <div>
-              <h4 className="mb-2 flex items-center gap-2 text-sm font-bold text-gray-900">
-                <Monitor size={15} className="text-gray-500" /> Dispositivo
+              <h4 className="mb-2 flex items-center gap-2 text-[13px] font-medium text-ink">
+                <Monitor size={15} className="text-ink/55" /> Dispositivo
               </h4>
               <div className="space-y-1.5">
                 {visitas.dispositivos.map((d) => (
                   <div key={d.clave} className="flex items-center justify-between text-xs">
-                    <span className="inline-flex items-center gap-1.5 font-medium text-gray-700">
+                    <span className="inline-flex items-center gap-1.5 font-medium text-ink">
                       {ICONO_DISPOSITIVO[d.clave] || <Monitor size={13} />}
                       {d.clave === 'movil' ? 'Móvil' : d.clave === 'tablet' ? 'Tablet' : d.clave === 'escritorio' ? 'Escritorio' : d.clave}
                     </span>
-                    <span className="text-gray-500">{formatNumber(d.visitas)}</span>
+                    <span className="text-ink/55">{formatNumber(d.visitas)}</span>
                   </div>
                 ))}
-                {visitas.dispositivos.length === 0 && <p className="text-xs text-gray-400">Sin datos.</p>}
+                {visitas.dispositivos.length === 0 && <p className="t-label text-ink/35">Sin datos.</p>}
               </div>
             </div>
 
             <div>
-              <h4 className="mb-2 flex items-center gap-2 text-sm font-bold text-gray-900">
-                <Globe size={15} className="text-gray-500" /> Idioma
+              <h4 className="mb-2 flex items-center gap-2 text-[13px] font-medium text-ink">
+                <Globe size={15} className="text-ink/55" /> Idioma
               </h4>
               <div className="space-y-1.5">
                 {visitas.idiomas.map((i) => (
                   <div key={i.clave} className="flex items-center justify-between text-xs">
-                    <span className="font-medium text-gray-700">{i.clave === 'en' ? 'Inglés' : i.clave === 'es' ? 'Español' : i.clave}</span>
-                    <span className="text-gray-500">{formatNumber(i.visitas)}</span>
+                    <span className="font-medium text-ink">{i.clave === 'en' ? 'Inglés' : i.clave === 'es' ? 'Español' : i.clave}</span>
+                    <span className="text-ink/55">{formatNumber(i.visitas)}</span>
                   </div>
                 ))}
-                {visitas.idiomas.length === 0 && <p className="text-xs text-gray-400">Sin datos.</p>}
+                {visitas.idiomas.length === 0 && <p className="t-label text-ink/35">Sin datos.</p>}
               </div>
             </div>
 
             <div>
-              <h4 className="mb-2 text-sm font-bold text-gray-900">Horas con más visitas</h4>
+              <h4 className="mb-2 text-[13px] font-medium text-ink">Horas con más visitas</h4>
               <div className="flex h-16 items-end gap-[3px]">
                 {visitas.horas.map((h) => {
                   const maximo = Math.max(1, ...visitas.horas.map((x) => x.visitas))
                   return (
                     <div key={h.hora} className="flex-1" title={`${h.hora}:00 · ${h.visitas} visitas`}>
                       <div
-                        className="w-full rounded-t bg-gradient-to-t from-indigo-500/70 to-indigo-400"
+                        className="w-full rounded-t bg-moss/60"
                         style={{ height: `${Math.max(2, (h.visitas / maximo) * 58)}px` }}
                       />
                     </div>
                   )
                 })}
               </div>
-              <div className="mt-1 flex justify-between text-[9px] text-gray-400">
+              <div className="mt-1 flex justify-between text-[9px] text-ink/35">
                 <span>00h</span><span>12h</span><span>23h</span>
               </div>
             </div>
 
             <div>
-              <h4 className="mb-2 text-sm font-bold text-gray-900">Días de la semana</h4>
+              <h4 className="mb-2 text-[13px] font-medium text-ink">Días de la semana</h4>
               <div className="space-y-1">
                 {visitas.diasSemana.map((d) => {
                   const maximo = Math.max(1, ...visitas.diasSemana.map((x) => x.visitas))
                   return (
                     <div key={d.dow} className="flex items-center gap-2 text-[11px]">
-                      <span className="w-16 text-gray-500">{NOMBRE_DIA[d.dow - 1] || d.dow}</span>
-                      <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-gray-100">
-                        <div className="h-full rounded-full bg-brand-primary/70" style={{ width: `${(d.visitas / maximo) * 100}%` }} />
+                      <span className="w-16 text-ink/55">{NOMBRE_DIA[d.dow - 1] || d.dow}</span>
+                      <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-paper-2">
+                        <div className="h-full rounded-full bg-ink/70" style={{ width: `${(d.visitas / maximo) * 100}%` }} />
                       </div>
-                      <span className="w-8 text-right text-gray-500">{formatNumber(d.visitas)}</span>
+                      <span className="w-8 text-right text-ink/55">{formatNumber(d.visitas)}</span>
                     </div>
                   )
                 })}
@@ -615,13 +622,13 @@ export default function AdminAudiencia({ notify }: { notify: (msg: string) => vo
               { label: 'Reseñas en el periodo', valor: actividad.resenas },
               { label: 'Denuncias en el periodo', valor: actividad.denuncias },
             ].map((k) => (
-              <div key={k.label} className="rounded-xl border border-gray-100 bg-gray-50/60 px-3 py-2.5">
-                <p className="text-lg font-black text-gray-900">{formatNumber(k.valor)}</p>
-                <p className="text-[11px] text-gray-500">{k.label}</p>
+              <div key={k.label} className="rounded-xl border border-line bg-paper-2/60 px-3 py-2.5">
+                <p className="text-lg font-semibold text-ink">{formatNumber(k.valor)}</p>
+                <p className="text-[11px] text-ink/55">{k.label}</p>
               </div>
             ))}
           </div>
-          <div className="mt-4 flex flex-wrap items-center gap-2 text-xs text-gray-600">
+          <div className="mt-4 flex flex-wrap items-center gap-2 text-[11.5px] text-ink/45">
             <span className="font-semibold">Planes activos:</span>
             {estado.packsPorPlan.map((p) => (
               <Badge key={p.plan} tone={p.plan === 'unlimited' ? 'brand' : p.plan === 'starter' ? 'blue' : 'gray'}>
@@ -646,28 +653,28 @@ export default function AdminAudiencia({ notify }: { notify: (msg: string) => vo
             ) : undefined
           }
         >
-          <div className="divide-y divide-gray-50">
+          <div className="divide-y divide-line">
             {(data?.productosSinVisitas || []).map((p: any) => (
               <div key={p.id} className="flex items-center gap-3 px-5 py-3">
-                <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gray-100 text-sm">📦</span>
+                <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-paper-2 text-sm"></span>
                 <div className="min-w-0 flex-1">
-                  <LocalLink href={productUrl({ id: p.id, slug: p.slug })} className="block truncate text-sm font-semibold text-gray-800 hover:text-brand-primary">
+                  <LocalLink href={productUrl({ id: p.id, slug: p.slug })} className="block truncate text-[13px] font-medium text-ink hover:text-ink">
                     {p.titulo}
                   </LocalLink>
-                  <p className="text-xs text-gray-500">Publicado {timeAgo(p.creadoEn)} · sin visitas en el periodo</p>
+                  <p className="text-[11.5px] text-ink/45">Publicado {timeAgo(p.creadoEn)} · sin visitas en el periodo</p>
                 </div>
                 <Badge tone="gray">{formatDate(p.creadoEn)}</Badge>
               </div>
             ))}
             {(data?.productosSinVisitas || []).length === 0 && (
-              <Empty icon="✅" title="Ningún anuncio se ha quedado sin visitas" subtitle="Buen trabajo: todos los activos reciben tráfico." />
+              <Empty title="Ningún anuncio se ha quedado sin visitas" subtitle="Buen trabajo: todos los activos reciben tráfico." />
             )}
           </div>
         </Card>
       </div>
 
-      <div className="flex flex-wrap items-center gap-3 rounded-2xl border border-gray-200 bg-white px-4 py-3 text-xs text-gray-500">
-        <BarChart3 size={14} className="text-brand-primary" />
+      <div className="flex flex-wrap items-center gap-3 rounded-2xl border border-line bg-[#FBFAF5] px-4 py-3 text-[11.5px] text-ink/45">
+        <BarChart3 size={14} className="text-ink" />
         <span>
           Informe generado {timeAgo(informe.generadoEn)} · periodo anterior: registros {formatNumber(comparativa.registros)},
           anuncios {formatNumber(comparativa.publicaciones)}, mensajes {formatNumber(comparativa.mensajes)}.

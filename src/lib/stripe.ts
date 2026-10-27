@@ -26,8 +26,7 @@ export function getStripe(): Stripe | null {
       // Sin fijar apiVersion: usamos la versión de la cuenta, que es la que
       // el dashboard muestra y la que Stripe mantiene al día.
       typescript: true,
-      appInfo: { name: 'MaquinariaOcasion', url: 'https://maquinaria.click' },
-    })
+      appInfo: { name: 'MaquinariaOcasion', url: 'https://maquinaria.click' } })
   }
   return cached
 }

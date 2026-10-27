@@ -1,3 +1,4 @@
+  'id, slug, titulo, precio_usd, estado, imagen_url, ubicacion_ciudad, ubicacion_estado, creado_en, subcategoria, boosteado_en, destacado, destacado_hasta, vendedor_verificado, vendedor_tipo, reservado, es_demo'
 /**
  * Piezas compartidas de la consulta del catálogo.
  *
@@ -20,8 +21,7 @@ import {
   PARAMETROS_RANGO,
   RANGOS_NUMERICOS,
   especificacionesDeFiltros,
-  limpiarFiltrosRango,
-} from './filtros-tecnicos'
+  limpiarFiltrosRango } from './filtros-tecnicos'
 
 /**
  * Filtro "¿Quién vende?" (Fase 3): particulares, talleres o pros.
@@ -125,8 +125,7 @@ export function aplicarFiltrosCatalogo<T extends QueryCatalogo>(
  */
 export const RANGOS_SUGERIDOS: Record<string, { min: number; max: number; step: number }> = {
   horasMax: { min: 0, max: 100000, step: 500 },
-  anioMin: { min: 1950, max: new Date().getFullYear(), step: 1 },
-}
+  anioMin: { min: 1950, max: new Date().getFullYear(), step: 1 } }
 
 /**
  * Traduce los filtros de rango activos a condiciones sobre las columnas
@@ -194,7 +193,6 @@ export const CATALOG_PRODUCT_COLUMNS =
  */
 export const CATALOG_FILTRO_MODERACION =
   'estado_moderacion.is.null,estado_moderacion.eq.aprobado,estado_moderacion.eq.pendiente'
-
 export interface ProductoCatalogo {
   id: string
   slug?: string | null
@@ -314,8 +312,7 @@ export function marcarDestacados<T extends ProductoCatalogo>(productos: T[]): T[
   const ahora = new Date().toISOString()
   return productos.map(p => ({
     ...p,
-    _isFeatured: !!(p.destacado && p.destacado_hasta && p.destacado_hasta > ahora),
-  }))
+    _isFeatured: !!(p.destacado && p.destacado_hasta && p.destacado_hasta > ahora) }))
 }
 
 export { CATALOG_PAGE_SIZE }

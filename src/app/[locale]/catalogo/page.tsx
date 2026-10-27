@@ -7,9 +7,7 @@ import {
   CATALOG_FILTRO_MODERACION,
   aplicarOrdenCatalogo,
   marcarDestacados,
-  ordenarProductosCatalogo,
-  type ProductoCatalogo,
-} from '@/lib/catalog-consulta'
+  ordenarProductosCatalogo, type ProductoCatalogo} from '@/lib/catalog-consulta'
 import CatalogoClient from './CatalogoPage'
 import { Suspense } from 'react'
 import { alternatesSeo, descripcionSeo, tituloSeo } from '@/lib/seo'
@@ -49,13 +47,11 @@ export async function generateMetadata({ searchParams }: PageProps): Promise<Met
         : 'Catálogo de maquinaria y herramienta de ocasión',
       description: 'Maquinaria y herramienta de ocasión en España. Agrícola, obra y herramienta profesional, con ficha técnica completa.',
       images: [{ url: ogImageUrl, width: 1200, height: 630, alt: 'Catálogo - MaquinariaOcasión' }],
-      locale: 'es_ES',
-    },
+      locale: 'es_ES' },
     alternates: alternatesSeo('/catalogo'),
     robots: hasPagination
       ? { index: false, follow: true }
-      : { index: true, follow: true },
-  }
+      : { index: true, follow: true } }
 }
 
 function buildCatalogSchemas(products: any[]) {
@@ -66,8 +62,7 @@ function buildCatalogSchemas(products: any[]) {
     itemListElement: [
       { '@type': 'ListItem', position: 1, name: 'Inicio', item: SITIO + '/' },
       { '@type': 'ListItem', position: 2, name: 'Catálogo', item: SITIO + '/catalogo' },
-    ],
-  }
+    ] }
   if (!products || products.length === 0) return { breadcrumb, itemList: null }
   const itemList = {
     '@context': 'https://schema.org',
@@ -85,10 +80,7 @@ function buildCatalogSchemas(products: any[]) {
         price: p.precio_usd || 0,
         priceCurrency: 'EUR',
         availability: 'https://schema.org/InStock',
-        url: SITIO + '/producto/' + (p.slug || p.id),
-      },
-    })),
-  }
+        url: SITIO + '/producto/' + (p.slug || p.id) } })) }
   const collectionPage = {
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
@@ -97,8 +89,7 @@ function buildCatalogSchemas(products: any[]) {
     url: SITIO + '/catalogo',
     isPartOf: { '@id': SITIO + '/#website' },
     breadcrumb: { '@id': SITIO + '/catalogo#breadcrumb' },
-    mainEntity: { '@id': SITIO + '/catalogo#itemlist' },
-  }
+    mainEntity: { '@id': SITIO + '/catalogo#itemlist' } }
   return { breadcrumb, itemList, collectionPage }
 }
 

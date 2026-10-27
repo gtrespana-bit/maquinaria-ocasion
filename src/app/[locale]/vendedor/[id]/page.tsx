@@ -83,8 +83,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!data) {
     return {
       title: 'Vendedor no encontrado',
-      robots: { index: false, follow: false },
-    }
+      robots: { index: false, follow: false } }
   }
 
   const { perfil, resenas, promedio, productos } = data
@@ -125,18 +124,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       siteName: 'MaquinariaOcasión',
       type: 'profile',
       locale: 'es_ES',
-      images,
-    },
+      images },
     twitter: {
       card: 'summary',
       title,
       description,
-      images,
-    },
+      images },
     robots: tieneActividad
       ? { index: true, follow: true }
-      : { index: false, follow: true },
-  }
+      : { index: false, follow: true } }
 }
 
 export default async function VendedorPage({ params }: Props) {
@@ -164,18 +160,14 @@ export default async function VendedorPage({ params }: Props) {
       '@type': 'PostalAddress',
       addressLocality: perfil.ciudad || '',
       addressRegion: perfil.estado || '',
-      addressCountry: 'ES',
-    },
+      addressCountry: 'ES' },
     ...(resenas.length > 0 && {
       aggregateRating: {
         '@type': 'AggregateRating',
         ratingValue: promedio.toFixed(1),
         reviewCount: resenas.length,
         bestRating: 5,
-        worstRating: 1,
-      },
-    }),
-  }
+        worstRating: 1 } }) }
 
   const breadcrumbJsonLd = {
     '@context': 'https://schema.org',
@@ -184,8 +176,7 @@ export default async function VendedorPage({ params }: Props) {
       { '@type': 'ListItem', position: 1, name: 'Inicio', item: SITIO + '/' },
       { '@type': 'ListItem', position: 2, name: 'Vendedores', item: SITIO + '/tiendas' },
       { '@type': 'ListItem', position: 3, name: perfil.nombre || 'Vendedor', item: SITIO + '/vendedor/' + id },
-    ],
-  }
+    ] }
 
   const itemListJsonLd = productos.length > 0 ? {
     '@context': 'https://schema.org',
@@ -204,15 +195,11 @@ export default async function VendedorPage({ params }: Props) {
         price: (p as any).precio_usd || 0,
         priceCurrency: 'EUR',
         availability: 'https://schema.org/InStock',
-        url: SITIO + '/producto/' + (p.slug || p.id),
-      },
-    })),
-  } : null
+        url: SITIO + '/producto/' + (p.slug || p.id) } })) } : null
 
   const graphJsonLd = {
     '@context': 'https://schema.org',
-    '@graph': [breadcrumbJsonLd, perfilJsonLd, ...(itemListJsonLd ? [itemListJsonLd] : [])],
-  }
+    '@graph': [breadcrumbJsonLd, perfilJsonLd, ...(itemListJsonLd ? [itemListJsonLd] : [])] }
 
   return (
     <>

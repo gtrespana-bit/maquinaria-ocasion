@@ -4,8 +4,15 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Check, Lock, LockOpen, MessageSquare, Trash2, X } from 'lucide-react'
 import LocalLink from '@/components/LocalLink'
 import {
-  Badge, Button, Card, Empty, Loading, RefreshButton, SearchInput, Segmented, timeAgo,
-} from './AdminUi'
+  Badge,
+  Button,
+  Card,
+  Empty,
+  Loading,
+  RefreshButton,
+  SearchInput,
+  Segmented,
+  timeAgo } from './AdminUi'
 import { apiJson } from './admin-utils'
 
 type Hilo = {
@@ -53,7 +60,7 @@ export default function AdminForo({ notify }: { notify: (msg: string) => void })
       setHilos(json.hilos || [])
       setMensajes(json.mensajes || [])
     } catch (e: any) {
-      notify('❌ ' + (e?.message || 'Error cargando el foro'))
+      notify( (e?.message || 'Error cargando el foro'))
     }
     setLoading(false)
     setRefreshing(false)
@@ -69,12 +76,11 @@ export default function AdminForo({ notify }: { notify: (msg: string) => void })
       await apiJson('/api/admin/foro', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action, id }),
-      })
-      notify('✅ ' + okMsg)
+        body: JSON.stringify({ action, id }) })
+      notify( okMsg)
       await load(true)
     } catch (e: any) {
-      notify('❌ ' + e.message)
+      notify( e.message)
     }
     setBusyId(null)
   }
@@ -108,10 +114,10 @@ export default function AdminForo({ notify }: { notify: (msg: string) => void })
     <div className="space-y-5">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-3">
-          <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-50 text-blue-700"><MessageSquare size={22} /></span>
+          <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-50 text-ink"><MessageSquare size={22} /></span>
           <div>
-            <h2 className="text-xl font-black text-gray-900">Foro</h2>
-            <p className="text-sm text-gray-500">{pendientes.length} hilos pendientes · {mensajes.length} respuestas pendientes · {hilos.length} hilos en total</p>
+            <h2 className="text-xl font-semibold text-ink">Foro</h2>
+            <p className="text-[12.5px] leading-relaxed text-ink/55">{pendientes.length} hilos pendientes · {mensajes.length} respuestas pendientes · {hilos.length} hilos en total</p>
           </div>
         </div>
         <RefreshButton onClick={() => load(true)} loading={refreshing} />
@@ -120,9 +126,9 @@ export default function AdminForo({ notify }: { notify: (msg: string) => void })
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <Segmented
           items={[
-            { id: 'pendientes' as const, label: `⏳ Pendientes (${pendientes.length})` },
-            { id: 'respuestas' as const, label: `💬 Respuestas (${mensajes.length})` },
-            { id: 'todos' as const, label: `📄 Todos (${hilos.length})` },
+            { id: 'pendientes' as const, label: `Pendientes (${pendientes.length})` },
+            { id: 'respuestas' as const, label: `Respuestas (${mensajes.length})` },
+            { id: 'todos' as const, label: `Todos (${hilos.length})` },
           ]}
           value={tab}
           onChange={setTab}
@@ -132,19 +138,19 @@ export default function AdminForo({ notify }: { notify: (msg: string) => void })
 
       {tab === 'respuestas' && (
         <div className="space-y-3">
-          {mensajes.length === 0 && <Empty icon="✅" title="Sin respuestas pendientes" subtitle="No hay respuestas esperando revisión." />}
+          {mensajes.length === 0 && <Empty title="Sin respuestas pendientes" subtitle="No hay respuestas esperando revisión." />}
           {mensajes.map(m => (
             <Card key={m.id} bodyClassName="p-4">
               <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
                 <div className="flex-1 min-w-0">
                   <div className="flex flex-wrap items-center gap-2">
-                    <LocalLink href={`/foro/hilo/${m.hilo_id}`} target="_blank" rel="noopener noreferrer" className="font-bold text-gray-800 hover:text-brand-primary truncate">
+                    <LocalLink href={`/foro/hilo/${m.hilo_id}`} target="_blank" rel="noopener noreferrer" className="font-semibold text-ink hover:text-ink truncate">
                       {m.hilo?.titulo || 'Hilo'}
                     </LocalLink>
                     <Badge tone="yellow">pendiente</Badge>
                   </div>
-                  <p className="mt-1 text-xs text-gray-500">{m.autor} · {timeAgo(m.creado_en)}</p>
-                  <p className="mt-2 text-sm text-gray-600 whitespace-pre-line line-clamp-4">{m.cuerpo}</p>
+                  <p className="mt-1 text-[11.5px] text-ink/45">{m.autor} · {timeAgo(m.creado_en)}</p>
+                  <p className="mt-2 text-[12.5px] leading-relaxed text-ink/55 whitespace-pre-line line-clamp-4">{m.cuerpo}</p>
                 </div>
                 <div className="flex flex-wrap gap-2">
                   <Button size="sm" variant="success" disabled={busyId === m.id} onClick={() => accion('aprobar-mensaje', m.id, 'Respuesta aprobada')}>
@@ -164,7 +170,7 @@ export default function AdminForo({ notify }: { notify: (msg: string) => void })
         <div className="space-y-3">
           {filtrados.length === 0 && (
             <Empty
-              icon={tab === 'pendientes' ? '🎉' : '🗂️'}
+              icon={tab === 'pendientes' ? '✅' : '🗂️'}
               title={tab === 'pendientes' ? 'Sin hilos por revisar' : 'Sin resultados'}
               subtitle={tab === 'pendientes' ? 'La cola del foro está limpia.' : 'Prueba con otra búsqueda.'}
             />
@@ -174,24 +180,24 @@ export default function AdminForo({ notify }: { notify: (msg: string) => void })
               <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
                 <div className="flex-1 min-w-0">
                   <div className="flex flex-wrap items-center gap-2">
-                    <LocalLink href={`/foro/hilo/${h.id}`} target="_blank" rel="noopener noreferrer" className="font-bold text-gray-800 hover:text-brand-primary">
-                      <span aria-hidden="true" className="mr-1">{h.categoria?.icono || '💬'}</span>
+                    <LocalLink href={`/foro/hilo/${h.id}`} target="_blank" rel="noopener noreferrer" className="font-semibold text-ink hover:text-ink">
+                      <span aria-hidden="true" className="mr-1">{h.categoria?.icono || ''}</span>
                       {h.titulo}
                     </LocalLink>
                     {h.estado_moderacion === 'pendiente' && <Badge tone="yellow">pendiente</Badge>}
                     {h.estado_moderacion === 'aprobado' && <Badge tone="green">aprobado</Badge>}
                     {!!h.cerrado && <Badge tone="gray"><Lock size={11} className="mr-1 inline" />cerrado</Badge>}
                   </div>
-                  <p className="mt-1 text-xs text-gray-500">
+                  <p className="mt-1 text-[11.5px] text-ink/45">
                     {h.categoria?.nombre_es || '—'} · {h.autor} · {timeAgo(h.actualizado_en || h.creado_en)} · {h.mensajes_count || 0} respuestas
                   </p>
-                  <p className="mt-2 text-sm text-gray-600 line-clamp-2">{h.cuerpo}</p>
+                  <p className="mt-2 text-[12.5px] leading-relaxed text-ink/55 line-clamp-2">{h.cuerpo}</p>
                   {h.motivo_moderacion && h.estado_moderacion === 'pendiente' && (
-                    <p className="mt-2 rounded-lg bg-orange-50 px-2.5 py-1.5 text-xs text-orange-700">⚠️ {h.motivo_moderacion}</p>
+                    <p className="mt-2 rounded-lg bg-orange-50 px-2.5 py-1.5 text-xs text-orange-700"> {h.motivo_moderacion}</p>
                   )}
                 </div>
                 <div className="flex flex-wrap gap-2">
-                  <LocalLink href={`/foro/hilo/${h.id}`} target="_blank" rel="noopener noreferrer" className="inline-flex h-8 items-center gap-1.5 rounded-xl border border-gray-300 px-3 text-xs font-semibold text-gray-700 transition hover:bg-gray-50">
+                  <LocalLink href={`/foro/hilo/${h.id}`} target="_blank" rel="noopener noreferrer" className="inline-flex h-8 items-center gap-1.5 rounded-xl border border-line-strong px-3 t-label text-ink/45 transition hover:bg-paper-2">
                     Ver
                   </LocalLink>
                   {h.estado_moderacion === 'pendiente' && (

@@ -52,8 +52,7 @@ function getAdminClient() {
     throw new Error('Faltan NEXT_PUBLIC_SUPABASE_URL o SUPABASE_SERVICE_ROLE_KEY')
   }
   return createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY, {
-    auth: { persistSession: false, autoRefreshToken: false },
-  })
+    auth: { persistSession: false, autoRefreshToken: false } })
 }
 
 /** ¿Hay canal de envío para que la app envíe el correo? (Resend API o SMTP) */
@@ -105,9 +104,7 @@ async function generarEnlaceConfirmacion(
       // `crear_perfil()` lo copia a perfiles.tipo_vendedor al confirmar
       // (migración 202609180002).
       data: { nombre, ...(tipoVendedor ? { tipo_vendedor: tipoVendedor } : {}) },
-      redirectTo: REDIRECT_CONFIRMACION,
-    },
-  })
+      redirectTo: REDIRECT_CONFIRMACION } })
 
   if (error) {
     const msg = (error.message || '').toLowerCase()
@@ -163,8 +160,7 @@ export async function enviarConfirmacion(
       const { error } = await sb.auth.resend({
         type: 'signup',
         email,
-        options: { emailRedirectTo: REDIRECT_CONFIRMACION },
-      })
+        options: { emailRedirectTo: REDIRECT_CONFIRMACION } })
       if (!error) return { ok: true, canal: 'supabase' }
       console.error('❌ [confirmacion-email] resend fallback error:', error.message)
     } catch (e: any) {
@@ -176,8 +172,7 @@ export async function enviarConfirmacion(
     ok: false,
     codigo: 'smtp',
     mensaje: 'No se pudo enviar el correo de confirmación. Inténtalo de nuevo en unos minutos o escríbenos a soporte@maquinaria.click',
-    detalle,
-  }
+    detalle }
 }
 
 /**
@@ -233,6 +228,5 @@ export async function reenviarConfirmacion(email: string): Promise<
     ok: false,
     codigo: 'smtp',
     mensaje: 'No se pudo enviar el correo de confirmación. Inténtalo de nuevo en unos minutos o escríbenos a soporte@maquinaria.click',
-    detalle,
-  }
+    detalle }
 }

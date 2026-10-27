@@ -110,8 +110,7 @@ function enviar(payload: Record<string, unknown>): void {
       body: cuerpo,
       headers: { 'Content-Type': 'text/plain;charset=UTF-8' },
       keepalive: true,
-      credentials: 'same-origin',
-    }).catch(() => {})
+      credentials: 'same-origin' }).catch(() => {})
   } catch {
     // Medición best-effort: nunca debe romper la navegación.
   }
@@ -122,8 +121,7 @@ function base() {
     vid: visitanteId(),
     sid: sesionId(),
     disp: window.innerWidth < 640 ? 'movil' : window.innerWidth < 1024 ? 'tablet' : 'escritorio',
-    ancho: window.innerWidth,
-  }
+    ancho: window.innerWidth }
 }
 
 export default function AnaliticaVisitas() {
@@ -143,8 +141,7 @@ export default function AnaliticaVisitas() {
       ref: document.referrer || '',
       ...(anterior && segundos && segundos >= 1 && segundos <= 86400
         ? { anterior: { ruta: anterior.ruta, ts: anterior.ts, segundos } }
-        : {}),
-    })
+        : {}) })
 
     pagina.current = { ruta: pathname, ts: ahora }
   }, [pathname])
@@ -160,8 +157,7 @@ export default function AnaliticaVisitas() {
         ...base(),
         ruta: abierta.ruta,
         soloDuracion: true,
-        anterior: { ruta: abierta.ruta, ts: abierta.ts, segundos },
-      })
+        anterior: { ruta: abierta.ruta, ts: abierta.ts, segundos } })
     }
 
     function alCambiarVisibilidad() {

@@ -6,9 +6,7 @@ import {
   getPaqueteByCreditos,
   isValidPaquete,
   isValidMetodoPago,
-  isValidComprobanteUrl,
-  getPrecioByCreditos,
-} from '@/lib/creditos'
+  isValidComprobanteUrl } from '@/lib/creditos'
 
 // POST /api/comprar-creditos
 // Fase 3 Bloque D: hardened
@@ -103,8 +101,7 @@ export async function POST(req: NextRequest) {
       precio_usd: precioUsdServer,
       metodo_pago: metodoPago,
       comprobante_url: comprobanteUrl,
-      estado: 'pendiente',
-    })
+      estado: 'pendiente' })
     .select()
     .single()
 
@@ -130,10 +127,7 @@ export async function POST(req: NextRequest) {
                 { text: '✅ Aprobar', callback_data: `aprobar:${tx.id}` },
                 { text: '❌ Rechazar', callback_data: `rechazar:${tx.id}` },
               ],
-            ],
-          },
-        }),
-      })
+            ] } }) })
     } catch {
       // No fallar la compra si Telegram falla
     }

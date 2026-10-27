@@ -1,10 +1,9 @@
-'use client';
+'use client'
 
 import { useCallback } from 'react';
 import { supabase } from '@/lib/supabase';
 import { clientCache } from '@/lib/clientCache';
-import {
-  CATALOG_PRODUCT_COLUMNS,
+import { CATALOG_PRODUCT_COLUMNS,
   CATALOG_FILTRO_MODERACION,
   aplicarFiltrosBase,
   aplicarOrdenCatalogo,
@@ -12,9 +11,7 @@ import {
   ProductoCatalogo,
   tieneRangosNumericos,
   quitarRangos,
-  esErrorColumnasRango,
-  type FiltrosCatalogo,
-} from '@/lib/catalog-consulta';
+  esErrorColumnasRango, type FiltrosCatalogo } from '@/lib/catalog-consulta';
 
 /**
  * Precarga en segundo plano la página siguiente del catálogo.

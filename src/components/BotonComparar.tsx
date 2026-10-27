@@ -1,7 +1,7 @@
 'use client'
 
 import { Check, GitCompare } from 'lucide-react'
-import { useComparar, type ItemComparar } from '@/lib/comparar'
+import { useComparar, type ItemComparar} from '@/lib/comparar'
 import { useTranslations } from 'next-intl'
 
 /**
@@ -27,13 +27,13 @@ export default function BotonComparar({ item, className = '' }: { item: ItemComp
         e.stopPropagation()
         alternar(item)
       }}
-      className={`z-20 w-8 h-8 rounded-full flex items-center justify-center shadow-card border transition-all active:scale-95 ${
+      className={`z-20 flex h-8 w-8 items-center justify-center border transition-all active:scale-95 ${
         activo
-          ? 'bg-brand-signal border-brand-signal text-brand-darkNav'
-          : 'bg-white/95 backdrop-blur-sm border-white text-gray-600 hover:bg-brand-signal hover:border-brand-signal hover:text-brand-darkNav'
+          ? 'border-ink bg-signal text-ink'
+          : 'border-line bg-paper/85 text-ink/60 backdrop-blur-sm hover:border-ink hover:bg-signal hover:text-ink'
       } ${className}`}
     >
-      {activo ? <Check size={15} strokeWidth={3} /> : <GitCompare size={14} strokeWidth={2.5} />}
+      {activo ? <Check size={14} strokeWidth={2.5} /> : <GitCompare size={13} strokeWidth={2} />}
     </button>
   )
 }

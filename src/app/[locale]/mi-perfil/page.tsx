@@ -17,8 +17,8 @@ export default function MiPerfilRedirect() {
   }, [user, router])
 
   return (
-    <div className="min-h-[60vh] flex items-center justify-center">
-      <p className="text-gray-500">Redirigiendo al panel...</p>
+    <div className="shell flex min-h-[60vh] items-center justify-center">
+      <p className="t-label text-ink/35">Redirigiendo al panel…</p>
     </div>
   )
 }

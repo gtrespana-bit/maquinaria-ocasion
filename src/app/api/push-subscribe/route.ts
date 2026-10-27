@@ -35,8 +35,7 @@ export async function POST(req: NextRequest) {
         user_id: user.id,
         endpoint: subscription.endpoint,
         p256dh: subscription.keys?.p256dh,
-        auth_key: subscription.keys?.auth,
-      }, { onConflict: 'user_id,endpoint' })
+        auth_key: subscription.keys?.auth }, { onConflict: 'user_id,endpoint' })
 
     if (error) {
       console.error('Error saving push subscription:', error)

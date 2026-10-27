@@ -30,16 +30,13 @@ import {
   DIAS_VENTANA_WINBACK,
   avisosPlanPendientes,
   estadoTrial,
-  mensajeAvisoPlan,
-  type AvisoPlanTipo,
-} from '@/lib/planes-prueba'
+  mensajeAvisoPlan, type AvisoPlanTipo} from '@/lib/planes-prueba'
 import {
   enviarEmailAnunciosPausados,
   enviarEmailPagoFallido,
   enviarEmailTrialGracia,
   enviarEmailTrialTermina,
-  enviarEmailWinback,
-} from '@/email/server-email'
+  enviarEmailWinback } from '@/email/server-email'
 
 export const dynamic = 'force-dynamic'
 export const maxDuration = 60
@@ -126,27 +123,23 @@ function textoEmail(
       return enviarEmailTrialTermina(perfil.email, perfil.nombre || '', {
         dias: trial.diasRestantes,
         fechaFin: trial.hasta ? trial.hasta.toISOString() : '',
-        plan,
-      })
+        plan })
     case 'trial_gracia':
     case 'gracia_ultimo_dia':
       return enviarEmailTrialGracia(perfil.email, perfil.nombre || '', {
         graciaHasta: trial.graciaHasta ? trial.graciaHasta.toISOString() : '',
-        graciaDias: DIAS_GRACIA_TRIAL,
-      })
+        graciaDias: DIAS_GRACIA_TRIAL })
     case 'winback':
       return enviarEmailWinback(perfil.email, perfil.nombre || '', {
         plan: etiquetaPlan(perfil.trial_plan || perfil.plan_anuncios || 'starter'),
-        fechaFin: trial.hasta ? trial.hasta.toISOString() : null,
-      })
+        fechaFin: trial.hasta ? trial.hasta.toISOString() : null })
     default:
       return enviarEmailPagoFallido(perfil.email, perfil.nombre || '', {
         plan: perfil.plan_anuncios && perfil.plan_anuncios !== 'gratis'
           ? etiquetaPlan(perfil.plan_anuncios)
           : 'tu plan Profesional',
         fechaFin: perfil.plan_hasta,
-        diasGracia: DIAS_GRACIA_TRIAL,
-      })
+        diasGracia: DIAS_GRACIA_TRIAL })
   }
 }
 
@@ -201,8 +194,7 @@ export async function GET(request: NextRequest) {
       trialIniciadoEn: perfil.trial_iniciado_en,
       trialHasta: perfil.trial_hasta,
       planPagoVigente,
-      ahora,
-    })
+      ahora })
 
     // Fin de la gracia = momento en que se pierde el cupo del pack de prueba.
     // Quien ya tuvo suscripción no pasa por aquí: su baja se registra en
@@ -218,8 +210,7 @@ export async function GET(request: NextRequest) {
       pagoPendienteDesde: perfil.stripe_subscription_id ? perfil.pago_pendiente_desde : null,
       planPagoVigente,
       winbackDesde,
-      avisados: avisadas.get(perfil.id) || [],
-    })
+      avisados: avisadas.get(perfil.id) || [] })
     if (pendientes.length === 0) continue
 
     const email = emails.get(perfil.id)
@@ -229,8 +220,7 @@ export async function GET(request: NextRequest) {
       avisos++
       const mensaje = mensajeAvisoPlan(aviso.tipo, {
         plan: etiquetaPlan(perfil.plan_anuncios || perfil.trial_plan || 'starter'),
-        dias: trial.diasRestantes || trial.diasGraciaRestantes,
-      })
+        dias: trial.diasRestantes || trial.diasGraciaRestantes })
 
       let canal = 'ninguno'
       if (email) {
@@ -252,8 +242,7 @@ export async function GET(request: NextRequest) {
           body: mensaje.cuerpo,
           tag: `plan-${aviso.clave}`,
           icon: '/icon-192.png',
-          click_url: mensaje.url,
-        })
+          click_url: mensaje.url })
         pushEnviados++
         if (canal === 'ninguno') canal = 'push'
       } catch {
@@ -268,8 +257,7 @@ export async function GET(request: NextRequest) {
           user_id: perfil.id,
           clave: aviso.clave,
           tipo: aviso.tipo,
-          canal,
-        })
+          canal })
       } catch {
         /* migración pendiente */
       }
@@ -280,8 +268,7 @@ export async function GET(request: NextRequest) {
   let pausados = 0
   let usuariosPausados = 0
   const { data: filas, error: cupoError } = await admin.rpc('aplicar_cupo_planes', {
-    p_ahora: ahora.toISOString(),
-  })
+    p_ahora: ahora.toISOString() })
 
   if (cupoError) {
     const msg = cupoError.message || ''
@@ -327,8 +314,7 @@ export async function GET(request: NextRequest) {
         try {
           const r = await enviarEmailAnunciosPausados(email, nombres.get(userId) || '', {
             titulos,
-            cupo,
-          })
+            cupo })
           if (r) canal = 'email'
         } catch (e: any) {
           console.error('[cron/planes] email pausados:', e?.message || e)
@@ -341,8 +327,7 @@ export async function GET(request: NextRequest) {
           body: 'No se ha borrado nada. Amplía tu pack o pausa otro para reactivarlos.',
           tag: `pausados-${ahora.toISOString().slice(0, 10)}`,
           icon: '/icon-192.png',
-          click_url: '/dashboard?tab=productos',
-        })
+          click_url: '/dashboard?tab=productos' })
         if (canal === 'ninguno') canal = 'push'
       } catch {
         /* sin push */
@@ -353,8 +338,7 @@ export async function GET(request: NextRequest) {
           user_id: userId,
           clave,
           tipo: 'anuncios_pausados',
-          canal,
-        })
+          canal })
       } catch {
         /* migración pendiente */
       }
@@ -413,8 +397,7 @@ export async function GET(request: NextRequest) {
         try {
           const r = await enviarEmailWinback(email, perfil.nombre || '', {
             plan: baja.tipo && baja.tipo !== 'baja' ? etiquetaPlan(baja.tipo) : 'Profesional',
-            fechaFin: fecha,
-          })
+            fechaFin: fecha })
           if (r) {
             emailsEnviados++
             canal = 'email'
@@ -432,8 +415,7 @@ export async function GET(request: NextRequest) {
           body: mensaje.cuerpo,
           tag: `plan-${clave}`,
           icon: '/icon-192.png',
-          click_url: mensaje.url,
-        })
+          click_url: mensaje.url })
         pushEnviados++
         if (canal === 'ninguno') canal = 'push'
       } catch {
@@ -445,8 +427,7 @@ export async function GET(request: NextRequest) {
           user_id: baja.user_id,
           clave,
           tipo: 'winback',
-          canal,
-        })
+          canal })
       } catch {
         /* migración pendiente */
       }
@@ -465,6 +446,5 @@ export async function GET(request: NextRequest) {
     pausados,
     usuariosPausados,
     winbacks,
-    fallos: fallos.slice(0, 10),
-  })
+    fallos: fallos.slice(0, 10) })
 }

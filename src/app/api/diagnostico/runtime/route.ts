@@ -57,8 +57,7 @@ export async function GET(request: NextRequest) {
       {
         ok: false,
         error: 'No autorizado',
-        como: 'Inicia sesión como admin en el navegador o envía Authorization: Bearer <CRON_SECRET>.',
-      },
+        como: 'Inicia sesión como admin en el navegador o envía Authorization: Bearer <CRON_SECRET>.' },
       { status: 401, headers: { 'Cache-Control': 'no-store' } },
     )
   }
@@ -70,8 +69,7 @@ export async function GET(request: NextRequest) {
       runtime: info,
       veredicto: info.cumple
         ? `Node.js ${info.node}: cumple el mínimo ${info.minimo}.`
-        : `Node.js ${info.node}: NO cumple el mínimo ${info.minimo}. Si estás en Vercel, el despliegue sigue con un runtime vulnerable: redespliega y, si persiste, escálalo al proveedor antes de dar el incidente por cerrado.`,
-    },
+        : `Node.js ${info.node}: NO cumple el mínimo ${info.minimo}. Si estás en Vercel, el despliegue sigue con un runtime vulnerable: redespliega y, si persiste, escálalo al proveedor antes de dar el incidente por cerrado.` },
     { status: 200, headers: { 'Cache-Control': 'no-store' } },
   )
 }

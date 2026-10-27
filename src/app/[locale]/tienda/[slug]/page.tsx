@@ -8,8 +8,7 @@ import { slugValido } from '@/lib/tiendas'
 import { productAbsoluteUrl } from '@/lib/product-url'
 import {
   getCiudadByMunicipio,
-  getCiudadByMunicipioYEstado,
-} from '@/lib/ubicaciones-seo'
+  getCiudadByMunicipioYEstado } from '@/lib/ubicaciones-seo'
 import TiendaClient from './TiendaClient'
 import { alternatesSeo, descripcionSeo, tituloSeo } from '@/lib/seo'
 
@@ -117,8 +116,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     description,
     alternates: alternatesSeo(`/tienda/${perfil.slug}`),
     openGraph: { title, description, url, siteName: 'MaquinariaOcasión', type: 'profile', locale: 'es_ES', images },
-    twitter: { card: 'summary_large_image', title, description, images: images.map(i => (i as any).url || i) as any },
-  }
+    twitter: { card: 'summary_large_image', title, description, images: images.map(i => (i as any).url || i) as any } }
 }
 
 /**
@@ -153,10 +151,8 @@ function geoTienda(perfil: any): {
     geo: {
       '@type': 'GeoCoordinates',
       latitude: candidata.lat,
-      longitude: candidata.lng,
-    },
-    hasMap: `https://maps.google.com/?q=${candidata.lat},${candidata.lng}`,
-  }
+      longitude: candidata.lng },
+    hasMap: `https://maps.google.com/?q=${candidata.lat},${candidata.lng}` }
 }
 
 export default async function TiendaPage({ params }: Props) {
@@ -178,8 +174,7 @@ export default async function TiendaPage({ params }: Props) {
       { '@type': 'ListItem', position: 1, name: 'Inicio', item: SITIO + '/' },
       { '@type': 'ListItem', position: 2, name: 'Tiendas', item: SITIO + '/tiendas' },
       { '@type': 'ListItem', position: 3, name: perfil.nombre || 'Tienda', item: pageUrl },
-    ],
-  }
+    ] }
 
   const localBusinessJsonLd = {
     '@context': 'https://schema.org',
@@ -197,9 +192,7 @@ export default async function TiendaPage({ params }: Props) {
             ...(perfil.direccion ? { streetAddress: perfil.direccion } : {}),
             ...(perfil.ciudad ? { addressLocality: perfil.ciudad } : {}),
             ...(perfil.estado ? { addressRegion: perfil.estado } : {}),
-            addressCountry: 'ES',
-          },
-        }
+            addressCountry: 'ES' } }
       : {}),
     // areaServed para Local Pack
     ...(perfil.estado || perfil.ciudad ? {
@@ -223,13 +216,10 @@ export default async function TiendaPage({ params }: Props) {
             ratingValue: promedio,
             reviewCount: totalResenas,
             bestRating: 5,
-            worstRating: 1,
-          },
-        }
+            worstRating: 1 } }
       : {}),
     // Indica que es parte del sitio
-    isPartOf: { '@id': SITIO + '/#website' },
-  }
+    isPartOf: { '@id': SITIO + '/#website' } }
 
   const itemListJsonLd = productos.length > 0 ? {
     '@context': 'https://schema.org',
@@ -248,10 +238,7 @@ export default async function TiendaPage({ params }: Props) {
         price: (p as any).precio_usd || 0,
         priceCurrency: 'EUR',
         availability: 'https://schema.org/InStock',
-        url: productAbsoluteUrl(p, SITIO),
-      },
-    })),
-  } : null
+        url: productAbsoluteUrl(p, SITIO) } })) } : null
 
   const collectionPageJsonLd = {
     '@context': 'https://schema.org',
@@ -263,8 +250,7 @@ export default async function TiendaPage({ params }: Props) {
     isPartOf: { '@id': SITIO + '/#website' },
     breadcrumb: { '@id': pageUrl + '#breadcrumb' },
     mainEntity: itemListJsonLd ? { '@id': pageUrl + '#itemlist' } : undefined,
-    about: { '@id': pageUrl + '#dealer' },
-  }
+    about: { '@id': pageUrl + '#dealer' } }
 
   const graph = {
     '@context': 'https://schema.org',
@@ -273,8 +259,7 @@ export default async function TiendaPage({ params }: Props) {
       localBusinessJsonLd,
       collectionPageJsonLd,
       ...(itemListJsonLd ? [itemListJsonLd] : []),
-    ],
-  }
+    ] }
 
   return (
     <>

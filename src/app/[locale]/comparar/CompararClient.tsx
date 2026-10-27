@@ -13,7 +13,6 @@ import { GitCompare, Trash2, ShieldCheck, X, ExternalLink } from 'lucide-react'
 
 const COLS =
   'id, slug, titulo, precio_usd, imagen_url, estado, ubicacion_ciudad, ubicacion_estado, vendedor_tipo, vendedor_verificado, especificaciones'
-
 /** Lee una clave de especificaciones con alias habituales (ES/variaciones). */
 function spec(p: any, ...claves: string[]): string {
   const esp = p?.especificaciones
@@ -63,15 +62,19 @@ export default function CompararClient() {
 
   if (lista.length === 0) {
     return (
-      <div className="max-w-3xl mx-auto px-4 py-16 md:py-24 text-center">
-        <span className="inline-flex w-16 h-16 rounded-2xl bg-brand-signal/15 border border-brand-signal/40 items-center justify-center mb-5">
-          <GitCompare size={30} className="text-brand-signal-dark" />
-        </span>
-        <h1 className="text-2xl md:text-4xl font-black tracking-tight text-brand-darkNav">{t('comparar.title')}</h1>
-        <p className="text-gray-500 mt-3">{t('comparar.empty')}</p>
-        <LocalLink href="/catalogo" className="btn-signal inline-flex items-center gap-2 px-6 py-3 mt-7">
-          {t('comparar.emptyCta')} →
-        </LocalLink>
+      <div className="shell flex min-h-[56vh] flex-col justify-center py-16 md:py-24">
+        <p className="t-eyebrow text-ink/40">Herramienta</p>
+        <h1 className="t-display t-display-lg mt-5 max-w-2xl text-ink">{t('comparar.title')}</h1>
+        <p className="mt-4 max-w-xl text-[14.5px] leading-relaxed text-muted">{t('comparar.empty')}</p>
+        <div className="mt-8">
+          <LocalLink href="/catalogo" className="btn btn-ink btn-lg">
+            {t('comparar.emptyCta')}
+            <span aria-hidden="true">→</span>
+          </LocalLink>
+        </div>
+        <p className="t-label mt-10 flex items-center gap-2 border-t border-line pt-5 text-ink/30">
+          <GitCompare size={12} /> {t('comparar.subtitle')}
+        </p>
       </div>
     )
   }
@@ -83,118 +86,116 @@ export default function CompararClient() {
   const filas: { label: string; render: (c: any) => React.ReactNode }[] = [
     {
       label: t('comparar.price'),
-      render: c => <span className="text-lg font-black text-brand-darkNav whitespace-nowrap">{formatPrecio(c.precio_usd || 0)}</span>,
-    },
-    { label: t('comparar.status'), render: c => <span className="text-sm font-bold text-gray-700">{c.estado || '—'}</span> },
-    { label: t('comparar.year'), render: c => <span className="text-sm text-gray-700">{spec(c, 'Año', 'Ano', 'Año de matriculación')}</span> },
-    { label: t('comparar.hours'), render: c => <span className="text-sm text-gray-700">{spec(c, 'Horas de uso', 'Horas', 'Horas de uso (h)')}</span> },
+      render: c => <span className="t-display t-num whitespace-nowrap text-[1.15rem] leading-none text-ink">{formatPrecio(c.precio_usd || 0)}</span> },
+    { label: t('comparar.status'), render: c => <span className="text-[13px] font-medium text-ink/75">{c.estado || '—'}</span> },
+    { label: t('comparar.year'), render: c => <span className="t-num text-[13px] text-ink/70">{spec(c, 'Año', 'Ano', 'Año de matriculación')}</span> },
+    { label: t('comparar.hours'), render: c => <span className="t-num text-[13px] text-ink/70">{spec(c, 'Horas de uso', 'Horas', 'Horas de uso (h)')}</span> },
     {
       label: t('comparar.location'),
-      render: c => <span className="text-sm text-gray-700">{[c.ubicacion_ciudad, c.ubicacion_estado].filter(Boolean).join(' · ') || '—'}</span>,
-    },
+      render: c => <span className="text-[13px] text-ink/70">{[c.ubicacion_ciudad, c.ubicacion_estado].filter(Boolean).join(' · ') || '—'}</span> },
     {
       label: t('comparar.seller'),
       render: c => (
         <span className="inline-flex flex-col items-start gap-1">
           {c.vendedor_tipo && <BadgeTipoVendedor tipo={c.vendedor_tipo} />}
           {c.vendedor_verificado && (
-            <span className="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-md">
-              <ShieldCheck size={10} /> {t('productCard.verified')}
+            <span className="t-label inline-flex items-center gap-1 border border-moss/30 bg-moss-soft px-1.5 py-1 text-moss">
+              <ShieldCheck size={9} /> {t('productCard.verified')}
             </span>
           )}
           {!c.vendedor_tipo && !c.vendedor_verificado && '—'}
         </span>
-      ),
-    },
+      ) },
   ]
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-8 md:py-12">
-      <div className="flex flex-wrap items-end justify-between gap-3 mb-6">
-        <div>
-          <p className="kicker mb-2">{t('comparar.cta')}</p>
-          <h1 className="text-2xl md:text-4xl font-black tracking-tight text-brand-darkNav">{t('comparar.title')}</h1>
-          <p className="text-sm text-gray-500 mt-1.5">{t('comparar.subtitle')}</p>
+    <div className="bg-paper">
+      <header className="border-b border-line">
+        <div className="shell flex flex-wrap items-end justify-between gap-6 pb-8 pt-10 md:pb-10 md:pt-12">
+          <div>
+            <p className="t-eyebrow text-ink/40">{t('comparar.cta')}</p>
+            <h1 className="t-display t-display-lg mt-4 text-ink">{t('comparar.title')}</h1>
+            <p className="mt-3 max-w-xl text-[14px] leading-relaxed text-muted">{t('comparar.subtitle')}</p>
+          </div>
+          <button
+            type="button"
+            onClick={vaciar}
+            className="t-label inline-flex items-center gap-2 border border-line px-3 py-2 text-ink/60 transition-colors hover:border-clay hover:text-clay"
+          >
+            <Trash2 size={11} /> {t('comparar.clear')}
+          </button>
         </div>
-        <button
-          type="button"
-          onClick={vaciar}
-          className="inline-flex items-center gap-1.5 text-sm font-bold text-gray-500 hover:text-red-600 border border-gray-200 hover:border-red-200 rounded-full px-4 py-2 transition"
-        >
-          <Trash2 size={14} /> {t('comparar.clear')}
-        </button>
-      </div>
+      </header>
 
-      <div className="bg-white rounded-2xl border border-gray-200/80 shadow-card overflow-x-auto">
-        <table className="w-full min-w-[680px] border-collapse text-left">
-          <thead>
-            <tr className="border-b border-gray-200">
-              <th className="p-3 md:p-4 w-28 md:w-36" scope="col">
-                <span className="sr-only">{t('comparar.specsTitle')}</span>
-              </th>
-              {columnas.map(c => (
-                <th key={c.id} className="p-3 md:p-4 align-top min-w-[170px]">
-                  <div className="relative rounded-xl overflow-hidden bg-gray-100 h-24 md:h-28 mb-2.5">
-                    {c.imagen_url ? (
-                      <Image src={c.imagen_url} alt={c.titulo} fill sizes="200px" className="object-cover" />
-                    ) : (
-                      <span className="w-full h-full flex items-center justify-center text-xl">🔧</span>
-                    )}
-                    <button
-                      type="button"
-                      onClick={() => quitar(c.id)}
-                      aria-label={t('comparar.removeAria')}
-                      className="absolute top-1.5 right-1.5 w-7 h-7 rounded-full bg-white/90 hover:bg-brand-signal text-gray-700 hover:text-brand-darkNav flex items-center justify-center shadow-card transition"
-                    >
-                      <X size={14} />
-                    </button>
-                  </div>
-                  <LocalLink
-                    href={productUrl(c)}
-                    className="block text-sm font-bold text-brand-darkNav hover:underline leading-snug line-clamp-2"
-                  >
-                    {c.titulo}
-                  </LocalLink>
-                  {!cargado ? null : !frescos[c.id] ? (
-                    <span className="text-[11px] font-bold text-amber-700">{t('comparar.unavailable')}</span>
-                  ) : null}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {filas.map((fila, idx) => (
-              <tr key={fila.label} className={idx % 2 === 0 ? 'bg-gray-50/60' : 'bg-white'}>
-                <th scope="row" className="p-3 md:p-4 text-xs font-black uppercase tracking-wide text-gray-500 align-middle">
-                  {fila.label}
+      <div className="shell py-10 md:py-12">
+        <div className="overflow-x-auto border border-line bg-[#FBFAF5]">
+          <table className="w-full min-w-[680px] border-collapse text-left">
+            <thead>
+              <tr className="border-b border-line">
+                <th className="w-28 p-3 md:w-36 md:p-4" scope="col">
+                  <span className="sr-only">{t('comparar.specsTitle')}</span>
                 </th>
                 {columnas.map(c => (
-                  <td key={c.id} className="p-3 md:p-4 align-middle">
-                    {fila.render(c)}
+                  <th key={c.id} className="min-w-[170px] p-3 align-top md:p-4">
+                    <div className="relative mb-2.5 h-24 overflow-hidden border border-line bg-paper-2 md:h-28">
+                      {c.imagen_url ? (
+                        <Image src={c.imagen_url} alt={c.titulo} fill sizes="200px" className="object-cover" />
+                      ) : (
+                        <span className="flex h-full w-full items-center justify-center bg-paper-2" />
+                      )}
+                      <button
+                        type="button"
+                        onClick={() => quitar(c.id)}
+                        aria-label={t('comparar.removeAria')}
+                        className="absolute right-1.5 top-1.5 grid h-6 w-6 place-items-center border border-line bg-paper/95 text-ink/60 transition-colors hover:bg-ink hover:text-paper"
+                      >
+                        <X size={12} />
+                      </button>
+                    </div>
+                    <LocalLink
+                      href={productUrl(c)}
+                      className="line-clamp-2 block text-[13px] font-semibold leading-snug text-ink hover:underline hover:underline-offset-4"
+                    >
+                      {c.titulo}
+                    </LocalLink>
+                    {!cargado ? null : !frescos[c.id] ? (
+                      <span className="t-label mt-1 block text-clay">{t('comparar.unavailable')}</span>
+                    ) : null}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {filas.map((fila, idx) => (
+                <tr key={fila.label} className={`border-t border-line ${idx % 2 === 0 ? 'bg-paper-2/40' : 'bg-transparent'}`}>
+                  <th scope="row" className="t-label p-3 align-middle text-ink/45 md:p-4">
+                    {fila.label}
+                  </th>
+                  {columnas.map(c => (
+                    <td key={c.id} className="p-3 align-middle md:p-4">
+                      {fila.render(c)}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+              <tr className="border-t border-line bg-transparent">
+                <th scope="row" className="t-label p-3 text-ink/25 md:p-4">—</th>
+                {columnas.map(c => (
+                  <td key={c.id} className="p-3 md:p-4">
+                    <LocalLink href={productUrl(c)} className="btn btn-ink btn-sm whitespace-nowrap">
+                      <ExternalLink size={11} /> {t('comparar.viewDetail')}
+                    </LocalLink>
                   </td>
                 ))}
               </tr>
-            ))}
-            <tr className="border-t border-gray-200 bg-white">
-              <th scope="row" className="p-3 md:p-4 text-xs font-black uppercase tracking-wide text-gray-500">—</th>
-              {columnas.map(c => (
-                <td key={c.id} className="p-3 md:p-4">
-                  <LocalLink
-                    href={productUrl(c)}
-                    className="inline-flex items-center gap-1.5 text-xs font-black text-brand-darkNav bg-brand-signal hover:bg-brand-signal-dark rounded-full px-3 py-2 transition whitespace-nowrap"
-                  >
-                    <ExternalLink size={12} /> {t('comparar.viewDetail')}
-                  </LocalLink>
-                </td>
-              ))}
-            </tr>
-          </tbody>
-        </table>
-      </div>
+            </tbody>
+          </table>
+        </div>
 
-      {disponibles.length < columnas.length && (
-        <p className="text-xs text-gray-400 mt-3">{t('comparar.unavailable')}</p>
-      )}
+        {disponibles.length < columnas.length && (
+          <p className="t-label mt-3 text-ink/35">{t('comparar.unavailable')}</p>
+        )}
+      </div>
     </div>
   )
 }

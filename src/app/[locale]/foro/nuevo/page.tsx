@@ -13,8 +13,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   return {
     title: t('foro.newThread'),
     description: t('foro.newSubtitle'),
-    robots: { index: false, follow: false },
-  }
+    robots: { index: false, follow: false } }
 }
 
 export default async function NuevoHiloPage({ params }: { params: Promise<{ locale: string }> }) {

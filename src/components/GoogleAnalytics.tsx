@@ -4,8 +4,7 @@ import { useEffect } from 'react'
 import { usePathname } from 'next/navigation'
 import {
   GA_NAVIGATION_EVENT,
-  idEntornoInvalido,
-} from '@/lib/google-analytics'
+  idEntornoInvalido } from '@/lib/google-analytics'
 
 /**
  * Puente de navegación SPA. El arranque y los cambios de consentimiento viven

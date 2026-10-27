@@ -51,8 +51,7 @@ export async function GET(request: NextRequest) {
 
   return NextResponse.json({
     ok: true,
-    categorias: (categorias || []).map((c) => ({ ...c, count: counts[c.id] || 0 })),
-  })
+    categorias: (categorias || []).map((c) => ({ ...c, count: counts[c.id] || 0 })) })
 }
 
 export async function POST(request: NextRequest) {

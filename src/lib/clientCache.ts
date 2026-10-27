@@ -19,8 +19,7 @@ class ClientCache {
   set<T>(key: string, data: T): void {
     this.cache.set(key, {
       data,
-      timestamp: Date.now(),
-    });
+      timestamp: Date.now() });
   }
 
   has(key: string): boolean {

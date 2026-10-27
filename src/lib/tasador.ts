@@ -39,8 +39,7 @@ export function calcularRango(precios: unknown[]): RangoPrecio {
     p25: percentil(validos, 0.25),
     mediana: percentil(validos, 0.5),
     p75: percentil(validos, 0.75),
-    max: validos[validos.length - 1],
-  }
+    max: validos[validos.length - 1] }
 }
 
 /**

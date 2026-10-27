@@ -107,8 +107,7 @@ export function agruparAvisos(
       conversacionId: ultimo.conversacion_id,
       mensajeIds: lista.map((m) => m.id),
       preview: extracto(ultimo.contenido),
-      total: lista.length,
-    })
+      total: lista.length })
   }
 
   return avisos

@@ -40,8 +40,7 @@ export default function AdminExportar({ notify }: { notify: (msg: string) => voi
     const res = await fetch('/api/admin/exportar', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ dataset, since: dateRange() }),
-    })
+      body: JSON.stringify({ dataset, since: dateRange() }) })
     const json = await res.json().catch(() => ({}))
     if (!res.ok || !json.ok) throw new Error(json.error || 'No se pudieron exportar los datos')
     return json.rows || []
@@ -53,9 +52,9 @@ export default function AdminExportar({ notify }: { notify: (msg: string) => voi
       const rows = await fetchExportar('productos')
       const headers = ['id', 'slug', 'user_id', 'titulo', 'precio_usd', 'categoria_id', 'subcategoria', 'marca', 'estado', 'ubicacion_estado', 'ubicacion_ciudad', 'activo', 'vendido', 'estado_moderacion', 'destacado', 'visitas', 'creado_en']
       descargar(`productos_${Date.now()}.${tipo}`, tipo === 'csv' ? toCSV(headers, rows) : toJSON(rows), tipo === 'csv' ? 'text/csv' : 'application/json')
-      notify(`✅ ${formatNumber(rows.length)} publicaciones exportadas`)
+      notify(` ${formatNumber(rows.length)} publicaciones exportadas`)
     } catch (e: any) {
-      notify('❌ ' + e.message)
+      notify( e.message)
     }
     setExportando(null)
   }
@@ -67,9 +66,9 @@ export default function AdminExportar({ notify }: { notify: (msg: string) => voi
       const rows = res.usuarios || []
       const headers = ['id', 'nombre', 'email', 'telefono', 'estado', 'ciudad', 'credito_balance', 'verificado', 'nivel_confianza', 'creado_en']
       descargar(`usuarios_${Date.now()}.${tipo}`, tipo === 'csv' ? toCSV(headers, rows) : toJSON(rows), tipo === 'csv' ? 'text/csv' : 'application/json')
-      notify(`✅ ${formatNumber(rows.length)} usuarios exportados`)
+      notify(` ${formatNumber(rows.length)} usuarios exportados`)
     } catch (e: any) {
-      notify('❌ ' + e.message)
+      notify( e.message)
     }
     setExportando(null)
   }
@@ -80,9 +79,9 @@ export default function AdminExportar({ notify }: { notify: (msg: string) => voi
       const res = await apiJson<{ transacciones: any[] }>('/api/admin/transacciones?limit=500')
       const rows = res.transacciones || []
       descargar(`transacciones_${Date.now()}.${tipo}`, tipo === 'csv' ? toCSV(['id', 'user_id', 'tipo', 'monto', 'precio_usd', 'metodo_pago', 'estado', 'creado_en'], rows) : toJSON(rows), tipo === 'csv' ? 'text/csv' : 'application/json')
-      notify(`✅ ${formatNumber(rows.length)} transacciones exportadas`)
+      notify(` ${formatNumber(rows.length)} transacciones exportadas`)
     } catch (e: any) {
-      notify('❌ ' + e.message)
+      notify( e.message)
     }
     setExportando(null)
   }
@@ -92,9 +91,9 @@ export default function AdminExportar({ notify }: { notify: (msg: string) => voi
     try {
       const rows = await fetchExportar('resenas')
       descargar(`resenas_${Date.now()}.${tipo}`, tipo === 'csv' ? toCSV(['id', 'producto_id', 'vendedor_id', 'comprador_id', 'puntuacion', 'comentario', 'creado_en'], rows) : toJSON(rows), tipo === 'csv' ? 'text/csv' : 'application/json')
-      notify(`✅ ${formatNumber(rows.length)} reseñas exportadas`)
+      notify(` ${formatNumber(rows.length)} reseñas exportadas`)
     } catch (e: any) {
-      notify('❌ ' + e.message)
+      notify( e.message)
     }
     setExportando(null)
   }
@@ -105,9 +104,9 @@ export default function AdminExportar({ notify }: { notify: (msg: string) => voi
       const res = await apiJson<{ data: any[] }>('/api/admin/auditoria?limite=500&dias=365')
       const rows = res.data || []
       descargar(`auditoria_${Date.now()}.${tipo}`, tipo === 'csv' ? toCSV(['id', 'tabla_afectada', 'operacion', 'usuario_id', 'fecha_registro'], rows) : toJSON(rows), tipo === 'csv' ? 'text/csv' : 'application/json')
-      notify(`✅ ${formatNumber(rows.length)} eventos de auditoría exportados`)
+      notify(` ${formatNumber(rows.length)} eventos de auditoría exportados`)
     } catch (e: any) {
-      notify('❌ ' + e.message)
+      notify( e.message)
     }
     setExportando(null)
   }
@@ -117,9 +116,9 @@ export default function AdminExportar({ notify }: { notify: (msg: string) => voi
     try {
       const rows = await fetchExportar('solicitudes')
       descargar(`verificaciones_${Date.now()}.${tipo}`, tipo === 'csv' ? toCSV(['id', 'user_id', 'estado', 'pago_movil_telefono', 'pago_movil_cedula', 'pago_movil_banco', 'rechazo_motivo', 'creada_en', 'revisada_en'], rows) : toJSON(rows), tipo === 'csv' ? 'text/csv' : 'application/json')
-      notify(`✅ ${formatNumber(rows.length)} solicitudes exportadas`)
+      notify(` ${formatNumber(rows.length)} solicitudes exportadas`)
     } catch (e: any) {
-      notify('❌ ' + e.message)
+      notify( e.message)
     }
     setExportando(null)
   }
@@ -129,9 +128,9 @@ export default function AdminExportar({ notify }: { notify: (msg: string) => voi
     try {
       const rows = await fetchExportar('denuncias')
       descargar(`denuncias_${Date.now()}.${tipo}`, tipo === 'csv' ? toCSV(['id', 'producto_id', 'reportante_id', 'motivo', 'descripcion', 'estado', 'creada_en'], rows) : toJSON(rows), tipo === 'csv' ? 'text/csv' : 'application/json')
-      notify(`✅ ${formatNumber(rows.length)} denuncias exportadas`)
+      notify(` ${formatNumber(rows.length)} denuncias exportadas`)
     } catch (e: any) {
-      notify('❌ ' + e.message)
+      notify( e.message)
     }
     setExportando(null)
   }
@@ -150,15 +149,15 @@ export default function AdminExportar({ notify }: { notify: (msg: string) => voi
     <div className="space-y-5">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h2 className="text-xl font-black text-gray-900">Exportar datos</h2>
-          <p className="text-sm text-gray-500">Descarga respaldos y reportes operativos en CSV o JSON</p>
+          <h2 className="text-xl font-semibold text-ink">Exportar datos</h2>
+          <p className="text-[12.5px] leading-relaxed text-ink/55">Descarga respaldos y reportes operativos en CSV o JSON</p>
         </div>
         <div className="flex gap-2">
-          <div className="flex h-9 items-center rounded-xl border border-gray-200 bg-white px-1">
-            <button onClick={() => setTipo('csv')} className={`rounded-lg px-3 py-1.5 text-xs font-bold transition ${tipo === 'csv' ? 'bg-brand-primary text-white' : 'text-gray-500'}`}><FileSpreadsheet size={13} className="mr-1 inline" /> CSV</button>
-            <button onClick={() => setTipo('json')} className={`rounded-lg px-3 py-1.5 text-xs font-bold transition ${tipo === 'json' ? 'bg-brand-primary text-white' : 'text-gray-500'}`}><FileJson size={13} className="mr-1 inline" /> JSON</button>
+          <div className="flex h-9 items-center rounded-xl border border-line bg-[#FBFAF5] px-1">
+            <button onClick={() => setTipo('csv')} className={`rounded-lg px-3 py-1.5 text-xs font-bold transition ${tipo === 'csv' ? 'bg-ink text-paper' : 'text-ink/55'}`}><FileSpreadsheet size={13} className="mr-1 inline" /> CSV</button>
+            <button onClick={() => setTipo('json')} className={`rounded-lg px-3 py-1.5 text-xs font-bold transition ${tipo === 'json' ? 'bg-ink text-paper' : 'text-ink/55'}`}><FileJson size={13} className="mr-1 inline" /> JSON</button>
           </div>
-          <label className="flex h-9 items-center gap-1.5 rounded-xl border border-gray-200 bg-white px-3 text-xs font-semibold text-gray-600">
+          <label className="flex h-9 items-center gap-1.5 rounded-xl border border-line bg-[#FBFAF5] px-3 t-label text-ink/45/55">
             <ChevronDown size={13} />
             <select value={rango} onChange={(e) => setRango(e.target.value as any)} className="bg-transparent outline-none">
               <option value="all">Todo</option>
@@ -174,11 +173,11 @@ export default function AdminExportar({ notify }: { notify: (msg: string) => voi
         {exportedOptions.map((opt) => (
           <Card key={opt.id} bodyClassName="p-4" className="group">
             <div className="flex items-start justify-between">
-              <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-brand-primary/10 text-brand-primary"><opt.icon size={18} /></span>
-              {exportando === opt.id && <Loader2 className="h-4 w-4 animate-spin text-brand-primary" />}
+              <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-ink/10 text-ink"><opt.icon size={18} /></span>
+              {exportando === opt.id && <Loader2 className="h-4 w-4 animate-spin text-ink" />}
             </div>
-            <p className="mt-3 font-bold text-gray-800">{opt.label}</p>
-            <p className="mt-0.5 text-xs text-gray-500">{opt.desc}</p>
+            <p className="mt-3 font-semibold text-ink">{opt.label}</p>
+            <p className="mt-0.5 text-[11.5px] text-ink/45">{opt.desc}</p>
             <Button size="sm" variant="outline" className="mt-4" onClick={opt.action} disabled={exportando !== null}>
               <Download size={14} /> {exportando === opt.id ? 'Exportando…' : `Exportar ${tipo.toUpperCase()}`}
             </Button>

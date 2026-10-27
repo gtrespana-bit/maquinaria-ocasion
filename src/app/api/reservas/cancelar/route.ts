@@ -67,8 +67,7 @@ export async function POST(request: NextRequest) {
         motivo_cancelacion: motivo,
         revisado_por: admin ? auth.user.id : null,
         revisado_en: admin ? new Date().toISOString() : null,
-        actualizado_en: new Date().toISOString(),
-      })
+        actualizado_en: new Date().toISOString() })
       .eq('id', reservaId)
 
     if (updateError) {
@@ -82,8 +81,7 @@ export async function POST(request: NextRequest) {
       title: 'Reserva cancelada',
       body: `${titulo}: la reserva se ha cancelado${motivo ? ` (${motivo})` : ''} y el anuncio vuelve a estar disponible.`,
       tag: `reserva-${reservaId}`,
-      click_url: '/dashboard?tab=reservas',
-    }).catch(() => {})
+      click_url: '/dashboard?tab=reservas' }).catch(() => {})
 
     if (admin) {
       notificarAdminTelegram(`❌ Reserva cancelada por el equipo\\n${titulo}\\nReserva: ${reservaId}`).catch(() => {})

@@ -48,8 +48,7 @@ export async function GET(request: NextRequest) {
     'herramienta-electrica': { name: 'Herramienta eléctrica', tagline: 'Taladros, amoladoras y sierras', color: '#EA580C' },
     motores: { name: 'Motores y generadores', tagline: 'Diésel, gasolina e inverter', color: '#0F172A' },
     'sierra-poda': { name: 'Sierras y poda', tagline: 'Motosierras y tijeras de segunda mano', color: '#15803D' },
-    'taller-manual': { name: 'Herramienta de taller', tagline: 'Llaves, dados y compresores', color: '#1E293B' },
-  }
+    'taller-manual': { name: 'Herramienta de taller', tagline: 'Llaves, dados y compresores', color: '#1E293B' } }
 
   const cat = categorias[categoria] || categorias.agricola
 
@@ -62,8 +61,7 @@ export async function GET(request: NextRequest) {
     data: f.data,
     weight: f.weight,
     style: 'normal',
-    name: 'Inter',
-  }))
+    name: 'Inter' }))
 
   return new ImageResponse(
     (
@@ -84,7 +82,6 @@ export async function GET(request: NextRequest) {
     {
       width: 1200,
       height: 630,
-      fonts: fontOptions,
-    }
+      fonts: fontOptions }
   )
 }

@@ -36,8 +36,7 @@ const LIMITS: Record<string, { max: number; windowMs: number }> = {
   // Foro: abrir hilos es costoso (5/h) pero responder en conversación activa
   // necesita margen (30/h) para no frustrar a quien participa de buena fe.
   'foro:hilo': { max: 5, windowMs: 60 * 60 * 1000 },
-  'foro:mensaje': { max: 30, windowMs: 60 * 60 * 1000 },
-}
+  'foro:mensaje': { max: 30, windowMs: 60 * 60 * 1000 } }
 
 function getSupabaseClient() {
   return createClient(
@@ -71,8 +70,7 @@ export async function checkRateLimit(
       p_identifier: identifier,
       p_ip: extraData?.ip || null,
       p_limit: limit.max,
-      p_window_ms: limit.windowMs,
-    })
+      p_window_ms: limit.windowMs })
 
     if (error || !data || typeof data.ok !== 'boolean') {
       console.error('Atomic rate limit RPC error:', error?.message || 'invalid response')
@@ -84,8 +82,7 @@ export async function checkRateLimit(
       ok: data.ok === true,
       remaining: Number(data.remaining) || 0,
       resetIn: Math.max(0, Number(data.resetIn) || 0),
-      limit: Number(data.limit) || limit.max,
-    }
+      limit: Number(data.limit) || limit.max }
   } catch (error) {
     console.error('Atomic rate limit check error:', error)
     return { ok: false, remaining: 0, resetIn: 60_000, limit: limit.max }

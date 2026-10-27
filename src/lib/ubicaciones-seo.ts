@@ -62,8 +62,7 @@ Object.entries(MUNICIPIOS_POR_ESTADO).forEach(([comunidad, provincias]) => {
         `retroexcavadora ${provinciaMin}`,
         `herramienta industrial ${provinciaMin}`,
         `maquinaria ${provinciaMin} precio`,
-      ],
-    })
+      ] })
   })
 })
 
@@ -129,8 +128,7 @@ export const NOMBRES_CATEGORIA_POPULAR: Record<string, string> = {
   'cargadoras': 'Cargadoras',
   'compactacion': 'Compactación',
   'herramienta-electrica': 'Herramienta eléctrica',
-  'sierra-poda': 'Sierra y poda',
-}
+  'sierra-poda': 'Sierra y poda' }
 
 // Generar combinaciones provincia-categoría para SEO programático
 export function generateCityCategoryParams(): Array<{ ciudad: string; categoria: string }> {
@@ -139,8 +137,7 @@ export function generateCityCategoryParams(): Array<{ ciudad: string; categoria:
     for (const categoria of CATEGORIAS_POPULARES) {
       params.push({
         ciudad: ciudad.slug,
-        categoria,
-      })
+        categoria })
     }
   }
   return params

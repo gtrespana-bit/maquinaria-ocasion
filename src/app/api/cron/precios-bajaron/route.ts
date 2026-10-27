@@ -73,8 +73,7 @@ export async function GET(request: NextRequest) {
         body,
         tag: 'precio-bajo',
         icon: '/icon-192.png',
-        click_url: `/producto/${primeros[0].slug}`,
-      })
+        click_url: `/producto/${primeros[0].slug}` })
       notificados++
     } catch { /* seguir con el resto */ }
   }

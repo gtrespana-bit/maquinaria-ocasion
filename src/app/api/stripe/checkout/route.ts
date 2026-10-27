@@ -98,26 +98,20 @@ export async function POST(req: NextRequest) {
             product_data: {
               name: `${paquete.creditos} créditos MaquinariaOcasión`,
               description:
-                'Créditos para destacar y subir tus anuncios en MaquinariaOcasión. Uso inmediato tras el pago.',
-            },
-          },
-        },
+                'Créditos para destacar y subir tus anuncios en MaquinariaOcasión. Uso inmediato tras el pago.' } } },
       ],
       metadata: {
         user_id: user.id,
-        creditos: String(paquete.creditos),
-      },
+        creditos: String(paquete.creditos) },
       payment_intent_data: {
         metadata: { user_id: user.id, creditos: String(paquete.creditos) },
         description: `MaquinariaOcasión — ${paquete.creditos} créditos`,
-        statement_descriptor: 'MAQUINARIAOCASION',
-      },
+        statement_descriptor: 'MAQUINARIAOCASION' },
       // Recibo/factura automática de Stripe: cumple con lo que hay que
       // entregar al comprador y evita emitirla a mano.
       invoice_creation: { enabled: true },
       success_url: `${site}/creditos?pago=ok&session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${site}/creditos?pago=cancelado`,
-    })
+      cancel_url: `${site}/creditos?pago=cancelado` })
 
     if (!session.url) {
       return NextResponse.json({ ok: false, error: 'Stripe no devolvió URL de pago' }, { status: 502 })

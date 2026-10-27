@@ -10,8 +10,7 @@ import {
   getHiloForo,
   getMensajesForo,
   haceTiempo,
-  nombreCategoria,
-} from '@/lib/foro'
+  nombreCategoria } from '@/lib/foro'
 import ResponderClient from './ResponderClient'
 
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
@@ -37,8 +36,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: `${hilo.titulo} · ${t('foro.title')}`,
     description: excerpt,
     alternates: alternatesSeo(`/foro/hilo/${id}`),
-    robots: { index: true, follow: true },
-  }
+    robots: { index: true, follow: true } }
 }
 
 export default async function HiloPage({ params }: Props) {
@@ -71,78 +69,82 @@ export default async function HiloPage({ params }: Props) {
     interactionStatistic: {
       '@type': 'InteractionCounter',
       interactionType: 'https://schema.org/ReplyAction',
-      userInteractionCount: hilo.mensajes_count || 0,
-    },
-  })
+      userInteractionCount: hilo.mensajes_count || 0 } })
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="bg-paper">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd }} />
 
-      <div className="max-w-3xl mx-auto px-4 py-8">
-        <LocalLink href="/foro" className="inline-flex items-center gap-1.5 text-sm font-bold text-gray-500 hover:text-brand-signal transition mb-6">
-          <ArrowLeft className="w-4 h-4" aria-hidden="true" /> {t('foro.backToForum')}
+      <div className="shell max-w-4xl py-8 md:py-12">
+        <LocalLink
+          href="/foro"
+          className="t-label inline-flex items-center gap-2 text-ink/45 transition-colors hover:text-ink"
+        >
+          <ArrowLeft size={11} aria-hidden="true" /> {t('foro.backToForum')}
         </LocalLink>
 
-        <article className="bg-white border border-gray-200 rounded-2xl p-6 sm:p-8">
-          <div className="flex flex-wrap items-center gap-2 text-xs font-black uppercase tracking-wide text-gray-500 mb-3">
-            <span className="inline-flex items-center gap-1 bg-gray-100 px-2.5 py-1 rounded-full">
-              <span aria-hidden="true">{cat?.icono || '💬'}</span>
+        <article className="mt-6 border border-line bg-[#FBFAF5] p-6 sm:p-8">
+          <div className="flex flex-wrap items-center gap-1.5">
+            <span className="t-label border border-line px-2 py-1 text-ink/50">
               {nombreCategoria(cat, locale)}
             </span>
             {hilo.cerrado && (
-              <span className="inline-flex items-center gap-1 bg-gray-200 text-gray-600 px-2.5 py-1 rounded-full">
-                <Lock className="w-3 h-3" aria-hidden="true" /> {t('foro.closed')}
+              <span className="t-label inline-flex items-center gap-1 border border-line px-2 py-1 text-ink/40">
+                <Lock size={9} aria-hidden="true" /> {t('foro.closed')}
               </span>
             )}
           </div>
 
-          <h1 className="text-2xl sm:text-3xl font-black text-gray-900 mb-3">{hilo.titulo}</h1>
-          <div className="flex flex-wrap items-center gap-3 text-sm text-gray-500 font-semibold mb-6">
-            <span className="font-black text-gray-800">{autorNombre}</span>
+          <h1 className="t-display t-display-md mt-4 text-ink">{hilo.titulo}</h1>
+
+          <div className="t-label mt-3 flex flex-wrap items-center gap-3 border-b border-line pb-4 text-ink/40">
+            <span className="text-ink/70">{autorNombre}</span>
             <span>{haceTiempo(fechaPublicacion, locale)}</span>
-            <span className="inline-flex items-center gap-1">
-              <MessageSquare className="w-4 h-4" aria-hidden="true" />
+            <span className="inline-flex items-center gap-1.5">
+              <MessageSquare size={10} aria-hidden="true" />
               {hilo.mensajes_count || 0} {t('foro.repliesCount')}
             </span>
           </div>
 
           {enRevision && (
-            <p className="text-sm font-bold text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2 mb-6">
+            <p className="mt-5 border border-signal-deep/40 bg-signal-soft/40 px-3 py-2 text-[12.5px] text-ink/70">
               {t('foro.pendingNote')}
             </p>
           )}
           {hilo.cerrado && (
-            <p className="text-sm font-bold text-gray-600 bg-gray-100 border border-gray-200 rounded-lg px-3 py-2 mb-6">
+            <p className="mt-5 border border-line bg-paper-2/60 px-3 py-2 text-[12.5px] text-ink/60">
               {t('foro.closedNotice')}
             </p>
           )}
 
-          <div className="text-gray-800 leading-relaxed whitespace-pre-line">{hilo.cuerpo}</div>
+          <div className="mt-5 whitespace-pre-line text-[15px] leading-[1.75] text-ink/80">{hilo.cuerpo}</div>
         </article>
 
-        <section className="mt-8" aria-labelledby="respuestas-titulo">
-          <h2 id="respuestas-titulo" className="text-lg font-black text-gray-900 mb-4">
-            {t('foro.answersTitle')} ({mensajes.length})
+        <section className="mt-12" aria-labelledby="respuestas-titulo">
+          <h2 id="respuestas-titulo" className="t-eyebrow flex items-baseline justify-between border-b border-ink pb-3 text-ink">
+            {t('foro.answersTitle')}
+            <span className="t-num text-[11px] text-ink/40">{mensajes.length}</span>
           </h2>
 
           {mensajes.length === 0 ? (
-            <p className="text-gray-500 font-semibold mb-6">{t('foro.noReplies')}</p>
+            <p className="mt-6 text-[13.5px] font-medium text-muted">{t('foro.noReplies')}</p>
           ) : (
-            <ul className="space-y-4 mb-6">
+            <ul className="mt-2 divide-y divide-line border-b border-line">
               {mensajes.map(msg => (
-                <li key={msg.id} className="bg-white border border-gray-200 rounded-2xl p-5">
-                  <div className="flex flex-wrap items-center gap-3 text-sm text-gray-500 font-semibold mb-2">
-                    <span className="font-black text-gray-800">{autores[msg.user_id] || t('foro.unknownUser')}</span>
+                <li key={msg.id} className="py-5">
+                  <div className="t-label flex flex-wrap items-center gap-3 text-ink/40">
+                    <span className="text-ink/70">{autores[msg.user_id] || t('foro.unknownUser')}</span>
                     <span>{haceTiempo(msg.creado_en, locale)}</span>
                   </div>
-                  <div className="text-gray-800 leading-relaxed whitespace-pre-line">{msg.cuerpo}</div>
+                  <div className="mt-2 whitespace-pre-line text-[14px] leading-[1.7] text-ink/75">{msg.cuerpo}</div>
                 </li>
               ))}
             </ul>
           )}
 
-          <ResponderClient hiloId={hilo.id} cerrado={!!hilo.cerrado} />
+          <div className="mt-8">
+            <ResponderClient hiloId={hilo.id} cerrado={!!hilo.cerrado} />
+          </div>
         </section>
       </div>
     </div>

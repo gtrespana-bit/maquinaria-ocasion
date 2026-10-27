@@ -39,8 +39,7 @@ export function leerParametrosEnlaceAuth(search: string, hash: string): Parametr
     refreshToken: get('refresh_token'),
     code: get('code'),
     error: get('error'),
-    errorDescription: get('error_description'),
-  }
+    errorDescription: get('error_description') }
 }
 
 type ErrorAuth = { message: string } | null
@@ -88,8 +87,7 @@ export async function establecerSesionDesdeEnlace(
     if (p.accessToken && p.refreshToken) {
       const { error } = await sb.auth.setSession({
         access_token: p.accessToken,
-        refresh_token: p.refreshToken,
-      })
+        refresh_token: p.refreshToken })
       if (!error) return { ok: true, via: 'hash' }
       // Si falla, se sigue intentando por las demás vías.
     }

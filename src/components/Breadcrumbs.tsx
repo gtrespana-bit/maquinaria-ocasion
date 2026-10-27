@@ -1,8 +1,6 @@
 'use client'
 
 import { serializeJsonLd } from '@/lib/serialize-json-ld'
-import LocalLink from '@/components/LocalLink'
-import { ChevronRight, Home } from 'lucide-react'
 
 interface BreadcrumbItem {
   label: string
@@ -13,6 +11,14 @@ interface BreadcrumbsProps {
   items: BreadcrumbItem[]
 }
 
+/**
+ * Migas de pan — solo datos estructurados.
+ *
+ * La miga **visible** vive en la cabecera de cada plantilla (una fila de
+ * micro-etiquetas sobre el título, dentro del mismo `shell`), porque repetirla
+ * aquí producía dos navegaciones idénticas seguidas. Este componente se queda
+ * con la parte que Google sí lee: el `BreadcrumbList` en JSON-LD.
+ */
 export default function Breadcrumbs({ items }: BreadcrumbsProps) {
   const structuredData = {
     '@context': 'https://schema.org',
@@ -21,42 +27,12 @@ export default function Breadcrumbs({ items }: BreadcrumbsProps) {
       '@type': 'ListItem',
       position: index + 1,
       name: item.label,
-      item: item.href ? `https://maquinaria.click${item.href}` : undefined
-    }))
-  }
+      item: item.href ? `https://maquinaria.click${item.href}` : undefined })) }
 
   return (
-    <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: serializeJsonLd(structuredData) }}
-      />
-      <nav aria-label="Breadcrumb" className="py-3 px-4 bg-gray-50 border-b">
-        <ol className="max-w-7xl mx-auto flex items-center gap-2 text-sm text-gray-600 flex-wrap">
-          <li>
-            <LocalLink href="/" className="hover:text-brand-primary transition flex items-center">
-              <Home size={14} />
-            </LocalLink>
-          </li>
-          {items.map((item, index) => (
-            <li key={index} className="flex items-center gap-2">
-              <ChevronRight size={12} className="text-gray-500" />
-              {item.href ? (
-                <LocalLink 
-                  href={item.href} 
-                  className="hover:text-brand-primary transition truncate max-w-[200px]"
-                >
-                  {item.label}
-                </LocalLink>
-              ) : (
-                <span className="text-gray-900 font-medium truncate max-w-[200px]">
-                  {item.label}
-                </span>
-              )}
-            </li>
-          ))}
-        </ol>
-      </nav>
-    </>
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: serializeJsonLd(structuredData) }}
+    />
   )
 }

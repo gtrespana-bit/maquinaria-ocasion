@@ -269,9 +269,7 @@ export default function EditarPage() {
           activo,
           imagen_url: uploadedUrls[0] || null,
           imagenes: uploadedUrls,
-          metodos_contacto: metodosContacto,
-        }),
-      })
+          metodos_contacto: metodosContacto }) })
 
       const result = await res.json().catch(() => ({}))
       if (!res.ok || !result.ok) {
@@ -293,8 +291,7 @@ export default function EditarPage() {
       const res = await fetch('/api/admin/eliminar-producto', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ productId: productoId }),
-      })
+        body: JSON.stringify({ productId: productoId }) })
       if (!res.ok) {
         const result = await res.json().catch(() => ({}))
         setError(result.error || 'No se pudo eliminar el producto')
@@ -342,64 +339,64 @@ export default function EditarPage() {
   const removeNewImage = (i: number) => setNewImages(prev => prev.filter((_, idx) => idx !== i))
   const removeCurrentImage = (i: number) => setCurrentImages(prev => prev.filter((_, idx) => idx !== i))
 
-  if (loading) return <div className="max-w-3xl mx-auto px-4 py-12 text-center"><p>Cargando...</p></div>
-  if (error && !titulo) return <div className="max-w-3xl mx-auto px-4 py-12 text-center"><h2 className="text-2xl font-bold mb-4">{error}</h2><button onClick={() => router.push('/dashboard')} className="bg-brand-primary text-white px-6 py-2 rounded-lg">Volver</button></div>
+  if (loading) return <div className="shell max-w-3xl py-16"><p className="t-label text-ink/35">Cargando…</p><div className="skeleton mt-5 h-40 w-full" /></div>
+  if (error && !titulo) return <div className="shell max-w-3xl py-20"><h2 className="t-display t-display-md text-ink">{error}</h2><button onClick={() => router.push('/dashboard')} className="btn btn-ink mt-6">Volver al panel</button></div>
 
   return (
-    <div className="max-w-3xl mx-auto px-4 py-8">
-      <button onClick={() => router.back()} className="flex items-center gap-2 text-gray-500 hover:text-gray-800 mb-6 text-sm">
+    <div className="shell max-w-3xl py-10 md:py-14">
+      <button onClick={() => router.back()} className="t-label mb-6 inline-flex items-center gap-2 text-ink/45 transition-colors hover:text-ink">
         <ArrowLeft size={16} /> {t('back')}
       </button>
 
-      <h1 className="text-3xl font-bold text-gray-900 mb-2">{t('title')}</h1>
-      <p className="text-gray-500 mb-6">Modifica los campos que necesites</p>
+      <h1 className="text-3xl font-semibold text-ink mb-2">{t('title')}</h1>
+      <p className="mb-6 text-[13.5px] text-muted">Modifica los campos que necesites</p>
 
       {/* Alerts */}
-      {error && <div className="flex items-center gap-2 bg-red-50 text-red-700 p-3 rounded-lg mb-4 text-sm"><AlertCircle size={18} /> {error}</div>}
-      {success && <div className="flex items-center gap-2 bg-green-50 text-green-700 p-3 rounded-lg mb-4 text-sm">✅ {success}</div>}
+      {error && <div className="mb-4 flex items-center gap-2 border border-clay/40 bg-clay/[0.06] px-3 py-2 text-[12.5px] text-clay"><AlertCircle size={18} /> {error}</div>}
+      {success && <div className="mb-4 flex items-center gap-2 border border-moss/30 bg-moss-soft px-3 py-2 text-[12.5px] text-moss">{success}</div>}
 
-      <div className="bg-white rounded-2xl shadow-sm p-6 border space-y-5">
+      <div className="border border-line bg-[#FBFAF5] p-6 space-y-5">
         {/* Título */}
         <div>
-          <label className="block text-sm font-semibold text-gray-900 mb-1.5">{t('title2')}</label>
-          <input type="text" value={titulo} onChange={e => setTitulo(e.target.value)} maxLength={100} className="w-full border rounded-lg px-4 py-3" />
-          <p className="text-xs text-gray-500 mt-1">{titulo.length}/100</p>
+          <label className="t-label mb-1.5 block text-ink/45">{t('title2')}</label>
+          <input type="text" value={titulo} onChange={e => setTitulo(e.target.value)} maxLength={100} className="field text-[14px]" />
+          <p className="t-label mt-1 text-ink/30">{titulo.length}/100</p>
         </div>
 
         {/* Descripción */}
         <div>
-          <label className="block text-sm font-semibold text-gray-900 mb-1.5">{t('description')}</label>
-          <textarea value={descripcion} onChange={e => setDescripcion(e.target.value)} rows={4} className="w-full border rounded-lg px-4 py-3 resize-none" />
+          <label className="t-label mb-1.5 block text-ink/45">{t('description')}</label>
+          <textarea value={descripcion} onChange={e => setDescripcion(e.target.value)} rows={4} className="field text-[14px] resize-none" />
         </div>
 
         {/* Precio + Estado */}
         <div className="grid grid-cols-2 gap-3">
           <div>
-            <label className="block text-sm font-semibold text-gray-900 mb-1.5">{t('priceEur') || 'Precio (€)'}</label>
-            <input type="number" value={precioUsd} onChange={e => setPrecioUsd(e.target.value)} className="w-full border rounded-lg px-4 py-3" />
-            <p className="text-xs mt-1.5">
+            <label className="t-label mb-1.5 block text-ink/45">{t('priceEur') || 'Precio (€)'}</label>
+            <input type="number" value={precioUsd} onChange={e => setPrecioUsd(e.target.value)} className="field text-[14px]" />
+            <p className="mt-1.5 text-[11.5px] text-ink/45">
               <LocalLink href="/tasador" className="font-bold text-brand-darkNav underline decoration-brand-signal decoration-2 underline-offset-2 hover:text-brand-signal-dark">
                 {t('estimatePriceCta')}
               </LocalLink>
             </p>
             {puedeVideo && (
               <div className="mt-3">
-                <label className="block text-sm font-semibold text-gray-900 mb-1.5">{t('videoLabel')}</label>
+                <label className="t-label mb-1.5 block text-ink/45">{t('videoLabel')}</label>
                 <input
                   type="url"
                   value={videoUrl}
                   onChange={e => setVideoUrl(e.target.value)}
                   placeholder={t('videoPlaceholder')}
                   maxLength={500}
-                  className="w-full border rounded-lg px-4 py-3"
+                  className="field text-[14px]"
                 />
-                <p className="text-xs text-gray-500 mt-1">{t('videoNote')}</p>
+                <p className="t-label mt-1 text-ink/30">{t('videoNote')}</p>
               </div>
             )}
           </div>
           <div>
-            <label className="block text-sm font-semibold text-gray-900 mb-1.5">Condición</label>
-            <select value={estadoProd} onChange={e => setEstadoProd(e.target.value)} className="w-full border rounded-lg px-4 py-3 bg-white">
+            <label className="t-label mb-1.5 block text-ink/45">Condición</label>
+            <select value={estadoProd} onChange={e => setEstadoProd(e.target.value)} className="field text-[14px]">
               <option value="">Selecciona...</option>
               {estadosProducto.map(e => <option key={e} value={e}>{e}</option>)}
             </select>
@@ -408,8 +405,8 @@ export default function EditarPage() {
 
         {/* Tipo de maquinaria */}
         <div>
-          <label className="block text-sm font-semibold text-gray-900 mb-1.5">Tipo de maquinaria</label>
-          <select value={subcategoria} onChange={e => handleSubcategoriaChange(e.target.value)} className="w-full border rounded-lg px-4 py-3 bg-white">
+          <label className="t-label mb-1.5 block text-ink/45">Tipo de maquinaria</label>
+          <select value={subcategoria} onChange={e => handleSubcategoriaChange(e.target.value)} className="field text-[14px]">
             <option value="">Seleccionar tipo...</option>
             {FAMILIAS.map((f: any) => (
               <optgroup key={f.key} label={`${f.icon} ${f.label}`}>
@@ -425,13 +422,13 @@ export default function EditarPage() {
 
         {/* Marca */}
         <div>
-          <label className="block text-sm font-semibold text-gray-900 mb-1.5">Marca</label>
+          <label className="t-label mb-1.5 block text-ink/45">Marca</label>
           {sub && sub.marcas.length > 0 ? (
             <>
               <select
                 value={marca.startsWith('otra:') ? 'otra:' : marca}
                 onChange={e => setMarca(e.target.value === 'otra:' ? 'otra:' : e.target.value)}
-                className="w-full border rounded-lg px-4 py-3 text-gray-800 bg-white"
+                className="field text-[14px]"
               >
                 <option value="">Selecciona marca...</option>
                 {agruparPorFabricante(sub.marcas).map(g =>
@@ -451,7 +448,7 @@ export default function EditarPage() {
                   value={marca.replace('otra:', '')}
                   onChange={e => setMarca('otra:' + e.target.value)}
                   placeholder="Escribe la marca..."
-                  className="mt-2 w-full border rounded-lg px-4 py-3 text-gray-800 bg-white"
+                  className="mt-2 field text-[14px]"
                 />
               )}
             </>
@@ -461,26 +458,26 @@ export default function EditarPage() {
               value={marca}
               onChange={e => setMarca(e.target.value)}
               placeholder="Ej: Fiat, Volkswagen, Mercedes..."
-              className="w-full border rounded-lg px-4 py-3"
+              className="field text-[14px]"
             />
           )}
         </div>
 
         {/* Campos especiales */}
         {camposEspeciales.length > 0 && (
-          <div className="bg-gray-50 rounded-xl p-5 space-y-4">
-            <h3 className="font-bold text-gray-900">{t('specs')}</h3>
-            <p className="text-xs text-gray-500">{t('specsHint')}</p>
+          <div className="border border-line bg-paper-2 p-5 space-y-4">
+            <h3 className="font-semibold text-ink">{t('specs')}</h3>
+            <p className="mt-1 text-[11.5px] leading-relaxed text-ink/45">{t('specsHint')}</p>
             {camposEspeciales.map((campo: any) => (
               <div key={campo.label}>
-                <label className="block text-sm font-semibold text-gray-900 mb-1.5">{campo.label}</label>
+                <label className="t-label mb-1.5 block text-ink/45">{campo.label}</label>
                 {campo.type === 'select' ? (
-                  <select value={specs[campo.label] || ''} onChange={e => setSpecs(p => ({ ...p, [campo.label]: e.target.value }))} className="w-full border rounded-lg px-3 py-2 bg-white">
+                  <select value={specs[campo.label] || ''} onChange={e => setSpecs(p => ({ ...p, [campo.label]: e.target.value }))} className="field text-[13px]">
                     <option value="">Seleccionar...</option>
                     {(campo.options || []).map((o: string) => <option key={o} value={o}>{o}</option>)}
                   </select>
                 ) : (
-                  <input type="text" value={specs[campo.label] || ''} onChange={e => setSpecs(p => ({ ...p, [campo.label]: e.target.value }))} className="w-full border rounded-lg px-3 py-2" />
+                  <input type="text" value={specs[campo.label] || ''} onChange={e => setSpecs(p => ({ ...p, [campo.label]: e.target.value }))} className="field text-[13px]" />
                 )}
               </div>
             ))}
@@ -490,15 +487,15 @@ export default function EditarPage() {
         {/* Ubicación */}
         <div className="grid grid-cols-2 gap-3">
           <div>
-            <label className="block text-sm font-semibold text-gray-900 mb-1.5">Comunidad Autónoma</label>
-            <select value={ubicacionEstado} onChange={e => setUbicacionEstado(e.target.value)} className="w-full border rounded-lg px-4 py-3 bg-white">
+            <label className="t-label mb-1.5 block text-ink/45">Comunidad Autónoma</label>
+            <select value={ubicacionEstado} onChange={e => setUbicacionEstado(e.target.value)} className="field text-[14px]">
               <option value="">Comunidad Autónoma...</option>
               {ESTADOS.map(e => <option key={e} value={e}>{e}</option>)}
             </select>
           </div>
           <div>
-            <label className="block text-sm font-semibold text-gray-900 mb-1.5">Provincia</label>
-            <select value={ubicacionCiudad} onChange={e => setUbicacionCiudad(e.target.value)} disabled={!ubicacionEstado} className="w-full border rounded-lg px-4 py-3 bg-white text-gray-800">
+            <label className="t-label mb-1.5 block text-ink/45">Provincia</label>
+            <select value={ubicacionCiudad} onChange={e => setUbicacionCiudad(e.target.value)} disabled={!ubicacionEstado} className="field text-[14px]">
               <option value="">Provincia...</option>
               {(ubicacionEstado ? getMunicipiosNombres(ubicacionEstado) : []).map(m => <option key={m} value={m}>{m}</option>)}
             </select>
@@ -506,64 +503,64 @@ export default function EditarPage() {
         </div>
 
         {/* Métodos de contacto */}
-        <div className="bg-blue-50/60 border border-blue-200 rounded-xl p-5 space-y-3">
-          <h3 className="font-bold text-gray-900">{t('contactTitle')}</h3>
+        <div className="border border-line bg-paper-2 p-5 space-y-3">
+          <h3 className="font-semibold text-ink">{t('contactTitle')}</h3>
 
           {showWhatsApp ? (
-            <div className="bg-white border rounded-lg p-3">
+            <div className="border border-line bg-paper p-3">
               <div className="flex items-center justify-between">
                 <span className="text-sm font-medium">💚 WhatsApp</span>
-                <button type="button" onClick={() => setShowWhatsApp(false)} className="text-red-500 text-xs hover:underline">Quitar</button>
+                <button type="button" onClick={() => setShowWhatsApp(false)} className="text-clay text-xs hover:underline">Quitar</button>
               </div>
               <input type="tel" value={contactWhatsApp} onChange={e => setContactWhatsApp(e.target.value)} placeholder="+34 600 123 456" className="mt-2 w-full border rounded px-2 py-1.5 text-sm" />
             </div>
           ) : (
-            <label className="flex items-center gap-3 bg-white border rounded-lg p-3 cursor-pointer hover:bg-gray-50">
+            <label className="flex items-center gap-3 border border-line bg-paper p-3 cursor-pointer transition-colors hover:border-ink">
               <input type="checkbox" onChange={() => { setShowWhatsApp(true); setContactWhatsApp('+34 ') }} className="rounded" />
               <span className="text-sm">💚 WhatsApp</span>
             </label>
           )}
 
           {showPhone ? (
-            <div className="bg-white border rounded-lg p-3">
+            <div className="border border-line bg-paper p-3">
               <div className="flex items-center justify-between">
                 <span className="text-sm font-medium">📞 Teléfono</span>
-                <button type="button" onClick={() => setShowPhone(false)} className="text-red-500 text-xs hover:underline">Quitar</button>
+                <button type="button" onClick={() => setShowPhone(false)} className="text-clay text-xs hover:underline">Quitar</button>
               </div>
               <input type="tel" value={contactPhone} onChange={e => setContactPhone(e.target.value)} placeholder="+34 600 123 456" className="mt-2 w-full border rounded px-2 py-1.5 text-sm" />
             </div>
           ) : (
-            <label className="flex items-center gap-3 bg-white border rounded-lg p-3 cursor-pointer hover:bg-gray-50">
+            <label className="flex items-center gap-3 border border-line bg-paper p-3 cursor-pointer transition-colors hover:border-ink">
               <input type="checkbox" onChange={() => { setShowPhone(true); setContactPhone('+34 ') }} className="rounded" />
               <span className="text-sm">📞 Teléfono</span>
             </label>
           )}
 
           {showEmail ? (
-            <div className="bg-white border rounded-lg p-3">
+            <div className="border border-line bg-paper p-3">
               <div className="flex items-center justify-between">
                 <span className="text-sm font-medium">📧 Email</span>
-                <button type="button" onClick={() => setShowEmail(false)} className="text-red-500 text-xs hover:underline">Quitar</button>
+                <button type="button" onClick={() => setShowEmail(false)} className="text-clay text-xs hover:underline">Quitar</button>
               </div>
               <input type="email" value={contactEmail} onChange={e => setContactEmail(e.target.value)} placeholder="tu@email.com" className="mt-2 w-full border rounded px-2 py-1.5 text-sm" />
             </div>
           ) : (
-            <label className="flex items-center gap-3 bg-white border rounded-lg p-3 cursor-pointer hover:bg-gray-50">
+            <label className="flex items-center gap-3 border border-line bg-paper p-3 cursor-pointer transition-colors hover:border-ink">
               <input type="checkbox" onChange={() => { setShowEmail(true) }} className="rounded" />
               <span className="text-sm">📧 Email</span>
             </label>
           )}
 
           {showMessenger ? (
-            <div className="bg-white border rounded-lg p-3">
+            <div className="border border-line bg-paper p-3">
               <div className="flex items-center justify-between">
                 <span className="text-sm font-medium">💬 Messenger</span>
-                <button type="button" onClick={() => setShowMessenger(false)} className="text-red-500 text-xs hover:underline">Quitar</button>
+                <button type="button" onClick={() => setShowMessenger(false)} className="text-clay text-xs hover:underline">Quitar</button>
               </div>
               <input type="url" value={contactMessenger} onChange={e => setContactMessenger(e.target.value)} placeholder="https://m.me/tuusuario" className="mt-2 w-full border rounded px-2 py-1.5 text-sm" />
             </div>
           ) : (
-            <label className="flex items-center gap-3 bg-white border rounded-lg p-3 cursor-pointer hover:bg-gray-50">
+            <label className="flex items-center gap-3 border border-line bg-paper p-3 cursor-pointer transition-colors hover:border-ink">
               <input type="checkbox" onChange={() => { setShowMessenger(true); setContactMessenger('https://m.me/') }} className="rounded" />
               <span className="text-sm">💬 Facebook Messenger</span>
             </label>
@@ -573,12 +570,12 @@ export default function EditarPage() {
         {/* Imágenes actuales */}
         {currentImages.length > 0 && (
           <div>
-            <label className="block text-sm font-semibold text-gray-900 mb-2">Imágenes actuales</label>
+            <label className="t-label mb-2 block text-ink/45">Imágenes actuales</label>
             <div className="grid grid-cols-4 gap-2">
               {currentImages.map((url, i) => (
                 <div key={i} className="relative aspect-square rounded-lg overflow-hidden group">
                   <Image src={url} alt="" className="w-full h-full object-cover" fill sizes="100px" unoptimized />
-                  <button onClick={() => removeCurrentImage(i)} className="absolute top-1 right-1 p-1 bg-red-500 rounded-full text-white opacity-0 group-hover:opacity-100 transition"><X size={12} /></button>
+                  <button onClick={() => removeCurrentImage(i)} className="absolute top-1 right-1 p-1 bg-red-500 rounded-full text-paper opacity-0 group-hover:opacity-100 transition"><X size={12} /></button>
                 </div>
               ))}
             </div>
@@ -587,17 +584,17 @@ export default function EditarPage() {
 
         {/* Agregar nuevas imágenes */}
         <div>
-          <label className="block text-sm font-semibold text-gray-900 mb-2">Agregar imágenes</label>
-          <label className={`flex items-center gap-2 p-4 border-2 border-dashed rounded-lg cursor-pointer hover:border-brand-accent transition ${procesando ? 'pointer-events-none opacity-70' : ''}`}>
+          <label className="t-label mb-2 block text-ink/45">Agregar imágenes</label>
+          <label className={`flex items-center gap-2 p-4 border-2 border-dashed rounded-lg cursor-pointer hover:border-ink transition ${procesando ? 'pointer-events-none opacity-70' : ''}`}>
             {procesando ? (
               <>
-                <div className="w-5 h-5 border-2 border-gray-400 border-t-transparent rounded-full animate-spin" />
-                <span className="text-sm text-gray-500">Optimizando imágenes…</span>
+                <div className="h-4 w-4 animate-spin border border-line border-t-ink" />
+                <span className="text-[12.5px] text-ink/55">Optimizando imágenes…</span>
               </>
             ) : (
               <>
-                <Camera size={20} className="text-gray-500" />
-                <span className="text-sm text-gray-500">Seleccionar fotos...</span>
+                <Camera size={18} strokeWidth={1.4} className="text-ink/30" />
+                <span className="text-[12.5px] text-ink/55">Seleccionar fotos…</span>
               </>
             )}
             <input type="file" accept="image/*" multiple onChange={handleNewImages} className="hidden" disabled={procesando} />
@@ -607,7 +604,7 @@ export default function EditarPage() {
               {newImages.map((img, i) => (
                 <div key={i} className="relative aspect-square rounded-lg overflow-hidden">
                   <Image src={img.preview} alt="" className="w-full h-full object-cover" fill sizes="100px" unoptimized />
-                  <button onClick={() => removeNewImage(i)} className="absolute top-1 right-1 p-1 bg-red-500 rounded-full text-white"><X size={12} /></button>
+                  <button onClick={() => removeNewImage(i)} className="absolute top-1 right-1 p-1 bg-red-500 rounded-full text-paper"><X size={12} /></button>
                 </div>
               ))}
             </div>
@@ -617,19 +614,19 @@ export default function EditarPage() {
         {/* Activo/Pausado */}
         <div className="flex items-center gap-3">
           <label className="flex items-center gap-2 cursor-pointer">
-            <input type="checkbox" checked={activo} onChange={e => setActivo(e.target.checked)} className="rounded" />
-            <span className="text-sm font-medium">Publicación {activo ? 'activa' : 'pausada'}</span>
+            <input type="checkbox" checked={activo} onChange={e => setActivo(e.target.checked)} className="h-4 w-4 border-line-strong text-ink" />
+            <span className="text-[12.5px] font-medium text-ink">Publicación {activo ? 'activa' : 'pausada'}</span>
           </label>
         </div>
 
         {/* Actions */}
-        <div className="flex items-center gap-3 pt-4 border-t">
-          <button onClick={handleSubmit} disabled={guardando} className="flex items-center gap-2 bg-brand-accent text-white px-6 py-3 rounded-lg font-bold hover:bg-accent/90 transition disabled:opacity-50">
-            <Save size={16} /> {guardando ? t('saving') : t('save')}
+        <div className="flex flex-wrap items-center gap-3 border-t border-line pt-5">
+          <button onClick={handleSubmit} disabled={guardando} className="btn btn-ink btn-lg disabled:opacity-50">
+            <Save size={13} /> {guardando ? t('saving') : t('save')}
           </button>
-          <button onClick={() => router.push(`/producto/${productoId}`)} className="px-4 py-3 border rounded-lg hover:bg-gray-50">Cancelar</button>
-          <button onClick={handleEliminar} disabled={eliminando} className="flex items-center gap-2 ml-auto text-red-600 hover:bg-red-50 px-4 py-2.5 rounded-lg transition disabled:opacity-50">
-            <Trash2 size={16} /> {eliminando ? 'Eliminando...' : 'Eliminar'}
+          <button onClick={() => router.push(`/producto/${productoId}`)} className="btn btn-outline">Cancelar</button>
+          <button onClick={handleEliminar} disabled={eliminando} className="t-label ml-auto inline-flex items-center gap-2 text-clay transition-colors hover:underline disabled:opacity-50">
+            <Trash2 size={12} /> {eliminando ? 'Eliminando…' : 'Eliminar anuncio'}
           </button>
         </div>
       </div>

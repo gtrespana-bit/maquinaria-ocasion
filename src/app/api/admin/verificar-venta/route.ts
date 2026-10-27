@@ -32,8 +32,7 @@ export async function POST(request: NextRequest) {
 
     const updateData: Record<string, any> = {
       verificado: true,
-      verificado_desde: new Date().toISOString(),
-    }
+      verificado_desde: new Date().toISOString() }
 
     // Copiar datos de pago al perfil si vienen
     if (cedula_numero) updateData.cedula_numero = cedula_numero

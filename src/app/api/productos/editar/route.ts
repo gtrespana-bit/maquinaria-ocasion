@@ -7,15 +7,13 @@ import { revalidarListadosPublicos, revalidarFichaProducto } from '@/lib/revalid
 import { cupoDeUsuario } from '@/lib/planes-servidor'
 import { normalizarVideoUrl } from '@/lib/video-embed'
 import {
-  isAllowedImageUrl,
   normalizeContactMethods,
   parsePrice,
   resolveCategoryId,
   resolveSubcategory,
   validateImages,
   validateSpecifications,
-  validLocation,
-} from '@/lib/productos-editar'
+  validLocation } from '@/lib/productos-editar'
 
 const PRODUCT_COLUMNS = [
   'id',
@@ -133,8 +131,7 @@ export async function PATCH(request: NextRequest) {
               ? 'No se pudo reactivar el anuncio.'
               : `Tu plan permite ${resumen.max} anuncio${resumen.max === 1 ? '' : 's'} activo${resumen.max === 1 ? '' : 's'}. Pausa otro o amplía el pack para reactivar este.`,
             codigo: 'CUPO',
-            cupo: { max: resumen.max, usados: resumen.usados },
-          },
+            cupo: { max: resumen.max, usados: resumen.usados } },
           { status: 403 },
         )
       }
@@ -173,8 +170,7 @@ export async function PATCH(request: NextRequest) {
 
   const candidate: any = {
     ...current,
-    ...body,
-  }
+    ...body }
 
   // La categoría es la familia elegida (agrícola / obra / herramientas).
   // Si viene vacía o desconocida, `resolveCategoryId` la normaliza a la
@@ -290,8 +286,7 @@ export async function PATCH(request: NextRequest) {
             ? 'No se pudo reactivar el anuncio.'
             : `Tu plan permite ${resumen.max} anuncio${resumen.max === 1 ? '' : 's'} activo${resumen.max === 1 ? '' : 's'}. Pausa otro o amplía el pack para reactivar este.`,
           codigo: 'CUPO',
-          cupo: { max: resumen.max, usados: resumen.usados },
-        },
+          cupo: { max: resumen.max, usados: resumen.usados } },
         { status: 403 },
       )
     }
@@ -329,8 +324,7 @@ export async function PATCH(request: NextRequest) {
     metodos_contacto: contactMethods,
     activo: requestedActive,
     estado_moderacion: estadoModeracion,
-    motivo_moderacion: motivoModeracion,
-  }
+    motivo_moderacion: motivoModeracion }
 
   const { data, error } = await sb
     .from('productos')
@@ -361,8 +355,7 @@ export async function PATCH(request: NextRequest) {
   revalidarListadosPublicos({
     ubicacionCiudad: data.ubicacion_ciudad,
     ubicacionEstado: data.ubicacion_estado,
-    subcategoria: data.subcategoria,
-  })
+    subcategoria: data.subcategoria })
   revalidarFichaProducto(data.slug)
 
   return NextResponse.json({ ok: true, product: data })

@@ -105,8 +105,7 @@ export async function POST(request: NextRequest) {
         producto_id: productoId,
         referrer_host: visita.referrerHost,
         dispositivo: visita.dispositivo,
-        idioma: visita.idioma,
-      })
+        idioma: visita.idioma })
 
       if (error) {
         // Si la migración aún no está aplicada el sitio no debe romperse: la

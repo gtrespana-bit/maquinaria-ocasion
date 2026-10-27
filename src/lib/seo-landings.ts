@@ -130,8 +130,7 @@ export const estadisticasCiudad = cache(
       precioMin: null,
       precioMax: null,
       porSubcategoria: [],
-      porMarca: [],
-    }
+      porMarca: [] }
     if (!supabase || !nombre) return vacio
 
     try {
@@ -202,8 +201,7 @@ export const estadisticasCiudad = cache(
         porMarca: [...porMarca.entries()]
           .map(([marca, total]) => ({ marca, total }))
           .sort((a, b) => b.total - a.total)
-          .slice(0, 6),
-      }
+          .slice(0, 6) }
     } catch {
       return vacio
     }

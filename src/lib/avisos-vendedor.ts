@@ -96,8 +96,7 @@ export function evaluarAviso(a: AnuncioParaAviso, ahoraMs = Date.now()): Aviso |
         titulo: a.titulo,
         motivo: 'boost-caducado',
         visitas,
-        diasSinVisibilidad: desdeCaducidad,
-      }
+        diasSinVisibilidad: desdeCaducidad }
     }
     return null
   }
@@ -112,8 +111,7 @@ export function evaluarAviso(a: AnuncioParaAviso, ahoraMs = Date.now()): Aviso |
       titulo: a.titulo,
       motivo: 'anuncio-hundido',
       visitas,
-      diasSinVisibilidad: diasPublicado,
-    }
+      diasSinVisibilidad: diasPublicado }
   }
 
   return null
@@ -159,11 +157,9 @@ export function textoAviso(aviso: Aviso): { titulo: string; cuerpo: string } {
   if (aviso.motivo === 'boost-caducado') {
     return {
       titulo: 'Tu anuncio ha bajado de posición',
-      cuerpo: `"${aviso.titulo}" ya no aparece destacado y lleva ${aviso.diasSinVisibilidad} ${aviso.diasSinVisibilidad === 1 ? 'día' : 'días'} perdiendo visibilidad. Ha tenido ${aviso.visitas} visitas: súbelo al principio del catálogo por 1 crédito.`,
-    }
+      cuerpo: `"${aviso.titulo}" ya no aparece destacado y lleva ${aviso.diasSinVisibilidad} ${aviso.diasSinVisibilidad === 1 ? 'día' : 'días'} perdiendo visibilidad. Ha tenido ${aviso.visitas} visitas: súbelo al principio del catálogo por 1 crédito.` }
   }
   return {
     titulo: 'Tu anuncio se está hundiendo en el catálogo',
-    cuerpo: `"${aviso.titulo}" lleva ${aviso.diasSinVisibilidad} días publicado y ya está lejos de la primera página. Con ${aviso.visitas} visitas hay interés: súbelo al nº 1 por 1 crédito.`,
-  }
+    cuerpo: `"${aviso.titulo}" lleva ${aviso.diasSinVisibilidad} días publicado y ya está lejos de la primera página. Con ${aviso.visitas} visitas hay interés: súbelo al nº 1 por 1 crédito.` }
 }

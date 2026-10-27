@@ -56,8 +56,7 @@ import {
   OPCIONES_CAPACIDAD_CARGA,
   OPCIONES_MEDIDAS_TRANSPORTE,
   OPCIONES_POTENCIA_W,
-  OPCIONES_TENSION,
-} from './categorias'
+  OPCIONES_TENSION } from './categorias'
 
 /** Bloques en los que se agrupan los filtros técnicos en la barra lateral. */
 export type GrupoFiltroTecnico = 'tecnica' | 'documentacion' | 'logistica'
@@ -103,8 +102,7 @@ const FILTROS_ESPECIFICOS: Record<SlugCategoria, readonly FiltroTecnico[]> = {
     { param: 'potenciaW', campo: 'Potencia (W)', grupo: 'tecnica', opciones: OPCIONES_POTENCIA_W, i18n: 'catalog.filters.powerW' },
     { param: 'tension', campo: 'Tensión', grupo: 'tecnica', opciones: OPCIONES_TENSION, i18n: 'catalog.filters.voltage' },
     { param: 'bateriaIncluida', campo: 'Batería incluida', grupo: 'tecnica', opciones: OPCIONES_SI_NO, i18n: 'catalog.filters.batteryIncluded' },
-  ],
-}
+  ] }
 
 /** Conjunto de filtros (transversales + específicos) de cada familia. */
 export const camposPorCategoria: Record<string, readonly FiltroTecnico[]> =
@@ -163,8 +161,7 @@ export function gruposDeFiltros(categoria?: string | null): readonly {
   const filtros = filtrosDeCategoria(categoria)
   return DEFINICION_GRUPOS.map(g => ({
     ...g,
-    filtros: filtros.filter(f => f.grupo === g.grupo),
-  })).filter(g => g.filtros.length > 0)
+    filtros: filtros.filter(f => f.grupo === g.grupo) })).filter(g => g.filtros.length > 0)
 }
 
 /** Parámetros de URL que corresponden a un filtro técnico por opción. */
@@ -233,8 +230,7 @@ export const RANGOS_NUMERICOS: readonly RangoNumerico[] = [
     columnaGenerada: 'espec_horas',
     i18n: 'catalog.filters.hoursMax',
     unidad: 'h',
-    min: 0,
-  },
+    min: 0 },
   {
     param: 'anioMin',
     campo: 'Año',
@@ -244,8 +240,7 @@ export const RANGOS_NUMERICOS: readonly RangoNumerico[] = [
     columnaGenerada: 'espec_anio',
     i18n: 'catalog.filters.anioMin',
     unidad: 'año',
-    min: 1950,
-  },
+    min: 1950 },
 ]
 
 export const PARAMETROS_RANGO: readonly string[] = RANGOS_NUMERICOS.map(r => r.param)

@@ -3,7 +3,7 @@
 import BrandLogo from '@/components/BrandLogo'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { CheckCircle, XCircle, Loader2 } from 'lucide-react'
+import { ArrowRight, Check, Loader2, XCircle } from 'lucide-react'
 import LocalLink from '@/components/LocalLink'
 import { supabase } from '@/lib/supabase'
 import { useTranslations } from 'next-intl'
@@ -73,8 +73,7 @@ export default function ConfirmEmailPage() {
         if (accessToken && refreshToken) {
           const { error: errorSet } = await supabase.auth.setSession({
             access_token: accessToken,
-            refresh_token: refreshToken,
-          })
+            refresh_token: refreshToken })
           if (!errorSet) {
             setYaLogueado(true)
             terminarExito()
@@ -89,8 +88,7 @@ export default function ConfirmEmailPage() {
           const tipoOtp = type === 'email' ? 'signup' : type
           const { data: dataOtp, error: errorOtp } = await supabase.auth.verifyOtp({
             token_hash: tokenHash,
-            type: tipoOtp as 'signup' | 'invite' | 'magiclink' | 'recovery' | 'email_change',
-          })
+            type: tipoOtp as 'signup' | 'invite' | 'magiclink' | 'recovery' | 'email_change' })
           if (errorOtp) {
             // Token inválido/expirado: quizá el usuario YA confirmó antes y
             // reutilizó el enlace. Comprobar sesión antes de rendirse.
@@ -140,66 +138,56 @@ export default function ConfirmEmailPage() {
     }
   }, [router, t])
 
+  const titulo =
+    status === 'success' ? t('success') : status === 'error' ? t('error') : t('loading')
+
   return (
-    <div className="min-h-[80vh] flex items-center justify-center px-4 py-12">
-      <div className="w-full max-w-md">
-        <div className="text-center mb-8">
-          <BrandLogo href="/" size="lg" className="justify-center" priority />
+    <div className="shell py-14 md:py-20">
+      <div className="mx-auto w-full max-w-[440px]">
+        <div className="flex items-center justify-between border-b border-ink pb-4">
+          <BrandLogo href="/" size="md" priority />
+          <span className="t-label text-ink/40">Cuenta</span>
         </div>
 
-        <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-100">
+        <h1 className="t-display t-display-sm mt-8 text-ink">{titulo}</h1>
+
+        <div className="mt-8 border border-line bg-[#FBFAF5] p-6 sm:p-8">
           {status === 'loading' && (
-            <>
-              <div className="flex justify-center mb-6">
-                <Loader2 className="text-brand-primary animate-spin" size={48} />
-              </div>
-              <h2 className="text-2xl font-bold text-gray-800 mb-4 text-center">
-                {t('loading')}
-              </h2>
-              <p className="text-gray-500 text-center">{t('loadingDesc')}</p>
-            </>
+            <div className="flex items-start gap-3">
+              <Loader2 size={18} className="mt-0.5 shrink-0 animate-spin text-ink/50" />
+              <p className="text-[14px] leading-relaxed text-muted">{t('loadingDesc')}</p>
+            </div>
           )}
 
           {status === 'success' && (
             <>
-              <div className="flex justify-center mb-6">
-                <div className="bg-green-100 rounded-full p-4">
-                  <CheckCircle className="text-green-600" size={48} />
-                </div>
-              </div>
-              <h2 className="text-2xl font-bold text-gray-800 mb-4 text-center">
-                {t('success')}
-              </h2>
-              <p className="text-green-700 text-center mb-6">
+              <span className="flex h-12 w-12 items-center justify-center border border-moss bg-moss text-paper">
+                <Check size={22} strokeWidth={1.6} />
+              </span>
+              <p className="mt-5 text-[14px] leading-relaxed text-ink/75">
                 {yaLogueado ? t('successDescDashboard') : t('successDesc')}
               </p>
               <LocalLink
                 href={yaLogueado ? '/dashboard' : '/login'}
-                className="block w-full bg-brand-primary text-white py-3 rounded-lg font-bold hover:bg-brand-dark transition text-center"
+                className="btn btn-ink btn-lg mt-6 w-full justify-between"
               >
                 {yaLogueado ? t('goDashboard') : t('goLogin')}
+                <ArrowRight size={15} />
               </LocalLink>
             </>
           )}
 
           {status === 'error' && (
             <>
-              <div className="flex justify-center mb-6">
-                <div className="bg-red-100 rounded-full p-4">
-                  <XCircle className="text-red-600" size={48} />
-                </div>
-              </div>
-              <h2 className="text-2xl font-bold text-gray-800 mb-4 text-center">
-                {t('error')}
-              </h2>
-              <p className="text-red-600 text-center mb-6 text-sm">
+              <span className="flex h-12 w-12 items-center justify-center border border-clay/40 bg-clay/[0.06] text-clay">
+                <XCircle size={22} strokeWidth={1.6} />
+              </span>
+              <p className="mt-5 border border-clay/30 bg-clay/[0.04] p-3 text-[13px] leading-relaxed text-clay">
                 {errorMsg || t('errorDefault')}
               </p>
-              <LocalLink
-                href="/login"
-                className="block w-full bg-brand-primary text-white py-3 rounded-lg font-bold hover:bg-brand-dark transition text-center"
-              >
+              <LocalLink href="/login" className="btn btn-outline btn-lg mt-6 w-full justify-between">
                 {t('resendLogin')}
+                <ArrowRight size={15} />
               </LocalLink>
             </>
           )}

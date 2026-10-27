@@ -11,8 +11,7 @@ import {
   Sparkles,
   Star,
   Store,
-  TrendingUp,
-} from 'lucide-react'
+  TrendingUp } from 'lucide-react'
 import LocalLink from '@/components/LocalLink'
 import { PLANES_PRO, PLAN_GRATIS, PLAN_PRUEBA, etiquetaPlan, getPlanDef } from '@/lib/planes-anuncios'
 import { formatPrecioObligatorio as formatPrecio } from '@/lib/precio'
@@ -57,8 +56,7 @@ type Estado = {
 const NOMBRE_TIPO: Record<string, string> = {
   particular: 'Particular',
   taller: 'Taller',
-  profesional: 'Profesional',
-}
+  profesional: 'Profesional' }
 
 function fecha(iso: string | null | undefined): string {
   if (!iso) return ''
@@ -71,9 +69,9 @@ function fecha(iso: string | null | undefined): string {
 function Barra({ valor, max, tono = 'verde' }: { valor: number; max: number | null; tono?: 'verde' | 'ambar' }) {
   const pct = max == null || max <= 0 ? 100 : Math.min(100, Math.round((valor / max) * 100))
   return (
-    <div className="h-2 w-full overflow-hidden rounded-full bg-slate-100" role="presentation">
+    <div className="h-2 w-full overflow-hidden bg-paper-2" role="presentation">
       <div
-        className={`h-full rounded-full transition-all ${tono === 'ambar' ? 'bg-amber-500' : pct >= 100 ? 'bg-amber-500' : 'bg-emerald-500'}`}
+        className={`h-full transition-all ${tono === 'ambar' ? 'bg-signal/100' : pct >= 100 ? 'bg-signal/100' : 'bg-emerald-500'}`}
         style={{ width: `${pct}%` }}
       />
     </div>
@@ -182,7 +180,7 @@ export default function TabPlan({ onRefresh }: { onRefresh?: () => void }) {
 
   if (loading) {
     return (
-      <div className="flex items-center gap-2 rounded-2xl border border-slate-200 bg-white p-6 text-sm text-slate-500">
+      <div className="flex items-center gap-2 border border-line bg-[#FBFAF5] p-6 text-[12.5px] text-ink/55">
         <Loader2 size={18} className="animate-spin" /> Cargando tu plan…
       </div>
     )
@@ -190,7 +188,7 @@ export default function TabPlan({ onRefresh }: { onRefresh?: () => void }) {
 
   if (!estado) {
     return (
-      <div className="rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-800">
+      <div className="rounded-2xl border border-clay/30 bg-clay/[0.07] p-4 text-sm text-clay">
         {error || 'No se pudo cargar tu plan.'}
       </div>
     )
@@ -222,36 +220,36 @@ export default function TabPlan({ onRefresh }: { onRefresh?: () => void }) {
   return (
     <div className="space-y-5">
       {/* Plan actual */}
-      <section className="overflow-hidden rounded-2xl bg-gradient-to-br from-brand-primary to-brand-dark text-white">
+      <section className="overflow-hidden rounded-2xl bg-ink text-paper">
         <div className="p-5 sm:p-6">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
             <div>
-              <p className="text-xs font-semibold uppercase tracking-wider text-white/60">Tu plan</p>
-              <h2 className="mt-1 flex flex-wrap items-center gap-2 text-2xl font-black">
+              <p className="text-xs font-semibold uppercase text-paper/60">Tu plan</p>
+              <h2 className="mt-1 flex flex-wrap items-center gap-2 t-display t-num text-[1.75rem] leading-none">
                 {estado.trial ? `Prueba ${etiquetaPlan(estado.cupo.plan)}` : estado.trialGracia ? `Prueba ${etiquetaPlan(estado.cupo.plan)} · gracia` : planNombre}
                 {estado.trial ? (
-                  <span className="inline-flex items-center gap-1 rounded-full bg-amber-400/20 px-2.5 py-1 text-xs font-bold text-amber-200">
+                  <span className="inline-flex items-center gap-1 bg-signal/20 px-2.5 py-1 t-label text-signal">
                     <Sparkles size={12} /> {estado.diasTrial} días
                   </span>
                 ) : estado.trialGracia ? (
-                  <span className="inline-flex items-center gap-1 rounded-full bg-amber-400/20 px-2.5 py-1 text-xs font-bold text-amber-200">
+                  <span className="inline-flex items-center gap-1 bg-signal/20 px-2.5 py-1 t-label text-signal">
                     <Sparkles size={12} /> {estado.diasGracia} días de gracia
                   </span>
                 ) : estado.pagoFallido ? (
-                  <span className="inline-flex items-center gap-1 rounded-full bg-red-400/20 px-2.5 py-1 text-xs font-bold text-red-200">
+                  <span className="inline-flex items-center gap-1 bg-clay/20 px-2.5 py-1 t-label text-clay">
                     <CreditCard size={12} /> Cobro pendiente
                   </span>
                 ) : estado.planPagoVigente ? (
-                  <span className="inline-flex items-center gap-1 rounded-full bg-emerald-400/20 px-2.5 py-1 text-xs font-bold text-emerald-200">
+                  <span className="inline-flex items-center gap-1 bg-signal/15 px-2.5 py-1 t-label text-paper/70">
                     <BadgeCheck size={12} /> Activo
                   </span>
                 ) : (
-                  <span className="inline-flex items-center gap-1 rounded-full bg-white/15 px-2.5 py-1 text-xs font-bold text-white/80">
+                  <span className="inline-flex items-center gap-1 bg-paper/10 px-2.5 py-1 t-label text-paper/60">
                     Sin coste
                   </span>
                 )}
               </h2>
-              <p className="mt-2 max-w-lg text-sm text-white/75">
+              <p className="mt-2 max-w-lg text-sm text-paper/75">
                 {estado.trial
                   ? `Tienes el plan ${etiquetaPlan(estado.cupo.plan)} de prueba hasta el ${fecha(estado.trialHasta)}. No se cobra nada automáticamente; al terminar tendrás 7 días de gracia.`
                   : estado.trialGracia
@@ -273,7 +271,7 @@ export default function TabPlan({ onRefresh }: { onRefresh?: () => void }) {
                   type="button"
                   onClick={abrirPortal}
                   disabled={portal}
-                  className="inline-flex items-center gap-1.5 rounded-xl bg-white/10 px-3.5 py-2 text-sm font-semibold text-white hover:bg-white/20 disabled:opacity-60"
+                  className="inline-flex items-center gap-1.5 rounded-xl bg-paper/10 px-3.5 py-2 text-sm font-semibold text-paper hover:bg-paper/20 disabled:opacity-60"
                 >
                   {portal ? <Loader2 size={14} className="animate-spin" /> : <CreditCard size={14} />}
                   Gestionar suscripción
@@ -281,7 +279,7 @@ export default function TabPlan({ onRefresh }: { onRefresh?: () => void }) {
               )}
               <LocalLink
                 href="/para-profesionales"
-                className="inline-flex items-center gap-1.5 rounded-xl bg-brand-accent px-3.5 py-2 text-sm font-bold text-white hover:bg-brand-accent-dark"
+                className="inline-flex items-center gap-1.5 rounded-xl bg-signal px-3.5 py-2 text-sm font-semibold text-paper hover:bg-signal-dark"
               >
                 {estado.trial || estado.trialGracia ? `Activar ${etiquetaPlan(estado.cupo.plan)}` : 'Ver planes'}
                 <ArrowRight size={14} />
@@ -291,25 +289,25 @@ export default function TabPlan({ onRefresh }: { onRefresh?: () => void }) {
 
           {estado.trial && (
             <div className="mt-5">
-              <div className="mb-1.5 flex items-center justify-between text-xs text-white/70">
+              <div className="mb-1.5 flex items-center justify-between text-xs text-paper/70">
                 <span>Prueba gratuita</span>
                 <span>
                   {estado.diasTrial} de {estado.diasTrialTotal} días restantes
                 </span>
               </div>
-              <div className="h-2 w-full overflow-hidden rounded-full bg-white/15">
-                <div className="h-full rounded-full bg-amber-400" style={{ width: `${pctRestante}%` }} />
+              <div className="h-2 w-full overflow-hidden bg-paper/15">
+                <div className="h-full bg-signal" style={{ width: `${pctRestante}%` }} />
               </div>
             </div>
           )}
           {estado.trialGracia && (
             <div className="mt-5">
-              <div className="mb-1.5 flex items-center justify-between text-xs text-white/70">
+              <div className="mb-1.5 flex items-center justify-between text-xs text-paper/70">
                 <span>Periodo de gracia</span>
                 <span>{estado.diasGracia} días restantes</span>
               </div>
-              <div className="h-2 w-full overflow-hidden rounded-full bg-white/15">
-                <div className="h-full rounded-full bg-amber-400" style={{ width: `${Math.min(100, Math.max(0, ((estado.diasGracia || 0) / 7) * 100))}%` }} />
+              <div className="h-2 w-full overflow-hidden bg-paper/15">
+                <div className="h-full bg-signal" style={{ width: `${Math.min(100, Math.max(0, ((estado.diasGracia || 0) / 7) * 100))}%` }} />
               </div>
             </div>
           )}
@@ -317,16 +315,16 @@ export default function TabPlan({ onRefresh }: { onRefresh?: () => void }) {
       </section>
 
       {error && (
-        <div className="rounded-xl border border-red-200 bg-red-50 p-3 text-sm text-red-800">{error}</div>
+        <div className="rounded-xl border border-clay/30 bg-clay/[0.07] p-3 text-sm text-clay">{error}</div>
       )}
       {aviso && (
-        <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-3 text-sm text-emerald-800">{aviso}</div>
+        <div className="rounded-xl border border-moss/30 bg-moss/10 p-3 text-sm text-moss">{aviso}</div>
       )}
 
       {estado.pagoFallido && (
-        <section className="rounded-2xl border-2 border-red-200 bg-red-50 p-5">
-          <h3 className="text-base font-black text-red-900">No hemos podido cobrar tu plan</h3>
-          <p className="mt-1 text-sm text-red-800">
+        <section className="rounded-2xl border border-clay/30 bg-clay/[0.07] p-5">
+          <h3 className="text-[15px] font-semibold tracking-[-0.015em] text-red-900">No hemos podido cobrar tu plan</h3>
+          <p className="mt-1 text-sm text-clay">
             Tu tarjeta ha fallado{estado.pagoPendienteDesde ? ` desde el ${fecha(estado.pagoPendienteDesde)}` : ''}.
             Mantenemos tu plan y tus anuncios activos, pero actualiza el método de pago para que no se pause nada.
             {estado.planHasta ? ` El acceso está garantizado hasta el ${fecha(estado.planHasta)}.` : ''}
@@ -337,7 +335,7 @@ export default function TabPlan({ onRefresh }: { onRefresh?: () => void }) {
                 type="button"
                 onClick={abrirPortal}
                 disabled={portal}
-                className="inline-flex items-center gap-1.5 rounded-xl bg-red-700 px-4 py-2 text-sm font-bold text-white hover:bg-red-800 disabled:opacity-60"
+                className="inline-flex items-center gap-1.5 rounded-xl bg-red-700 px-4 py-2 text-sm font-semibold text-paper hover:bg-red-800 disabled:opacity-60"
               >
                 {portal ? <Loader2 size={14} className="animate-spin" /> : <CreditCard size={14} />}
                 Actualizar tarjeta
@@ -345,7 +343,7 @@ export default function TabPlan({ onRefresh }: { onRefresh?: () => void }) {
             )}
             <LocalLink
               href="/para-profesionales"
-              className="inline-flex items-center gap-1.5 rounded-xl border border-red-300 bg-white px-4 py-2 text-sm font-semibold text-red-800 hover:bg-red-100"
+              className="inline-flex items-center gap-1.5 rounded-xl border border-clay/40 bg-[#FBFAF5] px-4 py-2 text-sm font-semibold text-clay hover:bg-clay/10"
             >
               Ver planes
             </LocalLink>
@@ -354,17 +352,17 @@ export default function TabPlan({ onRefresh }: { onRefresh?: () => void }) {
       )}
 
       {estado.trialGracia && (
-        <section className="rounded-2xl border-2 border-amber-200 bg-amber-50 p-5">
-          <h3 className="text-base font-black text-amber-900">
+        <section className="rounded-2xl border border-line bg-signal/10 p-5">
+          <h3 className="text-[15px] font-semibold tracking-[-0.015em] text-ink">
             Tu prueba terminó: te quedan {estado.diasGracia} días de gracia
           </h3>
-          <p className="mt-1 text-sm text-amber-800">
+          <p className="mt-1 text-sm text-ink">
             El {fecha(estado.graciaHasta)} se pausarán los anuncios que excedan el cupo del plan gratuito.
             No se borra ninguno: podrás reactivarlos al activar un plan o pausar otro para dejar sitio.
           </p>
           <LocalLink
             href="/para-profesionales"
-            className="mt-3 inline-flex items-center gap-1.5 rounded-xl bg-brand-accent px-4 py-2 text-sm font-bold text-white hover:bg-brand-accent-dark"
+            className="mt-3 inline-flex items-center gap-1.5 rounded-xl bg-signal px-4 py-2 text-sm font-semibold text-paper hover:bg-signal-dark"
           >
             Activar {etiquetaPlan(estado.cupo.plan)} <ArrowRight size={14} />
           </LocalLink>
@@ -372,14 +370,14 @@ export default function TabPlan({ onRefresh }: { onRefresh?: () => void }) {
       )}
 
       {estado.trialElegible && (
-        <section className="rounded-2xl border-2 border-emerald-200 bg-emerald-50 p-5">
-          <h3 className="text-base font-black text-emerald-900">Prueba {defPrueba.nombre} 30 días, gratis</h3>
-          <p className="mt-1 text-sm text-emerald-800">
+        <section className="rounded-2xl border border-moss/30 bg-moss/10 p-5">
+          <h3 className="text-[15px] font-semibold tracking-[-0.015em] text-emerald-900">Prueba {defPrueba.nombre} 30 días, gratis</h3>
+          <p className="mt-1 text-sm text-moss">
             {defPrueba.cupo} anuncios, {defPrueba.destacadosMes} destacados al mes, escaparate, vídeo y{' '}
             {defPrueba.fotos} fotos por anuncio. Sin tarjeta y sin cobro automático. Al terminar tienes
             7 días de gracia y no se borra ningún anuncio.
             {estado.tipo === 'particular' && (
-              <span className="mt-1 block text-xs text-emerald-700">
+              <span className="mt-1 block text-xs text-moss">
                 Al empezar, tu cuenta pasa a «profesional» (la identidad es gratis) para que recibas
                 el cupo del plan {defPrueba.nombre}.
               </span>
@@ -389,7 +387,7 @@ export default function TabPlan({ onRefresh }: { onRefresh?: () => void }) {
             type="button"
             onClick={empezarPrueba}
             disabled={prueba}
-            className="mt-3 inline-flex items-center gap-1.5 rounded-xl bg-emerald-700 px-4 py-2 text-sm font-bold text-white hover:bg-emerald-800 disabled:opacity-60"
+            className="mt-3 inline-flex items-center gap-1.5 rounded-xl bg-emerald-700 px-4 py-2 text-sm font-semibold text-paper hover:bg-emerald-800 disabled:opacity-60"
           >
             {prueba ? <Loader2 size={14} className="animate-spin" /> : <Sparkles size={14} />}
             Empezar prueba de 30 días
@@ -398,11 +396,11 @@ export default function TabPlan({ onRefresh }: { onRefresh?: () => void }) {
       )}
 
       {(estado.pausadosPorPlan || 0) > 0 && (
-        <section className="rounded-2xl border border-slate-200 bg-white p-5">
-          <h3 className="text-base font-black text-slate-900">
+        <section className="border border-line bg-[#FBFAF5] p-5">
+          <h3 className="text-[15px] font-semibold tracking-[-0.015em] text-ink">
             {estado.pausadosPorPlan} anuncio{estado.pausadosPorPlan === 1 ? '' : 's'} pausado{estado.pausadosPorPlan === 1 ? '' : 's'} por cupo
           </h3>
-          <p className="mt-1 text-sm text-slate-600">
+          <p className="mt-1 text-[12.5px] text-ink/55">
             Los pausamos al bajar el plan, pero no los borramos. Si ahora tienes hueco, puedes volver a
             publicarlos; si no, amplía tu plan o pausa otro anuncio para dejar sitio.
           </p>
@@ -410,7 +408,7 @@ export default function TabPlan({ onRefresh }: { onRefresh?: () => void }) {
             type="button"
             onClick={reactivarPausados}
             disabled={reactivando}
-            className="mt-3 inline-flex items-center gap-1.5 rounded-xl border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50 disabled:opacity-60"
+            className="mt-3 inline-flex items-center gap-1.5 rounded-xl border border-line-strong px-4 py-2 text-sm font-semibold text-ink hover:bg-paper-2 disabled:opacity-60"
           >
             {reactivando ? <Loader2 size={14} className="animate-spin" /> : <Package size={14} />}
             Reactivar los que quepan
@@ -420,21 +418,21 @@ export default function TabPlan({ onRefresh }: { onRefresh?: () => void }) {
 
       {/* Consumo */}
       <section>
-        <h3 className="mb-3 text-lg font-bold text-slate-900">Tu capacidad ahora</h3>
+        <h3 className="mb-3 text-[14px] font-semibold text-ink">Tu capacidad ahora</h3>
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-          <div className="rounded-2xl border border-slate-200 bg-white p-4">
+          <div className="border border-line bg-[#FBFAF5] p-4">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold uppercase tracking-wide text-slate-500">Anuncios activos</span>
-              <Package size={16} className="text-slate-400" aria-hidden="true" />
+              <span className="text-xs font-semibold uppercase tracking-wide text-ink/60">Anuncios activos</span>
+              <Package size={16} className="text-ink/40" aria-hidden="true" />
             </div>
-            <p className="mt-2 text-2xl font-black text-slate-900">
+            <p className="mt-2 t-display t-num text-[1.75rem] leading-none text-ink">
               {estado.cupo.usados}
-              <span className="text-sm font-semibold text-slate-400"> / {estado.cupo.max == null ? '∞' : estado.cupo.max}</span>
+              <span className="text-sm font-semibold text-ink/40"> / {estado.cupo.max == null ? '∞' : estado.cupo.max}</span>
             </p>
             <div className="mt-2">
               <Barra valor={estado.cupo.usados} max={estado.cupo.max} />
             </div>
-            <p className="mt-2 text-xs text-slate-500">
+            <p className="mt-2 text-[11.5px] text-ink/45">
               {estado.cupo.max == null
                 ? 'Sin límite de anuncios activos.'
                 : estado.cupo.restantes === 0
@@ -443,40 +441,40 @@ export default function TabPlan({ onRefresh }: { onRefresh?: () => void }) {
             </p>
           </div>
 
-          <div className="rounded-2xl border border-slate-200 bg-white p-4">
+          <div className="border border-line bg-[#FBFAF5] p-4">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold uppercase tracking-wide text-slate-500">Fotos por anuncio</span>
-              <Store size={16} className="text-slate-400" aria-hidden="true" />
+              <span className="text-xs font-semibold uppercase tracking-wide text-ink/60">Fotos por anuncio</span>
+              <Store size={16} className="text-ink/40" aria-hidden="true" />
             </div>
-            <p className="mt-2 text-2xl font-black text-slate-900">{estado.cupo.fotosMax}</p>
-            <p className="mt-2 text-xs text-slate-500">La ficha se ve más completa con todas las fotos.</p>
+            <p className="mt-2 t-display t-num text-[1.75rem] leading-none text-ink">{estado.cupo.fotosMax}</p>
+            <p className="mt-2 text-[11.5px] text-ink/45">La ficha se ve más completa con todas las fotos.</p>
           </div>
 
-          <div className="rounded-2xl border border-slate-200 bg-white p-4">
+          <div className="border border-line bg-[#FBFAF5] p-4">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold uppercase tracking-wide text-slate-500">Destacados del mes</span>
-              <Star size={16} className="text-slate-400" aria-hidden="true" />
+              <span className="text-xs font-semibold uppercase tracking-wide text-ink/60">Destacados del mes</span>
+              <Star size={16} className="text-ink/40" aria-hidden="true" />
             </div>
-            <p className="mt-2 text-2xl font-black text-slate-900">
+            <p className="mt-2 t-display t-num text-[1.75rem] leading-none text-ink">
               {estado.cupo.destacadosRestantes}
-              <span className="text-sm font-semibold text-slate-400"> / {estado.cupo.destacadosMes}</span>
+              <span className="text-sm font-semibold text-ink/40"> / {estado.cupo.destacadosMes}</span>
             </p>
             <div className="mt-2">
               <Barra valor={estado.cupo.destacadosUsados} max={estado.cupo.destacadosMes || 1} />
             </div>
-            <p className="mt-2 text-xs text-slate-500">
+            <p className="mt-2 text-[11.5px] text-ink/45">
               {estado.cupo.destacadosMes === 0 ? 'Tu plan no incluye destacados: usa créditos.' : 'Incluidos en tu plan, sin gastar créditos.'}
             </p>
           </div>
 
-          <div className="rounded-2xl border border-slate-200 bg-white p-4">
+          <div className="border border-line bg-[#FBFAF5] p-4">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold uppercase tracking-wide text-slate-500">Créditos</span>
-              <TrendingUp size={16} className="text-slate-400" aria-hidden="true" />
+              <span className="text-xs font-semibold uppercase tracking-wide text-ink/60">Créditos</span>
+              <TrendingUp size={16} className="text-ink/40" aria-hidden="true" />
             </div>
-            <p className="mt-2 text-2xl font-black text-slate-900">{estado.creditos}</p>
-            <p className="mt-2 text-xs text-slate-500">Para subir al nº 1 o destacar fuera del plan.</p>
-            <LocalLink href="/creditos" className="mt-2 inline-flex items-center gap-1 text-xs font-bold text-brand-accent hover:underline">
+            <p className="mt-2 t-display t-num text-[1.75rem] leading-none text-ink">{estado.creditos}</p>
+            <p className="mt-2 text-[11.5px] text-ink/45">Para subir al nº 1 o destacar fuera del plan.</p>
+            <LocalLink href="/creditos" className="mt-2 inline-flex items-center gap-1 text-xs font-semibold text-ink hover:underline">
               Comprar créditos <ArrowRight size={12} />
             </LocalLink>
           </div>
@@ -485,12 +483,12 @@ export default function TabPlan({ onRefresh }: { onRefresh?: () => void }) {
 
       {/* Upsell contextual */}
       {siguiente && (
-        <section className="rounded-2xl border border-emerald-200 bg-emerald-50/60 p-5">
+        <section className="rounded-2xl border border-moss/30 bg-moss/10/60 p-5">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <p className="text-xs font-bold uppercase tracking-wide text-emerald-700">Siguiente paso</p>
-              <h3 className="mt-1 text-lg font-black text-slate-900">{tituloSiguiente}</h3>
-              <p className="mt-1 text-sm text-slate-600">
+              <p className="text-xs font-semibold uppercase tracking-wide text-moss">Siguiente paso</p>
+              <h3 className="mt-1 text-[15px] font-semibold tracking-[-0.015em] text-ink">{tituloSiguiente}</h3>
+              <p className="mt-1 text-[12.5px] text-ink/55">
                 {siguiente.cupo == null
                   ? 'Para compraventas con rotación alta. 15 destacados al mes y 30 fotos por anuncio.'
                   : `${siguiente.cupo} anuncios activos, ${siguiente.destacadosMes} destacados al mes y ${siguiente.fotos} fotos por anuncio por ${formatPrecio(siguiente.precioMes)}/mes.`}
@@ -498,15 +496,15 @@ export default function TabPlan({ onRefresh }: { onRefresh?: () => void }) {
             </div>
             <LocalLink
               href="/para-profesionales"
-              className="inline-flex shrink-0 items-center justify-center gap-1.5 rounded-xl bg-brand-accent px-4 py-2.5 text-sm font-bold text-white hover:bg-brand-accent-dark"
+              className="inline-flex shrink-0 items-center justify-center gap-1.5 rounded-xl bg-signal px-4 py-2.5 text-sm font-semibold text-paper hover:bg-signal-dark"
             >
               Ver {siguiente.nombre} <ArrowRight size={15} />
             </LocalLink>
           </div>
-          <ul className="mt-3 grid gap-1.5 text-sm text-slate-700 sm:grid-cols-3">
+          <ul className="mt-3 grid gap-1.5 text-sm text-ink sm:grid-cols-3">
             {siguiente.incluido.slice(0, 3).map(item => (
               <li key={item} className="flex items-start gap-1.5">
-                <Check size={14} className="mt-0.5 shrink-0 text-emerald-600" aria-hidden="true" />
+                <Check size={14} className="mt-0.5 shrink-0 text-moss" aria-hidden="true" />
                 {item}
               </li>
             ))}
@@ -515,25 +513,25 @@ export default function TabPlan({ onRefresh }: { onRefresh?: () => void }) {
       )}
 
       {/* Identidad vs plan */}
-      <section className="rounded-2xl border border-slate-200 bg-white p-5">
-        <h3 className="font-bold text-slate-900">Tu tipo de vendedor no es tu plan</h3>
-        <p className="mt-1 text-sm text-slate-600">
+      <section className="border border-line bg-[#FBFAF5] p-5">
+        <h3 className="font-semibold text-ink">Tu tipo de vendedor no es tu plan</h3>
+        <p className="mt-1 text-[12.5px] text-ink/55">
           Ahora apareces como <strong>{NOMBRE_TIPO[estado.tipo] || estado.tipo}</strong>. Eso es gratis y define
           tu sello y los filtros del catálogo. El plan solo cambia cuántos anuncios puedes tener
           publicados a la vez y qué extras incluyes.
         </p>
         <div className="mt-3 flex flex-wrap gap-2">
-          <LocalLink href="/dashboard?tab=cuenta" className="rounded-xl border border-slate-300 px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50">
+          <LocalLink href="/dashboard?tab=cuenta" className="rounded-xl border border-line-strong px-3 py-1.5 text-xs font-semibold text-ink hover:bg-paper-2">
             Cambiar tipo de vendedor
           </LocalLink>
-          <LocalLink href="/para-profesionales" className="rounded-xl border border-slate-300 px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50">
+          <LocalLink href="/para-profesionales" className="rounded-xl border border-line-strong px-3 py-1.5 text-xs font-semibold text-ink hover:bg-paper-2">
             Ver qué incluyen los planes
           </LocalLink>
         </div>
       </section>
 
       {esGratis && (
-        <p className="text-center text-xs text-slate-500">
+        <p className="text-center text-[11.5px] text-ink/45">
           Plan gratuito: {PLAN_GRATIS.incluido.join(' · ')}.
         </p>
       )}

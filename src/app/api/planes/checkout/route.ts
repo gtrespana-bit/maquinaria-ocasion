@@ -1,13 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getSessionUser } from '@/lib/require-auth'
 import { checkRateLimit } from '@/lib/rate-limit'
-import {
-  esPlanPago,
+import { esPlanPago,
   getPlanDef,
-  precioPlan,
-  type Periodicidad,
-  type PlanPago,
-} from '@/lib/planes-anuncios'
+  precioPlan, type Periodicidad, type PlanPago} from '@/lib/planes-anuncios'
 import { cuponAplicable, normalizarCodigo } from '@/lib/cupones'
 import { sbAdmin } from '@/lib/planes-servidor'
 import { obtenerPrecioPlan } from '@/lib/stripe-precios'
@@ -82,8 +78,7 @@ export async function POST(req: NextRequest) {
         {
           ok: false,
           codigo: 'SUSCRIPCION_ACTIVA',
-          error: `Ya tienes el pack ${def.nombre} activo. Puedes gestionarlo desde tu panel.`,
-        },
+          error: `Ya tienes el pack ${def.nombre} activo. Puedes gestionarlo desde tu panel.` },
         { status: 409 },
       )
     }
@@ -101,15 +96,12 @@ export async function POST(req: NextRequest) {
           plan,
           tipo: 'plan',
           periodicidad,
-          activar_profesional: '1',
-        },
-      })
+          activar_profesional: '1' } })
       return NextResponse.json({
         ok: true,
         actualizado: true,
         plan,
-        mensaje: `Pack ${def.nombre} activado. Stripe aplicará la diferencia prorrateada en la próxima factura.`,
-      })
+        mensaje: `Pack ${def.nombre} activado. Stripe aplicará la diferencia prorrateada en la próxima factura.` })
     } catch (e: any) {
       console.error('[planes/checkout] cambio de plan:', e?.message || e)
       return NextResponse.json(
@@ -157,8 +149,7 @@ export async function POST(req: NextRequest) {
     // Un particular que contrata un pack pasa a profesional al confirmarse el
     // pago. Si no, pagaría el cupo y seguiría limitado a 1 anuncio.
     activar_profesional: '1',
-    ...(cuponCodigo ? { cupon: cuponCodigo } : {}),
-  }
+    ...(cuponCodigo ? { cupon: cuponCodigo } : {}) }
 
   try {
     const precio = await obtenerPrecioPlan(stripe, plan, periodicidad)
@@ -180,12 +171,10 @@ export async function POST(req: NextRequest) {
       ...(discounts ? { discounts } : {}),
       subscription_data: {
         metadata,
-        description: `MaquinariaOcasión ${def.nombre} (${periodicidad === 'anual' ? 'anual' : 'mensual'})`,
-      },
+        description: `MaquinariaOcasión ${def.nombre} (${periodicidad === 'anual' ? 'anual' : 'mensual'})` },
       metadata,
       success_url: `${site}/para-profesionales?pago=ok&plan=${plan}`,
-      cancel_url: `${site}/para-profesionales?pago=cancelado`,
-    })
+      cancel_url: `${site}/para-profesionales?pago=cancelado` })
     if (!session.url) {
       return NextResponse.json({ ok: false, error: 'Stripe no devolvió URL' }, { status: 502 })
     }
@@ -194,8 +183,7 @@ export async function POST(req: NextRequest) {
       url: session.url,
       plan,
       periodicidad,
-      importe: precioPlan(plan, periodicidad),
-    })
+      importe: precioPlan(plan, periodicidad) })
   } catch (e: any) {
     console.error('[planes/checkout]', e?.message || e)
     return NextResponse.json({ ok: false, error: 'No se pudo iniciar el pago.' }, { status: 502 })

@@ -150,8 +150,7 @@ async function getEstadoReserva(productoId: string, userId?: string | null) {
     return {
       reservado: !!(producto as any).reservado,
       reservado_hasta: (producto as any).reservado_hasta || null,
-      reserva_propia_estado: propia,
-    }
+      reserva_propia_estado: propia }
   } catch {
     return null
   }
@@ -370,14 +369,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description: desc,
       type: 'article',
       images: image,
-      locale: 'es_ES',
-    },
+      locale: 'es_ES' },
     twitter: {
       card: 'summary_large_image',
       title,
       description: desc,
-      images: image,
-    },
+      images: image },
     alternates: alternatesSeo(`/producto/${canonicalSlug}`),
     // Vendido: la URL sigue viva (llega tráfico de WhatsApp/Google y hay
     // similares que mostrar) pero fuera del índice: contenido agotado.
@@ -386,8 +383,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     // Google con anuncios de verdad.
     robots: producto.vendido || esDemo
       ? { index: false, follow: true }
-      : { index: true, follow: true },
-  }
+      : { index: true, follow: true } }
 }
 
 export default async function ProductoPage({ params }: Props) {
@@ -444,19 +440,14 @@ export default async function ProductoPage({ params }: Props) {
           '@type': 'PostalAddress',
           addressLocality: sellerCity,
           addressRegion: sellerState,
-          addressCountry: 'ES',
-        },
-      },
-    },
+          addressCountry: 'ES' } } },
     category: producto.subcategoria || '',
     itemCondition: 'https://schema.org/' + (producto.estado === 'Nuevo' ? 'NewCondition' : 'UsedCondition'),
     address: {
       '@type': 'PostalAddress',
       addressLocality: producto.ubicacion_ciudad || '',
       addressRegion: producto.ubicacion_estado || '',
-      addressCountry: 'ES',
-    },
-  }
+      addressCountry: 'ES' } }
 
   // Estrellas en resultados de Google: solo con reseñas reales de este
   // producto (Google exige reviewCount ≥ 1; sin reseñas no se envía nada).
@@ -466,8 +457,7 @@ export default async function ProductoPage({ params }: Props) {
       ratingValue: resumenResenas.avg,
       reviewCount: resumenResenas.count,
       bestRating: 5,
-      worstRating: 1,
-    }
+      worstRating: 1 }
   }
 
   // Encontrar ciudad SEO para la ubicación
@@ -496,8 +486,7 @@ export default async function ProductoPage({ params }: Props) {
       ...(producto.subcategoria ? [{ '@type': 'ListItem', position: 3, name: producto.subcategoria, item: SITIO + '/catalogo?subcategoria=' + encodeURIComponent(producto.subcategoria) }] : []),
       ...(ciudadSEO ? [{ '@type': 'ListItem', position: producto.subcategoria ? 4 : 3, name: ciudadSEO.nombre, item: SITIO + '/' + ciudadSEO.slug }] : producto.ubicacion_ciudad ? [{ '@type': 'ListItem', position: producto.subcategoria ? 4 : 3, name: producto.ubicacion_ciudad, item: SITIO + '/catalogo?ciudad=' + encodeURIComponent(producto.ubicacion_ciudad) }] : []),
       { '@type': 'ListItem', position: producto.subcategoria ? (ciudadSEO || producto.ubicacion_ciudad ? 5 : 4) : (ciudadSEO || producto.ubicacion_ciudad ? 4 : 3), name: producto.titulo, item: productUrlCanonical },
-    ],
-  }
+    ] }
   // Enriquecer Product con brand/model si disponibles
   if (producto.marca) jsonLd.brand = { '@type': 'Brand', name: producto.marca }
   if (producto.modelo) jsonLd.model = producto.modelo
@@ -512,8 +501,7 @@ export default async function ProductoPage({ params }: Props) {
 
   const graphJsonLd = {
     '@context': 'https://schema.org',
-    '@graph': [breadcrumbJsonLd, jsonLd],
-  }
+    '@graph': [breadcrumbJsonLd, jsonLd] }
 
   return (
     <>
@@ -532,18 +520,18 @@ export default async function ProductoPage({ params }: Props) {
       </Suspense>
 
       {relacionados.length > 0 && (
-        <section className="max-w-7xl mx-auto px-4 py-8 border-t border-gray-100 mt-8">
-          <h2 className="text-xl md:text-2xl font-black text-gray-900 mb-4">
+        <section className="shell border-t border-line py-12">
+          <h2 className="t-eyebrow border-b border-ink pb-3 text-ink">
             {t('relatedTitle')}
           </h2>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
+          <div className="mt-6 grid grid-cols-2 gap-px border border-line bg-line lg:grid-cols-4">
             {relacionados.map((p: any) => (
               <LocalLink
                 key={p.id}
                 href={`/producto/${p.slug || p.id}`}
-                className="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-lg hover:-translate-y-1 transition group block"
+                className="group block bg-[#FBFAF5] transition hover:bg-paper-2"
               >
-                <div className="aspect-square bg-gray-100 relative overflow-hidden">
+                <div className="aspect-square bg-paper-2 relative overflow-hidden">
                   <Image
                     src={p.imagen_url || '/placeholder-product.webp'}
                     alt={p.titulo}
@@ -555,15 +543,15 @@ export default async function ProductoPage({ params }: Props) {
                     quality={75}
                   />
                 </div>
-                <div className="p-3">
-                  <h3 className="font-semibold text-gray-900 text-sm truncate group-hover:text-brand-primary transition-colors">
+                <div className="p-4">
+                  <h3 className="truncate text-[13.5px] font-semibold text-ink">
                     {p.titulo}
                   </h3>
-                  <p className="text-lg font-black text-brand-primary mt-0.5">
+                  <p className="t-display t-num mt-1.5 text-[1.1rem] leading-none text-ink">
                     {formatPrecio(p.precio_usd || 0)}
                   </p>
                   {p.ubicacion_ciudad && (
-                    <p className="text-[11px] text-gray-500 truncate">{p.ubicacion_ciudad}</p>
+                    <p className="text-[11px] text-muted truncate">{p.ubicacion_ciudad}</p>
                   )}
                 </div>
               </LocalLink>
@@ -576,11 +564,11 @@ export default async function ProductoPage({ params }: Props) {
           Google descubre jerarquía y topicalidad con enlaces en el
           cuerpo de la ficha: landing de la provincia y página del
           modelo. */}
-      <section className="max-w-7xl mx-auto px-4 py-8 border-t border-gray-100 mt-8">
-        <h2 className="text-lg font-black text-gray-900 mb-3">
+      <section className="shell border-t border-line py-12">
+        <h2 className="t-eyebrow border-b border-ink pb-3 text-ink">
           Explora más maquinaria relacionada
         </h2>
-        <ul className="space-y-2 text-sm">
+        <ul className="mt-5 grid gap-x-8 gap-y-2 text-[13.5px] sm:grid-cols-2">
           {ciudadSEO && (
             <li>
               <LocalLink

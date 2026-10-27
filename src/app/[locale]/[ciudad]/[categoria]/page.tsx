@@ -19,8 +19,7 @@ const CATEGORIAS_SEO: Record<string, { nombre: string; descripcion: string }> = 
       slug,
       {
         nombre: seo?.nombre || NOMBRES_CATEGORIA_POPULAR[slug] || slug,
-        descripcion: seo?.descripcion || '',
-      },
+        descripcion: seo?.descripcion || '' },
     ]
   })
 )
@@ -45,8 +44,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const t = await getTranslations({ locale, namespace: 'notFound' })
     return {
       title: t('title'),
-      description: t('description'),
-    }
+      description: t('description') }
   }
 
   const cityName = ciudadSEO.nombre
@@ -75,14 +73,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       type: 'website',
       locale: 'es_ES',
       url: `https://maquinaria.click/${ciudad}/${categoria}`,
-      images: [{ url: `https://maquinaria.click/api/og/catalog?categoria=${ogParam}`, width: 1200, height: 630, alt: title }],
-    },
+      images: [{ url: `https://maquinaria.click/api/og/catalog?categoria=${ogParam}`, width: 1200, height: 630, alt: title }] },
     twitter: {
       card: 'summary_large_image',
       title,
       description,
-      images: [`https://maquinaria.click/api/og/catalog?categoria=${ogParam}`],
-    },
+      images: [`https://maquinaria.click/api/og/catalog?categoria=${ogParam}`] },
     alternates: alternatesSeo(`/${ciudad}/${categoria}`),
     robots: {
       // Combinación sin anuncios = página vacía: noindex hasta que haya
@@ -93,9 +89,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         ciudadSEO.municipio,
         categoria,
       ),
-      follow: true,
-    },
-  }
+      follow: true } }
 }
 
 async function getProductosCategoria(ciudadNombre: string, municipio: string | undefined, categoriaSlug: string) {
@@ -164,8 +158,7 @@ export default async function CategoriaPage({ params }: Props) {
       { '@type': 'ListItem', position: 1, name: 'Inicio', item: SITIO + '/' },
       { '@type': 'ListItem', position: 2, name: ciudadSEO.nombre, item: SITIO + '/' + ciudad },
       { '@type': 'ListItem', position: 3, name: cat.nombre, item: pageUrl },
-    ],
-  }
+    ] }
 
   const collectionPageJsonLd = {
     '@context': 'https://schema.org',
@@ -176,8 +169,7 @@ export default async function CategoriaPage({ params }: Props) {
     url: pageUrl,
     isPartOf: { '@id': SITIO + '/#website' },
     breadcrumb: { '@id': pageUrl + '#breadcrumb' },
-    mainEntity: productos.length > 0 ? { '@id': pageUrl + '#itemlist' } : undefined,
-  }
+    mainEntity: productos.length > 0 ? { '@id': pageUrl + '#itemlist' } : undefined }
 
   const itemListJsonLd = productos.length > 0 ? {
     '@context': 'https://schema.org',
@@ -196,10 +188,7 @@ export default async function CategoriaPage({ params }: Props) {
         price: p.precio_usd || 0,
         priceCurrency: 'EUR',
         availability: 'https://schema.org/InStock',
-        url: productAbsoluteUrl(p, SITIO),
-      },
-    })),
-  } : null
+        url: productAbsoluteUrl(p, SITIO) } })) } : null
 
   return (
     <>

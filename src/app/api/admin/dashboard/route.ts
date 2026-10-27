@@ -107,14 +107,12 @@ export async function GET(request: NextRequest) {
         pendingVerifications: pendVerif.count || 0,
         pendingTransactions: pendTx.count || 0,
         verified: verified.count || 0,
-        reviews: reviews.count || 0,
-      },
+        reviews: reviews.count || 0 },
       recentProducts: recentRes.data || [],
       topProducts: topRes.data || [],
       recentUsers: usersRes.data || [],
       last7Products: bucketize((productsAll.data as any[]) || [], (p: any) => p.creado_en),
-      last7Transactions: bucketize((txAll.data as any[]) || [], (p: any) => p.creado_en),
-    })
+      last7Transactions: bucketize((txAll.data as any[]) || [], (p: any) => p.creado_en) })
   } catch (err: any) {
     return NextResponse.json({ error: err.message || 'Error desconocido' }, { status: 500 })
   }

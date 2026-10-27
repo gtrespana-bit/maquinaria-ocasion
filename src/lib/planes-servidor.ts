@@ -2,13 +2,10 @@ import { sbAdmin } from '@/lib/sb-admin'
 import {
   DIAS_MES_GRATIS_DEFAULT,
   cupoMaximo,
-  diasRestantesTrial,
   esPlanPago,
   esProfesional,
   normalizarPlanContratado,
-  resumenCupo,
-  type PlanPago,
-} from '@/lib/planes-anuncios'
+  resumenCupo, type PlanPago} from '@/lib/planes-anuncios'
 import { calcularTrial, estadoTrial, trialDisponible } from '@/lib/planes-prueba'
 
 // Reexportado por compatibilidad: media app importa `sbAdmin` desde aquí.
@@ -27,8 +24,7 @@ export async function leerAjustesPlanes(sb = sbAdmin()) {
     const valor = (data?.valor || {}) as Record<string, unknown>
     return {
       mesGratisActivo: valor.mes_gratis_activo !== false,
-      diasGratis: Number(valor.dias_gratis) > 0 ? Number(valor.dias_gratis) : DIAS_MES_GRATIS_DEFAULT,
-    }
+      diasGratis: Number(valor.dias_gratis) > 0 ? Number(valor.dias_gratis) : DIAS_MES_GRATIS_DEFAULT }
   } catch {
     return { mesGratisActivo: true, diasGratis: DIAS_MES_GRATIS_DEFAULT }
   }
@@ -36,7 +32,6 @@ export async function leerAjustesPlanes(sb = sbAdmin()) {
 
 const PERFIL_PLAN =
   'id, tipo_vendedor, plan_anuncios, plan_hasta, creado_en, destacados_mes_usados, destacados_mes_periodo, stripe_customer_id, stripe_subscription_id, credito_balance'
-
 /**
  * Columnas de la fase 2 (prueba con fechas + dunning).
  *
@@ -112,9 +107,7 @@ export async function cupoDeUsuario(userId: string) {
       diasGratis: ajustes.diasGratis,
       usados,
       destacadosUsados: perfil?.destacados_mes_usados,
-      destacadosPeriodo: perfil?.destacados_mes_periodo,
-    }),
-  }
+      destacadosPeriodo: perfil?.destacados_mes_periodo }) }
 }
 
 /**
@@ -196,8 +189,7 @@ export async function aplicarPlanPerfil(
   const plan = normalizarPlanContratado(opts.plan) ?? opts.plan
   const updates: Record<string, unknown> = {
     plan_anuncios: plan,
-    plan_hasta: opts.hasta ?? null,
-  }
+    plan_hasta: opts.hasta ?? null }
   if (opts.stripeCustomerId) updates.stripe_customer_id = opts.stripeCustomerId
   if (opts.stripeSubscriptionId) updates.stripe_subscription_id = opts.stripeSubscriptionId
 
@@ -283,8 +275,7 @@ export async function iniciarTrialPerfil(userId: string): Promise<ResultadoInici
     return {
       ok: false,
       codigo: 'NO_DISPONIBLE',
-      error: 'La prueba gratuita no está disponible ahora mismo. Puedes contratar el plan Básico por 19 €/mes.',
-    }
+      error: 'La prueba gratuita no está disponible ahora mismo. Puedes contratar el plan Básico por 19 €/mes.' }
   }
 
   const perfil = await leerPerfilPlan(sb, userId)
@@ -306,22 +297,19 @@ export async function iniciarTrialPerfil(userId: string): Promise<ResultadoInici
     trialHasta: perfil.trial_hasta,
     mesGratisActivo: ajustes.mesGratisActivo,
     diasGratis: ajustes.diasGratis,
-    planPagoVigente,
-  })
+    planPagoVigente })
   if (!disponible) {
     return {
       ok: false,
       codigo: 'YA_USADA',
-      error: 'Ya has usado tu prueba. Puedes contratar el plan Básico por 19 €/mes.',
-    }
+      error: 'Ya has usado tu prueba. Puedes contratar el plan Básico por 19 €/mes.' }
   }
 
   const trial = calcularTrial({ dias: ajustes.diasGratis })
   const updates: Record<string, unknown> = {
     trial_iniciado_en: trial.inicio.toISOString(),
     trial_hasta: trial.hasta.toISOString(),
-    trial_plan: trial.plan,
-  }
+    trial_plan: trial.plan }
   // La prueba da cupo de profesional: sin esto un particular probaría Básico y
   // seguiría viendo el límite de 1 anuncio.
   if (!esProfesional(perfil.tipo_vendedor)) updates.tipo_vendedor = 'profesional'
@@ -333,8 +321,7 @@ export async function iniciarTrialPerfil(userId: string): Promise<ResultadoInici
       return {
         ok: false,
         codigo: 'MIGRACION',
-        error: 'La prueba todavía no está habilitada en este entorno. Inténtalo más tarde.',
-      }
+        error: 'La prueba todavía no está habilitada en este entorno. Inténtalo más tarde.' }
     }
     return { ok: false, codigo: 'ERROR', error: 'No se pudo empezar la prueba. Inténtalo de nuevo.' }
   }
@@ -347,8 +334,7 @@ export async function iniciarTrialPerfil(userId: string): Promise<ResultadoInici
     hasta: trial.hasta.toISOString(),
     dias: ajustes.diasGratis,
     plan: trial.plan,
-    reactivados,
-  }
+    reactivados }
 }
 
 /**
@@ -383,8 +369,7 @@ export async function estadoPlanUsuario(userId: string) {
     usados,
     destacadosUsados: perfil?.destacados_mes_usados,
     destacadosPeriodo: perfil?.destacados_mes_periodo,
-    ahora,
-  })
+    ahora })
 
   const trial = estadoTrial({
     tipo: perfil?.tipo_vendedor,
@@ -394,8 +379,7 @@ export async function estadoPlanUsuario(userId: string) {
     mesGratisActivo: ajustes.mesGratisActivo,
     diasGratis: ajustes.diasGratis,
     planPagoVigente,
-    ahora,
-  })
+    ahora })
 
   const trialElegible = trialDisponible({
     tipo: perfil?.tipo_vendedor,
@@ -405,8 +389,7 @@ export async function estadoPlanUsuario(userId: string) {
     mesGratisActivo: ajustes.mesGratisActivo,
     diasGratis: ajustes.diasGratis,
     planPagoVigente,
-    ahora,
-  })
+    ahora })
 
   let pausadosPorPlan = 0
   try {
@@ -444,6 +427,5 @@ export async function estadoPlanUsuario(userId: string) {
     pagoPendienteDesde: perfil?.pago_pendiente_desde || null,
     pausadosPorPlan,
     creditos: Number(perfil?.credito_balance || 0),
-    cupo: resumen,
-  }
+    cupo: resumen }
 }

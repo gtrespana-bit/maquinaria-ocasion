@@ -73,26 +73,26 @@ export default function PlanBar({ onAbrirPlan }: { onAbrirPlan: (tab: DashboardT
     <button
       type="button"
       onClick={() => onAbrirPlan('plan')}
-      className={`mb-5 flex w-full items-center justify-between gap-3 rounded-xl border px-4 py-2.5 text-left text-sm transition ${
+      className={`mb-5 flex w-full items-center justify-between gap-3 border px-4 py-3 text-left transition-colors ${
         fallo
-          ? 'border-red-300 bg-red-50 hover:bg-red-100'
+          ? 'border-clay/50 bg-clay/[0.05] hover:bg-clay/10'
           : destacar
-            ? 'border-amber-200 bg-amber-50 hover:bg-amber-100'
-            : 'border-slate-200 bg-white hover:bg-slate-50'
+            ? 'border-signal-deep/40 bg-signal/20 hover:bg-signal/30'
+            : 'border-line bg-[#FBFAF5] hover:bg-paper-2'
       }`}
     >
       <span className="flex min-w-0 items-center gap-2">
         {fallo ? (
-          <CreditCard size={16} className="shrink-0 text-red-600" aria-hidden="true" />
+          <CreditCard size={15} strokeWidth={1.6} className="shrink-0 text-clay" aria-hidden="true" />
         ) : (
-          <Sparkles size={16} className={destacar ? 'shrink-0 text-amber-600' : 'shrink-0 text-emerald-600'} aria-hidden="true" />
+          <Sparkles size={15} strokeWidth={1.6} className={destacar ? 'shrink-0 text-ink/70' : 'shrink-0 text-moss'} aria-hidden="true" />
         )}
-        <span className={`truncate font-semibold ${fallo ? 'text-red-900' : 'text-slate-800'}`}>
+        <span className={`truncate text-[13px] font-medium ${fallo ? 'text-clay' : 'text-ink'}`}>
           {fallo ? 'Cobro pendiente: ' : 'Plan: '}
           {texto}
         </span>
       </span>
-      <span className={`flex shrink-0 items-center gap-1 text-xs font-bold ${fallo ? 'text-red-800' : destacar ? 'text-amber-800' : 'text-slate-500'}`}>
+      <span className={`t-label flex shrink-0 items-center gap-1.5 ${fallo ? 'text-clay' : destacar ? 'text-ink/70' : 'text-ink/45'}`}>
         {fallo
           ? 'Actualizar'
           : estado.trial || estado.trialGracia
@@ -100,7 +100,7 @@ export default function PlanBar({ onAbrirPlan }: { onAbrirPlan: (tab: DashboardT
             : estado.planPagoVigente
               ? 'Gestionar'
               : 'Ver planes'}
-        <ArrowRight size={13} aria-hidden="true" />
+        <ArrowRight size={11} aria-hidden="true" />
       </span>
     </button>
   )

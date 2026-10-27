@@ -11,7 +11,7 @@
  * los cambios de plan y la contabilidad ven siempre el mismo producto.
  */
 import type Stripe from 'stripe'
-import { getPlanDef, precioPlan, type Periodicidad, type PlanPago } from '@/lib/planes-anuncios'
+import {getPlanDef, precioPlan, type Periodicidad, type PlanPago } from '@/lib/planes-anuncios'
 
 export function clavePrice(plan: PlanPago, periodicidad: Periodicidad): string {
   return `maquinariaocasion_${plan}_${periodicidad}`
@@ -28,8 +28,7 @@ export async function obtenerPrecioPlan(
   const existentes = await stripe.prices.list({
     lookup_keys: [lookup_key],
     active: true,
-    limit: 1,
-  })
+    limit: 1 })
   if (existentes.data[0]) {
     // Los precios creados antes de decidir el IVA quedaron como
     // `unspecified`. Los packs se venden con IVA incluido y Stripe permite
@@ -51,13 +50,11 @@ export async function obtenerPrecioPlan(
           precio.unit_amount ?? Math.round(precioPlan(plan, periodicidad) * 100),
         recurring: {
           interval: precio.recurring?.interval ?? (periodicidad === 'anual' ? 'year' : 'month'),
-          interval_count: precio.recurring?.interval_count ?? 1,
-        },
+          interval_count: precio.recurring?.interval_count ?? 1 },
         lookup_key,
         transfer_lookup_key: true,
         tax_behavior: 'inclusive',
-        metadata: { plan, periodicidad },
-      })
+        metadata: { plan, periodicidad } })
     }
   }
 
@@ -67,8 +64,7 @@ export async function obtenerPrecioPlan(
   const producto = await stripe.products.create({
     name: `MaquinariaOcasión ${def.nombre}`,
     description: `${def.eslogan}. ${def.paraQuien}.`,
-    metadata: { plan, tipo: 'plan' },
-  })
+    metadata: { plan, tipo: 'plan' } })
 
   const precio = await stripe.prices.create({
     product: producto.id,
@@ -79,8 +75,7 @@ export async function obtenerPrecioPlan(
     // Precio final para el cliente: el importe ya lleva IVA. Stripe lo
     // desglosa en la factura sin sumarlo por encima.
     tax_behavior: 'inclusive',
-    metadata: { plan, periodicidad },
-  })
+    metadata: { plan, periodicidad } })
 
   return precio
 }

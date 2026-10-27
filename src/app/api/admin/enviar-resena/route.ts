@@ -63,8 +63,7 @@ export async function POST(request: NextRequest) {
       vendedor_id: product.user_id,
       comprador_id: evaluador_id,
       puntuacion: puntuacionNum,
-      comentario: comentarioClean,
-    })
+      comentario: comentarioClean })
 
     if (error) {
       if (error.code === '23505') {
@@ -84,8 +83,7 @@ export async function POST(request: NextRequest) {
         tipo: 'resena_recibida',
         titulo: `${reviewer?.nombre || 'Un participante'} te dejó una reseña ⭐`,
         cuerpo: 'Puedes consultar tu reputación desde el dashboard.',
-        click_url: '/dashboard?tab=reputacion',
-      })
+        click_url: '/dashboard?tab=reputacion' })
     } catch {
       // Notificación secundaria.
     }

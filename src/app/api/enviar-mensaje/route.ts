@@ -33,8 +33,7 @@ export async function POST(req: NextRequest) {
     if (!rl.ok) {
       return NextResponse.json({
         error: `Demasiados mensajes. Espera ${Math.ceil(rl.resetIn / 60000)} min`,
-        resetIn: rl.resetIn,
-      }, { status: 429 })
+        resetIn: rl.resetIn }, { status: 429 })
     }
 
     const sb = createClient(
@@ -68,8 +67,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({
         code: 'CONVERSACION_SEMILLA_CERRADA',
         error: 'Este chat antiguo no recibe mensajes. Abre una consulta con MaquinariaOcasión.',
-        reabrir: `/chat?producto_id=${conv.producto_id}&vendedor_id=${producto.user_id}`,
-      }, { status: 409 })
+        reabrir: `/chat?producto_id=${conv.producto_id}&vendedor_id=${producto.user_id}` }, { status: 409 })
     }
 
     const { data, error } = await sb.from('mensajes').insert({
@@ -79,8 +77,7 @@ export async function POST(req: NextRequest) {
       producto_id: conv.producto_id,
       remitente_id,
       destinatario_id,
-      contenido: contenidoSanitizado,
-    }).select().single()
+      contenido: contenidoSanitizado }).select().single()
 
     if (error) return NextResponse.json({ error: 'No se pudo enviar el mensaje' }, { status: 500 })
 
@@ -97,15 +94,13 @@ export async function POST(req: NextRequest) {
         tipo: 'mensaje',
         titulo: title,
         cuerpo: preview || 'Nuevo mensaje',
-        click_url: `/chat?conversation=${conversacion_id}`,
-      })
+        click_url: `/chat?conversation=${conversacion_id}` })
       await notifyUser(sb, destinatario_id, {
         title,
         body: preview || 'Nuevo mensaje',
         tag: `chat-${conversacion_id.slice(0, 8)}`,
         icon: '/icon-192.png',
-        click_url: `/chat?conversation=${conversacion_id}`,
-      })
+        click_url: `/chat?conversation=${conversacion_id}` })
     } catch {
       // La notificación es secundaria; el mensaje ya fue guardado.
     }

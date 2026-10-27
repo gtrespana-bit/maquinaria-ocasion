@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from 'react'
 import { ShieldCheck, CheckCircle2, XCircle, Database, Zap, Mail, Send, Megaphone, Shield, RefreshCw } from 'lucide-react'
-import { Badge, Button, Card, Empty, Loading, RefreshButton } from './AdminUi'
+import { Badge, Button, Card, Loading, RefreshButton } from './AdminUi'
 import { apiJson } from './admin-utils'
 
 export default function AdminAjustes({ notify }: { notify: (msg: string) => void }) {
@@ -22,7 +22,7 @@ export default function AdminAjustes({ notify }: { notify: (msg: string) => void
       const res = await apiJson<{ config: Record<string, boolean>; count?: number }>('/api/admin/status')
       setStatus(res.config)
     } catch (e: any) {
-      notify('❌ ' + e.message)
+      notify( e.message)
     }
     try {
       const diag = await apiJson<{ resend: boolean; smtp: boolean; from: string; hint: string }>('/api/admin/email-test')
@@ -39,18 +39,18 @@ export default function AdminAjustes({ notify }: { notify: (msg: string) => void
   async function testTelegram() {
     setTestResult('enviando')
     try {
-      await apiJson('/api/notify', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ mensaje: '✅ Prueba desde el panel admin de MaquinariaOcasión' }) })
+      await apiJson('/api/notify', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ mensaje: ' Prueba desde el panel admin de MaquinariaOcasión' }) })
       setTestResult('ok')
     } catch (e: any) {
       setTestResult('error')
-      notify('❌ ' + e.message)
+      notify( e.message)
     }
     setTimeout(() => setTestResult(null), 4000)
   }
 
   async function testEmail() {
     if (!emailTo.trim()) {
-      notify('❌ Ingresa un email destino para la prueba')
+      notify('Ingresa un email destino para la prueba')
       return
     }
     setEmailSending(true)
@@ -59,12 +59,11 @@ export default function AdminAjustes({ notify }: { notify: (msg: string) => void
       const res = await apiJson<{ canal: string; from: string; to: string }>('/api/admin/email-test', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ to: emailTo.trim() }),
-      })
+        body: JSON.stringify({ to: emailTo.trim() }) })
       setEmailResult({ ok: true, text: `Enviado por ${res.canal} a ${res.to}. Revisa la bandeja (y spam).` })
     } catch (e: any) {
       setEmailResult({ ok: false, text: e.message })
-      notify('❌ Email: ' + e.message)
+      notify('Email: ' + e.message)
     }
     setEmailSending(false)
   }
@@ -72,20 +71,20 @@ export default function AdminAjustes({ notify }: { notify: (msg: string) => void
   if (loading) return <Loading label="Comprobando configuración…" />
 
   const configs = [
-    { key: 'supabase', label: 'Base de datos', desc: 'Conexión y credenciales de Supabase', icon: Database, color: 'text-emerald-600 bg-emerald-50' },
-    { key: 'telegram', label: 'Telegram', desc: 'Alertas operativas en tiempo real', icon: Send, color: 'text-blue-600 bg-blue-50' },
-    { key: 'push', label: 'Push Web', desc: 'Notificaciones a los usuarios', icon: Zap, color: 'text-yellow-600 bg-yellow-50' },
-    { key: 'email', label: 'Email', desc: 'Correos transaccionales (Resend)', icon: Mail, color: 'text-purple-600 bg-purple-50' },
+    { key: 'supabase', label: 'Base de datos', desc: 'Conexión y credenciales de Supabase', icon: Database, color: 'text-moss bg-moss/10' },
+    { key: 'telegram', label: 'Telegram', desc: 'Alertas operativas en tiempo real', icon: Send, color: 'text-ink bg-blue-50' },
+    { key: 'push', label: 'Push Web', desc: 'Notificaciones a los usuarios', icon: Zap, color: 'text-signal-deep bg-paper-2' },
+    { key: 'email', label: 'Email', desc: 'Correos transaccionales (Resend)', icon: Mail, color: 'text-ink bg-purple-50' },
     { key: 'anuncios', label: 'Anuncios globales', desc: 'Banner público en todo el sitio', icon: Megaphone, color: 'text-orange-600 bg-orange-50' },
-    { key: 'rateLimit', label: 'Rate limiting', desc: 'Protección anti-abuso de la API', icon: Shield, color: 'text-gray-600 bg-gray-100' },
+    { key: 'rateLimit', label: 'Rate limiting', desc: 'Protección anti-abuso de la API', icon: Shield, color: 'text-ink/55 bg-paper-2' },
   ]
 
   return (
     <div className="space-y-5">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h2 className="text-xl font-black text-gray-900">Ajustes y salud</h2>
-          <p className="text-sm text-gray-500">Estado de los canales de la plataforma</p>
+          <h2 className="text-xl font-semibold text-ink">Ajustes y salud</h2>
+          <p className="text-[12.5px] leading-relaxed text-ink/55">Estado de los canales de la plataforma</p>
         </div>
         <RefreshButton onClick={() => load(true)} loading={refreshing} />
       </div>
@@ -102,8 +101,8 @@ export default function AdminAjustes({ notify }: { notify: (msg: string) => void
                   <span className="text-xs font-bold">{ok ? 'Operativo' : 'Pendiente'}</span>
                 </div>
               </div>
-              <p className="mt-3 text-sm font-bold text-gray-800">{c.label}</p>
-              <p className="text-xs text-gray-500">{c.desc}</p>
+              <p className="mt-3 text-[13px] font-medium text-ink">{c.label}</p>
+              <p className="text-[11.5px] text-ink/45">{c.desc}</p>
             </Card>
           )
         })}
@@ -111,9 +110,9 @@ export default function AdminAjustes({ notify }: { notify: (msg: string) => void
 
       {status?.anuncios === false && (
         <Card title="Activar anuncios globales" subtitle="El banner público necesita una tabla pequeña en Supabase" bodyClassName="p-4">
-          <p className="mb-3 flex items-start gap-2 text-sm text-gray-600">
-            <ShieldCheck size={16} className="mt-0.5 flex-shrink-0 text-brand-primary" />
-            Ejecuta la migración incluida en <code className="rounded bg-gray-100 px-1.5 py-0.5 text-xs">supabase/migrations/202608010007_anuncios_globales.sql</code> para crear la tabla <code className="rounded bg-gray-100 px-1.5 py-0.5 text-xs">anuncios_globales</code> y que el banner aparezca en el sitio.
+          <p className="mb-3 flex items-start gap-2 text-[12.5px] leading-relaxed text-ink/55">
+            <ShieldCheck size={16} className="mt-0.5 flex-shrink-0 text-ink" />
+            Ejecuta la migración incluida en <code className="rounded bg-paper-2 px-1.5 py-0.5 text-xs">supabase/migrations/202608010007_anuncios_globales.sql</code> para crear la tabla <code className="rounded bg-paper-2 px-1.5 py-0.5 text-xs">anuncios_globales</code> y que el banner aparezca en el sitio.
           </p>
           <Button onClick={() => load(true)} variant="outline" size="sm"><RefreshCw size={14} /> Comprobar de nuevo</Button>
         </Card>
@@ -135,11 +134,11 @@ export default function AdminAjustes({ notify }: { notify: (msg: string) => void
             <div className="flex flex-wrap items-center gap-2 text-sm">
               <Badge tone={emailDiag.resend ? 'green' : 'gray'}>Resend API: {emailDiag.resend ? 'configurado' : 'no'}</Badge>
               <Badge tone={emailDiag.smtp ? 'green' : 'gray'}>SMTP: {emailDiag.smtp ? 'configurado' : 'no'}</Badge>
-              <span className="text-xs text-gray-500">Remitente: <code className="rounded bg-gray-100 px-1.5 py-0.5">{emailDiag.from}</code></span>
-              <p className="w-full text-xs text-gray-500">{emailDiag.hint}</p>
+              <span className="text-[11.5px] text-ink/45">Remitente: <code className="rounded bg-paper-2 px-1.5 py-0.5">{emailDiag.from}</code></span>
+              <p className="w-full text-[11.5px] text-ink/45">{emailDiag.hint}</p>
             </div>
           ) : (
-            <p className="text-xs text-gray-500">No se pudo cargar el diagnóstico del canal.</p>
+            <p className="text-[11.5px] text-ink/45">No se pudo cargar el diagnóstico del canal.</p>
           )}
           <div className="flex flex-col gap-2 sm:flex-row">
             <input
@@ -147,14 +146,14 @@ export default function AdminAjustes({ notify }: { notify: (msg: string) => void
               value={emailTo}
               onChange={(e) => setEmailTo(e.target.value)}
               placeholder="tu@email.com"
-              className="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-brand-accent"
+              className="w-full rounded-lg border border-line bg-[#FBFAF5] px-3 py-2 text-sm text-ink focus:outline-none focus:ring-2 focus:ring-signal-deep"
             />
             <Button onClick={testEmail} disabled={emailSending}>
               <Mail size={14} /> {emailSending ? 'Enviando…' : 'Enviar prueba'}
             </Button>
           </div>
           {emailResult && (
-            <div className={`flex items-start gap-2 rounded-lg p-3 text-sm ${emailResult.ok ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'}`}>
+            <div className={`flex items-start gap-2 rounded-lg p-3 text-sm ${emailResult.ok ? 'bg-signal/10 text-moss' : 'bg-clay/[0.07] text-clay'}`}>
               {emailResult.ok ? <CheckCircle2 size={16} className="mt-0.5 shrink-0" /> : <XCircle size={16} className="mt-0.5 shrink-0" />}
               <span>{emailResult.text}</span>
             </div>
@@ -163,7 +162,7 @@ export default function AdminAjustes({ notify }: { notify: (msg: string) => void
       </Card>
 
       <Card title="Responsabilidades del panel" subtitle="Todo queda registrado en auditoría" bodyClassName="p-4">
-        <div className="grid gap-2 text-sm text-gray-600 md:grid-cols-2">
+        <div className="grid gap-2 text-[12.5px] leading-relaxed text-ink/55 md:grid-cols-2">
           <p>- Aprobación manual de pagos con doble verificación (Bizum/transferencia/PayPal).</p>
           <p>- Verificación de vendedores con DNI/NIE y contraste de datos de pago.</p>
           <p>- Reservas con señal y verificación de vendedores.</p>

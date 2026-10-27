@@ -1,12 +1,10 @@
-'use client';
+'use client'
 
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { XCircle } from 'lucide-react';
 import { TODAS_LAS_SUBS, FAMILIAS } from '@/lib/categorias';
 import {
-  FILTROS_TECNICOS,
-  type FiltrosTecnicos,
-} from '@/lib/filtros-tecnicos'
+  FILTROS_TECNICOS, type FiltrosTecnicos} from '@/lib/filtros-tecnicos'
 import { hayFiltrosRango } from '@/lib/filtros-tecnicos'
 import { FILTRO_VENDEDOR_PARAM } from '@/lib/catalog-consulta';
 import { TIPOS_VENDEDOR } from '@/components/BadgeTipoVendedor';
@@ -39,9 +37,13 @@ interface CatalogFiltersProps {
   t: (key: string, vars?: Record<string, string | number>) => string;
 }
 
-const selectClass =
-  'w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm text-gray-800 bg-white font-medium focus:outline-none focus:ring-2 focus:ring-brand-accent';
-const labelClass = 'block text-sm font-bold text-gray-900 mb-1.5';
+// Controles del sistema editorial: sin cajas, con línea inferior y etiquetas
+// monoespaciadas. Mismo lenguaje que el buscador de la portada.
+// Controles del sistema editorial: sin cajas, con línea inferior y etiquetas
+// monoespaciadas. Mismo lenguaje que el buscador de la portada.
+const selectClass = 'field text-[13.5px]';
+const labelClass = 't-label mb-1 block text-ink/50';
+const inputClass = 'field t-num text-[13.5px]';
 
 export const CatalogFilters = ({
   categoria,
@@ -54,8 +56,7 @@ export const CatalogFilters = ({
   filtrosTecnicos,
   rangos,
   vendedor,
-  t,
-}: CatalogFiltersProps) => {
+  t }: CatalogFiltersProps) => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -85,8 +86,18 @@ export const CatalogFilters = ({
     // En escritorio la columna de filtros es sticky: al crecer con los bloques
     // técnicos se le da scroll propio para que el pie (limpiar filtros) siga
     // siendo alcanzable sin perder la posición en el listado.
-    <div className="bg-white rounded-xl p-5 shadow-sm sticky top-20 lg:max-h-[calc(100vh-6rem)] lg:overflow-y-auto">
-      <h3 className="font-bold text-lg text-gray-900 mb-4">🔍 {t('catalog.filtersTitle')}</h3>
+    <div className="lg:sticky lg:top-24 lg:max-h-[calc(100vh-8rem)] lg:overflow-y-auto">
+      <div className="mb-5 flex items-center justify-between border-b border-ink pb-2">
+        <h2 className="t-eyebrow text-ink">{t('catalog.filtersTitle')}</h2>
+        {hasActiveFilters && (
+          <button
+            onClick={() => router.push(pathname)}
+            className="t-label flex items-center gap-1 text-ink/50 transition-colors hover:text-ink"
+          >
+            <XCircle size={12} /> {t('catalog.clearFilters')}
+          </button>
+        )}
+      </div>
 
       {/* Familias y subcategorías de la vertical (agrícola / obra /
           herramientas), siempre visibles. */}
@@ -125,7 +136,7 @@ export const CatalogFilters = ({
           {marca && (
             <button
               onClick={() => setParam('marca', '')}
-              className="text-xs text-red-500 hover:text-red-700 flex items-center gap-1"
+              className="text-xs text-clay hover:text-clay flex items-center gap-1"
             >
               <XCircle size={12} /> {t('catalog.remove')}
             </button>
@@ -153,7 +164,7 @@ export const CatalogFilters = ({
             onChange={e => setParam('precioMin', e.target.value)}
             placeholder={t('catalog.min')}
             min="0"
-            className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm text-gray-800 bg-white focus:outline-none focus:ring-2 focus:ring-brand-accent"
+            className={inputClass}
           />
           <input
             type="number"
@@ -162,7 +173,7 @@ export const CatalogFilters = ({
             placeholder={t('catalog.max')}
             min="0"
             aria-label={t('catalog.max')}
-            className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm text-gray-800 bg-white focus:outline-none focus:ring-2 focus:ring-brand-accent"
+            className={inputClass}
           />
         </div>
       </div>
@@ -179,10 +190,10 @@ export const CatalogFilters = ({
                 type="button"
                 aria-pressed={activo}
                 onClick={() => setParam(FILTRO_VENDEDOR_PARAM, activo ? '' : tipo)}
-                className={`text-xs font-semibold px-2.5 py-1.5 rounded-full border transition ${
+                className={`t-label border px-2.5 py-1.5 transition-colors ${
                   activo
-                    ? 'bg-brand-primary text-white border-brand-primary'
-                    : 'bg-white text-gray-700 border-gray-300 hover:border-gray-400 hover:bg-gray-50'
+                    ? 'border-ink bg-ink text-paper'
+                    : 'border-line text-ink/60 hover:border-ink hover:text-ink'
                 }`}
               >
                 {t(`tiposVendedor.${tipo}`)}
@@ -205,14 +216,11 @@ export const CatalogFilters = ({
         onSetParam={setParam}
       />
 
-      {hasActiveFilters && (
-        <button
-          onClick={() => router.push(pathname)}
-          className="w-full text-sm text-red-500 hover:text-red-700 py-2 border border-red-200 rounded-lg hover:bg-red-50 transition flex items-center justify-center gap-1"
-        >
-          <XCircle size={14} /> {t('catalog.clearFilters')}
-        </button>
-      )}
+      <div className="mt-6 border-t border-line pt-4">
+        <p className="t-label text-ink/30">MaquinariaOcasión · España</p>
+      </div>
     </div>
   );
 };
+
+  'w-full border border-line-strong rounded-lg px-3 py-2.5 text-sm text-ink bg-[#FBFAF5] font-medium focus:outline-none focus:ring-2 focus:ring-signal-deep';

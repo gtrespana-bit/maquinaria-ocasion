@@ -5,7 +5,7 @@ import Image from 'next/image'
 import LocalLink from '@/components/LocalLink'
 import { useComparar } from '@/lib/comparar'
 import { useTranslations } from 'next-intl'
-import { GitCompare, Trash2, X } from 'lucide-react'
+import { GitCompare, Trash2 } from 'lucide-react'
 
 /**
  * Barra flotante del comparador: aparece con ≥1 anuncio en la lista y lleva
@@ -26,7 +26,7 @@ export default function CompararBar() {
       role="region"
       aria-label={t('comparar.title')}
     >
-      <div className="bg-brand-darkNav text-white rounded-2xl shadow-panel border-2 border-brand-signal/70 px-3 py-2.5 flex items-center gap-3">
+      <div className="bg-brand-darkNav text-paper rounded-2xl shadow-panel border-2 border-brand-signal/70 px-3 py-2.5 flex items-center gap-3">
         {/* Miniaturas de la selección */}
         <div className="flex -space-x-2 shrink-0" aria-hidden="true">
           {lista.map(i => (
@@ -34,7 +34,7 @@ export default function CompararBar() {
               {i.imagen_url ? (
                 <Image src={i.imagen_url} alt="" fill sizes="36px" className="object-cover" />
               ) : (
-                <span className="w-full h-full flex items-center justify-center text-[10px] text-white/60">🔧</span>
+                <span className="w-full h-full flex items-center justify-center text-[10px] text-paper/60">🔧</span>
               )}
             </span>
           ))}
@@ -46,7 +46,7 @@ export default function CompararBar() {
 
         <LocalLink
           href="/comparar"
-          className="bg-brand-signal text-brand-darkNav text-xs font-black px-3.5 py-2 rounded-full hover:bg-brand-signal-dark transition flex items-center gap-1.5 shrink-0"
+          className="btn btn-signal btn-sm flex shrink-0 items-center gap-1.5"
         >
           <GitCompare size={14} strokeWidth={2.6} /> {t('comparar.cta')}
         </LocalLink>
@@ -56,7 +56,7 @@ export default function CompararBar() {
           onClick={vaciar}
           aria-label={t('comparar.clear')}
           title={t('comparar.clear')}
-          className="p-1.5 text-white/60 hover:text-white transition shrink-0"
+          className="p-1.5 text-paper/60 hover:text-paper transition shrink-0"
         >
           <Trash2 size={15} />
         </button>

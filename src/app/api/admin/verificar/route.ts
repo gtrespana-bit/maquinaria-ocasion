@@ -28,8 +28,7 @@ export async function POST(request: NextRequest) {
       .from('perfiles')
       .update({
         verificado: true,
-        verificado_desde: new Date().toISOString(),
-      })
+        verificado_desde: new Date().toISOString() })
       .eq('id', userId)
 
     if (error) {
@@ -42,8 +41,7 @@ export async function POST(request: NextRequest) {
       body: 'Tu perfil ya está verificado en MaquinariaOcasión. Ahora tienes acceso a todas las funciones.',
       tag: 'verified',
       icon: '/icon-192.png',
-      click_url: '/dashboard',
-    })
+      click_url: '/dashboard' })
 
     return NextResponse.json({ ok: true })
   } catch (err: any) {

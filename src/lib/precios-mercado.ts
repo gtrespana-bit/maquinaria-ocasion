@@ -119,8 +119,7 @@ export function calcularEstadisticas(
     p25: Math.round(percentil(precios, 0.25)),
     p75: Math.round(percentil(precios, 0.75)),
     horasMediana: horas.length >= MIN_MUESTRA_TRAMO ? medianaDe(horas) : null,
-    anioMediano: anios.length >= MIN_MUESTRA_TRAMO ? medianaDe(anios) : null,
-  }
+    anioMediano: anios.length >= MIN_MUESTRA_TRAMO ? medianaDe(anios) : null }
 }
 
 /**
@@ -181,8 +180,7 @@ export function valorarPrecio(precio: number, est: Estadisticas): Valoracion {
     economico: 'Por debajo del precio habitual',
     mercado: 'En precio de mercado',
     premium: 'Por encima del precio habitual',
-    caro: 'Muy por encima del mercado',
-  }
+    caro: 'Muy por encima del mercado' }
 
   return { posicion, etiqueta: etiquetas[posicion], difMediana }
 }

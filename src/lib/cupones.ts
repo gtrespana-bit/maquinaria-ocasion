@@ -1,4 +1,4 @@
-import { normalizarPlanContratado, type PlanPago } from '@/lib/planes-anuncios'
+import { normalizarPlanContratado, type PlanPago} from '@/lib/planes-anuncios'
 
 export type TipoCupon = 'regalo_dias' | 'descuento'
 

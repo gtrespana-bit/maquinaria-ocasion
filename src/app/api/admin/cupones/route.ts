@@ -28,8 +28,7 @@ export async function PATCH(req: NextRequest) {
     await sb.from('plataforma_ajustes').upsert({
       clave: 'planes',
       valor: { mes_gratis_activo: mes, dias_gratis: dias },
-      actualizado_en: new Date().toISOString(),
-    })
+      actualizado_en: new Date().toISOString() })
     return NextResponse.json({ ok: true, ajustes: { mesGratisActivo: mes, diasGratis: dias } })
   }
 
@@ -57,8 +56,7 @@ export async function POST(req: NextRequest) {
     max_usos: body.maxUsos == null || body.maxUsos === '' ? null : Math.max(1, Number(body.maxUsos)),
     valido_desde: body.validoDesde || null,
     valido_hasta: body.validoHasta || null,
-    notas: typeof body.notas === 'string' ? body.notas.slice(0, 500) : null,
-  }
+    notas: typeof body.notas === 'string' ? body.notas.slice(0, 500) : null }
 
   if (tipo === 'regalo_dias') {
     const dias = Math.min(365, Math.max(1, Number(body.dias) || 30))
@@ -81,8 +79,7 @@ export async function POST(req: NextRequest) {
           percent_off: porcentaje,
           duration: meses === 1 ? 'once' : 'repeating',
           ...(meses > 1 ? { duration_in_months: meses } : {}),
-          name: codigo,
-        })
+          name: codigo })
         fila.stripe_coupon_id = sc.id
       } catch (e: any) {
         console.error('[admin/cupones] stripe', e?.message)

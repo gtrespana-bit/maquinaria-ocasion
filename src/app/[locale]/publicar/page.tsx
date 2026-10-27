@@ -11,10 +11,9 @@ import { agruparPorFabricante, etiquetaModelo } from '@/lib/marcas'
 import { ESTADOS, getMunicipiosNombres } from '@/lib/ubicaciones'
 import { formatPrecio } from '@/lib/precio'
 import { etiquetaPlan } from '@/lib/planes-anuncios'
-import { Camera, X, UploadCloud, AlertCircle, Phone, Mail, MapPin, MessageSquare } from 'lucide-react'
-import { verificarContenido, formatearAlertaModeracion } from '@/lib/moderacion'
+import { Camera, X, AlertCircle, Phone, Mail, MapPin, MessageSquare } from 'lucide-react'
+import { verificarContenido } from '@/lib/moderacion'
 import BadgeTipoVendedor from '@/components/BadgeTipoVendedor'
-import { emailProductoPublicado } from '@/lib/server-email'
 import { compressImages } from '@/lib/compress-image'
 import { useTranslations } from 'next-intl'
 import Image from 'next/image'
@@ -130,9 +129,16 @@ export default function PublicarPage() {
 
   if (authLoading) {
     return (
-      <div className="min-h-[60vh] flex items-center justify-center">
+      <div className="mx-auto max-w-3xl px-5 py-14 md:px-8">
         <h1 className="sr-only">{t('title')}</h1>
-        <p>{t('loading')}</p>
+        <div className="t-label mb-6 text-ink/40">{t('loading')}</div>
+        <div className="skeleton h-9 w-2/3" />
+        <div className="skeleton mt-3 h-4 w-1/2" />
+        <div className="mt-10 space-y-3">
+          <div className="skeleton h-24 w-full" />
+          <div className="skeleton h-24 w-full" />
+          <div className="skeleton h-11 w-40" />
+        </div>
       </div>
     )
   }
@@ -140,12 +146,18 @@ export default function PublicarPage() {
     // No dejar una pantalla vacía mientras se redirige al login: también es
     // el contenido que puede rastrear Google en la primera respuesta HTML.
     return (
-      <div className="max-w-3xl mx-auto px-4 py-12 text-center">
-        <h1 className="text-3xl font-bold text-gray-900 mb-3">{t('title')}</h1>
-        <p className="text-gray-600 mb-6">{t('freeBannerDesc')}</p>
-        <LocalLink href="/login" className="inline-flex bg-brand-primary text-white px-6 py-3 rounded-lg font-bold hover:opacity-90">
-          {t('loginButton')}
-        </LocalLink>
+      <div className="mx-auto max-w-3xl px-5 py-14 md:px-8 md:py-20">
+        <p className="t-eyebrow text-ink/45">Publicar</p>
+        <h1 className="t-display t-display-lg mt-5 text-ink">{t('title')}</h1>
+        <p className="mt-4 max-w-xl text-[15px] leading-relaxed text-muted">{t('freeBannerDesc')}</p>
+        <div className="mt-8 flex flex-wrap gap-3">
+          <LocalLink href="/login" className="btn btn-ink btn-lg">
+            {t('loginButton')}
+          </LocalLink>
+          <LocalLink href="/register" className="btn btn-outline btn-lg">
+            Crear cuenta gratis
+          </LocalLink>
+        </div>
       </div>
     )
   }
@@ -206,8 +218,7 @@ export default function PublicarPage() {
 
     const newImages: ImageFile[] = processed.map(file => ({
       file,
-      preview: URL.createObjectURL(file),
-    }))
+      preview: URL.createObjectURL(file) }))
     setImagenes(prev => [...prev, ...newImages])
   }
 
@@ -234,8 +245,7 @@ export default function PublicarPage() {
 
         const res = await fetch('/api/storage-upload', {
           method: 'POST',
-          body: fd,
-        })
+          body: fd })
 
         if (!res.ok) {
           const data = await res.json().catch(() => ({}))
@@ -380,9 +390,7 @@ export default function PublicarPage() {
           // `null` para anuncios legacy que aún no tenían esta configuración.
           metodos_contacto: metodosContacto,
           activo: true,
-          destacado: false,
-        }),
-      })
+          destacado: false }) })
       
       const apiResult = await res.json()
       
@@ -428,14 +436,6 @@ export default function PublicarPage() {
         }
       }
 
-      // EMAIL: notificar que el producto fue publicado
-      const nombrePublicador = user?.email?.split('@')[0] || 'Usuario'
-      try {
-        await emailProductoPublicado(user?.email || '', nombrePublicador, titulo, precioUsd, producto.id)
-      } catch (e) {
-        console.error('Error email publicación:', e)
-      }
-      
       // Ir directo a la URL canónica con slug (el detalle redirige 301 si se
       // entra por UUID, y la redirección perdería el ?nuevo=1 del banner).
       router.push(`${productUrl(producto)}?nuevo=1`)
@@ -475,14 +475,15 @@ export default function PublicarPage() {
   const puedeVideo = Boolean(cupo && !cupo.trialGracia && cupo.plan !== 'gratis')
 
   return (
-    <div className="max-w-3xl mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold text-gray-900 mb-2">{t('title')}</h1>
+    <div className="mx-auto max-w-3xl px-5 py-10 md:px-8 md:py-14">
+      <p className="t-eyebrow text-ink/45">Publicar</p>
+      <h1 className="t-display t-display-lg mt-4 text-ink">{t('title')}</h1>
 
       {/* Publicando como… (Fase 2: el comprador verá este chip en el anuncio) */}
       {tipoVendedor && (
-        <p className="flex items-center gap-2 text-sm text-gray-500 mb-4">
+        <p className="mt-4 flex flex-wrap items-center gap-2 text-[13px] text-muted">
           {t('asLabel')} <BadgeTipoVendedor tipo={tipoVendedor} />
-          <LocalLink href="/dashboard" className="text-brand-primary hover:underline text-xs">
+          <LocalLink href="/dashboard" className="t-label text-ink underline underline-offset-4">
             {t('changeTipo')}
           </LocalLink>
         </p>
@@ -490,13 +491,11 @@ export default function PublicarPage() {
 
       {cupo && (
         <div
-          className={`mb-6 rounded-xl p-4 border ${
-            cupo.puedePublicar
-              ? 'bg-green-50 border-green-200'
-              : 'bg-amber-50 border-amber-200'
+          className={`mt-7 border p-4 ${
+            cupo.puedePublicar ? 'border-moss/25 bg-moss-soft' : 'border-signal-deep/40 bg-signal-soft/60'
           }`}
         >
-          <p className={`text-sm font-bold ${cupo.puedePublicar ? 'text-green-800' : 'text-amber-900'}`}>
+          <p className={`text-[13.5px] font-semibold ${cupo.puedePublicar ? 'text-moss' : 'text-ink'}`}>
             {cupo.trial
               ? t('pruebaTitulo', { plan: planNombre, dias: diasPrueba })
               : cupo.trialGracia
@@ -507,12 +506,11 @@ export default function PublicarPage() {
                     ? t('freeBanner')
                     : t('cupoLlenoTitulo')}
           </p>
-          <p className={`text-xs mt-1 ${cupo.puedePublicar ? 'text-green-700' : 'text-amber-800'}`}>
+          <p className={`mt-1 text-[12.5px] leading-relaxed ${cupo.puedePublicar ? 'text-moss/80' : 'text-ink/70'}`}>
             {t('cupoResumen', {
               usados: cupo.usados,
               max: cupo.max == null ? '∞' : cupo.max,
-              restantes: cupo.restantes == null ? '∞' : cupo.restantes,
-            })}
+              restantes: cupo.restantes == null ? '∞' : cupo.restantes })}
             {cupo.trial
               ? ` ${t('pruebaDetalle', { fecha: fechaCorta(cupo.trialHasta), gracia: fechaCorta(cupo.graciaHasta) })}`
               : cupo.trialGracia
@@ -546,58 +544,72 @@ export default function PublicarPage() {
         </div>
       )}
       {!cupo && (
-        <div className="mb-6 bg-green-50 border border-green-200 rounded-xl p-4">
-          <p className="text-sm font-bold text-green-800">{t('freeBanner')}</p>
-          <p className="text-xs text-green-600">{t('freeBannerDesc')}</p>
+        <div className="mt-7 border border-moss/25 bg-moss-soft p-4">
+          <p className="text-[13.5px] font-semibold text-moss">{t('freeBanner')}</p>
+          <p className="mt-1 text-[12.5px] text-moss/80">{t('freeBannerDesc')}</p>
         </div>
       )}
 
-      <p className="text-gray-500 text-sm mb-8">{t('stepsDesc')}</p>
+      <p className="mt-3 text-[14px] text-muted">{t('stepsDesc')}</p>
 
       {/* Error banner */}
       {error && (
-        <div className="flex items-center gap-2 bg-red-50 text-red-700 p-3 rounded-lg mb-6 text-sm">
-          <AlertCircle size={18} />
+        <div className="mt-5 flex items-start gap-2 border border-clay/40 bg-clay/[0.05] p-3 text-[13px] text-clay">
+          <AlertCircle size={16} className="mt-0.5 shrink-0" />
           {error}
         </div>
       )}
 
       {/* Emprendedor bonus banner */}
       {showEmprendedor && (
-        <div className="bg-gradient-to-r from-purple-50 to-pink-50 border-2 border-purple-200 rounded-xl p-5 mb-6 animate-fadeIn">
+        <div className="mt-5 border border-line bg-paper-2/70 p-5">
           <div className="flex items-start gap-3">
             <span className="text-3xl">🎉</span>
             <div>
-              <h3 className="font-bold text-purple-800 text-lg">{t('entrepreneurTitle')}</h3>
-              <p className="text-purple-700 text-sm mt-1">
+              <h3 className="text-[15px] font-semibold text-ink">{t('entrepreneurTitle')}</h3>
+              <p className="mt-1 text-[13px] text-ink/70">
                 {t.rich('entrepreneurDesc', { strong: (chunks) => <strong>{chunks}</strong> })}
               </p>
-              <p className="text-purple-600 text-xs mt-0.5">{t('entrepreneurMore')}</p>
+              <p className="t-label mt-1 text-ink/45">{t('entrepreneurMore')}</p>
             </div>
           </div>
         </div>
       )}
 
       {/* Steps */}
-      <div className="flex items-center gap-2 mb-8 overflow-x-auto pb-2">
-        {[{ num: 1, label: t('stepPhotos') }, { num: 2, label: t('stepCategory') }, { num: 3, label: t('stepDetails') }, { num: 4, label: t('stepReview') }].map(s => (
-          <div key={s.num} className="flex items-center gap-2 flex-shrink-0">
-            <button onClick={() => setStep(s.num)} className={`w-10 h-10 rounded-full font-bold text-sm transition ${step >= s.num ? 'bg-brand-primary text-white' : 'bg-gray-200 text-gray-500'}`}>{s.num}</button>
-            <span className={`text-sm font-medium hidden sm:inline ${step >= s.num ? 'text-gray-900' : 'text-gray-500'}`}>{s.label}</span>
-            {s.num < 4 && <div className={`w-6 sm:w-8 h-0.5 ${step > s.num ? 'bg-brand-primary' : 'bg-gray-200'}`} />}
+      <div className="mt-8 mb-6 flex items-center gap-2 overflow-x-auto border-y border-line py-3 hide-scrollbar">
+        {[{ num: 1, label: t('stepPhotos') }, { num: 2, label: t('stepCategory') }, { num: 3, label: t('stepDetails') }, { num: 4, label: t('stepReview') }].map((s) => (
+          <div key={s.num} className="flex flex-shrink-0 items-center gap-2">
+            <button
+              onClick={() => setStep(s.num)}
+              aria-current={step === s.num ? 'step' : undefined}
+              className={`t-num flex h-8 w-8 items-center justify-center border text-[12px] font-semibold transition-colors ${
+                step === s.num
+                  ? 'border-ink bg-ink text-paper'
+                  : step > s.num
+                    ? 'border-ink text-ink'
+                    : 'border-line text-ink/35'
+              }`}
+            >
+              {s.num}
+            </button>
+            <span className={`t-label hidden sm:inline ${step >= s.num ? 'text-ink' : 'text-ink/35'}`}>
+              {s.label}
+            </span>
+            {s.num < 4 && <div className={`h-px w-5 sm:w-8 ${step > s.num ? 'bg-ink' : 'bg-line'}`} />}
           </div>
         ))}
       </div>
 
-      <div className="bg-white rounded-2xl shadow-sm p-6 border border-gray-100">
+      <div className="border border-line bg-[#FBFAF5] p-6 md:p-8">
 
         {/* PASO 2: Categoria → Subcategoria → Marca */}
         {step === 2 && (
           <div className="space-y-5 animate-fadeIn">
-            <h2 className="text-xl font-bold text-gray-900">{t('whatToPublish')}</h2>
+            <h2 className="t-display t-display-sm text-ink">{t('whatToPublish')}</h2>
 
             <div>
-              <label className="block text-sm font-semibold text-gray-900 mb-1.5">{t('family')}</label>
+              <label className="t-label mb-1.5 block text-ink/50">{t('family')}</label>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 {FAMILIAS.map(f => {
                   let displayLabel = f.label
@@ -609,10 +621,12 @@ export default function PublicarPage() {
                     if (desc && desc !== `familias.${f.key}.desc`) displayDesc = desc
                   } catch (e) {}
                   return (
-                    <button key={f.key} onClick={() => handleFamiliaChange(f.key)} className={`p-4 rounded-xl border-2 text-center transition ${familia === f.key ? 'border-brand-primary bg-green-50' : 'border-gray-200 hover:border-brand-accent'}`}>
+                    <button key={f.key} onClick={() => handleFamiliaChange(f.key)} className={`border p-4 text-center transition-colors ${
+                        familia === f.key ? 'border-ink bg-signal/15' : 'border-line hover:border-ink'
+                      }`}>
                       <span className="text-3xl block mb-2">{f.icon}</span>
-                      <span className="text-sm font-bold text-gray-800 block">{displayLabel}</span>
-                      {displayDesc && <span className="text-xs text-gray-500 mt-1 block leading-snug">{displayDesc}</span>}
+                      <span className="block text-[13.5px] font-semibold text-ink">{displayLabel}</span>
+                      {displayDesc && <span className="mt-1 block text-[11.5px] leading-snug text-muted line-clamp-2">{displayDesc}</span>}
                     </button>
                   )
                 })}
@@ -622,8 +636,8 @@ export default function PublicarPage() {
             {familiaCfg && (
               <>
                 <div>
-                  <label className="block text-sm font-semibold text-gray-900 mb-1.5">{t('type')}</label>
-                  <select value={subcategoria} onChange={e => handleSubChange(e.target.value)} className="w-full border border-gray-300 rounded-lg px-4 py-3 bg-white text-gray-800">
+                  <label className="t-label mb-1.5 block text-ink/50">{t('type')}</label>
+                  <select value={subcategoria} onChange={e => handleSubChange(e.target.value)} className="field text-[15px]">
                     <option value="">{t('selectType')}</option>
                     {tiposFamilia.map(s => (
                       <option key={s.label} value={s.label}>{s.icon} {s.label}</option>
@@ -632,11 +646,11 @@ export default function PublicarPage() {
                 </div>
                 {subcategoria && sub && sub.marcas.length > 0 && (
                   <div>
-                    <label className="block text-sm font-semibold text-gray-900 mb-1.5">{t('brand')}</label>
+                    <label className="t-label mb-1.5 block text-ink/50">{t('brand')}</label>
                     {/* Marca/modelo agrupados por fabricante: Kubota → M7 · M5 · L2…
                         El valor guardado es el canónico de
                         productos.marca (ver @/lib/marcas). */}
-                    <select value={marca.startsWith('otra:') ? 'otra:' : marca} onChange={e => setMarca(e.target.value === 'otra:' ? 'otra:' : e.target.value)} className="w-full border border-gray-300 rounded-lg px-4 py-3 text-gray-800 bg-white">
+                    <select value={marca.startsWith('otra:') ? 'otra:' : marca} onChange={e => setMarca(e.target.value === 'otra:' ? 'otra:' : e.target.value)} className="field text-[15px]">
                       <option value="">{t('selectBrand')}</option>
                       {agruparPorFabricante(sub.marcas).map(g =>
                         g.modelos.length === 1 && !g.modelos[0].modelo ? (
@@ -655,7 +669,7 @@ export default function PublicarPage() {
                         value={marca.replace('otra:', '')}
                         onChange={e => setMarca('otra:' + e.target.value)}
                         placeholder={t('writeBrand')}
-                        className="mt-2 w-full border border-gray-300 rounded-lg px-4 py-3 text-gray-800 bg-white"
+                        className="field mt-2 text-[15px]"
                       />
                     )}
                   </div>
@@ -664,8 +678,8 @@ export default function PublicarPage() {
             )}
 
             <div className="flex gap-3">
-              <button onClick={() => setStep(1)} className="px-6 py-3 rounded-lg font-medium border border-gray-200 hover:bg-gray-50">{t('back')}</button>
-              <button onClick={() => setStep(3)} disabled={!canGoToStep2} className="flex-1 bg-brand-primary text-white py-3 rounded-lg font-bold hover:bg-brand-dark transition disabled:opacity-50">{t('next')}</button>
+              <button onClick={() => setStep(1)} className="btn btn-outline">{t('back')}</button>
+              <button onClick={() => setStep(3)} disabled={!canGoToStep2} className="btn btn-ink flex-1 btn-lg">{t('next')}</button>
             </div>
           </div>
         )}
@@ -673,27 +687,27 @@ export default function PublicarPage() {
         {/* PASO 3: Detalles */}
         {step === 3 && (
           <div className="space-y-5 animate-fadeIn">
-            <h2 className="text-xl font-bold text-gray-900">{t('productDetails')}</h2>
+            <h2 className="t-display t-display-sm text-ink">{t('productDetails')}</h2>
 
             <div>
-              <label className="block text-sm font-semibold text-gray-900 mb-1.5">{t('titleField')}</label>
-              <input type="text" value={titulo} onChange={e => setTitulo(e.target.value)} placeholder={t('titlePlaceholder')} maxLength={100} required className="w-full border border-gray-300 rounded-lg px-4 py-3 text-gray-800 bg-white" />
-              <p className="text-xs text-gray-500 mt-1">{titulo.length}/100</p>
+              <label className="t-label mb-1.5 block text-ink/50">{t('titleField')}</label>
+              <input type="text" value={titulo} onChange={e => setTitulo(e.target.value)} placeholder={t('titlePlaceholder')} maxLength={100} required className="field text-[15px]" />
+              <p className="text-xs text-muted mt-1">{titulo.length}/100</p>
             </div>
 
             {camposEspeciales.length > 0 && (
-              <div className="bg-gray-50 rounded-xl p-5 space-y-4 border border-gray-200">
-                <h3 className="font-bold text-gray-900">{t('specs')} — {subcategoria}</h3>
-                <p className="text-xs text-gray-500 mt-1">{t('specsHint')}</p>
+              <div className="space-y-4 border border-line bg-paper-2/50 p-5">
+                <h3 className="t-eyebrow text-ink">{t('specs')} — {subcategoria}</h3>
+                <p className="mt-1 text-[12px] text-muted">{t('specsHint')}</p>
                 {camposEspeciales.map(campo => {
                   const val = specs[campo.label] || ''
                   const esOtra = val.startsWith('otra:')
                   return (
                   <div key={campo.label}>
-                    <label className="block text-sm font-semibold text-gray-900 mb-1.5">{campo.label}</label>
+                    <label className="t-label mb-1.5 block text-ink/50">{campo.label}</label>
                     {campo.type === 'select' ? (
                       <>
-                        <select value={esOtra ? 'otra:' : val} onChange={e => handleSpecChange(campo.label, e.target.value === 'otra:' ? '' : e.target.value)} className="w-full border border-gray-300 rounded-lg px-4 py-3 bg-white text-gray-800">
+                        <select value={esOtra ? 'otra:' : val} onChange={e => handleSpecChange(campo.label, e.target.value === 'otra:' ? '' : e.target.value)} className="field text-[15px]">
                           <option value="">{campo.placeholder}</option>
                           {campo.options?.map(o => <option key={o} value={o}>{o}</option>)}
                           {esCampoMarca(campo) && <option value="otra:">{t('otherBrand')}</option>}
@@ -704,12 +718,12 @@ export default function PublicarPage() {
                             value={val.replace('otra:', '')}
                             onChange={e => handleSpecChange(campo.label, 'otra:' + e.target.value)}
                             placeholder={`Escribe ${campo.label.toLowerCase()}...`}
-                            className="mt-2 w-full border border-gray-300 rounded-lg px-4 py-3 text-gray-800 bg-white"
+                            className="field mt-2 text-[15px]"
                           />
                         )}
                       </>
                     ) : (
-                      <input type={campo.type} value={val} onChange={e => handleSpecChange(campo.label, e.target.value)} placeholder={campo.placeholder} className="w-full border border-gray-300 rounded-lg px-4 py-3 text-gray-800 bg-white" />
+                      <input type={campo.type} value={val} onChange={e => handleSpecChange(campo.label, e.target.value)} placeholder={campo.placeholder} className="field text-[15px]" />
                     )}
                   </div>
                   )
@@ -718,24 +732,28 @@ export default function PublicarPage() {
             )}
 
             <div>
-              <label className="block text-sm font-semibold text-gray-900 mb-1.5">{t('description')}</label>
-              <textarea value={descripcion} onChange={e => setDescripcion(e.target.value)} rows={5} maxLength={2000} required className="w-full border border-gray-300 rounded-lg px-4 py-3 text-gray-800 resize-none bg-white" placeholder={t('descPlaceholder')} />
-              <p className="text-xs text-gray-500 mt-1">{descripcion.length}/2000</p>
+              <label className="t-label mb-1.5 block text-ink/50">{t('description')}</label>
+              <textarea value={descripcion} onChange={e => setDescripcion(e.target.value)} rows={5} maxLength={2000} required className="field resize-none text-[15px]" placeholder={t('descPlaceholder')} />
+              <p className="text-xs text-muted mt-1">{descripcion.length}/2000</p>
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-gray-900 mb-1.5">{t('condition')}</label>
+              <label className="t-label mb-1.5 block text-ink/50">{t('condition')}</label>
               <div className="grid grid-cols-2 gap-2">
                 {conditionKeys.map(c => (
-                  <button key={c.value} onClick={() => setEstadoProd(c.value)} className={`px-4 py-3 rounded-lg text-sm font-medium border transition ${estadoProd === c.value ? 'bg-brand-primary text-white border-brand-primary' : 'bg-white text-gray-700 border-gray-200 hover:border-brand-accent'}`}>{t(c.key)}</button>
+                  <button key={c.value} onClick={() => setEstadoProd(c.value)} className={`border px-4 py-2.5 text-[13px] font-medium transition-colors ${
+                      estadoProd === c.value
+                        ? 'border-ink bg-ink text-paper'
+                        : 'border-line text-ink/70 hover:border-ink hover:text-ink'
+                    }`}>{t(c.key)}</button>
                 ))}
               </div>
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-gray-900 mb-1.5">{t('priceEur')}</label>
-              <input type="number" value={precioUsd} onChange={e => setPrecioUsd(e.target.value)} placeholder={t('pricePlaceholder')} min="0" step="0.01" required className="w-full border border-gray-300 rounded-lg px-4 py-3 text-gray-800 bg-white" />
-              <p className="text-xs text-gray-500 mt-1">{t('priceNote')}</p>
+              <label className="t-label mb-1.5 block text-ink/50">{t('priceEur')}</label>
+              <input type="number" value={precioUsd} onChange={e => setPrecioUsd(e.target.value)} placeholder={t('pricePlaceholder')} min="0" step="0.01" required className="field text-[15px]" />
+              <p className="text-xs text-muted mt-1">{t('priceNote')}</p>
               <p className="text-xs mt-1.5">
                 <LocalLink href="/tasador" className="font-bold text-brand-darkNav underline decoration-brand-signal decoration-2 underline-offset-2 hover:text-brand-signal-dark">
                   {t('estimatePriceCta')}
@@ -743,31 +761,31 @@ export default function PublicarPage() {
               </p>
               {puedeVideo && (
                 <div className="mt-3">
-                  <label className="block text-sm font-semibold text-gray-900 mb-1.5">{t('videoLabel')}</label>
+                  <label className="t-label mb-1.5 block text-ink/50">{t('videoLabel')}</label>
                   <input
                     type="url"
                     value={videoUrl}
                     onChange={e => setVideoUrl(e.target.value)}
                     placeholder={t('videoPlaceholder')}
                     maxLength={500}
-                    className="w-full border border-gray-300 rounded-lg px-4 py-3 text-gray-800 bg-white"
+                    className="field text-[15px]"
                   />
-                  <p className="text-xs text-gray-500 mt-1">{t('videoNote')}</p>
+                  <p className="text-xs text-muted mt-1">{t('videoNote')}</p>
                 </div>
               )}
             </div>
 
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-sm font-semibold text-gray-900 mb-1.5">{t('state')}</label>
-                <select value={ubicacionEstado} onChange={e => setUbicacionEstado(e.target.value)} required className="w-full border border-gray-300 rounded-lg px-3 py-3 bg-white text-gray-800">
+                <label className="t-label mb-1.5 block text-ink/50">{t('state')}</label>
+                <select value={ubicacionEstado} onChange={e => setUbicacionEstado(e.target.value)} required className="field text-[15px]">
                   <option value="">{t('statePlaceholder')}</option>
                   {ESTADOS.map(e => <option key={e} value={e}>{e}</option>)}
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-semibold text-gray-900 mb-1.5">{t('municipality')}</label>
-                <select value={ubicacionCiudad} onChange={e => setUbicacionCiudad(e.target.value)} required disabled={!ubicacionEstado} className="w-full border border-gray-300 rounded-lg px-3 py-3 bg-white text-gray-800">
+                <label className="t-label mb-1.5 block text-ink/50">{t('municipality')}</label>
+                <select value={ubicacionCiudad} onChange={e => setUbicacionCiudad(e.target.value)} required disabled={!ubicacionEstado} className="field text-[15px]">
                   <option value="">{t('municipalityPlaceholder')}</option>
                   {(ubicacionEstado ? getMunicipiosNombres(ubicacionEstado) : []).map(m => <option key={m} value={m}>{m}</option>)}
                 </select>
@@ -775,61 +793,61 @@ export default function PublicarPage() {
             </div>
 
             {/* Metodos de contacto por publicacion */}
-            <div className="bg-blue-50/60 border border-blue-200 rounded-xl p-5 space-y-4">
-              <h3 className="font-bold text-gray-900 flex items-center gap-2">
+            <div className="space-y-4 border border-line bg-paper p-5">
+              <h3 className="t-eyebrow flex items-center gap-2 text-ink">
                 <MapPin size={18} />
                 {t('contactTitle')}
               </h3>
-              <p className="text-xs text-gray-500">{t('contactDesc')}</p>
+              <p className="text-xs text-muted">{t('contactDesc')}</p>
 
               <div className="space-y-3">
                 {/* WhatsApp */}
-                <div className="flex items-start gap-3 bg-white border border-gray-200 rounded-lg p-3">
+                <div className="flex items-start gap-3 border border-line bg-paper p-3">
                   <input type="checkbox" id="useWhatsApp" checked={!!contactWhatsApp} onChange={e => setContactWhatsApp(e.target.checked ? '+' : '')} className="mt-1 rounded text-brand-primary" />
                   <label htmlFor="useWhatsApp" className="flex-1">
                     <span className="text-sm font-medium flex items-center gap-1.5">💚 WhatsApp</span>
-                    {contactWhatsApp && <input type="tel" value={contactWhatsApp} onChange={e => setContactWhatsApp(e.target.value)} placeholder="+34 600 123 456" className="mt-1 w-full border border-gray-200 rounded px-2 py-1.5 text-sm" />}
+                    {contactWhatsApp && <input type="tel" value={contactWhatsApp} onChange={e => setContactWhatsApp(e.target.value)} placeholder="+34 600 123 456" className="field mt-1 !py-1.5 text-[13px]" />}
                   </label>
                 </div>
 
                 {/* Telefono */}
-                <div className="flex items-start gap-3 bg-white border border-gray-200 rounded-lg p-3">
+                <div className="flex items-start gap-3 border border-line bg-paper p-3">
                   <input type="checkbox" id="usePhone" checked={!!contactPhone} onChange={e => setContactPhone(e.target.checked ? '+' : '')} className="mt-1 rounded text-brand-primary" />
                   <label htmlFor="usePhone" className="flex-1">
                     <span className="text-sm font-medium flex items-center gap-1.5"><Phone size={14} /> {t('calls')}</span>
-                    {contactPhone && <input type="tel" value={contactPhone} onChange={e => setContactPhone(e.target.value)} placeholder="+34 600 123 456" className="mt-1 w-full border border-gray-200 rounded px-2 py-1.5 text-sm" />}
+                    {contactPhone && <input type="tel" value={contactPhone} onChange={e => setContactPhone(e.target.value)} placeholder="+34 600 123 456" className="field mt-1 !py-1.5 text-[13px]" />}
                   </label>
                 </div>
 
                 {/* Email */}
-                <div className="flex items-start gap-3 bg-white border border-gray-200 rounded-lg p-3">
+                <div className="flex items-start gap-3 border border-line bg-paper p-3">
                   <input type="checkbox" id="useEmail" checked={!!contactEmail} onChange={e => setContactEmail(e.target.checked ? '+' : '')} className="mt-1 rounded text-brand-primary" />
                   <label htmlFor="useEmail" className="flex-1">
                     <span className="text-sm font-medium flex items-center gap-1.5"><Mail size={14} /> Email</span>
-                    {contactEmail && <input type="email" value={contactEmail} onChange={e => setContactEmail(e.target.value)} placeholder="tu@email.com" className="mt-1 w-full border border-gray-200 rounded px-2 py-1.5 text-sm" />}
+                    {contactEmail && <input type="email" value={contactEmail} onChange={e => setContactEmail(e.target.value)} placeholder="tu@email.com" className="field mt-1 !py-1.5 text-[13px]" />}
                   </label>
                 </div>
 
                 {/* Messenger */}
-                <div className="flex items-start gap-3 bg-white border border-gray-200 rounded-lg p-3">
+                <div className="flex items-start gap-3 border border-line bg-paper p-3">
                   <input type="checkbox" id="useMessenger" checked={!!contactMessenger} onChange={e => setContactMessenger(e.target.checked ? '+' : '')} className="mt-1 rounded text-brand-primary" />
                   <label htmlFor="useMessenger" className="flex-1">
                     <span className="text-sm font-medium flex items-center gap-1.5"><MessageSquare size={14} /> Facebook Messenger</span>
-                    {contactMessenger && <input type="url" value={contactMessenger} onChange={e => setContactMessenger(e.target.value)} placeholder="https://m.me/tuusuario" className="mt-1 w-full border border-gray-200 rounded px-2 py-1.5 text-sm" />}
+                    {contactMessenger && <input type="url" value={contactMessenger} onChange={e => setContactMessenger(e.target.value)} placeholder="https://m.me/tuusuario" className="field mt-1 !py-1.5 text-[13px]" />}
                   </label>
                 </div>
               </div>
 
               {/* Chat interno siempre activo */}
-              <div className="flex items-center gap-2 text-xs text-gray-500">
+              <div className="flex items-center gap-2 text-xs text-muted">
                 <MessageSquare size={12} />
                 <span>{t('chatAuto')}</span>
               </div>
             </div>
 
             <div className="flex gap-3">
-              <button onClick={() => setStep(2)} className="px-6 py-3 rounded-lg font-medium border border-gray-200 hover:bg-gray-50">{t('back')}</button>
-              <button onClick={() => setStep(4)} disabled={!canGoToStep3} className="flex-1 bg-brand-primary text-white py-3 rounded-lg font-bold hover:bg-brand-dark transition disabled:opacity-50">{t('next')}</button>
+              <button onClick={() => setStep(2)} className="btn btn-outline">{t('back')}</button>
+              <button onClick={() => setStep(4)} disabled={!canGoToStep3} className="btn btn-ink flex-1 btn-lg">{t('next')}</button>
             </div>
           </div>
         )}
@@ -838,40 +856,40 @@ export default function PublicarPage() {
         {/* PASO 1: Fotos (foto-primero: la foto es el gancho, como en WhatsApp) */}
         {step === 1 && (
           <div className="space-y-5 animate-fadeIn">
-            <h2 className="text-xl font-bold text-gray-900">{t('addPhotos')}</h2>
-            <p className="text-sm text-gray-500">{t('photosDesc')}</p>
+            <h2 className="t-display t-display-sm text-ink">{t('addPhotos')}</h2>
+            <p className="text-sm text-muted">{t('photosDesc')}</p>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
               {imagenes.map((img, i) => (
-                <div key={img.preview} className="aspect-square relative rounded-lg overflow-hidden group border border-gray-200">
+                <div key={img.preview} className="group relative aspect-square overflow-hidden border border-line">
                   <Image src={img.preview} alt="" fill unoptimized sizes="200px" className="object-cover" />
-                  {i === 0 && img.uploadedUrl && <span className="absolute top-1 left-1 bg-brand-accent text-white text-[10px] font-bold px-1.5 py-0.5 rounded">{t('cover')}</span>}
+                  {i === 0 && img.uploadedUrl && <span className="absolute top-1 left-1 bg-signal text-ink text-[10px] font-bold px-1.5 py-0.5 rounded">{t('cover')}</span>}
                   {img.uploading && (
-                    <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+                    <div className="absolute inset-0 bg-ink/60 flex items-center justify-center">
                       <div className="w-8 h-8 border-2 border-white border-t-transparent rounded-full animate-spin" />
                     </div>
                   )}
                   {img.error && (
                     <div className="absolute inset-0 bg-red-500/50 flex items-center justify-center">
-                      <X size={20} className="text-white" />
+                      <X size={20} className="text-paper" />
                     </div>
                   )}
                   {!img.uploading && (
-                    <button onClick={() => removeImage(img.preview)} className="absolute top-1 right-1 bg-red-500 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition">
+                    <button onClick={() => removeImage(img.preview)} className="absolute top-1 right-1 bg-red-500 text-paper p-1 rounded-full opacity-0 group-hover:opacity-100 transition">
                       <X size={14} />
                     </button>
                   )}
                 </div>
               ))}
               {imagenes.length < 10 && (
-                <label className={`aspect-square rounded-lg border-2 border-dashed border-gray-300 flex flex-col items-center justify-center cursor-pointer hover:border-brand-accent hover:bg-yellow-50 transition ${procesando ? 'pointer-events-none opacity-70' : ''}`}>
+                <label className={`aspect-square rounded-lg border-2 border-dashed border-line-strong flex flex-col items-center justify-center cursor-pointer hover:border-ink hover:bg-paper-2 transition ${procesando ? 'pointer-events-none opacity-70' : ''}`}>
                   {procesando ? (
                     <>
                       <div className="w-6 h-6 border-2 border-gray-400 border-t-transparent rounded-full animate-spin" />
-                      <span className="text-xs text-gray-500 mt-2 px-2 text-center">{t('optimizing')}</span>
+                      <span className="text-xs text-muted mt-2 px-2 text-center">{t('optimizing')}</span>
                     </>
                   ) : (
                     <>
-                      <Camera size={24} className="text-gray-500" /><span className="text-xs text-gray-500 mt-1">{t('add')}</span>
+                      <Camera size={24} className="text-muted" /><span className="text-xs text-muted mt-1">{t('add')}</span>
                     </>
                   )}
                   <input type="file" accept="image/*" multiple onChange={handleImageUpload} className="hidden" disabled={procesando} />
@@ -881,12 +899,12 @@ export default function PublicarPage() {
 
             {/* Moderación feedback */}
             {moderacionResultado && moderacionResultado.nivel === 'sospechoso' && (
-              <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-4 animate-fadeIn">
+              <div className="border border-signal-deep/40 bg-signal-soft/50 p-4">
                 <div className="flex gap-2">
-                  <AlertCircle size={18} className="text-yellow-600 flex-shrink-0 mt-0.5" />
+                  <AlertCircle size={16} className="mt-0.5 shrink-0 text-ink/60" />
                   <div>
-                    <p className="text-sm font-semibold text-yellow-800">{t('moderationReview')}</p>
-                    <p className="text-xs text-yellow-600 mt-1">{t('moderationDesc')}</p>
+                    <p className="text-[13px] font-semibold text-ink">{t('moderationReview')}</p>
+                    <p className="mt-1 text-[12px] text-ink/65">{t('moderationDesc')}</p>
                   </div>
                 </div>
               </div>
@@ -894,101 +912,101 @@ export default function PublicarPage() {
 
             {loading && imagenes.length > 0 && (
               <div>
-                <p className="text-sm text-gray-500 mb-2">{t('uploading')} {uploadProgress}%</p>
-                <div className="w-full bg-gray-200 rounded-full h-2">
-                  <div className="bg-brand-primary h-2 rounded-full transition-all" style={{ width: `${uploadProgress}%` }} />
+                <p className="text-sm text-muted mb-2">{t('uploading')} {uploadProgress}%</p>
+                <div className="h-1 w-full bg-line">
+                  <div className="h-1 bg-ink transition-all" style={{ width: `${uploadProgress}%` }} />
                 </div>
               </div>
             )}
 
-            <button onClick={() => setStep(2)} className="w-full bg-brand-primary text-white py-3 rounded-lg font-bold hover:bg-brand-dark transition">{t('next')}</button>
+            <button onClick={() => setStep(2)} className="btn btn-ink btn-lg w-full">{t('next')}</button>
           </div>
         )}
 
         {/* PASO 4: Revisar */}
         {step === 4 && (
           <div className="space-y-5 animate-fadeIn">
-            <h2 className="text-xl font-bold text-gray-900">{t('reviewTitle')}</h2>
-            <div className="border rounded-lg p-5 space-y-3">
-              {imagenes.length > 0 && <div className="aspect-square max-h-56 bg-gray-100 rounded-lg overflow-hidden relative"><Image src={imagenes[0].preview} alt="" fill unoptimized sizes="240px" className="object-cover" /></div>}
-              <h3 className="text-lg font-bold text-gray-900">{titulo}</h3>
+            <h2 className="t-display t-display-sm text-ink">{t('reviewTitle')}</h2>
+            <div className="space-y-3 border border-line p-5">
+              {imagenes.length > 0 && <div className="relative aspect-[4/3] max-h-56 overflow-hidden bg-paper-2"><Image src={imagenes[0].preview} alt="" fill unoptimized sizes="240px" className="object-cover" /></div>}
+              <h3 className="text-[17px] font-semibold text-ink">{titulo}</h3>
               <div className="space-y-1 text-sm">
-                <p><span className="text-gray-500">{t('family')}:</span> {familiaCfg ? familiaCfg.label : '—'} → {subcategoria}</p>
-                {marca && <p><span className="text-gray-500">{t('brand')}:</span> {marca.replace('otra:', '').trim()}</p>}
-                {Object.entries(specs).filter(([,v]) => v).map(([k,v]) => <p key={k}><span className="text-gray-500">{k}:</span> {v}</p>)}
-                <p><span className="text-gray-500">{t('condition')}:</span> {estadoProd}</p>
-                <p><span className="text-gray-500">{t('priceEur')}:</span> <strong className="text-brand-primary text-lg">{formatPrecio(parseFloat(precioUsd) || 0)}</strong></p>
-                <p><span className="text-gray-500">{t('location')}:</span> {ubicacionCiudad}, {ubicacionEstado}</p>
+                <p><span className="text-muted">{t('family')}:</span> {familiaCfg ? familiaCfg.label : '—'} → {subcategoria}</p>
+                {marca && <p><span className="text-muted">{t('brand')}:</span> {marca.replace('otra:', '').trim()}</p>}
+                {Object.entries(specs).filter(([,v]) => v).map(([k,v]) => <p key={k}><span className="text-muted">{k}:</span> {v}</p>)}
+                <p><span className="text-muted">{t('condition')}:</span> {estadoProd}</p>
+                <p><span className="text-muted">{t('priceEur')}:</span> <strong className="t-num text-[17px] font-semibold text-ink">{formatPrecio(parseFloat(precioUsd) || 0)}</strong></p>
+                <p><span className="text-muted">{t('location')}:</span> {ubicacionCiudad}, {ubicacionEstado}</p>
               </div>
 
               {/* Metodos contacto resumen */}
               {(contactEmail || contactPhone || contactWhatsApp || contactMessenger) && (
-                <div className="mt-3 p-3 bg-blue-50 rounded-lg">
-                  <p className="text-xs font-semibold text-gray-500 mb-1">{t('contactMethods')}</p>
+                <div className="mt-3 border border-line bg-paper-2/60 p-3">
+                  <p className="t-label mb-1 text-ink/45">{t('contactMethods')}</p>
                   <div className="flex flex-wrap gap-2 text-xs">
-                    {contactEmail && <span className="bg-white px-2 py-1 rounded border">📧 {contactEmail}</span>}
-                    {contactPhone && <span className="bg-white px-2 py-1 rounded border">📞 {contactPhone}</span>}
-                    {contactWhatsApp && <span className="bg-white px-2 py-1 rounded border">💚 WhatsApp</span>}
-                    {contactMessenger && <span className="bg-white px-2 py-1 rounded border">👤 Messenger</span>}
-                    <span className="bg-white px-2 py-1 rounded border">{t('internalChat')}</span>
+                    {contactEmail && <span className="border border-line bg-paper px-2 py-1">📧 {contactEmail}</span>}
+                    {contactPhone && <span className="border border-line bg-paper px-2 py-1">📞 {contactPhone}</span>}
+                    {contactWhatsApp && <span className="border border-line bg-paper px-2 py-1">💚 WhatsApp</span>}
+                    {contactMessenger && <span className="border border-line bg-paper px-2 py-1">👤 Messenger</span>}
+                    <span className="border border-line bg-paper px-2 py-1">{t('internalChat')}</span>
                   </div>
                 </div>
               )}
 
-              <div className="mt-4 p-4 bg-gray-50 rounded-lg"><p className="text-sm text-gray-600"><strong>{t('description')}:</strong></p><p className="text-sm text-gray-700 mt-1">{descripcion}</p></div>
+              <div className="mt-4 border-t border-line pt-4"><p className="t-label text-ink/45">{t('description')}</p><p className="mt-1 text-[13.5px] leading-relaxed text-ink/75">{descripcion}</p></div>
             </div>
 
             {moderacionResultado && moderacionResultado.nivel === 'sospechoso' && (
-              <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-4 animate-fadeIn">
+              <div className="border border-signal-deep/40 bg-signal-soft/50 p-4">
                 <div className="flex gap-2">
-                  <AlertCircle size={18} className="text-yellow-600 flex-shrink-0 mt-0.5" />
+                  <AlertCircle size={16} className="mt-0.5 shrink-0 text-ink/60" />
                   <div>
-                    <p className="text-sm font-semibold text-yellow-800">{t('moderationReview')}</p>
-                    <p className="text-xs text-yellow-600 mt-1">{t('moderationDesc')}</p>
+                    <p className="text-[13px] font-semibold text-ink">{t('moderationReview')}</p>
+                    <p className="mt-1 text-[12px] text-ink/65">{t('moderationDesc')}</p>
                   </div>
                 </div>
               </div>
             )}
 
             {error && (
-              <div className="bg-red-50 border border-red-200 rounded-xl p-4 animate-fadeIn">
+              <div className="border border-clay/40 bg-clay/[0.05] p-4">
                 <div className="flex gap-2">
-                  <AlertCircle size={18} className="text-red-600 flex-shrink-0 mt-0.5" />
-                  <p className="text-sm text-red-700">{error}</p>
+                  <AlertCircle size={16} className="mt-0.5 shrink-0 text-clay" />
+                  <p className="text-[13px] text-clay">{error}</p>
                 </div>
               </div>
             )}
 
             {/* Progreso Emprendedor */}
             {pubCount > 0 && pubCount < 10 && (
-              <div className="p-3 bg-purple-50 border border-purple-200 rounded-lg mb-4">
+              <div className="mb-4 border border-line bg-paper-2/60 p-3">
                 <div className="flex justify-between text-xs mb-1.5">
-                  <span className="font-semibold text-purple-800">{t('entrepreneurProgress', { count: pubCount })}</span>
-                  <span className="text-purple-600">{t('entrepreneurRemaining', { remaining: 10 - pubCount })}</span>
+                  <span className="text-[12px] font-semibold text-ink">{t('entrepreneurProgress', { count: pubCount })}</span>
+                  <span className="text-[12px] text-ink/60">{t('entrepreneurRemaining', { remaining: 10 - pubCount })}</span>
                 </div>
-                <div className="w-full bg-purple-200 rounded-full h-2">
-                  <div className="bg-purple-500 h-2 rounded-full transition-all" style={{ width: `${(pubCount / 10) * 100}%` }} />
+                <div className="mt-1.5 h-1 w-full bg-line">
+                  <div className="h-1 bg-ink transition-all" style={{ width: `${(pubCount / 10) * 100}%` }} />
                 </div>
               </div>
             )}
             {pubCount >= 10 && !showEmprendedor && (
-              <div className="p-3 bg-green-50 border border-green-200 rounded-lg mb-4 flex items-center gap-2">
-                <span className="text-sm font-semibold text-green-800">{t('entrepreneurUnlocked')}</span>
+              <div className="mb-4 flex items-center gap-2 border border-moss/25 bg-moss-soft p-3">
+                <span className="text-[13px] font-semibold text-moss">{t('entrepreneurUnlocked')}</span>
               </div>
             )}
 
             {loading && (
               <div>
-                <p className="text-sm text-gray-500 mb-2">{t('publishing')} {uploadProgress}%</p>
-                <div className="w-full bg-gray-200 rounded-full h-2">
-                  <div className="bg-brand-primary h-2 rounded-full transition-all" style={{ width: `${uploadProgress}%` }} />
+                <p className="t-label mb-2 text-ink/50">{t('publishing')} {uploadProgress}%</p>
+                <div className="h-1 w-full bg-line">
+                  <div className="h-1 bg-ink transition-all" style={{ width: `${uploadProgress}%` }} />
                 </div>
               </div>
             )}
 
             <div className="flex gap-3">
-              <button onClick={() => setStep(3)} className="px-6 py-3 rounded-lg font-medium border border-gray-200 hover:bg-gray-50">{t('edit')}</button>
-              <button onClick={handleSubmit} disabled={loading} className="flex-1 bg-brand-accent text-white py-3 rounded-lg font-bold hover:bg-accent/90 transition disabled:opacity-50">{loading ? t('publishing') : t('publishFree')}</button>
+              <button onClick={() => setStep(3)} className="btn btn-outline">{t('edit')}</button>
+              <button onClick={handleSubmit} disabled={loading} className="btn btn-signal btn-lg flex-1 justify-between">{loading ? t('publishing') : t('publishFree')}</button>
             </div>
           </div>
         )}

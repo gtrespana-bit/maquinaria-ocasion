@@ -115,8 +115,7 @@ const FMT_MADRID = new Intl.DateTimeFormat('en-US', {
   day: '2-digit',
   hour: '2-digit',
   minute: '2-digit',
-  second: '2-digit',
-})
+  second: '2-digit' })
 
 interface PartesFecha {
   year: number
@@ -137,8 +136,7 @@ export function partesMadrid(fecha: Date): PartesFecha {
     day: valor('day'),
     hour: valor('hour') % 24,
     minute: valor('minute'),
-    second: valor('second'),
-  }
+    second: valor('second') }
 }
 
 /** Desplazamiento de Madrid respecto a UTC, en minutos, para esa fecha. */
@@ -223,8 +221,7 @@ function etiquetaDia(fecha: Date): { etiqueta: string; corta: string } {
   const p = partesMadrid(fecha)
   return {
     etiqueta: `${p.day} ${MESES_CORTOS[p.month - 1]} ${p.year}`,
-    corta: `${p.day} ${MESES_CORTOS[p.month - 1]}`,
-  }
+    corta: `${p.day} ${MESES_CORTOS[p.month - 1]}` }
 }
 
 export function etiquetaBucket(clave: string, granularidad: Granularidad): Bucket {
@@ -233,8 +230,7 @@ export function etiquetaBucket(clave: string, granularidad: Granularidad): Bucke
     return {
       clave,
       etiqueta: `${MESES_CORTOS[(month || 1) - 1]} ${year}`,
-      corta: MESES_CORTOS[(month || 1) - 1],
-    }
+      corta: MESES_CORTOS[(month || 1) - 1] }
   }
   const fecha = new Date(`${clave}T12:00:00Z`)
   if (granularidad === 'semana') {
@@ -288,8 +284,7 @@ const ETIQUETAS_PRESET: Record<PresetRango, string> = {
   mes_pasado: 'Mes pasado',
   '12m': 'Últimos 12 meses',
   todo: 'Todo el histórico',
-  personalizado: 'Rango personalizado',
-}
+  personalizado: 'Rango personalizado' }
 
 export const PRESETS_RANGO: { id: PresetRango; label: string }[] = [
   { id: 'hoy', label: 'Hoy' },
@@ -387,8 +382,7 @@ export function resolverRango(opts: {
     desde,
     hasta,
     granularidad,
-    etiqueta: ETIQUETAS_PRESET[preset],
-  }
+    etiqueta: ETIQUETAS_PRESET[preset] }
 }
 
 /** Periodo inmediatamente anterior, de la misma duración (para comparar). */
@@ -396,8 +390,7 @@ export function rangoAnterior(rango: Rango): { desde: Date; hasta: Date } {
   const duracion = rango.hasta.getTime() - rango.desde.getTime()
   return {
     desde: new Date(rango.desde.getTime() - duracion),
-    hasta: new Date(rango.desde.getTime()),
-  }
+    hasta: new Date(rango.desde.getTime()) }
 }
 
 /* ------------------------------------------------------------------ */
@@ -421,8 +414,7 @@ const RUTAS_FIJAS: Record<string, TipoPagina> = {
   '/dashboard': 'panel',
   '/mi-perfil': 'panel',
   '/chat': 'panel',
-  '/offline': 'otro',
-}
+  '/offline': 'otro' }
 
 /** Ruta sin query ni barra final; siempre empieza por `/`. */
 export function normalizarRuta(ruta: string): string {
@@ -628,8 +620,7 @@ export function agregarVisitas(filas: FilaVisitaAgregable[], rango: Rango): Resu
       ...b,
       visitas: dato.visitas,
       visitantes: dato.visitantes.size,
-      sesiones: dato.sesiones.size,
-    }
+      sesiones: dato.sesiones.size }
   })
 
   const horasParcial = new Map<number, number>()
@@ -658,11 +649,9 @@ export function agregarVisitas(filas: FilaVisitaAgregable[], rango: Rango): Resu
     fuentes: contarRanking(filas, (f) => f.referrer_host || 'directo'),
     topPaginas: contarRanking(filas, (f) => f.ruta).slice(0, 20).map((f) => ({
       ...f,
-      tipo: (filas.find((x) => x.ruta === f.clave)?.tipo || 'otro') as TipoPagina,
-    })),
+      tipo: (filas.find((x) => x.ruta === f.clave)?.tipo || 'otro') as TipoPagina })),
     horas,
-    diasSemana,
-  }
+    diasSemana }
 }
 
 /** Cuenta cuántos elementos caen en cada bucket del rango. */
@@ -826,7 +815,5 @@ export function normalizarVisita(
       dispositivo,
       idioma,
       anterior,
-      soloDuracion,
-    },
-  }
+      soloDuracion } }
 }

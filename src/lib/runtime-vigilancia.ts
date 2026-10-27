@@ -10,7 +10,7 @@
  * el cron `/api/cron/runtime-check` la usa y guarda el estado en
  * `plataforma_ajustes` (clave `runtime_node`).
  */
-import { leerRuntimeNode, type RuntimeNode } from '@/lib/runtime-node'
+import {leerRuntimeNode, type RuntimeNode } from '@/lib/runtime-node'
 
 export type EstadoRuntime = {
   node: string
@@ -38,8 +38,7 @@ export function estadoDesdeRuntime(info: RuntimeNode, ahora: Date = new Date()):
     cumple: info.cumple,
     commit: info.commit,
     region: info.region,
-    comprobado_en: ahora.toISOString(),
-  }
+    comprobado_en: ahora.toISOString() }
 }
 
 /**
@@ -68,8 +67,7 @@ export function decidirAviso(
       texto: texto(
         `✅ Producción ya ejecuta Node.js ${actual.node}, que cumple el mínimo ${minimo}.\n` +
         'Ya se puede rotar (otra vez) la clave de Stripe con el entorno parcheado.',
-      ),
-    }
+      ) }
   }
 
   if (!actual.cumple && anterior?.cumple) {
@@ -79,8 +77,7 @@ export function decidirAviso(
       texto: texto(
         `⚠️ Producción ha vuelto a Node.js ${actual.node}, por debajo del mínimo ${minimo}. ` +
         'Revisa el despliegue y el WAF.',
-      ),
-    }
+      ) }
   }
 
   if (!actual.cumple && (!anterior || anterior.node !== actual.node)) {
@@ -90,8 +87,7 @@ export function decidirAviso(
       texto: texto(
         `ℹ️ Producción ejecuta Node.js ${actual.node}, por debajo del mínimo ${minimo}. ` +
         'Sigue pendiente del rollout de Vercel; el WAF cubre el vector de entrada.',
-      ),
-    }
+      ) }
   }
 
   return { avisar: false, motivo: 'sin-cambio', texto: '' }

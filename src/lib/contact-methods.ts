@@ -71,6 +71,5 @@ export function resolveContactMethods(
     phone: hasProductConfiguration ? phone : fallbackPhone.trim(),
     whatsapp,
     email,
-    messengerUrl,
-  }
+    messengerUrl }
 }

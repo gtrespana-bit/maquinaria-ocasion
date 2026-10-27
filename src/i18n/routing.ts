@@ -8,5 +8,4 @@ export const routing = defineRouting({
   // Las páginas /en están disponibles para usuarios, pero se excluyen del
   // índice. Evita que next-intl anuncie automáticamente hreflang="en" en el
   // header HTTP; las páginas SEO declaran solo es-ES y x-default.
-  alternateLinks: false,
-})
+  alternateLinks: false })

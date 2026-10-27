@@ -1,34 +1,71 @@
-import Image from 'next/image'
 import LocalLink from '@/components/LocalLink'
-import { MARCA } from '@/lib/marca'
 
 /**
- * Marca MaquinariaOcasión en un único sitio.
+ * Marca MaquinariaOcasión.
  *
- * Antes cada pantalla montaba su propio logo a mano (header, footer y las
- * cuatro pantallas de autenticación), con dos consecuencias: el icono y el
- * texto podían divergir entre páginas y quedaban restos del branding
- * anterior en las pantallas menos visitadas. Aquí se define una vez.
+ * El símbolo es una placa de señal industrial con la «M» construida como una
+ * correa de transmisión: se lee a 20 px y no depende de ningún archivo de
+ * imagen (nítida en cualquier pantalla, cero peticiones).
  *
- * - `tone="light"` → para fondos oscuros (header, footer, CTA).
- * - `tone="dark"` → para fondos claros (login, registro, confirmación).
- * - `showText={false}` → solo el icono (móvil, espacios estrechos).
+ * La palabra mezcla grotesca (Maquinaria) y serif itálica (Ocasión): el
+ * contrapunto que distingue una marca editorial de un logo de plantilla.
  */
 type BrandLogoProps = {
   tone?: 'light' | 'dark'
-  size?: 'sm' | 'md' | 'lg'
-  /** `true` siempre, `false` nunca, `'sm'` a partir de 640px (móvil solo icono). */
-  showText?: boolean | 'sm'
+  size?: 'xs' | 'sm' | 'md' | 'lg'
+  /** `true` siempre, `false` nunca, `'sm'` a partir de 640 px. */
+  showText?: boolean | 'sm' | 'md'
   href?: string | null
   className?: string
   priority?: boolean
+  /** Solo la placa (favicon, watermarks, badges). */
+  monogramOnly?: boolean
 }
 
 const SIZES = {
-  sm: { px: 32, img: 'h-8 w-8', text: 'text-base', gap: 'gap-2' },
-  md: { px: 44, img: 'h-11 w-11', text: 'text-xl', gap: 'gap-3' },
-  lg: { px: 56, img: 'h-14 w-14', text: 'text-3xl', gap: 'gap-3' },
-} as const
+  xs: { plate: 24, text: 'text-[15px]', gap: 'gap-2' },
+  sm: { plate: 30, text: 'text-lg', gap: 'gap-2.5' },
+  md: { plate: 36, text: 'text-[22px]', gap: 'gap-3' },
+  lg: { plate: 52, text: 'text-3xl', gap: 'gap-3.5' } } as const
+
+export function BrandMark({
+  size = 36,
+  tone = 'dark',
+  className = '' }: {
+  size?: number
+  tone?: 'light' | 'dark'
+  className?: string
+}) {
+  // tone="light" → la placa va sobre fondo oscuro, así que se invierte
+  // (placa papel, M tinta) para mantener el contraste.
+  const plate = tone === 'light' ? '#F5F2EB' : '#0C0E0D'
+  const glyph = tone === 'light' ? '#0C0E0D' : '#FFD400'
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 40 40"
+      fill="none"
+      aria-hidden="true"
+      className={className}
+      shapeRendering="geometricPrecision"
+    >
+      <rect width="40" height="40" rx="1.5" fill={plate} />
+      {/* Correa en «M»: trazos gruesos con el vértice central descendido */}
+      <path
+        d="M6.4 30.2V9.8h5.1L20 21.6 28.5 9.8h5.1v20.4h-4.9V17.9L20 29.6l-8.7-11.7v12.3H6.4Z"
+        fill={glyph}
+      />
+      {/* Muescas de banda de rodadura en el borde inferior */}
+      <g fill={glyph} opacity="0.5">
+        <rect x="6.4" y="33.2" width="3.4" height="1.5" />
+        <rect x="12.2" y="33.2" width="3.4" height="1.5" />
+        <rect x="24.4" y="33.2" width="3.4" height="1.5" />
+        <rect x="30.2" y="33.2" width="3.4" height="1.5" />
+      </g>
+    </svg>
+  )
+}
 
 export default function BrandLogo({
   tone = 'dark',
@@ -36,35 +73,23 @@ export default function BrandLogo({
   showText = true,
   href = '/',
   className = '',
-  priority = false,
-}: BrandLogoProps) {
+  monogramOnly = false }: BrandLogoProps) {
   const s = SIZES[size]
   const isLight = tone === 'light'
+  const textVisibility =
+    showText === 'sm' ? 'hidden sm:block' : showText === 'md' ? 'hidden md:block' : ''
 
   const content = (
     <>
-      <Image
-        src="/logo-maquinariaocasion.png"
-        alt="MaquinariaOcasión"
-        width={s.px}
-        height={s.px}
-        priority={priority}
-        decoding="async"
-        // El icono es cuadrado con fondo propio: se le da un marco sutil para
-        // que se lea igual sobre fondo claro y sobre el header grafito.
-        className={`${s.img} w-auto object-contain rounded-lg ${
-          isLight
-            ? 'drop-shadow-[0_0_6px_rgba(255,255,255,0.45)] bg-white/10 p-0.5'
-            : 'drop-shadow-[0_1px_2px_rgba(15,23,42,0.15)] bg-white p-0.5 border border-gray-100'
-        }`}
-      />
-      {showText !== false && (
+      <BrandMark size={s.plate} tone={tone} className="shrink-0" />
+      {!monogramOnly && showText !== false && (
         <span
-          className={`font-black tracking-tight ${s.text} ${isLight ? 'text-white' : 'text-brand-primary'} ${
-            showText === 'sm' ? 'hidden sm:block' : ''
-          }`}
+          className={`${s.text} leading-none ${textVisibility} ${isLight ? 'text-paper' : 'text-ink'}`}
         >
-          {MARCA.partes.base}<span className={isLight ? 'text-brand-accent-light' : 'text-brand-accent'}>{MARCA.partes.acento}</span>
+          <span className="font-bold tracking-[-0.03em] [font-stretch:104%]">Maquinaria</span>
+          <span className="t-serif-italic ml-[0.06em] text-[1.06em] tracking-[-0.01em]">
+            <span className={isLight ? 'text-signal' : 'text-ink'}>Ocasión</span>
+          </span>
         </span>
       )}
     </>
@@ -75,7 +100,7 @@ export default function BrandLogo({
   if (!href) return <span className={classes}>{content}</span>
 
   return (
-    <LocalLink href={href} className={classes} aria-label="MaquinariaOcasión">
+    <LocalLink href={href} className={`${classes} group/logo`} aria-label="MaquinariaOcasión — inicio">
       {content}
     </LocalLink>
   )

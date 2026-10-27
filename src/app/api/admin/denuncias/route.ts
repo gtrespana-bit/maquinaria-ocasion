@@ -66,8 +66,7 @@ export async function GET(request: NextRequest) {
 
     const denuncias = (activas || []).map((d: any) => ({
       ...d,
-      reportante: { nombre: nombreById[d.reportante_id] || null },
-    }))
+      reportante: { nombre: nombreById[d.reportante_id] || null } }))
 
     return NextResponse.json({ ok: true, denuncias, revisados: revisadas || [] })
   } catch (err: any) {

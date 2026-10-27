@@ -5,8 +5,17 @@ import LocalLink from '@/components/LocalLink'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import {
-  CheckCircle, Zap, Star, X, Copy, Upload, Loader2, Banknote, Landmark, Wallet, CreditCard, ArrowRight
-} from 'lucide-react'
+  CheckCircle,
+  Zap,
+  Star,
+  X,
+  Upload,
+  Loader2,
+  Banknote,
+  Landmark,
+  Wallet,
+  CreditCard,
+  ArrowRight } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
 import { useTranslations } from 'next-intl'
 import Image from 'next/image'
@@ -30,22 +39,19 @@ let metodosPago: MetodoPago[] = [
     nombre: 'Bizum',
     emoji: '📱',
     icono: 'banknote',
-    instrucciones: {},
-  },
+    instrucciones: {} },
   {
     id: 'transferencia',
     nombre: 'Transferencia',
     emoji: '🏦',
     icono: 'landmark',
-    instrucciones: {},
-  },
+    instrucciones: {} },
   {
     id: 'paypal',
     nombre: 'PayPal',
     emoji: '💙',
     icono: 'wallet',
-    instrucciones: {},
-  },
+    instrucciones: {} },
 ]
 
 function ModalPago({
@@ -53,8 +59,7 @@ function ModalPago({
   metodos,
   configurado,
   stripeDisponible,
-  onClose,
-}: {
+  onClose }: {
   paquete: any
   metodos: MetodoPago[]
   configurado: Record<string, boolean> | null
@@ -82,8 +87,7 @@ function ModalPago({
       const res = await fetch('/api/stripe/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ creditos: paquete.creditos }),
-      })
+        body: JSON.stringify({ creditos: paquete.creditos }) })
       const data = await res.json()
       if (data?.ok && data.url) {
         window.location.href = data.url
@@ -143,9 +147,7 @@ function ModalPago({
         body: JSON.stringify({
           creditos: paquete.creditos,
           metodoPago: selectedMetodo?.nombre || metodo,
-          comprobanteUrl: publicUrl,
-        }),
-      })
+          comprobanteUrl: publicUrl }) })
 
       const data = await res.json()
       if (data.ok) {
@@ -161,63 +163,62 @@ function ModalPago({
 
   if (enviado) {
     return (
-      <div className="fixed inset-0 z-50 bg-black/60 flex items-end md:items-center justify-center">
-        <div className="bg-white w-full md:max-w-lg md:rounded-2xl rounded-t-2xl p-6 text-center">
-          <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <CheckCircle size={32} className="text-brand-accent" />
+      <div className="fixed inset-0 z-50 flex items-end justify-center bg-ink/60 md:items-center">
+        <div className="bg-[#FBFAF5] w-full md:max-w-lg md:rounded-2xl rounded-t-2xl p-6 text-center">
+          <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center border border-moss bg-moss text-paper">
+            <CheckCircle size={22} strokeWidth={1.6} />
           </div>
           <h3 className="text-xl font-bold text-brand-primary mb-2">{t('receiptSent')}</h3>
-          <p className="text-sm text-gray-600 mb-4">
+          <p className="text-sm text-ink/70 mb-4">
             {t.rich('receiptDesc', {
               count: paquete.creditos,
-              strong: (chunks) => <strong>{chunks}</strong>,
-            })}
+              strong: (chunks) => <strong>{chunks}</strong> })}
           </p>
-          <button onClick={onClose} className="w-full bg-brand-primary text-white py-3 rounded-xl font-bold hover:bg-brand-dark transition">{t('closeBtn')}</button>
+          <button onClick={onClose} className="w-full bg-brand-primary text-paper py-3 rounded-xl font-bold hover:bg-brand-dark transition">{t('closeBtn')}</button>
         </div>
       </div>
     )
   }
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/60 flex items-end md:items-center justify-center">
-      <div className="bg-white w-full md:max-w-lg md:rounded-2xl rounded-t-2xl max-h-[90vh] overflow-y-auto">
-        <div className="sticky top-0 bg-white border-b px-6 py-4 flex items-center justify-between rounded-t-2xl z-10">
+    <div className="fixed inset-0 z-50 flex items-end justify-center bg-ink/60 md:items-center">
+      <div className="bg-[#FBFAF5] w-full md:max-w-lg md:rounded-2xl rounded-t-2xl max-h-[90vh] overflow-y-auto">
+        <div className="sticky top-0 bg-[#FBFAF5] border-b px-6 py-4 flex items-center justify-between rounded-t-2xl z-10">
           <div>
-            <h3 className="text-lg font-bold text-gray-900">{paquete.creditos} {t('credits')} — {formatPrecio(paquete.precio)}</h3>
+            <h3 className="text-lg font-bold text-ink">{paquete.creditos} {t('credits')} — {formatPrecio(paquete.precio)}</h3>
           </div>
-          <button onClick={onClose} className="p-2 hover:bg-gray-100 rounded-full"><X size={20} /></button>
+          <button onClick={onClose} className="p-2 hover:bg-paper-2 rounded-full"><X size={20} /></button>
         </div>
 
         <div className="p-6 space-y-6">
           {/* Pago inmediato con Stripe (tarjeta o Bizum) */}
           {stripeDisponible && (
-            <div className="rounded-xl border-2 border-brand-accent bg-green-50/60 p-5">
+            <div className="border border-ink bg-paper p-5">
               <div className="flex items-start gap-3 mb-3">
-                <CreditCard size={22} className="text-brand-accent flex-shrink-0 mt-0.5" />
+                <CreditCard size={20} strokeWidth={1.5} className="mt-0.5 flex-shrink-0 text-ink/60" />
                 <div>
-                  <h4 className="font-bold text-gray-900">Pagar ahora con tarjeta o Bizum</h4>
-                  <p className="text-sm text-gray-600">
+                  <h4 className="font-bold text-ink">Pagar ahora con tarjeta o Bizum</h4>
+                  <p className="text-sm text-ink/70">
                     Los créditos se añaden <strong>al instante</strong>, sin subir comprobante
                     ni esperar aprobación. Recibirás la factura por email.
                   </p>
                 </div>
               </div>
               {errorStripe && (
-                <p className="text-sm text-red-700 bg-red-50 border border-red-200 rounded-lg p-2 mb-3">
+                <p className="text-sm text-clay bg-clay/[0.07] border border-clay/30 rounded-lg p-2 mb-3">
                   {errorStripe}
                 </p>
               )}
               <button
                 onClick={pagarConStripe}
                 disabled={yendoAStripe}
-                className="w-full bg-brand-accent text-white py-3 rounded-xl font-bold hover:brightness-95 transition disabled:opacity-60 flex items-center justify-center gap-2"
+                className="w-full bg-signal text-ink py-3 rounded-xl font-bold hover:brightness-95 transition disabled:opacity-60 flex items-center justify-center gap-2"
               >
                 {yendoAStripe
                   ? <><Loader2 size={18} className="animate-spin" /> Conectando con el pago seguro…</>
                   : <>Pagar {formatPrecio(paquete.precio)} ahora</>}
               </button>
-              <p className="text-[11px] text-gray-500 text-center mt-2">
+              <p className="text-[11px] text-muted text-center mt-2">
                 Pago seguro procesado por Stripe. No guardamos los datos de tu tarjeta.
               </p>
             </div>
@@ -225,17 +226,17 @@ function ModalPago({
 
           {stripeDisponible && metodos.length > 0 && (
             <div className="flex items-center gap-3">
-              <div className="h-px bg-gray-200 flex-1" />
-              <span className="text-xs text-gray-400 font-medium">o paga manualmente</span>
-              <div className="h-px bg-gray-200 flex-1" />
+              <div className="h-px bg-line flex-1" />
+              <span className="text-xs text-ink/45 font-medium">o paga manualmente</span>
+              <div className="h-px bg-line flex-1" />
             </div>
           )}
 
           {/* Método de pago */}
           <div>
-            <h4 className="font-bold text-gray-800 mb-3">{t('choosePayment')}</h4>
+            <h4 className="font-bold text-ink mb-3">{t('choosePayment')}</h4>
             {configurado && metodos.length === 0 && (
-              <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 text-sm text-amber-900">
+              <div className="bg-signal/10 border border-line rounded-xl p-4 text-sm text-ink">
                 Estamos terminando de configurar los pagos con Bizum, transferencia y PayPal.
                 Escríbenos y te damos los datos para comprar créditos ahora mismo:{' '}
                 <LocalLink href="/contacto" className="font-semibold underline">contacto</LocalLink>.
@@ -244,9 +245,9 @@ function ModalPago({
             <div className="grid grid-cols-3 gap-3">
               {metodos.map(m => (
                 <button key={m.id} onClick={() => setMetodo(m.id)}
-                  className={`p-4 rounded-xl border-2 text-center transition ${metodo === m.id ? 'border-brand-accent bg-green-50' : 'border-gray-200 hover:border-gray-300'}`}>
+                  className={`p-4 rounded-xl border-2 text-center transition ${metodo === m.id ? 'border-ink bg-signal/10' : 'border-line hover:border-line-strong'}`}>
                   <span className="text-3xl block">{m.emoji}</span>
-                  <span className="text-sm font-medium text-gray-700 mt-1 block">{m.nombre}</span>
+                  <span className="text-sm font-medium text-ink/75 mt-1 block">{m.nombre}</span>
                 </button>
               ))}
             </div>
@@ -254,12 +255,12 @@ function ModalPago({
 
           {/* Monto a pagar */}
           <div className="bg-brand-primary/5 border-2 border-brand-primary/20 rounded-xl p-4">
-            <p className="text-xs text-gray-500 mb-1 text-center">{t('amountPay')}</p>
+            <p className="text-xs text-muted mb-1 text-center">{t('amountPay')}</p>
             <div className="flex items-center justify-center gap-3">
               <p className="text-3xl font-black text-brand-primary">{formatPrecio(paquete.precio)}</p>
               <button
                 onClick={() => copyToClipboard(String(paquete.precio), 'precio')}
-                className="flex items-center gap-1 bg-white border border-brand-primary/30 rounded-lg px-3 py-2 text-sm text-brand-primary hover:bg-brand-primary/5 transition"
+                className="flex items-center gap-1 bg-[#FBFAF5] border border-brand-primary/30 rounded-lg px-3 py-2 text-sm text-brand-primary hover:bg-brand-primary/5 transition"
               >
                 {copiado === 'precio' ? '✓' : t('copy')}
               </button>
@@ -269,8 +270,8 @@ function ModalPago({
           {/* Datos de pago */}
           {selectedMetodo && Object.keys(selectedMetodo.instrucciones).length > 0 && (
             <div>
-              <h4 className="font-bold text-gray-800 mb-3">{t('paymentData')}</h4>
-              <div className="bg-gray-50 rounded-xl p-4 space-y-3">
+              <h4 className="font-bold text-ink mb-3">{t('paymentData')}</h4>
+              <div className="bg-paper-2 rounded-xl p-4 space-y-3">
                 {Object.entries(selectedMetodo.instrucciones).map(([key, value]) => {
                   const labelMap: Record<string, string> = {
                     telefono: t('phone'),
@@ -278,15 +279,14 @@ function ModalPago({
                     banco: t('bank'),
                     receptor: t('holder'),
                     titular: t('holder'),
-                    email: 'PayPal (email)',
-                  }
+                    email: 'PayPal (email)' }
                   return (
                     <div key={key} className="flex items-center justify-between">
                       <div>
-                        <span className="text-xs text-gray-500">{labelMap[key] || key}</span>
-                        <p className="text-sm font-medium text-gray-800">{value}</p>
+                        <span className="text-xs text-muted">{labelMap[key] || key}</span>
+                        <p className="text-sm font-medium text-ink">{value}</p>
                       </div>
-                      <button onClick={() => copyToClipboard(value, key)} className="text-xs bg-white border rounded-md px-2 py-1 hover:bg-gray-100 transition ml-2">
+                      <button onClick={() => copyToClipboard(value, key)} className="text-xs bg-[#FBFAF5] border rounded-md px-2 py-1 hover:bg-paper-2 transition ml-2">
                         {copiado === key ? t('copied') : t('copy')}
                       </button>
                     </div>
@@ -299,32 +299,32 @@ function ModalPago({
           {/* Comprobante */}
           {selectedMetodo && (
             <div>
-              <h4 className="font-bold text-gray-800 mb-3">{t('uploadReceipt')}</h4>
-              <div className="border-2 border-dashed border-gray-300 rounded-xl p-6 text-center hover:border-brand-primary transition cursor-pointer"
+              <h4 className="font-bold text-ink mb-3">{t('uploadReceipt')}</h4>
+              <div className="border-2 border-dashed border-line-strong rounded-xl p-6 text-center hover:border-brand-primary transition cursor-pointer"
                 onClick={() => document.getElementById('comprobante-input')?.click()}>
                 <input type="file" accept="image/*" id="comprobante-input" onChange={handleFileChange} className="hidden" />
                 {comprobantePreview ? (
                   <div>
                     <Image src={comprobantePreview} alt="Comprobante" className="max-h-48 mx-auto rounded-lg mb-3" width={400} height={300} unoptimized />
-                    <button onClick={(e) => { e.stopPropagation(); setComprobanteFile(null); setComprobantePreview('') }} className="text-sm text-red-500 hover:underline">{t('removeImage')}</button>
+                    <button onClick={(e) => { e.stopPropagation(); setComprobanteFile(null); setComprobantePreview('') }} className="text-sm text-clay hover:underline">{t('removeImage')}</button>
                   </div>
                 ) : (
                   <>
-                    <Upload size={32} className="mx-auto text-gray-500 mb-2" />
-                    <p className="text-sm text-gray-500">{t('tapUpload')}</p>
-                    <p className="text-xs text-gray-500 mt-1">{t('maxFile')}</p>
+                    <Upload size={32} className="mx-auto text-muted mb-2" />
+                    <p className="text-sm text-muted">{t('tapUpload')}</p>
+                    <p className="text-xs text-muted mt-1">{t('maxFile')}</p>
                   </>
                 )}
               </div>
               <button onClick={procesarCompra} disabled={enviando || !comprobanteFile}
-                className="w-full mt-4 bg-brand-primary text-white py-3.5 rounded-xl font-bold hover:bg-brand-dark transition flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
+                className="w-full mt-4 bg-brand-primary text-paper py-3.5 rounded-xl font-bold hover:bg-brand-dark transition flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
                 {enviando ? <><Loader2 size={18} className="animate-spin" /> {t('sending')}</> : <><Upload size={18} /> {t('sendReceipt')}</>}
               </button>
             </div>
           )}
 
           {!metodo && (
-            <div className="text-center py-4 text-sm text-gray-500">
+            <div className="text-center py-4 text-sm text-muted">
               {t('selectPayment')}
             </div>
           )}
@@ -373,146 +373,178 @@ export default function CreditosPage() {
   }, [])
 
   return (
-    <div className="max-w-5xl mx-auto px-4 py-12">
-      <div className="text-center mb-12">
-        <h1 className="text-3xl md:text-4xl font-black text-gray-800 mb-4">{t('title1')} <span className="text-brand-accent">{t('title2')}</span></h1>
-        <p className="text-lg text-gray-500 max-w-2xl mx-auto">
-          {t.rich('subtitle', { strong: (chunks) => <strong>{chunks}</strong> })}
-        </p>
-      </div>
+    <div className="bg-paper">
+      <header className="border-b border-line">
+        <div className="shell pb-10 pt-10 md:pb-14 md:pt-14">
+          <p className="t-eyebrow text-ink/40">Visibilidad</p>
+          <div className="mt-6 grid grid-cols-1 gap-8 lg:grid-cols-12 lg:items-end">
+            <h1 className="t-display t-display-lg text-ink lg:col-span-8">
+              {t('title1')} <span className="t-serif-italic">{t('title2')}</span>
+            </h1>
+            <p className="text-[14.5px] leading-relaxed text-muted lg:col-span-4 lg:border-l lg:border-line lg:pl-6">
+              {t.rich('subtitle', { strong: (chunks) => <strong className="font-semibold text-ink">{chunks}</strong> })}
+            </p>
+          </div>
+        </div>
+      </header>
 
+      <div className="shell py-12 md:py-16">
       {resultadoPago === 'ok' && (
-        <div className="mb-8 rounded-2xl border border-green-200 bg-green-50 p-5 flex items-start gap-3">
-          <CheckCircle size={22} className="text-brand-accent flex-shrink-0 mt-0.5" />
+        <div className="mb-8 flex items-start gap-3 border border-moss/25 bg-moss-soft p-5">
+          <CheckCircle size={18} className="mt-0.5 shrink-0 text-moss" />
           <div>
-            <p className="font-bold text-gray-900">Pago recibido. ¡Gracias!</p>
-            <p className="text-sm text-gray-700">
-              Tus créditos se abonan en cuanto el banco confirma la operación (normalmente
-              es inmediato; con Bizum puede tardar unos segundos). Si no ves el saldo
-              actualizado, recarga tu <LocalLink href="/dashboard" className="font-semibold underline">panel</LocalLink> en un minuto.
+            <p className="text-[14px] font-semibold text-moss">Pago recibido. ¡Gracias!</p>
+            <p className="mt-1 text-[13px] leading-relaxed text-moss/80">
+              Tus créditos se abonan en cuanto el banco confirma la operación (normalmente es
+              inmediato; con Bizum puede tardar unos segundos). Si no ves el saldo actualizado,
+              recarga tu <LocalLink href="/dashboard" className="font-semibold underline underline-offset-2">panel</LocalLink> en un minuto.
             </p>
           </div>
         </div>
       )}
       {resultadoPago === 'cancelado' && (
-        <div className="mb-8 rounded-2xl border border-amber-200 bg-amber-50 p-5">
-          <p className="font-bold text-gray-900">Pago cancelado</p>
-          <p className="text-sm text-gray-700">No se ha cobrado nada. Puedes elegir otro paquete cuando quieras.</p>
+        <div className="mb-8 border border-signal-deep/40 bg-signal-soft/40 p-5">
+          <p className="text-[14px] font-semibold text-ink">Pago cancelado</p>
+          <p className="mt-1 text-[13px] text-ink/65">No se ha cobrado nada. Puedes elegir otro paquete cuando quieras.</p>
         </div>
       )}
 
-      {/* Info */}
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 md:p-8 mb-8">
-        <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">{t('whatFor')}</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="border border-gray-200 rounded-xl p-6 hover:border-brand-accent transition">
-            <div className="flex items-start gap-4">
-              <div className="p-3 rounded-xl bg-green-50 text-brand-accent"><Zap size={28} /></div>
+      {/* Qué puedes hacer con créditos */}
+      <section>
+        <h2 className="t-eyebrow border-b border-ink pb-3 text-ink">{t('whatFor')}</h2>
+        <div className="mt-6 grid grid-cols-1 gap-px border border-line bg-line md:grid-cols-2">
+          <div className="bg-[#FBFAF5] p-6">
+            <div className="flex items-start gap-3">
+              <Zap size={18} strokeWidth={1.5} className="mt-0.5 shrink-0 text-ink" />
               <div>
-                <h3 className="font-bold text-gray-800 text-lg mb-1">{t('boostTitle')}</h3>
-                <p className="text-sm text-gray-500 mb-3">
-                  {t.rich('boostDesc', { strong: (chunks) => <strong>{chunks}</strong> })}
+                <h3 className="text-[15px] font-semibold text-ink">{t('boostTitle')}</h3>
+                <p className="mt-1.5 text-[13px] leading-relaxed text-muted">
+                  {t.rich('boostDesc', { strong: (chunks) => <strong className="font-semibold text-ink">{chunks}</strong> })}
                 </p>
-                <span className="text-brand-primary font-bold text-2xl">{t('boostPrice')}</span>
+                <p className="t-display t-num mt-3 text-[1.6rem] leading-none text-ink">{t('boostPrice')}</p>
               </div>
             </div>
           </div>
-          <div className="border border-gray-200 rounded-xl p-6 hover:border-brand-accent transition">
-            <div className="flex items-start gap-4">
-              <div className="p-3 rounded-xl bg-blue-50 text-brand-primary"><Star size={28} /></div>
+          <div className="bg-[#FBFAF5] p-6">
+            <div className="flex items-start gap-3">
+              <Star size={18} strokeWidth={1.5} className="mt-0.5 shrink-0 text-ink" />
               <div>
-                <h3 className="font-bold text-gray-800 text-lg mb-1">{t('featureTitle')}</h3>
-                <p className="text-sm text-gray-500 mb-3">
-                  {t.rich('featureDesc', { strong: (chunks) => <strong>{chunks}</strong> })}
+                <h3 className="text-[15px] font-semibold text-ink">{t('featureTitle')}</h3>
+                <p className="mt-1.5 text-[13px] leading-relaxed text-muted">
+                  {t.rich('featureDesc', { strong: (chunks) => <strong className="font-semibold text-ink">{chunks}</strong> })}
                 </p>
-                <div className="space-y-1 text-sm">
-                  <p className="text-brand-primary font-bold">4 créditos → 12h</p>
-                  <p className="text-brand-primary font-bold">6 créditos → 24h</p>
-                  <p className="text-brand-primary font-bold">10 créditos → 48h</p>
-                </div>
+                <dl className="mt-3 divide-y divide-line/70 border-t border-line/70">
+                  {[['4', '12 h'], ['6', '24 h'], ['10', '48 h']].map(([creditos, horas]) => (
+                    <div key={horas} className="flex items-baseline justify-between gap-4 py-1.5">
+                      <dt className="t-label text-ink/45">{creditos} créditos</dt>
+                      <dd className="t-num text-[13px] font-semibold text-ink">{horas}</dd>
+                    </div>
+                  ))}
+                </dl>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      </section>
 
-      {/* Puente plan <-> créditos: quien compra visibilidad varias veces al
-          mes ahorra con el plan Profesional, que ya incluye destacados. */}
-      <div className="mb-8 rounded-2xl border border-slate-200 bg-slate-50 p-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+      {/* Puente plan <-> créditos */}
+      <div className="mt-6 flex flex-col justify-between gap-4 border border-line bg-paper-2/60 p-5 sm:flex-row sm:items-center">
         <div>
-          <p className="font-bold text-gray-900">¿Tienes varias máquinas a la venta?</p>
-          <p className="text-sm text-gray-600">
-            Los planes de pago ya incluyen destacados cada mes: Básico (19 €/mes, 3 destacados
-            y 5 anuncios) o Profesional (49 €/mes, 15 destacados y anuncios sin límite), con
-            escaparate propio. Suele salir más barato que comprar créditos sueltos.
+          <p className="text-[14px] font-semibold text-ink">¿Tienes varias máquinas a la venta?</p>
+          <p className="mt-1 max-w-2xl text-[13px] leading-relaxed text-ink/60">
+            Los planes de pago ya incluyen destacados cada mes: Básico (19 €/mes, 3 destacados y 5
+            anuncios) o Profesional (49 €/mes, 15 destacados y anuncios sin límite), con escaparate
+            propio. Suele salir más barato que comprar créditos sueltos.
           </p>
         </div>
-        <LocalLink
-          href="/para-profesionales"
-          className="inline-flex shrink-0 items-center justify-center gap-1.5 rounded-xl bg-brand-primary px-4 py-2.5 text-sm font-bold text-white hover:bg-brand-dark"
-        >
-          Ver planes <ArrowRight size={15} />
+        <LocalLink href="/para-profesionales" className="btn btn-ink btn-sm shrink-0">
+          Ver planes <ArrowRight size={13} />
         </LocalLink>
       </div>
 
       {/* Paquetes */}
-      <div className="mb-8">
-        <h2 className="text-2xl font-bold text-gray-800 mb-2 text-center">{t('choosePackage')}</h2>
-        <p className="text-center text-sm text-gray-500 mb-4">{t('eurNote')}</p>
+      <section className="mt-14">
+        <div className="flex flex-wrap items-baseline justify-between gap-2 border-b border-ink pb-3">
+          <h2 className="t-display t-display-sm text-ink">{t('choosePackage')}</h2>
+          <p className="t-label text-ink/40">{t('eurNote')}</p>
+        </div>
 
-        <div className="creditos-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="creditos-grid mt-6 grid grid-cols-1 gap-px border border-line bg-line sm:grid-cols-2 lg:grid-cols-3">
           {paquetesCredito.map((pkg) => {
             const porCredito = pkg.precio / pkg.creditos
             return (
-              <div key={pkg.creditos} className={`bg-white rounded-2xl shadow-lg overflow-hidden border-2 transition hover:-translate-y-1 ${pkg.popular ? 'border-brand-accent' : 'border-transparent'}`}>
-                {pkg.popular && <div className="bg-brand-accent text-white text-center py-1.5 text-xs font-bold">{t('mostPopular')}</div>}
-                <div className="bg-gradient-to-br from-brand-primary to-brand-dark p-6 text-white text-center">
-                  <p className="text-5xl font-black">{pkg.creditos}</p>
-                  <p className="text-sm opacity-80">{t('credits')}</p>
+              <div key={pkg.creditos} className={`relative flex flex-col ${pkg.popular ? 'bg-signal/12' : 'bg-[#FBFAF5]'}`}>
+                {pkg.popular && (
+                  <div className="t-label bg-signal px-3 py-1.5 text-ink">{t('mostPopular')}</div>
+                )}
+                <div className="border-b border-line px-6 pb-5 pt-6">
+                  <p className="t-display t-num text-[2.6rem] leading-none text-ink">
+                    {pkg.creditos}
+                    <span className="ml-2 align-baseline text-[12px] font-medium uppercase tracking-[0.16em] text-ink/45">
+                      {t('credits')}
+                    </span>
+                  </p>
+                  <p className="t-display t-num mt-4 text-[1.25rem] leading-none text-ink/80">{formatPrecio(pkg.precio)}</p>
+                  <p className="t-label mt-1.5 text-ink/40">
+                    {formatPrecio(porCredito)} {t('perCredit')}
+                  </p>
                 </div>
-                <div className="p-6 text-center">
-                  <p className="text-3xl font-black text-gray-800 mb-1">{formatPrecio(pkg.precio)}</p>
-                  <p className="text-xs text-gray-500 mb-5 bg-gray-50 rounded-lg py-1 px-2 inline-block">{formatPrecio(porCredito)} {t('perCredit')}</p>
-                  <ul className="text-sm text-gray-600 space-y-2 mb-6 text-left">
-                    <li className="flex items-center gap-2"><CheckCircle size={14} className="text-green-500 flex-shrink-0" /><strong>{pkg.creditos}</strong> {t('boosts')}</li>
-                    <li className="flex items-center gap-2"><CheckCircle size={14} className="text-green-500 flex-shrink-0" />{t('orFeatured', { count: Math.floor(pkg.creditos / 4) })}</li>
-                    <li className="flex items-center gap-2"><CheckCircle size={14} className="text-green-500 flex-shrink-0" />{t('noExpiration')}</li>
+                <div className="flex flex-1 flex-col px-6 py-5">
+                  <ul className="flex-1 space-y-2 text-[12.5px] text-ink/70">
+                    <li className="flex items-start gap-2">
+                      <CheckCircle size={12} strokeWidth={2.2} className="mt-1 shrink-0 text-moss" />
+                      <span><strong className="font-semibold text-ink">{pkg.creditos}</strong> {t('boosts')}</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <CheckCircle size={12} strokeWidth={2.2} className="mt-1 shrink-0 text-moss" />
+                      <span>{t('orFeatured', { count: Math.floor(pkg.creditos / 4) })}</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <CheckCircle size={12} strokeWidth={2.2} className="mt-1 shrink-0 text-moss" />
+                      <span>{t('noExpiration')}</span>
+                    </li>
                   </ul>
-                  <button onClick={() => setPaqueteSeleccionado(pkg)} className="w-full bg-brand-primary text-white py-3 rounded-lg font-bold hover:bg-brand-dark transition cursor-pointer">{t('buy')}</button>
+                  <button
+                    onClick={() => setPaqueteSeleccionado(pkg)}
+                    className={`btn mt-5 w-full justify-center ${pkg.popular ? 'btn-ink' : 'btn-outline'}`}
+                  >
+                    {t('buy')}
+                  </button>
                 </div>
               </div>
             )
           })}
         </div>
-      </div>
+      </section>
 
       {/* Métodos */}
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 md:p-8">
-        <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">{t('paymentMethods')}</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <section className="mt-14">
+        <h2 className="t-eyebrow border-b border-ink pb-3 text-ink">{t('paymentMethods')}</h2>
+        <ul className="mt-6 grid grid-cols-1 gap-px border border-line bg-line sm:grid-cols-3">
           {[
-            { nombre: 'Bizum', emoji: '📱', Icono: Banknote },
-            { nombre: 'Transferencia', emoji: '🏦', Icono: Landmark },
-            { nombre: 'PayPal', emoji: '💙', Icono: Wallet },
+            { nombre: 'Bizum', Icono: Banknote },
+            { nombre: 'Transferencia', Icono: Landmark },
+            { nombre: 'PayPal', Icono: Wallet },
           ].map((m) => (
-            <div key={m.nombre} className="rounded-xl p-4 text-center bg-gray-50">
-              <span className="text-3xl block mb-2">{m.emoji}</span>
-              <p className="text-sm font-medium text-gray-800">{m.nombre}</p>
-            </div>
+            <li key={m.nombre} className="flex items-center gap-3 bg-[#FBFAF5] px-5 py-4">
+              <m.Icono size={17} strokeWidth={1.4} className="text-ink/50" aria-hidden="true" />
+              <span className="text-[13.5px] font-medium text-ink">{m.nombre}</span>
+            </li>
           ))}
-        </div>
+        </ul>
 
-        <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 mt-6">
-          <h3 className="font-bold text-brand-primary text-sm mb-2">{t('howItWorks')}</h3>
-          <ol className="text-sm text-blue-800 space-y-1 list-decimal list-inside">
-            <li>{t('step1')}</li>
-            <li>{t('step2')}</li>
-            <li>{t('step3')}</li>
-            <li>{t('step4')}</li>
+        <div className="mt-6 border border-line bg-paper-2/50 p-5">
+          <h3 className="t-label text-ink/45">{t('howItWorks')}</h3>
+          <ol className="mt-3 space-y-2">
+            {[t('step1'), t('step2'), t('step3'), t('step4')].map((paso, i) => (
+              <li key={i} className="flex gap-3 text-[13px] leading-relaxed text-ink/70">
+                <span className="t-label shrink-0 text-ink/30">{String(i + 1).padStart(2, '0')}</span>
+                {paso}
+              </li>
+            ))}
           </ol>
         </div>
-      </div>
-
+      </section>
       {paqueteSeleccionado && (
         <ModalPago
           paquete={paqueteSeleccionado}
@@ -522,6 +554,7 @@ export default function CreditosPage() {
           onClose={() => setPaqueteSeleccionado(null)}
         />
       )}
+      </div>
     </div>
   )
 }
