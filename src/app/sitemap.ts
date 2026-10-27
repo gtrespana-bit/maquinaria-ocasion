@@ -2,12 +2,10 @@ import type { MetadataRoute } from 'next'
 import { hayDatosTitular } from '@/lib/datos-legales'
 import { MARCAS_MODELOS, fabricantesUnicos, slugFabricante, slugModelo } from '@/lib/marcas'
 import { getSupabaseServerClient } from '@/lib/supabase-server-client'
-import fs from 'fs'
-import path from 'path'
 import { CIUDADES_SEO, CATEGORIAS_POPULARES } from '@/lib/ubicaciones-seo'
 import { LANDINGS_CATEGORIA_LIST, SUBCATEGORIAS_SEO } from '@/lib/categorias-seo'
 import { MIN_ANUNCIOS_LANDING_LOCAL } from '@/lib/seo-landings'
-import { limpiarComillas } from '@/lib/seo'
+import { postsDelBlog } from '@/lib/blog-archivos'
 
 const BASE_URL = 'https://maquinaria.click'
 const PAGE_SIZE = 1000
@@ -43,30 +41,6 @@ type FilaProducto = {
   subcategoria?: string | null
   marca?: string | null
   es_demo?: boolean | null
-}
-
-// El blog vive en src/content/blog/*.md, no en una tabla de Supabase.
-function getBlogSlugs(): { slug: string; lastModified?: Date }[] {
-  const dir = path.join(process.cwd(), 'src/content/blog')
-  if (!fs.existsSync(dir)) return []
-
-  return fs
-    .readdirSync(dir)
-    .filter((file) => file.endsWith('.md'))
-    .map((file) => {
-      const slug = file.replace(/\.md$/, '')
-      try {
-        const raw = fs.readFileSync(path.join(dir, file), 'utf-8')
-        const match = raw.match(/^date:\s*(.+)$/m)
-        if (match) {
-          const date = new Date(limpiarComillas(match[1]))
-          if (!Number.isNaN(date.getTime())) return { slug, lastModified: date }
-        }
-      } catch {
-        // Sin fecha válida, la URL se incluye sin inventar lastmod.
-      }
-      return { slug }
-    })
 }
 
 /**
@@ -250,9 +224,9 @@ function urlsEditoriales(): MetadataRoute.Sitemap {
     priority: category.tipo === 'familia' ? 0.9 : 0.8,
   }))
 
-  const blogUrls: MetadataRoute.Sitemap = getBlogSlugs().map((post) => ({
+  const blogUrls: MetadataRoute.Sitemap = postsDelBlog().map((post) => ({
     url: `${BASE_URL}/blog/${post.slug}`,
-    ...(post.lastModified ? { lastModified: post.lastModified } : {}),
+    ...(post.fecha ? { lastModified: post.fecha } : {}),
     changeFrequency: 'monthly',
     priority: 0.6,
   }))

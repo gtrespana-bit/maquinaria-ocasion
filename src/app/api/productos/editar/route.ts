@@ -4,6 +4,7 @@ import { requireUser } from '@/lib/require-auth'
 import { isValidUUID, isValidLength, sanitizeString } from '@/lib/validation'
 import { verificarContenido } from '@/lib/moderacion'
 import { revalidarListadosPublicos, revalidarFichaProducto } from '@/lib/revalidar'
+import { avisarIndexNowDeAnuncio } from '@/lib/indexnow'
 import { cupoDeUsuario } from '@/lib/planes-servidor'
 import { normalizarVideoUrl } from '@/lib/video-embed'
 import {
@@ -331,7 +332,7 @@ export async function PATCH(request: NextRequest) {
     .update(updateData)
     .eq('id', body.productId)
     .eq('user_id', auth.user.id)
-    .select('id, slug, titulo, activo, vendido, estado_moderacion, ubicacion_ciudad, ubicacion_estado, subcategoria')
+    .select('id, slug, titulo, activo, vendido, es_demo, estado_moderacion, ubicacion_ciudad, ubicacion_estado, subcategoria')
     .maybeSingle()
 
   if (error) {
@@ -357,6 +358,10 @@ export async function PATCH(request: NextRequest) {
     ubicacionEstado: data.ubicacion_estado,
     subcategoria: data.subcategoria })
   revalidarFichaProducto(data.slug)
+
+  // Cambió el precio, las fotos o la ubicación: se avisa a IndexNow para que
+  // Bing no tarde semanas en reflejarlo. Sin bloquear la respuesta.
+  avisarIndexNowDeAnuncio(data)
 
   return NextResponse.json({ ok: true, product: data })
 }
