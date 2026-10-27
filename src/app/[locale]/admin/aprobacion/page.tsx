@@ -93,7 +93,7 @@ export default function AprobacionPage() {
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
-          <div className="bg-brand-accent p-2 rounded-xl">
+          <div className="bg-signal p-2 rounded-xl">
             <Shield size={20} className="text-ink" />
           </div>
           <div>
@@ -165,7 +165,7 @@ export default function AprobacionPage() {
                   <button
                     onClick={() => rechazar(t.id)}
                     disabled={procesando === t.id}
-                    className="flex-1 flex items-center justify-center gap-2 bg-red-100 text-red-700 px-5 py-2.5 rounded-lg font-bold hover:bg-red-200 transition disabled:opacity-50"
+                    className="flex-1 flex items-center justify-center gap-2 bg-clay/10 text-clay px-5 py-2.5 rounded-lg font-bold hover:bg-red-200 transition disabled:opacity-50"
                   >
                     <X size={16} />
                     Rechazar

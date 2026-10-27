@@ -86,7 +86,7 @@ export default function NuevoHiloClient({ categorias }: { categorias: ForoCatego
     }
   }
 
-    'w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-signal/60 focus:border-brand-signal transition'
+    'w-full border border-line-strong rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-signal/60 focus:border-brand-signal transition'
   return (
     <div className="bg-paper">
       <div className="shell max-w-3xl py-10 md:py-14">

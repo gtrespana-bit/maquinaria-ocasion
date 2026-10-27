@@ -318,20 +318,20 @@ export default function TabImportar() {
       </section>
 
       {error && (
-        <div className="flex items-start gap-2 rounded-xl border border-red-200 bg-red-50 p-3 text-sm text-red-800">
+        <div className="flex items-start gap-2 rounded-xl border border-clay/30 bg-clay/[0.07] p-3 text-sm text-clay">
           <XCircle size={16} className="mt-0.5 shrink-0" /> {error}
         </div>
       )}
 
       {/* Resultado */}
       {resultado && (
-        <section className="rounded-2xl border border-emerald-200 bg-emerald-50 p-5">
+        <section className="rounded-2xl border border-moss/30 bg-moss/10 p-5">
           <p className="flex items-center gap-2 font-semibold text-emerald-900">
             <CheckCircle2 size={18} /> {resultado.importados} anuncio
             {resultado.importados === 1 ? '' : 's'} publicado
             {resultado.importados === 1 ? '' : 's'}
           </p>
-          <p className="mt-1 text-sm text-emerald-800">
+          <p className="mt-1 text-sm text-moss">
             {resultado.omitidos > 0
               ? `${resultado.omitidos} fila(s) no se han importado.`
               : 'Todas las filas del archivo se han importado.'}
@@ -347,7 +347,7 @@ export default function TabImportar() {
             </p>
           )}
           {resultado.errores?.length > 0 && (
-            <ul className="mt-2 list-inside list-disc text-xs text-red-800">
+            <ul className="mt-2 list-inside list-disc text-xs text-clay">
               {resultado.errores.map((e) => (
                 <li key={`${e.linea}-${e.error}`}>
                   Línea {e.linea}: {e.error}
@@ -365,7 +365,7 @@ export default function TabImportar() {
             <button
               type="button"
               onClick={() => descargarInforme(resultado)}
-              className="inline-flex items-center gap-1.5 rounded-xl border border-emerald-300 px-3.5 py-2 text-sm font-semibold text-emerald-900 hover:bg-emerald-100"
+              className="inline-flex items-center gap-1.5 rounded-xl border border-moss/40 px-3.5 py-2 text-sm font-semibold text-emerald-900 hover:bg-moss/15"
             >
               <Download size={14} /> Descargar importados
             </button>
@@ -381,13 +381,13 @@ export default function TabImportar() {
               <p className="text-xs font-semibold text-ink/60">Filas leídas</p>
               <p className="t-display t-num text-[1.75rem] leading-none text-ink">{previa.total}</p>
             </div>
-            <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-4">
-              <p className="text-xs font-semibold text-emerald-700">Listas para publicar</p>
-              <p className="t-display t-num text-[1.75rem] leading-none text-emerald-800">{previa.importables}</p>
+            <div className="rounded-2xl border border-moss/30 bg-moss/10 p-4">
+              <p className="text-xs font-semibold text-moss">Listas para publicar</p>
+              <p className="t-display t-num text-[1.75rem] leading-none text-moss">{previa.importables}</p>
             </div>
-            <div className="rounded-2xl border border-red-200 bg-red-50 p-4">
-              <p className="text-xs font-semibold text-red-700">Con errores</p>
-              <p className="t-display t-num text-[1.75rem] leading-none text-red-800">{previa.invalidas}</p>
+            <div className="rounded-2xl border border-clay/30 bg-clay/[0.07] p-4">
+              <p className="text-xs font-semibold text-clay">Con errores</p>
+              <p className="t-display t-num text-[1.75rem] leading-none text-clay">{previa.invalidas}</p>
             </div>
             <div className="rounded-2xl border border-amber-200 bg-amber-50 p-4">
               <p className="text-xs font-semibold text-amber-700">Fuera de cupo</p>
@@ -436,7 +436,7 @@ export default function TabImportar() {
                         <td className="px-3 py-2">
                           <p className="font-semibold text-ink">{f.titulo || '—'}</p>
                           {f.errores.map((e) => (
-                            <p key={e} className="mt-0.5 text-red-700">
+                            <p key={e} className="mt-0.5 text-clay">
                               ✕ {e}
                             </p>
                           ))}
@@ -455,11 +455,11 @@ export default function TabImportar() {
                         <td className="px-3 py-2 text-ink/60">{f.imagenes.length}</td>
                         <td className="px-3 py-2">
                           {!ok ? (
-                            <span className="font-semibold text-red-700">Corregir</span>
+                            <span className="font-semibold text-clay">Corregir</span>
                           ) : fueraDeCupo ? (
                             <span className="font-semibold text-amber-700">Sin cupo</span>
                           ) : (
-                            <span className="font-semibold text-emerald-700">Se publica</span>
+                            <span className="font-semibold text-moss">Se publica</span>
                           )}
                         </td>
                       </tr>

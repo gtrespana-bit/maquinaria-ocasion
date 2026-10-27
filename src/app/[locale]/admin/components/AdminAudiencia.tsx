@@ -336,7 +336,7 @@ export default function AdminAudiencia({ notify }: { notify: (msg: string) => vo
           label="Visitantes únicos"
           value={formatNumber(visitas.visitantes)}
           icon={Users}
-          accent="bg-blue-50 text-blue-600"
+          accent="bg-blue-50 text-ink"
           trend={comparativa.visitantes != null ? { value: `${(data?.variacion.visitantes ?? 0) >= 0 ? '+' : ''}${data?.variacion.visitantes ?? 0}%`, positive: (data?.variacion.visitantes ?? 0) >= 0 } : undefined}
           helper={comparativa.visitantes != null ? `periodo anterior: ${formatNumber(comparativa.visitantes)}` : 'sin comparativa'}
         />
@@ -359,7 +359,7 @@ export default function AdminAudiencia({ notify }: { notify: (msg: string) => vo
           label="Tiempo medio por página"
           value={formatearDuracion(visitas.duracionMedia)}
           icon={Clock}
-          accent="bg-emerald-50 text-emerald-600"
+          accent="bg-moss/10 text-moss"
           helper={visitas.nuevos != null ? `${formatNumber(visitas.nuevos)} nuevos · ${formatNumber(visitas.recurrente || 0)} recurrentes` : undefined}
         />
         <StatCard
@@ -485,7 +485,7 @@ export default function AdminAudiencia({ notify }: { notify: (msg: string) => vo
               {filasTabla.map((f) => (
                 <tr key={f.periodo} className="hover:bg-paper-2/60">
                   <td className="whitespace-nowrap px-4 py-2.5 font-medium text-ink">{f.corta || f.periodo}</td>
-                  <td className="px-3 py-2.5 text-right font-bold text-blue-600">{formatNumber(f.visitantes)}</td>
+                  <td className="px-3 py-2.5 text-right font-bold text-ink">{formatNumber(f.visitantes)}</td>
                   <td className="px-3 py-2.5 text-right text-ink">{formatNumber(f.visitas)}</td>
                   <td className="px-3 py-2.5 text-right text-ink/55">{formatNumber(f.sesiones)}</td>
                   <td className="px-3 py-2.5 text-right text-ink">{formatNumber(f.registros)}</td>

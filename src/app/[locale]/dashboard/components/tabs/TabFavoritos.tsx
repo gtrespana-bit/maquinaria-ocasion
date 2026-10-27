@@ -41,7 +41,7 @@ export default function TabFavoritos({ favoritos }: { favoritos: any[] }) {
                   {p.ubicacion_ciudad && <p className="text-[11.5px] text-ink/45">{p.ubicacion_ciudad}</p>}
                 </div>
               </LocalLink>
-              <button onClick={async () => { await supabase.from('favoritos').delete().eq('producto_id', p.id); window.location.reload() }} className="p-2 hover:bg-red-50 rounded-lg transition text-red-500" title="Quitar de favoritos">
+              <button onClick={async () => { await supabase.from('favoritos').delete().eq('producto_id', p.id); window.location.reload() }} className="p-2 hover:bg-clay/[0.07] rounded-lg transition text-clay" title="Quitar de favoritos">
                 <X size={16} />
               </button>
             </div>

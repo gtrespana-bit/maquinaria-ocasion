@@ -233,7 +233,7 @@ export default function LoginPage() {
               <div className="border border-line bg-paper-2/60 p-4">
                 <p className="mb-3 text-[13px] text-ink/70">{t('login.reset_title')}</p>
                 {resetError && (
-                  <p className="text-sm text-red-600 mb-3">{resetError}</p>
+                  <p className="text-sm text-clay mb-3">{resetError}</p>
                 )}
                 <form onSubmit={handleResetPassword} className="space-y-3">
                   <input
@@ -329,7 +329,7 @@ export default function LoginPage() {
               ) : (
                 <form onSubmit={handleResendConfirmation} className="space-y-3">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                    <label className="block text-sm font-medium text-ink/75 mb-1.5">
                       {t('login.email')}
                     </label>
                     <input

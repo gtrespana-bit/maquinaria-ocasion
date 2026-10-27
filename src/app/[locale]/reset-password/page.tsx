@@ -6,7 +6,7 @@ import LocalLink from '@/components/LocalLink'
 import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
 import { establecerSesionDesdeEnlace } from '@/lib/sesion-desde-enlace'
-import { AlertCircle, XCircle } from 'lucide-react'
+import { AlertCircle, ArrowRight, Check, Loader2, XCircle } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 
 export default function ResetPasswordPage() {
@@ -78,101 +78,116 @@ export default function ResetPasswordPage() {
 
   if (checkingSession) {
     return (
-      <div className="min-h-[80vh] flex items-center justify-center px-4">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-10 w-10 border-4 border-brand-primary border-t-transparent mx-auto mb-4"></div>
-          <p className="text-gray-500">{t('checking')}</p>
+      <div className="shell flex min-h-[60vh] items-center justify-center py-16">
+        <div className="flex items-center gap-3 text-muted">
+          <Loader2 size={16} className="animate-spin" />
+          <p className="t-label text-ink/50">{t('checking')}</p>
         </div>
       </div>
     )
   }
 
   return (
-    <div className="min-h-[80vh] flex items-center justify-center px-4 py-12">
-      <div className="w-full max-w-md">
-        <div className="text-center mb-8">
-          <BrandLogo href="/" size="lg" className="justify-center" priority />
-          <h1 className="text-2xl font-bold text-gray-800 mt-4">
-            {success ? t('titleSuccess') : t('title')}
-          </h1>
-          <p className="text-gray-500 mt-1">
-            {success ? t('subtitleSuccess') : t('subtitle')}
-          </p>
+    <div className="shell py-14 md:py-20">
+      <div className="mx-auto w-full max-w-[440px]">
+        <div className="flex items-center justify-between border-b border-ink pb-4">
+          <BrandLogo href="/" size="md" priority />
+          <span className="t-label text-ink/40">Acceso</span>
         </div>
 
-        <div className="bg-white rounded-2xl shadow-sm p-8 border border-gray-100">
+        <h1 className="t-display t-display-sm mt-8 text-ink">
+          {success ? t('titleSuccess') : enlaceInvalido ? t('linkInvalidTitle') : t('title')}
+        </h1>
+        <p className="mt-2 text-[14px] leading-relaxed text-muted">
+          {success ? t('subtitleSuccess') : enlaceInvalido ? t('linkInvalidDesc') : t('subtitle')}
+        </p>
+
+        <div className="mt-8 border border-line bg-[#FBFAF5] p-6 sm:p-8">
           {error && (
-            <div className="flex items-center gap-2 bg-red-50 text-red-700 p-3 rounded-lg mb-6 text-sm">
-              <AlertCircle size={18} />
-              {error}
+            <div className="mb-6 flex items-start gap-2 border border-clay/40 bg-clay/[0.05] p-3 text-[13px] text-clay">
+              <AlertCircle size={16} className="mt-0.5 shrink-0" />
+              <span>{error}</span>
             </div>
           )}
 
           {success ? (
-            <div className="text-center py-8">
-              <div className="text-6xl mb-4">✅</div>
-              <p className="text-green-700 font-semibold text-lg">{t('successText')}</p>
-              <LocalLink
-                href="/login"
-                className="inline-block mt-6 bg-brand-primary text-white px-8 py-3 rounded-lg font-bold hover:bg-brand-dark transition"
-              >
+            <div className="text-center">
+              <span className="mx-auto flex h-12 w-12 items-center justify-center border border-moss bg-moss text-paper">
+                <Check size={22} strokeWidth={1.6} />
+              </span>
+              <p className="mt-5 text-[14px] leading-relaxed text-ink/75">{t('successText')}</p>
+              <LocalLink href="/login" className="btn btn-ink btn-lg mt-6 w-full justify-between">
                 {t('goLogin')}
+                <ArrowRight size={15} />
               </LocalLink>
             </div>
           ) : enlaceInvalido ? (
-            <div className="text-center py-8">
-              <div className="flex justify-center mb-6">
-                <div className="bg-red-100 rounded-full p-4">
-                  <XCircle className="text-red-600" size={48} />
-                </div>
-              </div>
-              <p className="text-gray-800 font-semibold text-lg">{t('linkInvalidTitle')}</p>
-              <p className="text-gray-500 mt-2">{t('linkInvalidDesc')}</p>
-              <LocalLink
-                href="/login"
-                className="inline-block mt-6 bg-brand-primary text-white px-8 py-3 rounded-lg font-bold hover:bg-brand-dark transition"
-              >
+            <div className="text-center">
+              <span className="flex h-12 w-12 items-center justify-center border border-clay/40 bg-clay/[0.06] text-clay">
+                <XCircle size={22} strokeWidth={1.6} />
+              </span>
+              <p className="t-label mt-5 border-t border-line pt-4 text-ink/45">Los enlaces caducan en 24 horas</p>
+              <LocalLink href="/login" className="btn btn-ink btn-lg mt-5 w-full justify-between">
                 {t('requestNewLink')}
+                <ArrowRight size={15} />
               </LocalLink>
             </div>
           ) : (
-            <form onSubmit={handleReset} className="space-y-5">
+            <form onSubmit={handleReset} className="space-y-6">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1.5">{t('newPw')}</label>
+                <label htmlFor="rp-pw" className="t-label mb-1 block text-ink/50">
+                  {t('newPw')}
+                </label>
                 <input
-                  type="password" autoComplete="new-password"
+                  id="rp-pw"
+                  type="password"
+                  autoComplete="new-password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder={t('newPwPlaceholder')}
                   required
                   minLength={8}
-                  className="w-full border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-accent text-gray-900 bg-white"
+                  className="field text-[15px]"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1.5">{t('repeatPw')}</label>
+                <label htmlFor="rp-pw2" className="t-label mb-1 block text-ink/50">
+                  {t('repeatPw')}
+                </label>
                 <input
-                  type="password" autoComplete="new-password"
+                  id="rp-pw2"
+                  type="password"
+                  autoComplete="new-password"
                   value={confirmedPassword}
                   onChange={(e) => setConfirmedPassword(e.target.value)}
                   placeholder={t('repeatPwPlaceholder')}
                   required
                   minLength={8}
-                  className="w-full border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-accent text-gray-900 bg-white"
+                  className="field text-[15px]"
                 />
               </div>
 
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-brand-primary text-white py-3 rounded-lg font-bold hover:bg-brand-dark transition disabled:opacity-50"
+                className="btn btn-ink btn-lg w-full justify-between disabled:cursor-not-allowed disabled:opacity-50"
               >
-                {loading ? t('saving') : t('submit')}
+                {loading ? (
+                  <>
+                    <Loader2 size={15} className="animate-spin" />
+                    {t('saving')}
+                  </>
+                ) : (
+                  <>
+                    {t('submit')}
+                    <ArrowRight size={15} />
+                  </>
+                )}
               </button>
 
-              <p className="text-center text-sm text-gray-500 mt-4">
-                <LocalLink href="/login" className="text-brand-primary font-semibold hover:underline">
+              <p className="t-label border-t border-line pt-4 text-center text-ink/45">
+                <LocalLink href="/login" className="link-rule text-ink/70">
                   {t('backToLogin')}
                 </LocalLink>
               </p>

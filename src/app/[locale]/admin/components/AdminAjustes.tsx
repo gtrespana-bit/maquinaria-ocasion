@@ -71,9 +71,9 @@ export default function AdminAjustes({ notify }: { notify: (msg: string) => void
   if (loading) return <Loading label="Comprobando configuración…" />
 
   const configs = [
-    { key: 'supabase', label: 'Base de datos', desc: 'Conexión y credenciales de Supabase', icon: Database, color: 'text-emerald-600 bg-emerald-50' },
-    { key: 'telegram', label: 'Telegram', desc: 'Alertas operativas en tiempo real', icon: Send, color: 'text-blue-600 bg-blue-50' },
-    { key: 'push', label: 'Push Web', desc: 'Notificaciones a los usuarios', icon: Zap, color: 'text-yellow-600 bg-yellow-50' },
+    { key: 'supabase', label: 'Base de datos', desc: 'Conexión y credenciales de Supabase', icon: Database, color: 'text-moss bg-moss/10' },
+    { key: 'telegram', label: 'Telegram', desc: 'Alertas operativas en tiempo real', icon: Send, color: 'text-ink bg-blue-50' },
+    { key: 'push', label: 'Push Web', desc: 'Notificaciones a los usuarios', icon: Zap, color: 'text-signal-deep bg-paper-2' },
     { key: 'email', label: 'Email', desc: 'Correos transaccionales (Resend)', icon: Mail, color: 'text-purple-600 bg-purple-50' },
     { key: 'anuncios', label: 'Anuncios globales', desc: 'Banner público en todo el sitio', icon: Megaphone, color: 'text-orange-600 bg-orange-50' },
     { key: 'rateLimit', label: 'Rate limiting', desc: 'Protección anti-abuso de la API', icon: Shield, color: 'text-ink/55 bg-paper-2' },
@@ -146,14 +146,14 @@ export default function AdminAjustes({ notify }: { notify: (msg: string) => void
               value={emailTo}
               onChange={(e) => setEmailTo(e.target.value)}
               placeholder="tu@email.com"
-              className="w-full rounded-lg border border-line bg-[#FBFAF5] px-3 py-2 text-sm text-ink focus:outline-none focus:ring-2 focus:ring-brand-accent"
+              className="w-full rounded-lg border border-line bg-[#FBFAF5] px-3 py-2 text-sm text-ink focus:outline-none focus:ring-2 focus:ring-signal-deep"
             />
             <Button onClick={testEmail} disabled={emailSending}>
               <Mail size={14} /> {emailSending ? 'Enviando…' : 'Enviar prueba'}
             </Button>
           </div>
           {emailResult && (
-            <div className={`flex items-start gap-2 rounded-lg p-3 text-sm ${emailResult.ok ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'}`}>
+            <div className={`flex items-start gap-2 rounded-lg p-3 text-sm ${emailResult.ok ? 'bg-signal/10 text-green-700' : 'bg-clay/[0.07] text-clay'}`}>
               {emailResult.ok ? <CheckCircle2 size={16} className="mt-0.5 shrink-0" /> : <XCircle size={16} className="mt-0.5 shrink-0" />}
               <span>{emailResult.text}</span>
             </div>

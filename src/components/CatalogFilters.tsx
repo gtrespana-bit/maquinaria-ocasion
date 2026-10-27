@@ -105,7 +105,6 @@ export const CatalogFilters = ({
         <label htmlFor="filter-subcategoria" className={labelClass}>
           {t('catalog.typeLabel')}
         </label>
-        <div className="select-wrap">
         <select
           id="filter-subcategoria"
           value={subcategoria}
@@ -127,7 +126,6 @@ export const CatalogFilters = ({
             </optgroup>
           ))}
         </select>
-        </div>
       </div>
 
       <div className="mb-4">
@@ -138,22 +136,20 @@ export const CatalogFilters = ({
           {marca && (
             <button
               onClick={() => setParam('marca', '')}
-              className="text-xs text-red-500 hover:text-red-700 flex items-center gap-1"
+              className="text-xs text-clay hover:text-clay flex items-center gap-1"
             >
               <XCircle size={12} /> {t('catalog.remove')}
             </button>
           )}
         </div>
-        <div className="select-wrap">
-          <SelectorMarca
-            id="filter-marca"
-            value={marca}
-            modelos={modelosMarca}
-            allLabel={t('catalog.allBrands')}
-            onChange={v => setParam('marca', v)}
-            className={selectClass}
-          />
-        </div>
+        <SelectorMarca
+          id="filter-marca"
+          value={marca}
+          modelos={modelosMarca}
+          allLabel={t('catalog.allBrands')}
+          onChange={v => setParam('marca', v)}
+          className={selectClass}
+        />
       </div>
 
       <div className="mb-4">
@@ -227,4 +223,4 @@ export const CatalogFilters = ({
   );
 };
 
-  'w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm text-gray-800 bg-white font-medium focus:outline-none focus:ring-2 focus:ring-brand-accent';
+  'w-full border border-line-strong rounded-lg px-3 py-2.5 text-sm text-ink bg-[#FBFAF5] font-medium focus:outline-none focus:ring-2 focus:ring-signal-deep';

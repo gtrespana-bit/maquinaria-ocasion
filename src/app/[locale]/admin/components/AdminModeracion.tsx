@@ -153,7 +153,7 @@ export default function AdminModeracion({
     <div className="space-y-5">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-3">
-          <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-yellow-50 text-yellow-700"><ShieldAlert size={22} /></span>
+          <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-paper-2 text-yellow-700"><ShieldAlert size={22} /></span>
           <div>
             <h2 className="text-xl font-semibold text-ink">Moderación</h2>
             <p className="text-[12.5px] leading-relaxed text-ink/55">{denuncias.length} denuncias activas · {pendientes.length} publicaciones por revisar</p>
@@ -177,7 +177,7 @@ export default function AdminModeracion({
             <Card key={d.id} bodyClassName="p-4">
               <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
                 <div className="flex flex-1 items-start gap-4">
-                  <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-red-50 text-red-600"><AlertTriangle size={18} /></span>
+                  <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-clay/[0.07] text-clay"><AlertTriangle size={18} /></span>
                   <div className="min-w-0">
                     <div className="flex flex-wrap items-center gap-2">
                       <button onClick={() => setDetail({ product: null, denuncia: d })} className="font-semibold text-ink hover:text-ink">{d.producto?.titulo || 'Producto desconocido'}</button>
@@ -238,7 +238,7 @@ export default function AdminModeracion({
           {revisados.map((d) => (
             <div key={d.id} className="flex items-center justify-between px-5 py-3 text-sm">
               <div className="flex min-w-0 items-center gap-3">
-                <span className={`flex h-8 w-8 items-center justify-center rounded-lg ${d.estado === 'resuelta' ? 'bg-green-50 text-green-600' : 'bg-paper-2 text-ink/55'}`}>{d.estado === 'resuelta' ? <Check size={15} /> : <X size={15} />}</span>
+                <span className={`flex h-8 w-8 items-center justify-center rounded-lg ${d.estado === 'resuelta' ? 'bg-signal/10 text-green-600' : 'bg-paper-2 text-ink/55'}`}>{d.estado === 'resuelta' ? <Check size={15} /> : <X size={15} />}</span>
                 <div className="min-w-0">
                   <p className="truncate font-medium text-ink">{d.motivo || 'Reporte'}</p>
                   <p className="t-label text-ink/35">{formatDate(d.creada_en)} · {d.estado}</p>

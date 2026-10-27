@@ -520,8 +520,8 @@ export default async function ProductoPage({ params }: Props) {
       </Suspense>
 
       {relacionados.length > 0 && (
-        <section className="max-w-7xl mx-auto px-4 py-8 border-t border-gray-100 mt-8">
-          <h2 className="text-xl md:text-2xl font-black text-gray-900 mb-4">
+        <section className="max-w-7xl mx-auto px-4 py-8 border-t border-line mt-8">
+          <h2 className="text-xl md:text-2xl font-black text-ink mb-4">
             {t('relatedTitle')}
           </h2>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
@@ -529,9 +529,9 @@ export default async function ProductoPage({ params }: Props) {
               <LocalLink
                 key={p.id}
                 href={`/producto/${p.slug || p.id}`}
-                className="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-lg hover:-translate-y-1 transition group block"
+                className="bg-[#FBFAF5] rounded-xl overflow-hidden shadow-sm border border-line hover:shadow-lg hover:-translate-y-1 transition group block"
               >
-                <div className="aspect-square bg-gray-100 relative overflow-hidden">
+                <div className="aspect-square bg-paper-2 relative overflow-hidden">
                   <Image
                     src={p.imagen_url || '/placeholder-product.webp'}
                     alt={p.titulo}
@@ -544,14 +544,14 @@ export default async function ProductoPage({ params }: Props) {
                   />
                 </div>
                 <div className="p-3">
-                  <h3 className="font-semibold text-gray-900 text-sm truncate group-hover:text-brand-primary transition-colors">
+                  <h3 className="font-semibold text-ink text-sm truncate group-hover:text-brand-primary transition-colors">
                     {p.titulo}
                   </h3>
                   <p className="text-lg font-black text-brand-primary mt-0.5">
                     {formatPrecio(p.precio_usd || 0)}
                   </p>
                   {p.ubicacion_ciudad && (
-                    <p className="text-[11px] text-gray-500 truncate">{p.ubicacion_ciudad}</p>
+                    <p className="text-[11px] text-muted truncate">{p.ubicacion_ciudad}</p>
                   )}
                 </div>
               </LocalLink>
@@ -564,8 +564,8 @@ export default async function ProductoPage({ params }: Props) {
           Google descubre jerarquía y topicalidad con enlaces en el
           cuerpo de la ficha: landing de la provincia y página del
           modelo. */}
-      <section className="max-w-7xl mx-auto px-4 py-8 border-t border-gray-100 mt-8">
-        <h2 className="text-lg font-black text-gray-900 mb-3">
+      <section className="max-w-7xl mx-auto px-4 py-8 border-t border-line mt-8">
+        <h2 className="text-lg font-black text-ink mb-3">
           Explora más maquinaria relacionada
         </h2>
         <ul className="space-y-2 text-sm">

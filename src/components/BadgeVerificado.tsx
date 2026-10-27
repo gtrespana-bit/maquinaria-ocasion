@@ -17,7 +17,7 @@ export default function BadgeVerificado({ size = 'sm' }: { size?: 'sm' | 'md' | 
 
   return (
     <span
-      className={`inline-flex items-center ${s.gap} ${s.text} font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full`}
+      className={`inline-flex items-center ${s.gap} ${s.text} font-semibold text-moss bg-moss/10 border border-moss/30 px-2 py-0.5 rounded-full`}
       title={t('verifiedTitle')}
     >
       <svg
@@ -29,7 +29,7 @@ export default function BadgeVerificado({ size = 'sm' }: { size?: 'sm' | 'md' | 
         strokeWidth="2.5"
         strokeLinecap="round"
         strokeLinejoin="round"
-        className="text-emerald-600 flex-shrink-0"
+        className="text-moss flex-shrink-0"
       >
         <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
         <polyline points="22 4 12 14.01 9 11.01" />

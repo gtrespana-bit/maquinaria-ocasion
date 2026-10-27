@@ -316,21 +316,6 @@
   .field-dark::placeholder { color: rgba(245, 242, 235, 0.45); }
   .field-dark:focus { border-bottom-color: var(--signal); }
 
-  .select-wrap { position: relative; }
-  .select-wrap::after {
-    content: '';
-    position: absolute;
-    right: 2px;
-    top: 50%;
-    width: 7px;
-    height: 7px;
-    border-right: 1.5px solid currentColor;
-    border-bottom: 1.5px solid currentColor;
-    transform: translateY(-70%) rotate(45deg);
-    pointer-events: none;
-    opacity: 0.6;
-  }
-
   /* ───────────────────────────────────────────────────── TARJETAS/FICHAS ── */
   .surface {
     background: #fbfaf5;

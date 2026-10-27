@@ -29,7 +29,7 @@ export default function TabCuenta(props: Props) {
       <div className="border border-line bg-[#FBFAF5] p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
           <h3 className="text-base font-semibold text-ink flex items-center gap-2">
-            <UserRound size={18} className="text-brand-accent" aria-hidden="true" />
+            <UserRound size={18} className="text-ink" aria-hidden="true" />
             Tu perfil público
           </h3>
           <p className="text-[12.5px] text-ink/55 mt-0.5">

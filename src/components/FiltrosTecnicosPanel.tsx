@@ -52,7 +52,6 @@ export const FiltrosTecnicosPanel = ({
               <label htmlFor={`filtro-tec-${filtro.param}`} className={labelClass}>
                 {t(filtro.i18n)}
               </label>
-              <div className="select-wrap">
               <select
                 id={`filtro-tec-${filtro.param}`}
                 value={filtrosTecnicos[filtro.param] || ''}
@@ -64,7 +63,6 @@ export const FiltrosTecnicosPanel = ({
                   <option key={o} value={o}>{o}</option>
                 ))}
               </select>
-              </div>
             </div>
           ))}
         </div>
@@ -111,5 +109,5 @@ export const FiltrosTecnicosPanel = ({
   );
 };
 
-  'w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm text-gray-800 bg-white font-medium focus:outline-none focus:ring-2 focus:ring-brand-accent';
-  'w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm text-gray-800 bg-white focus:outline-none focus:ring-2 focus:ring-brand-accent';
+  'w-full border border-line-strong rounded-lg px-3 py-2.5 text-sm text-ink bg-[#FBFAF5] font-medium focus:outline-none focus:ring-2 focus:ring-signal-deep';
+  'w-full border border-line-strong rounded-lg px-3 py-2.5 text-sm text-ink bg-[#FBFAF5] focus:outline-none focus:ring-2 focus:ring-signal-deep';

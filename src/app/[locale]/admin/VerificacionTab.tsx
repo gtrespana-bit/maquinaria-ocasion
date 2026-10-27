@@ -171,7 +171,7 @@ export default function VerificacionTab({ notify }: { notify: (msg: string) => v
                       <span className={`text-xs px-2 py-0.5 rounded-full font-semibold ${
                         sol.estado === 'pendiente' ? 'bg-yellow-100 text-yellow-800' :
                         sol.estado === 'aprobada' ? 'bg-green-100 text-green-800' :
-                        'bg-red-100 text-red-800'
+                        'bg-clay/10 text-clay'
                       }`}>
                         {sol.estado}
                       </span>
@@ -200,7 +200,7 @@ export default function VerificacionTab({ notify }: { notify: (msg: string) => v
                     </div>
 
                     {sol.rechazo_motivo && (
-                      <div className="mt-3 p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700">
+                      <div className="mt-3 p-3 bg-clay/[0.07] border border-clay/30 rounded-lg text-sm text-clay">
                         <strong>Motivo de rechazo anterior:</strong> {sol.rechazo_motivo}
                       </div>
                     )}
@@ -247,7 +247,7 @@ export default function VerificacionTab({ notify }: { notify: (msg: string) => v
                       </button>
                       <button
                         onClick={() => setRechazoModal(sol.id)}
-                        className="px-4 py-2 bg-red-100 text-red-700 rounded-lg hover:bg-red-200 text-sm transition"
+                        className="px-4 py-2 bg-clay/10 text-clay rounded-lg hover:bg-red-200 text-sm transition"
                       >
                         Rechazar
                       </button>
@@ -261,7 +261,7 @@ export default function VerificacionTab({ notify }: { notify: (msg: string) => v
       )}
 
       {rechazoModal && (
-        <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-50 bg-ink/60 flex items-center justify-center p-4">
           <div className="bg-[#FBFAF5] rounded-2xl  max-w-md w-full p-6 animate-fadeIn">
             <h3 className="text-lg font-bold mb-3">Motivo de rechazo</h3>
             <textarea

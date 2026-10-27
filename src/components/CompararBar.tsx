@@ -26,7 +26,7 @@ export default function CompararBar() {
       role="region"
       aria-label={t('comparar.title')}
     >
-      <div className="bg-brand-darkNav text-white rounded-2xl shadow-panel border-2 border-brand-signal/70 px-3 py-2.5 flex items-center gap-3">
+      <div className="bg-brand-darkNav text-paper rounded-2xl shadow-panel border-2 border-brand-signal/70 px-3 py-2.5 flex items-center gap-3">
         {/* Miniaturas de la selección */}
         <div className="flex -space-x-2 shrink-0" aria-hidden="true">
           {lista.map(i => (
@@ -34,7 +34,7 @@ export default function CompararBar() {
               {i.imagen_url ? (
                 <Image src={i.imagen_url} alt="" fill sizes="36px" className="object-cover" />
               ) : (
-                <span className="w-full h-full flex items-center justify-center text-[10px] text-white/60">🔧</span>
+                <span className="w-full h-full flex items-center justify-center text-[10px] text-paper/60">🔧</span>
               )}
             </span>
           ))}
@@ -56,7 +56,7 @@ export default function CompararBar() {
           onClick={vaciar}
           aria-label={t('comparar.clear')}
           title={t('comparar.clear')}
-          className="p-1.5 text-white/60 hover:text-white transition shrink-0"
+          className="p-1.5 text-paper/60 hover:text-paper transition shrink-0"
         >
           <Trash2 size={15} />
         </button>

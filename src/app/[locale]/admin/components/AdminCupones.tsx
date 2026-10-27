@@ -499,7 +499,7 @@ export default function AdminCupones({ notify }: { notify: (msg: string) => void
                   <td>{c.activo ? 'Activo' : 'Off'}</td>
                   <td>
                     {c.activo && (
-                      <button className="text-red-600 text-xs" onClick={() => desactivar(c.id)}>Desactivar</button>
+                      <button className="text-clay text-xs" onClick={() => desactivar(c.id)}>Desactivar</button>
                     )}
                   </td>
                 </tr>

@@ -147,7 +147,7 @@ function generateArticleSchema(post: Post) {
 }
 
 function inlineFormat(text: string): string {
-  text = text.replace(/\*\*(.+?)\*\*/g, '<strong class="font-bold text-gray-900">$1</strong>')
+  text = text.replace(/\*\*(.+?)\*\*/g, '<strong class="font-bold text-ink">$1</strong>')
   text = text.replace(/_(.+?)_/g, '<em>$1</em>')
   text = text.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" class="text-brand-primary font-semibold hover:underline underline-offset-2">$1</a>')
   return text
@@ -165,22 +165,22 @@ function renderMarkdown(content: string): string {
       const headerCells = lines[0].split('|').filter(c => c.trim() !== '')
       const dataLines = lines.slice(2).filter(l => l.trim().startsWith('|'))
       
-      htmlParts.push('<div class="overflow-x-auto my-6 rounded-xl border border-gray-200 shadow-sm">')
+      htmlParts.push('<div class="overflow-x-auto my-6 rounded-xl border border-line shadow-sm">')
       htmlParts.push('<table class="w-full text-sm">')
       // Header
-      htmlParts.push('<thead class="bg-brand-primary text-white">')
+      htmlParts.push('<thead class="bg-brand-primary text-paper">')
       htmlParts.push('<tr>')
       for (const cell of headerCells) {
         htmlParts.push(`<th class="px-4 py-3 font-bold text-left whitespace-nowrap">${inlineFormat(cell.trim())}</th>`)
       }
       htmlParts.push('</tr></thead>')
       // Body
-      htmlParts.push('<tbody class="divide-y divide-gray-100">')
+      htmlParts.push('<tbody class="divide-y divide-line">')
       for (const dl of dataLines) {
         const cells = dl.split('|').filter(c => c.trim() !== '')
-        htmlParts.push('<tr class="hover:bg-gray-50/50">')
+        htmlParts.push('<tr class="hover:bg-paper-2/50">')
         for (const cell of cells) {
-          htmlParts.push(`<td class="px-4 py-3 text-gray-700 whitespace-nowrap">${inlineFormat(cell.trim())}</td>`)
+          htmlParts.push(`<td class="px-4 py-3 text-ink/75 whitespace-nowrap">${inlineFormat(cell.trim())}</td>`)
         }
         htmlParts.push('</tr>')
       }
@@ -190,22 +190,22 @@ function renderMarkdown(content: string): string {
 
     // Headers
     if (lines[0].startsWith('# ')) {
-      htmlParts.push(`<h1 class="text-3xl font-black text-gray-900 mt-8 mb-6">${inlineFormat(lines[0].replace('# ', ''))}</h1>`)
+      htmlParts.push(`<h1 class="text-3xl font-black text-ink mt-8 mb-6">${inlineFormat(lines[0].replace('# ', ''))}</h1>`)
       continue
     }
     if (lines[0].startsWith('## ')) {
-      htmlParts.push(`<h2 class="text-2xl font-bold text-gray-800 mt-10 mb-4">${inlineFormat(lines[0].replace('## ', ''))}</h2>`)
+      htmlParts.push(`<h2 class="text-2xl font-bold text-ink mt-10 mb-4">${inlineFormat(lines[0].replace('## ', ''))}</h2>`)
       continue
     }
     if (lines[0].startsWith('### ')) {
-      htmlParts.push(`<h3 class="text-xl font-bold text-gray-800 mt-8 mb-4">${inlineFormat(lines[0].replace('### ', ''))}</h3>`)
+      htmlParts.push(`<h3 class="text-xl font-bold text-ink mt-8 mb-4">${inlineFormat(lines[0].replace('### ', ''))}</h3>`)
       continue
     }
 
     // Blockquote
     if (lines[0].startsWith('> ')) {
       const quoteText = lines.map(l => l.replace(/^> ?/, '')).join(' ')
-      htmlParts.push(`<blockquote class="border-l-4 border-brand-accent bg-brand-accent/5 rounded-r-lg pl-5 py-4 my-6"><p class="text-gray-700 italic text-sm leading-relaxed">${inlineFormat(quoteText)}</p></blockquote>`)
+      htmlParts.push(`<blockquote class="border-l-4 border-ink bg-paper-2 rounded-r-lg pl-5 py-4 my-6"><p class="text-ink/75 italic text-sm leading-relaxed">${inlineFormat(quoteText)}</p></blockquote>`)
       continue
     }
 
@@ -216,7 +216,7 @@ function renderMarkdown(content: string): string {
       for (const line of lines) {
         idx++
         const text = line.replace(/^\d+\. /, '')
-        htmlParts.push(`<li class="flex items-start gap-3 text-gray-700"><span class="flex-shrink-0 w-7 h-7 rounded-full bg-brand-primary text-white text-sm font-bold flex items-center justify-center">${idx}</span><span class="leading-relaxed">${inlineFormat(text)}</span></li>`)
+        htmlParts.push(`<li class="flex items-start gap-3 text-ink/75"><span class="flex-shrink-0 w-7 h-7 rounded-full bg-brand-primary text-paper text-sm font-bold flex items-center justify-center">${idx}</span><span class="leading-relaxed">${inlineFormat(text)}</span></li>`)
       }
       htmlParts.push('</ol>')
       continue
@@ -227,7 +227,7 @@ function renderMarkdown(content: string): string {
       htmlParts.push('<ul class="space-y-2 my-4">')
       for (const line of lines) {
         const text = line.replace(/^- /, '')
-        htmlParts.push(`<li class="flex items-start gap-2 text-gray-700"><span class="text-brand-primary mt-1">•</span><span class="leading-relaxed">${inlineFormat(text)}</span></li>`)
+        htmlParts.push(`<li class="flex items-start gap-2 text-ink/75"><span class="text-brand-primary mt-1">•</span><span class="leading-relaxed">${inlineFormat(text)}</span></li>`)
       }
       htmlParts.push('</ul>')
       continue
@@ -235,14 +235,14 @@ function renderMarkdown(content: string): string {
 
     // Horizontal rule
     if (lines[0].match(/^---$/)) {
-      htmlParts.push('<hr class="my-8 border-gray-200" />')
+      htmlParts.push('<hr class="my-8 border-line" />')
       continue
     }
 
     // Regular paragraph
     const paraText = lines.join(' ')
     if (paraText.trim()) {
-      htmlParts.push(`<p class="text-gray-700 leading-relaxed my-4">${inlineFormat(paraText)}</p>`)
+      htmlParts.push(`<p class="text-ink/75 leading-relaxed my-4">${inlineFormat(paraText)}</p>`)
     }
   }
 

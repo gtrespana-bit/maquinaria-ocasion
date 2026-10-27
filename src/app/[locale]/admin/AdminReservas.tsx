@@ -160,7 +160,7 @@ export default function AdminReservas({ notify }: { notify: (msg: string) => voi
         </button>
       </div>
 
-      {error && <p className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">{error}</p>}
+      {error && <p className="rounded-lg border border-clay/30 bg-clay/[0.07] px-3 py-2 text-sm text-clay">{error}</p>}
 
       {cargando ? (
         <div className="rounded-xl border border-line bg-[#FBFAF5] p-8 text-center text-ink/55">
@@ -208,7 +208,7 @@ export default function AdminReservas({ notify }: { notify: (msg: string) => voi
                 </div>
 
                 {r.mensaje && <p className="mt-1 text-xs italic text-ink/55">“{r.mensaje}”</p>}
-                {r.motivo_cancelacion && <p className="mt-1 text-xs text-red-700">Motivo: {r.motivo_cancelacion}</p>}
+                {r.motivo_cancelacion && <p className="mt-1 text-xs text-clay">Motivo: {r.motivo_cancelacion}</p>}
 
                 <div className="mt-3 flex flex-wrap gap-2">
                   {r.productos?.id && (

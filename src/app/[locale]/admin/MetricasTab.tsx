@@ -100,14 +100,14 @@ export default function MetricasTab() {
   }
 
   const cards = [
-    { label: 'Usuarios registrados', value: stats.totalUsers, icon: Users, color: 'text-blue-600', bg: 'bg-blue-50' },
+    { label: 'Usuarios registrados', value: stats.totalUsers, icon: Users, color: 'text-ink', bg: 'bg-blue-50' },
     { label: 'Publicaciones totales', value: stats.totalProducts, icon: ShoppingBag, color: 'text-purple-600', bg: 'bg-purple-50' },
-    { label: 'Publicaciones activas', value: stats.activeProducts, icon: ShoppingBag, color: 'text-green-600', bg: 'bg-green-50' },
+    { label: 'Publicaciones activas', value: stats.activeProducts, icon: ShoppingBag, color: 'text-green-600', bg: 'bg-signal/10' },
     { label: 'Visitas totales', value: stats.totalVisits?.toLocaleString(), icon: Eye, color: 'text-orange-600', bg: 'bg-orange-50' },
-    { label: 'Reseñas', value: stats.totalResenas, icon: Star, color: 'text-yellow-600', bg: 'bg-yellow-50' },
-    { label: 'Transacciones', value: stats.totalTransactions, icon: DollarSign, color: 'text-emerald-600', bg: 'bg-emerald-50' },
+    { label: 'Reseñas', value: stats.totalResenas, icon: Star, color: 'text-signal-deep', bg: 'bg-paper-2' },
+    { label: 'Transacciones', value: stats.totalTransactions, icon: DollarSign, color: 'text-moss', bg: 'bg-moss/10' },
     { label: 'Vendedores verificados', value: stats.verifiedSellers, icon: TrendingUp, color: 'text-sky-600', bg: 'bg-sky-50' },
-    { label: 'Pagos pendientes', value: stats.pendingTransactions, icon: Clock, color: 'text-red-600', bg: 'bg-red-50' },
+    { label: 'Pagos pendientes', value: stats.pendingTransactions, icon: Clock, color: 'text-clay', bg: 'bg-clay/[0.07]' },
   ]
 
   return (
@@ -129,7 +129,7 @@ export default function MetricasTab() {
         {/* Publicaciones recientes */}
         <div className="bg-[#FBFAF5] rounded-xl  border border-line">
           <div className="p-5 border-b border-line flex items-center gap-2">
-            <Clock size={18} className="text-blue-600" />
+            <Clock size={18} className="text-ink" />
             <h3 className="font-semibold text-ink">Publicaciones recientes</h3>
           </div>
           <div className="divide-y divide-line">

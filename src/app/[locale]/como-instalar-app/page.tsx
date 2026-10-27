@@ -161,7 +161,7 @@ export default async function ComoInstalarAppPage({ params }: { params: Promise<
             {/* Paso 4 */}
             <div className="flex gap-4 py-4">
               <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                <span className="text-white font-bold text-sm">4</span>
+                <span className="text-paper font-bold text-sm">4</span>
               </div>
               <div>
                 <p className="text-[14px] font-semibold text-ink">{t('iosStep4Title')}</p>

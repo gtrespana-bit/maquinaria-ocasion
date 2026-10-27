@@ -128,7 +128,6 @@ export default function ContactPage() {
                   />
                 </div>
               </div>
-              <div className="select-wrap">
                 <label className="t-label mb-1 block text-ink/50" htmlFor="contacto-asunto">
                   {t('subject')}
                 </label>
@@ -142,7 +141,6 @@ export default function ContactPage() {
                     <option key={a}>{a}</option>
                   ))}
                 </select>
-              </div>
               <div>
                 <label className="t-label mb-1 block text-ink/50" htmlFor="contacto-mensaje">
                   {t('message')}

@@ -510,7 +510,7 @@ export default function EditarPage() {
             <div className="border border-line bg-paper p-3">
               <div className="flex items-center justify-between">
                 <span className="text-sm font-medium">💚 WhatsApp</span>
-                <button type="button" onClick={() => setShowWhatsApp(false)} className="text-red-500 text-xs hover:underline">Quitar</button>
+                <button type="button" onClick={() => setShowWhatsApp(false)} className="text-clay text-xs hover:underline">Quitar</button>
               </div>
               <input type="tel" value={contactWhatsApp} onChange={e => setContactWhatsApp(e.target.value)} placeholder="+34 600 123 456" className="mt-2 w-full border rounded px-2 py-1.5 text-sm" />
             </div>
@@ -525,7 +525,7 @@ export default function EditarPage() {
             <div className="border border-line bg-paper p-3">
               <div className="flex items-center justify-between">
                 <span className="text-sm font-medium">📞 Teléfono</span>
-                <button type="button" onClick={() => setShowPhone(false)} className="text-red-500 text-xs hover:underline">Quitar</button>
+                <button type="button" onClick={() => setShowPhone(false)} className="text-clay text-xs hover:underline">Quitar</button>
               </div>
               <input type="tel" value={contactPhone} onChange={e => setContactPhone(e.target.value)} placeholder="+34 600 123 456" className="mt-2 w-full border rounded px-2 py-1.5 text-sm" />
             </div>
@@ -540,7 +540,7 @@ export default function EditarPage() {
             <div className="border border-line bg-paper p-3">
               <div className="flex items-center justify-between">
                 <span className="text-sm font-medium">📧 Email</span>
-                <button type="button" onClick={() => setShowEmail(false)} className="text-red-500 text-xs hover:underline">Quitar</button>
+                <button type="button" onClick={() => setShowEmail(false)} className="text-clay text-xs hover:underline">Quitar</button>
               </div>
               <input type="email" value={contactEmail} onChange={e => setContactEmail(e.target.value)} placeholder="tu@email.com" className="mt-2 w-full border rounded px-2 py-1.5 text-sm" />
             </div>
@@ -555,7 +555,7 @@ export default function EditarPage() {
             <div className="border border-line bg-paper p-3">
               <div className="flex items-center justify-between">
                 <span className="text-sm font-medium">💬 Messenger</span>
-                <button type="button" onClick={() => setShowMessenger(false)} className="text-red-500 text-xs hover:underline">Quitar</button>
+                <button type="button" onClick={() => setShowMessenger(false)} className="text-clay text-xs hover:underline">Quitar</button>
               </div>
               <input type="url" value={contactMessenger} onChange={e => setContactMessenger(e.target.value)} placeholder="https://m.me/tuusuario" className="mt-2 w-full border rounded px-2 py-1.5 text-sm" />
             </div>
@@ -575,7 +575,7 @@ export default function EditarPage() {
               {currentImages.map((url, i) => (
                 <div key={i} className="relative aspect-square rounded-lg overflow-hidden group">
                   <Image src={url} alt="" className="w-full h-full object-cover" fill sizes="100px" unoptimized />
-                  <button onClick={() => removeCurrentImage(i)} className="absolute top-1 right-1 p-1 bg-red-500 rounded-full text-white opacity-0 group-hover:opacity-100 transition"><X size={12} /></button>
+                  <button onClick={() => removeCurrentImage(i)} className="absolute top-1 right-1 p-1 bg-red-500 rounded-full text-paper opacity-0 group-hover:opacity-100 transition"><X size={12} /></button>
                 </div>
               ))}
             </div>
@@ -585,7 +585,7 @@ export default function EditarPage() {
         {/* Agregar nuevas imágenes */}
         <div>
           <label className="t-label mb-2 block text-ink/45">Agregar imágenes</label>
-          <label className={`flex items-center gap-2 p-4 border-2 border-dashed rounded-lg cursor-pointer hover:border-brand-accent transition ${procesando ? 'pointer-events-none opacity-70' : ''}`}>
+          <label className={`flex items-center gap-2 p-4 border-2 border-dashed rounded-lg cursor-pointer hover:border-ink transition ${procesando ? 'pointer-events-none opacity-70' : ''}`}>
             {procesando ? (
               <>
                 <div className="h-4 w-4 animate-spin border border-line border-t-ink" />
@@ -604,7 +604,7 @@ export default function EditarPage() {
               {newImages.map((img, i) => (
                 <div key={i} className="relative aspect-square rounded-lg overflow-hidden">
                   <Image src={img.preview} alt="" className="w-full h-full object-cover" fill sizes="100px" unoptimized />
-                  <button onClick={() => removeNewImage(i)} className="absolute top-1 right-1 p-1 bg-red-500 rounded-full text-white"><X size={12} /></button>
+                  <button onClick={() => removeNewImage(i)} className="absolute top-1 right-1 p-1 bg-red-500 rounded-full text-paper"><X size={12} /></button>
                 </div>
               ))}
             </div>

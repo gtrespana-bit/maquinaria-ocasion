@@ -141,9 +141,9 @@ export default function AdminDashboard({
 
   const taskItems = useMemo(() => {
     const items: Array<{ label: string; count: number; tab: string; tone: string; icon: any }> = []
-    if (data?.pendingTransactions) items.push({ label: 'Transacciones por aprobar', count: data.pendingTransactions, tab: 'transacciones', tone: 'text-red-600 bg-red-50', icon: CreditCard })
-    if (data?.pendingModeration) items.push({ label: 'Publicaciones en moderación', count: data.pendingModeration, tab: 'moderacion', tone: 'text-yellow-700 bg-yellow-50', icon: ShoppingBag })
-    if (data?.pendingVerifications) items.push({ label: 'Verificaciones pendientes', count: data.pendingVerifications, tab: 'verificacion', tone: 'text-blue-600 bg-blue-50', icon: ShieldCheck })
+    if (data?.pendingTransactions) items.push({ label: 'Transacciones por aprobar', count: data.pendingTransactions, tab: 'transacciones', tone: 'text-clay bg-clay/[0.07]', icon: CreditCard })
+    if (data?.pendingModeration) items.push({ label: 'Publicaciones en moderación', count: data.pendingModeration, tab: 'moderacion', tone: 'text-yellow-700 bg-paper-2', icon: ShoppingBag })
+    if (data?.pendingVerifications) items.push({ label: 'Verificaciones pendientes', count: data.pendingVerifications, tab: 'verificacion', tone: 'text-ink bg-blue-50', icon: ShieldCheck })
     if (data?.activeReports) items.push({ label: 'Denuncias activas', count: data.activeReports, tab: 'moderacion', tone: 'text-orange-600 bg-orange-50', icon: AlertTriangle })
     return items.slice(0, 6)
   }, [data])
@@ -161,13 +161,13 @@ export default function AdminDashboard({
   if (!data) return null
 
   const kpis = [
-    { label: 'Usuarios', value: formatNumber(data.users), icon: Users, accent: 'bg-blue-50 text-blue-600', onClick: () => jump('usuarios'), helper: `${formatNumber(data.verified)} verificados` },
+    { label: 'Usuarios', value: formatNumber(data.users), icon: Users, accent: 'bg-blue-50 text-ink', onClick: () => jump('usuarios'), helper: `${formatNumber(data.verified)} verificados` },
     { label: 'Publicaciones', value: formatNumber(data.products), icon: ShoppingBag, accent: 'bg-purple-50 text-purple-600', onClick: () => jump('publicaciones'), helper: `${formatNumber(data.active)} activas · ${formatNumber(data.sold)} vendidas` },
-    { label: 'Ingresos (créditos)', value: formatMoney(data.revenueUsd), icon: DollarSign, accent: 'bg-emerald-50 text-emerald-600', onClick: () => jump('transacciones'), helper: `+${formatMoney(data.revenueToday)} hoy` },
-    { label: 'Ventas hoy', value: formatNumber(data.transactionsToday), icon: Wallet, accent: 'bg-yellow-50 text-yellow-700', onClick: () => jump('transacciones'), helper: 'compras aprobadas' },
+    { label: 'Ingresos (créditos)', value: formatMoney(data.revenueUsd), icon: DollarSign, accent: 'bg-moss/10 text-moss', onClick: () => jump('transacciones'), helper: `+${formatMoney(data.revenueToday)} hoy` },
+    { label: 'Ventas hoy', value: formatNumber(data.transactionsToday), icon: Wallet, accent: 'bg-paper-2 text-yellow-700', onClick: () => jump('transacciones'), helper: 'compras aprobadas' },
     { label: 'Visitas', value: formatNumber(data.totalVisits), icon: Eye, accent: 'bg-orange-50 text-orange-600', onClick: () => jump('audiencia'), helper: 'ver audiencia y actividad' },
     { label: 'Reseñas', value: formatNumber(data.reviews), icon: Star, accent: 'bg-amber-50 text-amber-600', onClick: () => jump('publicaciones'), helper: 'confianza en la plataforma' },
-    { label: 'Pendientes', value: formatNumber(data.pendingTransactions), icon: Clock, accent: 'bg-red-50 text-red-600', onClick: () => jump('transacciones'), helper: data.pendingTransactions ? 'requieren tu acción' : 'todo al día' },
+    { label: 'Pendientes', value: formatNumber(data.pendingTransactions), icon: Clock, accent: 'bg-clay/[0.07] text-clay', onClick: () => jump('transacciones'), helper: data.pendingTransactions ? 'requieren tu acción' : 'todo al día' },
     { label: 'Moderación', value: formatNumber(data.pendingModeration + data.activeReports), icon: ShieldCheck, accent: 'bg-paper-2 text-ink', onClick: () => jump('moderacion'), helper: `${data.pendingModeration} pubs · ${data.activeReports} denuncias` },
   ]
 
@@ -256,7 +256,7 @@ export default function AdminDashboard({
             <div>
               <div className="mb-3 flex items-center justify-between">
                 <span className="inline-flex items-center gap-2 t-label text-ink/45/55">
-                  <CreditCard size={13} className="text-emerald-600" /> Compras de créditos
+                  <CreditCard size={13} className="text-moss" /> Compras de créditos
                 </span>
                 <span className="t-label text-ink/45">{data.last7Transactions.reduce((a, b) => a + b, 0)} en total</span>
               </div>
@@ -285,7 +285,7 @@ export default function AdminDashboard({
             { label: 'Rate limiting', ok: !!status?.rateLimit, icon: ShieldCheck, hint: 'Protección anti-abuso' },
           ].map((s) => (
             <div key={s.label} className="flex items-start gap-3 rounded-xl border border-line bg-paper-2/60 p-3">
-              <span className={`flex h-9 w-9 items-center justify-center rounded-lg ${s.ok ? 'bg-emerald-50 text-emerald-600' : 'bg-red-50 text-red-600'}`}>
+              <span className={`flex h-9 w-9 items-center justify-center rounded-lg ${s.ok ? 'bg-moss/10 text-moss' : 'bg-clay/[0.07] text-clay'}`}>
                 <s.icon size={17} />
               </span>
               <div>
@@ -334,7 +334,7 @@ export default function AdminDashboard({
             {recentUsers.length === 0 && <Empty title="Aún no hay usuarios" />}
             {recentUsers.slice(0, 8).map((u) => (
               <div key={u.id} className="flex items-center gap-3 px-5 py-3">
-                <span className={`flex h-9 w-9 items-center justify-center rounded-full text-sm font-bold ${u.verificado ? 'bg-blue-50 text-blue-600' : 'bg-paper-2 text-ink/55'}`}>
+                <span className={`flex h-9 w-9 items-center justify-center rounded-full text-sm font-bold ${u.verificado ? 'bg-blue-50 text-ink' : 'bg-paper-2 text-ink/55'}`}>
                   {u.nombre?.slice(0, 1) || '?'}
                 </span>
                 <div className="min-w-0 flex-1">
@@ -371,12 +371,12 @@ export default function AdminDashboard({
             {recentTransactions.length === 0 && <Empty title="Aún no hay transacciones" />}
             {recentTransactions.slice(0, 8).map((t) => (
               <div key={t.id} className="flex items-center gap-3 px-5 py-3">
-                <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-emerald-50 text-emerald-600"><CreditCard size={16} /></span>
+                <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-moss/10 text-moss"><CreditCard size={16} /></span>
                 <div className="min-w-0 flex-1">
                   <p className="text-[13px] font-medium text-ink">{formatNumber(t.monto)} créditos</p>
                   <p className="text-[11.5px] text-ink/45">{t.metodo_pago || 'Pago'} · {timeAgo(t.creado_en)}</p>
                 </div>
-                <span className="text-sm font-bold text-emerald-600">+{formatMoney(t.precio_usd)}</span>
+                <span className="text-sm font-bold text-moss">+{formatMoney(t.precio_usd)}</span>
               </div>
             ))}
           </div>

@@ -121,22 +121,22 @@ export default function PWAInstallBanner() {
     <>
       {mounted && showBanner && (
         <div className="fixed bottom-4 inset-x-4 z-[60] md:inset-x-auto md:left-4 md:bottom-4 md:max-w-sm animate-fadeIn">
-          <div className="bg-white rounded-2xl shadow-2xl border border-gray-200 p-4">
-            <button onClick={handleDismiss} aria-label={t('pwa.closeBanner')} className="absolute top-3 right-3 text-gray-500 hover:text-gray-600">
+          <div className="bg-[#FBFAF5] rounded-2xl shadow-2xl border border-line p-4">
+            <button onClick={handleDismiss} aria-label={t('pwa.closeBanner')} className="absolute top-3 right-3 text-muted hover:text-ink/70">
               <X size={16} />
             </button>
             <div className="flex items-start gap-3">
               <div className="w-12 h-12 bg-brand-primary rounded-xl flex items-center justify-center flex-shrink-0">
-                <span className="text-white font-black text-lg">TA</span>
+                <span className="text-paper font-black text-lg">TA</span>
               </div>
               <div className="flex-1 pr-6">
-                <p className="font-bold text-gray-900 text-sm">{t('pwa.installTitle')}</p>
-                <p className="text-xs text-gray-500 mt-0.5">{t('pwa.installDesc')}</p>
+                <p className="font-bold text-ink text-sm">{t('pwa.installTitle')}</p>
+                <p className="text-xs text-muted mt-0.5">{t('pwa.installDesc')}</p>
               </div>
             </div>
             <button
               onClick={handleInstall}
-              className="w-full mt-3 bg-brand-primary text-white py-2.5 rounded-xl font-bold text-sm flex items-center justify-center gap-2 hover:bg-brand-dark transition"
+              className="w-full mt-3 bg-brand-primary text-paper py-2.5 rounded-xl font-bold text-sm flex items-center justify-center gap-2 hover:bg-brand-dark transition"
             >
               <Download size={16} /> {t('pwa.installButton')}
             </button>
@@ -145,18 +145,18 @@ export default function PWAInstallBanner() {
       )}
 
       {showIOS && (
-        <div className="fixed inset-0 z-[60] bg-black/50 flex items-center justify-center p-4 animate-fadeIn">
-          <div className="bg-white rounded-2xl shadow-2xl max-w-sm w-full p-5 animate-slideUp relative">
-            <button onClick={handleDismiss} aria-label={t('pwa.close')} className="absolute top-4 right-4 text-gray-500 hover:text-gray-600">
+        <div className="fixed inset-0 z-[60] bg-ink/60 flex items-center justify-center p-4 animate-fadeIn">
+          <div className="bg-[#FBFAF5] rounded-2xl shadow-2xl max-w-sm w-full p-5 animate-slideUp relative">
+            <button onClick={handleDismiss} aria-label={t('pwa.close')} className="absolute top-4 right-4 text-muted hover:text-ink/70">
               <X size={20} />
             </button>
             <div className="text-center mb-4">
               <div className="w-14 h-14 bg-brand-primary rounded-xl flex items-center justify-center mx-auto mb-3">
-                <span className="text-white font-black text-xl">TA</span>
+                <span className="text-paper font-black text-xl">TA</span>
               </div>
-              <h3 className="font-bold text-lg text-gray-900">{t('pwa.iosTitle')}</h3>
+              <h3 className="font-bold text-lg text-ink">{t('pwa.iosTitle')}</h3>
             </div>
-            <div className="space-y-3 bg-gray-50 rounded-xl p-4">
+            <div className="space-y-3 bg-paper-2 rounded-xl p-4">
               <div className="flex items-center gap-3 text-sm">
                 <Smartphone size={18} className="text-brand-primary flex-shrink-0" />
                 <p>{t('pwa.iosStep1Plain')} <Share size={14} className="inline" /></p>
@@ -170,7 +170,7 @@ export default function PWAInstallBanner() {
             </div>
             <button
               onClick={handleDismiss}
-              className="w-full mt-4 bg-brand-primary text-white py-2.5 rounded-xl font-bold text-sm hover:bg-brand-dark transition"
+              className="w-full mt-4 bg-brand-primary text-paper py-2.5 rounded-xl font-bold text-sm hover:bg-brand-dark transition"
             >
               {t('pwa.iosDone')}
             </button>

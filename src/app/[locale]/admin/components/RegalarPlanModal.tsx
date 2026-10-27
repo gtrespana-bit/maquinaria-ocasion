@@ -152,7 +152,7 @@ export default function RegalarPlanModal({
                 className={`rounded-xl border px-3 py-2.5 text-left transition ${
                   plan === p.id
                     ? p.id === 'gratis'
-                      ? 'border-red-300 bg-red-50'
+                      ? 'border-clay/40 bg-clay/[0.07]'
                       : 'border-brand-primary bg-ink/5'
                     : 'border-line hover:border-brand-primary/40 hover:bg-paper-2'
                 }`}

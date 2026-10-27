@@ -185,7 +185,7 @@ export default async function ParaProfesionalesPage({ params }: { params: Promis
           <div className="mt-5 grid gap-3 md:grid-cols-3">
             <div className="border border-line bg-[#FBFAF5] p-5">
               <div className="flex items-center gap-2 text-[14px] font-semibold text-ink">
-                <Users size={18} className="text-brand-accent" aria-hidden="true" /> Tipo de vendedor
+                <Users size={18} className="text-ink/60" aria-hidden="true" /> Tipo de vendedor
               </div>
               <p className="t-label mt-1 text-moss">Gratis, siempre</p>
               <p className="mt-2 text-[13px] leading-relaxed text-muted">
@@ -195,7 +195,7 @@ export default async function ParaProfesionalesPage({ params }: { params: Promis
             </div>
             <div className="border border-ink bg-[#FBFAF5] p-5">
               <div className="flex items-center gap-2 text-[14px] font-semibold text-ink">
-                <Sparkles size={18} className="text-brand-accent" aria-hidden="true" /> Plan
+                <Sparkles size={18} className="text-ink/60" aria-hidden="true" /> Plan
               </div>
               <p className="t-label mt-1 text-moss">Desde 19 €/mes</p>
               <p className="mt-2 text-[13px] leading-relaxed text-muted">
@@ -205,7 +205,7 @@ export default async function ParaProfesionalesPage({ params }: { params: Promis
             </div>
             <div className="border border-line bg-[#FBFAF5] p-5">
               <div className="flex items-center gap-2 text-[14px] font-semibold text-ink">
-                <CreditCard size={18} className="text-brand-accent" aria-hidden="true" /> Créditos
+                <CreditCard size={18} className="text-ink/60" aria-hidden="true" /> Créditos
               </div>
               <p className="t-label mt-1 text-moss">Pago por uso, sin caducidad</p>
               <p className="mt-2 text-[13px] leading-relaxed text-muted">

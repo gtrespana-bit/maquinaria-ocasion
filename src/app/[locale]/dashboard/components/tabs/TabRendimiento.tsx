@@ -109,8 +109,8 @@ const numero = (n: number | null | undefined) =>
   n == null ? '—' : new Intl.NumberFormat('es-ES').format(n)
 
 function tonoClase(tono: string) {
-  if (tono === 'ok') return 'bg-emerald-50 text-emerald-700 border-emerald-200'
-  if (tono === 'malo') return 'bg-red-50 text-red-700 border-red-200'
+  if (tono === 'ok') return 'bg-moss/10 text-moss border-moss/30'
+  if (tono === 'malo') return 'bg-clay/[0.07] text-clay border-clay/30'
   if (tono === 'aviso') return 'bg-amber-50 text-amber-800 border-amber-200'
   return 'bg-paper-2 text-ink/60 border-line'
 }
@@ -257,7 +257,7 @@ export default function TabRendimiento() {
 
   if (error && !datos) {
     return (
-      <div className="rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-800">{error}</div>
+      <div className="rounded-2xl border border-clay/30 bg-clay/[0.07] p-4 text-sm text-clay">{error}</div>
     )
   }
 
@@ -485,7 +485,7 @@ export default function TabRendimiento() {
                             a.precioVsMercado > 15
                               ? 'text-amber-600'
                               : a.precioVsMercado < -15
-                                ? 'text-emerald-600'
+                                ? 'text-moss'
                                 : 'text-ink/60'
                           }
                         >

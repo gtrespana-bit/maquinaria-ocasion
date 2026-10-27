@@ -192,24 +192,24 @@ export default function SolicitarVerificacion() {
   // === APROBADO ===
   if (estado === 'aprobada') {
     return (
-      <div className="bg-white rounded-2xl shadow-sm border border-emerald-200 overflow-hidden">
+      <div className="bg-[#FBFAF5] rounded-2xl shadow-sm border border-moss/30 overflow-hidden">
         <div className="bg-emerald-500 px-6 py-4">
           <div className="flex items-center gap-3">
-            <div className="bg-white p-2 rounded-full">
-              <BadgeCheck size={28} className="text-emerald-600" />
+            <div className="bg-[#FBFAF5] p-2 rounded-full">
+              <BadgeCheck size={28} className="text-moss" />
             </div>
             <div>
-              <h3 className="text-xl font-bold text-white">Vendedor Verificado</h3>
+              <h3 className="text-xl font-bold text-paper">Vendedor Verificado</h3>
               <p className="text-emerald-100 text-sm">Tu identidad ha sido verificada</p>
             </div>
           </div>
         </div>
         <div className="p-6">
-          <p className="text-gray-600 mb-3">
+          <p className="text-ink/70 mb-3">
             Tus compradores pueden ver que tu identidad fue confirmada. Esto genera confianza y te da <strong>más visibilidad</strong> en MaquinariaOcasión.
           </p>
           <div className="flex flex-wrap gap-2">
-            <span className="inline-flex items-center gap-1 bg-emerald-50 border border-emerald-200 text-emerald-700 text-sm font-semibold px-3 py-1 rounded-full">
+            <span className="inline-flex items-center gap-1 bg-moss/10 border border-moss/30 text-moss text-sm font-semibold px-3 py-1 rounded-full">
               <svg width={16} height={16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
                 <polyline points="22 4 12 14.01 9 11.01" />
@@ -225,8 +225,8 @@ export default function SolicitarVerificacion() {
   // === PENDIENTE ===
   if (estado === 'pendiente') {
     return (
-      <div className="bg-white rounded-2xl shadow-sm border border-yellow-200 overflow-hidden">
-        <div className="bg-yellow-500 px-6 py-4">
+      <div className="bg-[#FBFAF5] rounded-2xl shadow-sm border border-yellow-200 overflow-hidden">
+        <div className="bg-paper-20 px-6 py-4">
           <div className="flex items-center gap-3">
             <Clock size={28} className="text-yellow-900" />
             <div>
@@ -236,8 +236,8 @@ export default function SolicitarVerificacion() {
           </div>
         </div>
         <div className="p-6">
-          <p className="text-gray-600 mb-4">Tu solicitud fue enviada correctamente. Recibirás una notificación cuando sea revisada.</p>
-          <div className="bg-gray-50 rounded-lg p-4 text-sm text-gray-500 space-y-1">
+          <p className="text-ink/70 mb-4">Tu solicitud fue enviada correctamente. Recibirás una notificación cuando sea revisada.</p>
+          <div className="bg-paper-2 rounded-lg p-4 text-sm text-muted space-y-1">
             <p><strong>Teléfono:</strong> {solicitudActual?.pago_movil_telefono}</p>
             <p><strong>DNI/NIE:</strong> {solicitudActual?.pago_movil_cedula}</p>
             <p><strong>Banco:</strong> {solicitudActual?.pago_movil_banco}</p>
@@ -252,24 +252,24 @@ export default function SolicitarVerificacion() {
   if (estado === 'rechazada') {
     return (
       <div>
-        <div className="bg-white rounded-2xl shadow-sm border border-red-200 overflow-hidden mb-4">
+        <div className="bg-[#FBFAF5] rounded-2xl shadow-sm border border-clay/30 overflow-hidden mb-4">
           <div className="bg-red-500 px-6 py-4">
             <div className="flex items-center gap-3">
-              <X size={28} className="text-white" />
+              <X size={28} className="text-paper" />
               <div>
-                <h3 className="text-xl font-bold text-white">Solicitud rechazada</h3>
+                <h3 className="text-xl font-bold text-paper">Solicitud rechazada</h3>
               </div>
             </div>
           </div>
           <div className="p-6">
-            <p className="text-gray-600 mb-3">Tu solicitud anterior fue rechazada:</p>
-            <div className="bg-red-50 border border-red-200 rounded-lg p-4 text-sm text-red-700">
+            <p className="text-ink/70 mb-3">Tu solicitud anterior fue rechazada:</p>
+            <div className="bg-clay/[0.07] border border-clay/30 rounded-lg p-4 text-sm text-clay">
               {rechazoMotivo || 'No se pudo verificar la información proporcionada.'}
             </div>
           </div>
         </div>
 
-        <div className="bg-white rounded-2xl shadow-sm border p-6">
+        <div className="bg-[#FBFAF5] rounded-2xl shadow-sm border p-6">
           <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
             <Shield size={20} className="text-brand-primary" /> Solicitar verificación de nuevo
           </h3>
@@ -277,15 +277,15 @@ export default function SolicitarVerificacion() {
           <form onSubmit={(e) => { e.preventDefault(); handleEnviar() }} className="space-y-4">
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Teléfono</label>
+                <label className="block text-sm font-medium text-ink/75 mb-1">Teléfono</label>
                 <input type="tel" value={telefonoVerif} onChange={e => setTelefonoVerif(e.target.value)} placeholder="600 000 000" className="w-full border rounded-lg px-3 py-2" />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">DNI / NIE</label>
+                <label className="block text-sm font-medium text-ink/75 mb-1">DNI / NIE</label>
                 <input type="text" value={dniVerif} onChange={e => setDniVerif(e.target.value)} placeholder="12345678A" className="w-full border rounded-lg px-3 py-2" />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Banco</label>
+                <label className="block text-sm font-medium text-ink/75 mb-1">Banco</label>
                 <select value={bancoVerif} onChange={e => setBancoVerif(e.target.value)} className="w-full border rounded-lg px-3 py-2">
                   <option value="">Seleccionar...</option>
                   {bancos.map(b => <option key={b} value={b}>{b}</option>)}
@@ -295,19 +295,19 @@ export default function SolicitarVerificacion() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Foto del DNI/NIE — frente</label>
-                <label className="flex items-center gap-2 border-2 border-dashed border-gray-300 rounded-lg p-4 cursor-pointer hover:border-brand-primary transition">
-                  <Camera size={20} className="text-gray-500" />
-                  <span className="text-sm text-gray-500">{frenteFile ? frenteFile.name : 'Seleccionar...'}</span>
+                <label className="block text-sm font-medium text-ink/75 mb-1">Foto del DNI/NIE — frente</label>
+                <label className="flex items-center gap-2 border-2 border-dashed border-line-strong rounded-lg p-4 cursor-pointer hover:border-brand-primary transition">
+                  <Camera size={20} className="text-muted" />
+                  <span className="text-sm text-muted">{frenteFile ? frenteFile.name : 'Seleccionar...'}</span>
                   <input type="file" accept="image/*" onChange={handleFrenteFile} className="hidden" />
                 </label>
                 {frentePreview && <Image src={frentePreview} alt="Frente DNI" className="mt-2 h-24 rounded-lg object-cover" width={96} height={96} unoptimized />}
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Foto del DNI/NIE — dorso</label>
-                <label className="flex items-center gap-2 border-2 border-dashed border-gray-300 rounded-lg p-4 cursor-pointer hover:border-brand-primary transition">
-                  <Camera size={20} className="text-gray-500" />
-                  <span className="text-sm text-gray-500">{dorsoFile ? dorsoFile.name : 'Seleccionar...'}</span>
+                <label className="block text-sm font-medium text-ink/75 mb-1">Foto del DNI/NIE — dorso</label>
+                <label className="flex items-center gap-2 border-2 border-dashed border-line-strong rounded-lg p-4 cursor-pointer hover:border-brand-primary transition">
+                  <Camera size={20} className="text-muted" />
+                  <span className="text-sm text-muted">{dorsoFile ? dorsoFile.name : 'Seleccionar...'}</span>
                   <input type="file" accept="image/*" onChange={handleDorsoFile} className="hidden" />
                 </label>
                 {dorsoPreview && <Image src={dorsoPreview} alt="Dorso DNI" className="mt-2 h-24 rounded-lg object-cover" width={96} height={96} unoptimized />}
@@ -315,12 +315,12 @@ export default function SolicitarVerificacion() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Mensaje (opcional)</label>
+              <label className="block text-sm font-medium text-ink/75 mb-1">Mensaje (opcional)</label>
               <textarea value={mensaje} onChange={e => setMensaje(e.target.value)} rows={2} className="w-full border rounded-lg px-3 py-2 text-sm resize-none" placeholder="Añade información adicional si quieres..." />
             </div>
 
             {error && (
-              <div className="flex items-center gap-2 text-red-600 text-sm">
+              <div className="flex items-center gap-2 text-clay text-sm">
                 <AlertCircle size={16} /> {error}
               </div>
             )}
@@ -328,7 +328,7 @@ export default function SolicitarVerificacion() {
             <button
               type="submit"
               disabled={subiendo || enviando || !telefonoVerif || !dniVerif || !bancoVerif || !frenteFile || !dorsoFile}
-              className="bg-brand-primary text-white px-6 py-2.5 rounded-lg font-bold hover:bg-brand-dark transition disabled:opacity-50 flex items-center gap-2"
+              className="bg-brand-primary text-paper px-6 py-2.5 rounded-lg font-bold hover:bg-brand-dark transition disabled:opacity-50 flex items-center gap-2"
             >
               {subiendo ? <><Upload size={16} /> Subiendo fotos...</> : enviando ? <><CheckCircle2 size={16} /> Enviando...</> : <><BadgeCheck size={16} /> Solicitar verificación</>}
             </button>
@@ -345,42 +345,42 @@ export default function SolicitarVerificacion() {
         <div className="flex items-start gap-3">
           <Shield size={24} className="text-brand-primary flex-shrink-0 mt-0.5" />
           <div>
-            <h3 className="text-lg font-bold text-gray-900 mb-1">Conviértete en Vendedor Verificado</h3>
-            <p className="text-gray-600 text-sm leading-relaxed">
+            <h3 className="text-lg font-bold text-ink mb-1">Conviértete en Vendedor Verificado</h3>
+            <p className="text-ink/70 text-sm leading-relaxed">
               Verificar tu identidad te da un <strong>distintivo visible</strong> en todas tus publicaciones, generando confianza inmediata en los compradores. Los vendedores verificados reciben <strong>más contactos</strong> y venden más rápido.
             </p>
           </div>
         </div>
-        <div className="mt-4 flex flex-wrap gap-4 text-sm text-gray-600">
+        <div className="mt-4 flex flex-wrap gap-4 text-sm text-ink/70">
           <div className="flex items-center gap-2">
-            <CheckCircle2 size={16} className="text-emerald-600" /> Distintivo visible en cada publicación
+            <CheckCircle2 size={16} className="text-moss" /> Distintivo visible en cada publicación
           </div>
           <div className="flex items-center gap-2">
-            <CheckCircle2 size={16} className="text-emerald-600" /> Más confianza de los compradores
+            <CheckCircle2 size={16} className="text-moss" /> Más confianza de los compradores
           </div>
           <div className="flex items-center gap-2">
-            <CheckCircle2 size={16} className="text-emerald-600" /> Verificación revisada en menos de 24 h
+            <CheckCircle2 size={16} className="text-moss" /> Verificación revisada en menos de 24 h
           </div>
         </div>
       </div>
 
-      <div className="bg-white rounded-2xl shadow-sm border p-6">
+      <div className="bg-[#FBFAF5] rounded-2xl shadow-sm border p-6">
         <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
-          <BadgeCheck size={20} className="text-emerald-600" /> Solicita tu verificación
+          <BadgeCheck size={20} className="text-moss" /> Solicita tu verificación
         </h3>
 
         <form onSubmit={(e) => { e.preventDefault(); handleEnviar() }} className="space-y-4">
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Teléfono</label>
+              <label className="block text-sm font-medium text-ink/75 mb-1">Teléfono</label>
               <input type="tel" value={telefonoVerif} onChange={e => setTelefonoVerif(e.target.value)} placeholder="600 000 000" className="w-full border rounded-lg px-3 py-2" />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">DNI / NIE</label>
+              <label className="block text-sm font-medium text-ink/75 mb-1">DNI / NIE</label>
               <input type="text" value={dniVerif} onChange={e => setDniVerif(e.target.value)} placeholder="12345678A" className="w-full border rounded-lg px-3 py-2" />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Banco</label>
+              <label className="block text-sm font-medium text-ink/75 mb-1">Banco</label>
               <select value={bancoVerif} onChange={e => setBancoVerif(e.target.value)} className="w-full border rounded-lg px-3 py-2">
                 <option value="">Seleccionar...</option>
                 {bancos.map(b => <option key={b} value={b}>{b}</option>)}
@@ -388,23 +388,23 @@ export default function SolicitarVerificacion() {
             </div>
           </div>
 
-          <p className="text-xs text-gray-500">Usamos estos datos para verificar tu identidad y contrastarlos con el titular de tu Bizum/transferencia si compras créditos.</p>
+          <p className="text-xs text-muted">Usamos estos datos para verificar tu identidad y contrastarlos con el titular de tu Bizum/transferencia si compras créditos.</p>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Foto del DNI/NIE — frente</label>
-              <label className="flex items-center gap-2 border-2 border-dashed border-gray-300 rounded-lg p-4 cursor-pointer hover:border-brand-primary transition">
-                <Camera size={20} className="text-gray-500" />
-                <span className="text-sm text-gray-500">{frenteFile ? frenteFile.name : 'Seleccionar...'}</span>
+              <label className="block text-sm font-medium text-ink/75 mb-1">Foto del DNI/NIE — frente</label>
+              <label className="flex items-center gap-2 border-2 border-dashed border-line-strong rounded-lg p-4 cursor-pointer hover:border-brand-primary transition">
+                <Camera size={20} className="text-muted" />
+                <span className="text-sm text-muted">{frenteFile ? frenteFile.name : 'Seleccionar...'}</span>
                 <input type="file" accept="image/*" onChange={handleFrenteFile} className="hidden" />
               </label>
               {frentePreview && <Image src={frentePreview} alt="Frente DNI" className="mt-2 h-24 rounded-lg object-cover" width={96} height={96} unoptimized />}
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Foto del DNI/NIE — dorso</label>
-              <label className="flex items-center gap-2 border-2 border-dashed border-gray-300 rounded-lg p-4 cursor-pointer hover:border-brand-primary transition">
-                <Camera size={20} className="text-gray-500" />
-                <span className="text-sm text-gray-500">{dorsoFile ? dorsoFile.name : 'Seleccionar...'}</span>
+              <label className="block text-sm font-medium text-ink/75 mb-1">Foto del DNI/NIE — dorso</label>
+              <label className="flex items-center gap-2 border-2 border-dashed border-line-strong rounded-lg p-4 cursor-pointer hover:border-brand-primary transition">
+                <Camera size={20} className="text-muted" />
+                <span className="text-sm text-muted">{dorsoFile ? dorsoFile.name : 'Seleccionar...'}</span>
                 <input type="file" accept="image/*" onChange={handleDorsoFile} className="hidden" />
               </label>
               {dorsoPreview && <Image src={dorsoPreview} alt="Dorso DNI" className="mt-2 h-24 rounded-lg object-cover" width={96} height={96} unoptimized />}
@@ -412,12 +412,12 @@ export default function SolicitarVerificacion() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Mensaje (opcional)</label>
+            <label className="block text-sm font-medium text-ink/75 mb-1">Mensaje (opcional)</label>
             <textarea value={mensaje} onChange={e => setMensaje(e.target.value)} rows={2} className="w-full border rounded-lg px-3 py-2 text-sm resize-none" placeholder="Añade información adicional si quieres..." />
           </div>
 
           {error && (
-            <div className="flex items-center gap-2 text-red-600 text-sm">
+            <div className="flex items-center gap-2 text-clay text-sm">
               <AlertCircle size={16} /> {error}
             </div>
           )}
@@ -425,7 +425,7 @@ export default function SolicitarVerificacion() {
           <button
             type="submit"
             disabled={subiendo || enviando || !telefonoVerif || !dniVerif || !bancoVerif || !frenteFile || !dorsoFile}
-            className="bg-brand-primary text-white px-6 py-2.5 rounded-lg font-bold hover:bg-brand-dark transition disabled:opacity-50 flex items-center gap-2"
+            className="bg-brand-primary text-paper px-6 py-2.5 rounded-lg font-bold hover:bg-brand-dark transition disabled:opacity-50 flex items-center gap-2"
           >
             {subiendo ? <><Upload size={16} /> Subiendo fotos...</> : enviando ? <><CheckCircle2 size={16} /> Enviando...</> : <><BadgeCheck size={16} /> Solicitar verificación</>}
           </button>

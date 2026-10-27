@@ -294,12 +294,12 @@ export default function AdminPublicaciones({ notify }: { notify: (msg: string) =
                   <td className="whitespace-nowrap px-3 py-3 text-[11.5px] text-ink/45">{formatDate(p.creado_en)}</td>
                   <td className="whitespace-nowrap px-3 py-3 text-right">
                     <div className="flex justify-end gap-1">
-                      <button onClick={() => setDetail(p)} title="Ver detalle" className="rounded-lg p-1.5 text-ink/35 transition hover:bg-paper-2 hover:text-blue-600"><Eye size={15} /></button>
+                      <button onClick={() => setDetail(p)} title="Ver detalle" className="rounded-lg p-1.5 text-ink/35 transition hover:bg-paper-2 hover:text-ink"><Eye size={15} /></button>
                       <button onClick={() => toggleActivo(p, !p.activo)} disabled={actionId === p.id} title={p.activo ? 'Pausar' : 'Activar'} className="rounded-lg p-1.5 text-ink/35 transition hover:bg-paper-2 hover:text-ink">{p.activo ? <Pause size={15} /> : <Play size={15} />}</button>
-                      <button onClick={() => toggleDestacado(p)} disabled={actionId === p.id} title="Destacar" className="rounded-lg p-1.5 text-yellow-500 transition hover:bg-yellow-50"><Star size={15} /></button>
-                      <button onClick={() => boost(p)} disabled={actionId === p.id} title="Boostear" className="rounded-lg p-1.5 text-emerald-500 transition hover:bg-emerald-50"><Zap size={15} /></button>
-                      <a href={productUrl(p)} target="_blank" rel="noopener noreferrer" title="Ver sitio" className="rounded-lg p-1.5 text-ink/35 transition hover:bg-paper-2 hover:text-blue-600"><ExternalLink size={15} /></a>
-                      <button onClick={() => eliminar(p.id)} disabled={actionId === p.id} title="Eliminar" className="rounded-lg p-1.5 text-ink/35 transition hover:bg-red-50 hover:text-red-600"><Trash2 size={15} /></button>
+                      <button onClick={() => toggleDestacado(p)} disabled={actionId === p.id} title="Destacar" className="rounded-lg p-1.5 text-yellow-500 transition hover:bg-paper-2"><Star size={15} /></button>
+                      <button onClick={() => boost(p)} disabled={actionId === p.id} title="Boostear" className="rounded-lg p-1.5 text-emerald-500 transition hover:bg-moss/10"><Zap size={15} /></button>
+                      <a href={productUrl(p)} target="_blank" rel="noopener noreferrer" title="Ver sitio" className="rounded-lg p-1.5 text-ink/35 transition hover:bg-paper-2 hover:text-ink"><ExternalLink size={15} /></a>
+                      <button onClick={() => eliminar(p.id)} disabled={actionId === p.id} title="Eliminar" className="rounded-lg p-1.5 text-ink/35 transition hover:bg-clay/[0.07] hover:text-clay"><Trash2 size={15} /></button>
                     </div>
                   </td>
                 </tr>
@@ -328,11 +328,11 @@ export default function AdminPublicaciones({ notify }: { notify: (msg: string) =
               <div className="flex items-center justify-between">
                 <span className="text-lg font-semibold text-ink">{formatMoney(p.precio_usd)}</span>
                 <div className="flex gap-1">
-                  <button onClick={() => setDetail(p)} className="rounded-lg p-2 text-ink/35 hover:bg-paper-2 hover:text-blue-600"><Eye size={16} /></button>
+                  <button onClick={() => setDetail(p)} className="rounded-lg p-2 text-ink/35 hover:bg-paper-2 hover:text-ink"><Eye size={16} /></button>
                   <button onClick={() => toggleActivo(p, !p.activo)} className="rounded-lg p-2 text-ink/35 hover:bg-paper-2">{p.activo ? <Pause size={16} /> : <Play size={16} />}</button>
-                  <button onClick={() => toggleDestacado(p)} className="rounded-lg p-2 text-yellow-500 hover:bg-yellow-50"><Star size={16} /></button>
-                  <button onClick={() => boost(p)} className="rounded-lg p-2 text-emerald-500 hover:bg-emerald-50"><Zap size={16} /></button>
-                  <button onClick={() => eliminar(p.id)} className="rounded-lg p-2 text-ink/35 hover:bg-red-50 hover:text-red-600"><Trash2 size={16} /></button>
+                  <button onClick={() => toggleDestacado(p)} className="rounded-lg p-2 text-yellow-500 hover:bg-paper-2"><Star size={16} /></button>
+                  <button onClick={() => boost(p)} className="rounded-lg p-2 text-emerald-500 hover:bg-moss/10"><Zap size={16} /></button>
+                  <button onClick={() => eliminar(p.id)} className="rounded-lg p-2 text-ink/35 hover:bg-clay/[0.07] hover:text-clay"><Trash2 size={16} /></button>
                 </div>
               </div>
             </div>
@@ -382,7 +382,7 @@ export default function AdminPublicaciones({ notify }: { notify: (msg: string) =
               </div>
             )}
             {detail.motivo_moderacion && (
-              <div className="rounded-xl border border-red-200 bg-red-50 p-3 text-sm text-red-700"> Motivo de moderación: {detail.motivo_moderacion}</div>
+              <div className="rounded-xl border border-clay/30 bg-clay/[0.07] p-3 text-sm text-clay"> Motivo de moderación: {detail.motivo_moderacion}</div>
             )}
             <div className="flex flex-wrap gap-2 border-t border-line pt-4">
               <Button size="sm" variant={detail.activo ? 'outline' : 'success'} onClick={() => toggleActivo(detail, !detail.activo)}>{detail.activo ? <><Pause size={14} /> Pausar</> : <><Play size={14} /> Activar</>}</Button>

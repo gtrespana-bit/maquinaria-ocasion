@@ -394,7 +394,7 @@ export default function TabProductos({
                     <div className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-[11.5px] text-ink/50">
                       <span className="t-num inline-flex items-center gap-1"><Eye size={10} aria-hidden="true" /> {p.visitas || 0}</span>
                       {difVisitas != null && (
-                        <span className={difVisitas < 0 ? 'text-amber-700 font-medium' : 'text-emerald-700 font-medium'}>
+                        <span className={difVisitas < 0 ? 'text-amber-700 font-medium' : 'text-moss font-medium'}>
                           {difVisitas < 0 ? `${Math.abs(difVisitas)} % menos que tu media` : `${difVisitas} % más que tu media`}
                         </span>
                       )}

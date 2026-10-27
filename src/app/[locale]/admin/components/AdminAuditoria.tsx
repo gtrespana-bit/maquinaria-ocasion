@@ -168,14 +168,14 @@ export default function AdminAuditoria({ notify }: { notify: (msg: string) => vo
             <div className="grid gap-4 md:grid-cols-2">
               {detail.datos_antiguos && (
                 <div>
-                  <h4 className="mb-2 flex items-center gap-1 text-xs font-semibold uppercase tracking-wide text-red-500"><Plus className="h-3 w-3 rotate-45" /> Antes</h4>
-                  <pre className="max-h-60 overflow-auto whitespace-pre-wrap break-all rounded-xl bg-red-50 p-3 text-[11px] text-red-800">{JSON.stringify(detail.datos_antiguos, null, 2)}</pre>
+                  <h4 className="mb-2 flex items-center gap-1 text-xs font-semibold uppercase tracking-wide text-clay"><Plus className="h-3 w-3 rotate-45" /> Antes</h4>
+                  <pre className="max-h-60 overflow-auto whitespace-pre-wrap break-all rounded-xl bg-clay/[0.07] p-3 text-[11px] text-clay">{JSON.stringify(detail.datos_antiguos, null, 2)}</pre>
                 </div>
               )}
               {detail.datos_nuevos && (
                 <div>
-                  <h4 className="mb-2 flex items-center gap-1 text-xs font-semibold uppercase tracking-wide text-emerald-600"><Plus className="h-3 w-3" /> Después</h4>
-                  <pre className="max-h-60 overflow-auto whitespace-pre-wrap break-all rounded-xl bg-emerald-50 p-3 text-[11px] text-emerald-800">{JSON.stringify(detail.datos_nuevos, null, 2)}</pre>
+                  <h4 className="mb-2 flex items-center gap-1 text-xs font-semibold uppercase tracking-wide text-moss"><Plus className="h-3 w-3" /> Después</h4>
+                  <pre className="max-h-60 overflow-auto whitespace-pre-wrap break-all rounded-xl bg-moss/10 p-3 text-[11px] text-moss">{JSON.stringify(detail.datos_nuevos, null, 2)}</pre>
                 </div>
               )}
             </div>

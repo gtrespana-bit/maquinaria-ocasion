@@ -14,7 +14,6 @@ import { etiquetaPlan } from '@/lib/planes-anuncios'
 import { Camera, X, AlertCircle, Phone, Mail, MapPin, MessageSquare } from 'lucide-react'
 import { verificarContenido } from '@/lib/moderacion'
 import BadgeTipoVendedor from '@/components/BadgeTipoVendedor'
-import { emailProductoPublicado } from '@/lib/server-email'
 import { compressImages } from '@/lib/compress-image'
 import { useTranslations } from 'next-intl'
 import Image from 'next/image'
@@ -437,14 +436,6 @@ export default function PublicarPage() {
         }
       }
 
-      // EMAIL: notificar que el producto fue publicado
-      const nombrePublicador = user?.email?.split('@')[0] || 'Usuario'
-      try {
-        await emailProductoPublicado(user?.email || '', nombrePublicador, titulo, precioUsd, producto.id)
-      } catch (e) {
-        console.error('Error email publicación:', e)
-      }
-      
       // Ir directo a la URL canónica con slug (el detalle redirige 301 si se
       // entra por UUID, y la redirección perdería el ?nuevo=1 del banner).
       router.push(`${productUrl(producto)}?nuevo=1`)
@@ -701,7 +692,7 @@ export default function PublicarPage() {
             <div>
               <label className="t-label mb-1.5 block text-ink/50">{t('titleField')}</label>
               <input type="text" value={titulo} onChange={e => setTitulo(e.target.value)} placeholder={t('titlePlaceholder')} maxLength={100} required className="field text-[15px]" />
-              <p className="text-xs text-gray-500 mt-1">{titulo.length}/100</p>
+              <p className="text-xs text-muted mt-1">{titulo.length}/100</p>
             </div>
 
             {camposEspeciales.length > 0 && (
@@ -743,7 +734,7 @@ export default function PublicarPage() {
             <div>
               <label className="t-label mb-1.5 block text-ink/50">{t('description')}</label>
               <textarea value={descripcion} onChange={e => setDescripcion(e.target.value)} rows={5} maxLength={2000} required className="field resize-none text-[15px]" placeholder={t('descPlaceholder')} />
-              <p className="text-xs text-gray-500 mt-1">{descripcion.length}/2000</p>
+              <p className="text-xs text-muted mt-1">{descripcion.length}/2000</p>
             </div>
 
             <div>
@@ -762,7 +753,7 @@ export default function PublicarPage() {
             <div>
               <label className="t-label mb-1.5 block text-ink/50">{t('priceEur')}</label>
               <input type="number" value={precioUsd} onChange={e => setPrecioUsd(e.target.value)} placeholder={t('pricePlaceholder')} min="0" step="0.01" required className="field text-[15px]" />
-              <p className="text-xs text-gray-500 mt-1">{t('priceNote')}</p>
+              <p className="text-xs text-muted mt-1">{t('priceNote')}</p>
               <p className="text-xs mt-1.5">
                 <LocalLink href="/tasador" className="font-bold text-brand-darkNav underline decoration-brand-signal decoration-2 underline-offset-2 hover:text-brand-signal-dark">
                   {t('estimatePriceCta')}
@@ -779,7 +770,7 @@ export default function PublicarPage() {
                     maxLength={500}
                     className="field text-[15px]"
                   />
-                  <p className="text-xs text-gray-500 mt-1">{t('videoNote')}</p>
+                  <p className="text-xs text-muted mt-1">{t('videoNote')}</p>
                 </div>
               )}
             </div>
@@ -807,7 +798,7 @@ export default function PublicarPage() {
                 <MapPin size={18} />
                 {t('contactTitle')}
               </h3>
-              <p className="text-xs text-gray-500">{t('contactDesc')}</p>
+              <p className="text-xs text-muted">{t('contactDesc')}</p>
 
               <div className="space-y-3">
                 {/* WhatsApp */}
@@ -848,7 +839,7 @@ export default function PublicarPage() {
               </div>
 
               {/* Chat interno siempre activo */}
-              <div className="flex items-center gap-2 text-xs text-gray-500">
+              <div className="flex items-center gap-2 text-xs text-muted">
                 <MessageSquare size={12} />
                 <span>{t('chatAuto')}</span>
               </div>
@@ -866,39 +857,39 @@ export default function PublicarPage() {
         {step === 1 && (
           <div className="space-y-5 animate-fadeIn">
             <h2 className="t-display t-display-sm text-ink">{t('addPhotos')}</h2>
-            <p className="text-sm text-gray-500">{t('photosDesc')}</p>
+            <p className="text-sm text-muted">{t('photosDesc')}</p>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
               {imagenes.map((img, i) => (
                 <div key={img.preview} className="group relative aspect-square overflow-hidden border border-line">
                   <Image src={img.preview} alt="" fill unoptimized sizes="200px" className="object-cover" />
-                  {i === 0 && img.uploadedUrl && <span className="absolute top-1 left-1 bg-brand-accent text-white text-[10px] font-bold px-1.5 py-0.5 rounded">{t('cover')}</span>}
+                  {i === 0 && img.uploadedUrl && <span className="absolute top-1 left-1 bg-signal text-ink text-[10px] font-bold px-1.5 py-0.5 rounded">{t('cover')}</span>}
                   {img.uploading && (
-                    <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+                    <div className="absolute inset-0 bg-ink/60 flex items-center justify-center">
                       <div className="w-8 h-8 border-2 border-white border-t-transparent rounded-full animate-spin" />
                     </div>
                   )}
                   {img.error && (
                     <div className="absolute inset-0 bg-red-500/50 flex items-center justify-center">
-                      <X size={20} className="text-white" />
+                      <X size={20} className="text-paper" />
                     </div>
                   )}
                   {!img.uploading && (
-                    <button onClick={() => removeImage(img.preview)} className="absolute top-1 right-1 bg-red-500 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition">
+                    <button onClick={() => removeImage(img.preview)} className="absolute top-1 right-1 bg-red-500 text-paper p-1 rounded-full opacity-0 group-hover:opacity-100 transition">
                       <X size={14} />
                     </button>
                   )}
                 </div>
               ))}
               {imagenes.length < 10 && (
-                <label className={`aspect-square rounded-lg border-2 border-dashed border-gray-300 flex flex-col items-center justify-center cursor-pointer hover:border-brand-accent hover:bg-yellow-50 transition ${procesando ? 'pointer-events-none opacity-70' : ''}`}>
+                <label className={`aspect-square rounded-lg border-2 border-dashed border-line-strong flex flex-col items-center justify-center cursor-pointer hover:border-ink hover:bg-paper-2 transition ${procesando ? 'pointer-events-none opacity-70' : ''}`}>
                   {procesando ? (
                     <>
                       <div className="w-6 h-6 border-2 border-gray-400 border-t-transparent rounded-full animate-spin" />
-                      <span className="text-xs text-gray-500 mt-2 px-2 text-center">{t('optimizing')}</span>
+                      <span className="text-xs text-muted mt-2 px-2 text-center">{t('optimizing')}</span>
                     </>
                   ) : (
                     <>
-                      <Camera size={24} className="text-gray-500" /><span className="text-xs text-gray-500 mt-1">{t('add')}</span>
+                      <Camera size={24} className="text-muted" /><span className="text-xs text-muted mt-1">{t('add')}</span>
                     </>
                   )}
                   <input type="file" accept="image/*" multiple onChange={handleImageUpload} className="hidden" disabled={procesando} />
@@ -921,7 +912,7 @@ export default function PublicarPage() {
 
             {loading && imagenes.length > 0 && (
               <div>
-                <p className="text-sm text-gray-500 mb-2">{t('uploading')} {uploadProgress}%</p>
+                <p className="text-sm text-muted mb-2">{t('uploading')} {uploadProgress}%</p>
                 <div className="h-1 w-full bg-line">
                   <div className="h-1 bg-ink transition-all" style={{ width: `${uploadProgress}%` }} />
                 </div>

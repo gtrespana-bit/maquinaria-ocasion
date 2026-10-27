@@ -113,7 +113,7 @@ export default function AdminCategorias({ notify }: { notify: (msg: string) => v
               <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-ink/10 text-ink"><Tag size={18} /></span>
               <div className="flex gap-1 opacity-0 transition group-hover:opacity-100">
                 <button onClick={() => { setEdit(c); setNombreEdit(c.nombre) }} className="rounded-lg p-1.5 text-ink/35 hover:bg-paper-2 hover:text-ink"><Pencil size={14} /></button>
-                <button onClick={() => setDeleteCat(c)} className="rounded-lg p-1.5 text-ink/35 hover:bg-red-50 hover:text-red-600"><Trash2 size={14} /></button>
+                <button onClick={() => setDeleteCat(c)} className="rounded-lg p-1.5 text-ink/35 hover:bg-clay/[0.07] hover:text-clay"><Trash2 size={14} /></button>
               </div>
             </div>
             <p className="mt-3 truncate text-sm font-bold capitalize text-ink">{c.nombre}</p>
@@ -136,7 +136,7 @@ export default function AdminCategorias({ notify }: { notify: (msg: string) => v
           <div className="space-y-3 text-sm">
             <p className="font-semibold text-ink">¿Eliminar la categoría <span className="capitalize">{deleteCat.nombre}</span>?</p>
             {deleteCat.count ? (
-              <p className="rounded-xl bg-red-50 p-3 text-xs text-red-700">No se puede eliminar porque tiene {deleteCat.count} publicaciones asignadas. Primero mueve o elimina esas publicaciones.</p>
+              <p className="rounded-xl bg-clay/[0.07] p-3 text-xs text-clay">No se puede eliminar porque tiene {deleteCat.count} publicaciones asignadas. Primero mueve o elimina esas publicaciones.</p>
             ) : (
               <p className="text-[12.5px] leading-relaxed text-ink/55">Esta categoría está vacía y puede eliminarse de forma segura.</p>
             )}

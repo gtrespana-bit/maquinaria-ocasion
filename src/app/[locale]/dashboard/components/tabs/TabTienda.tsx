@@ -184,7 +184,7 @@ export default function TabTienda() {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-5">
           <div>
             <h3 className="font-semibold text-ink flex items-center gap-2">
-              <Store size={18} className="text-brand-accent" /> Mi tienda
+              <Store size={18} className="text-ink" /> Mi tienda
             </h3>
             <p className="text-[12.5px] text-ink/55">
               Una página propia con tu logo, tu stock y tu dirección web.
@@ -219,7 +219,7 @@ export default function TabTienda() {
               onClick={copiarEnlace}
               className="inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1.5 rounded-lg border border-line bg-[#FBFAF5] hover:bg-paper-2 transition"
             >
-              {copiado ? <Check size={13} className="text-brand-accent" /> : <Copy size={13} />}
+              {copiado ? <Check size={13} className="text-ink" /> : <Copy size={13} />}
               {copiado ? 'Copiado' : 'Copiar'}
             </button>
             {form.tienda_activa && slugPrevio && (
@@ -334,8 +334,8 @@ export default function TabTienda() {
           <p
             className={`text-sm rounded-xl p-3 ${
               mensaje.includes('correctamente')
-                ? 'bg-green-50 text-green-800 border border-green-200'
-                : 'bg-red-50 text-red-700 border border-red-200'
+                ? 'bg-signal/10 text-green-800 border border-green-200'
+                : 'bg-clay/[0.07] text-clay border border-clay/30'
             }`}
           >
             {mensaje}
@@ -369,7 +369,7 @@ function Campo({
       <label className="block text-sm font-semibold text-ink mb-1.5">{etiqueta}</label>
       {children}
       {error ? (
-        <p className="text-xs text-red-600 mt-1">{error}</p>
+        <p className="text-xs text-clay mt-1">{error}</p>
       ) : hint ? (
         <p className="text-[11.5px] text-ink/45 mt-1">{hint}</p>
       ) : null}

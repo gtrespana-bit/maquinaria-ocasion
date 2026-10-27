@@ -128,7 +128,7 @@ export default function TabReservas({ userId }: { userId: string }) {
         ))}
       </div>
 
-      {aviso && <p className="text-sm text-red-700 bg-red-50 border border-red-200 rounded-lg px-3 py-2">{aviso}</p>}
+      {aviso && <p className="text-sm text-clay bg-clay/[0.07] border border-clay/30 rounded-lg px-3 py-2">{aviso}</p>}
 
       {cargando ? (
         <div className="border border-line bg-[#FBFAF5] p-8 text-center text-ink/60">
@@ -182,7 +182,7 @@ export default function TabReservas({ userId }: { userId: string }) {
                       Del {fecha(r.created_at)} · {estado === 'activa' ? `válida hasta ${fecha(r.expira_en)}` : 'a la espera de confirmación'}
                     </p>
                     {etiqueta?.descripcion && <p className="text-[11.5px] text-ink/45 mt-1">{etiqueta.descripcion}</p>}
-                    {r.motivo_cancelacion && <p className="text-xs text-red-700 mt-1">Motivo: {r.motivo_cancelacion}</p>}
+                    {r.motivo_cancelacion && <p className="text-xs text-clay mt-1">Motivo: {r.motivo_cancelacion}</p>}
                     {r.mensaje && <p className="text-[11.5px] text-ink/45 mt-1 italic">“{r.mensaje}”</p>}
 
                     <div className="flex flex-wrap gap-2 mt-3">
@@ -201,7 +201,7 @@ export default function TabReservas({ userId }: { userId: string }) {
                             type="button"
                             onClick={() => confirmar(r, 'rechazar')}
                             disabled={trabajando === r.id}
-                            className="inline-flex items-center gap-1.5 border border-red-200 text-red-700 text-xs font-semibold px-3 py-2 rounded-lg hover:bg-red-50 disabled:opacity-50"
+                            className="inline-flex items-center gap-1.5 border border-clay/30 text-clay text-xs font-semibold px-3 py-2 rounded-lg hover:bg-clay/[0.07] disabled:opacity-50"
                           >
                             <X size={13} /> Rechazar
                           </button>

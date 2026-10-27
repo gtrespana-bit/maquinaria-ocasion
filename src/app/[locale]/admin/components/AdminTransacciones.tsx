@@ -149,13 +149,13 @@ export default function AdminTransacciones({
       {/* metrics */}
       <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
         <Card bodyClassName="p-4">
-          <div className="flex items-center gap-3"><span className="flex h-9 w-9 items-center justify-center rounded-xl bg-red-50 text-red-600"><Wallet size={17} /></span><div><p className="text-2xl font-semibold text-ink">{items.filter((t) => t.estado === 'pendiente').length}</p><p className="text-[11.5px] text-ink/45">Pendientes</p></div></div>
+          <div className="flex items-center gap-3"><span className="flex h-9 w-9 items-center justify-center rounded-xl bg-clay/[0.07] text-clay"><Wallet size={17} /></span><div><p className="text-2xl font-semibold text-ink">{items.filter((t) => t.estado === 'pendiente').length}</p><p className="text-[11.5px] text-ink/45">Pendientes</p></div></div>
         </Card>
         <Card bodyClassName="p-4">
-          <div className="flex items-center gap-3"><span className="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600"><Check size={17} /></span><div><p className="text-2xl font-semibold text-ink">{approved.length}</p><p className="text-[11.5px] text-ink/45">Aprobadas</p></div></div>
+          <div className="flex items-center gap-3"><span className="flex h-9 w-9 items-center justify-center rounded-xl bg-moss/10 text-moss"><Check size={17} /></span><div><p className="text-2xl font-semibold text-ink">{approved.length}</p><p className="text-[11.5px] text-ink/45">Aprobadas</p></div></div>
         </Card>
         <Card bodyClassName="p-4">
-          <div className="flex items-center gap-3"><span className="flex h-9 w-9 items-center justify-center rounded-xl bg-yellow-50 text-yellow-600"><CreditCard size={17} /></span><div><p className="text-2xl font-semibold text-ink">{formatMoney(ingresos)}</p><p className="text-[11.5px] text-ink/45">Ingresos (€)</p></div></div>
+          <div className="flex items-center gap-3"><span className="flex h-9 w-9 items-center justify-center rounded-xl bg-paper-2 text-signal-deep"><CreditCard size={17} /></span><div><p className="text-2xl font-semibold text-ink">{formatMoney(ingresos)}</p><p className="text-[11.5px] text-ink/45">Ingresos (€)</p></div></div>
         </Card>
         <Card bodyClassName="p-4">
           <div className="flex items-center gap-3"><span className="flex h-9 w-9 items-center justify-center rounded-xl bg-purple-50 text-purple-600"><DollarSign size={17} /></span><div><p className="text-2xl font-semibold text-ink">{formatNumber(creditosAprobados)}</p><p className="text-[11.5px] text-ink/45">Créditos emitidos</p></div></div>
@@ -181,7 +181,7 @@ export default function AdminTransacciones({
             <Card key={t.id} bodyClassName="p-4" className={pendiente ? 'border-yellow-300' : ''}>
               <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
                 <div className="flex flex-1 items-start gap-4">
-                  <span className={`flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl ${pendiente ? 'bg-yellow-50 text-yellow-600' : t.estado === 'aprobado' ? 'bg-emerald-50 text-emerald-600' : 'bg-red-50 text-red-600'}`}>
+                  <span className={`flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl ${pendiente ? 'bg-paper-2 text-signal-deep' : t.estado === 'aprobado' ? 'bg-moss/10 text-moss' : 'bg-clay/[0.07] text-clay'}`}>
                     {pendiente ? <Loader2 size={19} /> : t.estado === 'aprobado' ? <Check size={19} /> : <X size={19} />}
                   </span>
                   <div className="min-w-0">
@@ -198,9 +198,9 @@ export default function AdminTransacciones({
                       <span className="text-xs">{formatDateTime(t.creado_en)}</span>
                     </div>
                     <div className="mt-1.5 flex flex-wrap items-center gap-3">
-                      <span className="text-xs font-bold text-emerald-600">{formatMoney(t.precio_usd)} €</span>
+                      <span className="text-xs font-bold text-moss">{formatMoney(t.precio_usd)} €</span>
                       {t.comprobante_url && (
-                        <a href={`/api/admin/comprobante?url=${encodeURIComponent(t.comprobante_url)}`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-xs font-semibold text-blue-600 hover:underline"><Eye size={13} /> Ver comprobante</a>
+                        <a href={`/api/admin/comprobante?url=${encodeURIComponent(t.comprobante_url)}`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-xs font-semibold text-ink hover:underline"><Eye size={13} /> Ver comprobante</a>
                       )}
                     </div>
                   </div>
@@ -233,12 +233,12 @@ export default function AdminTransacciones({
             <div className="grid grid-cols-2 gap-3 rounded-xl bg-paper-2 p-4 text-sm">
               <div><span className="text-ink/35">Usuario</span><p className="font-semibold">{perfiles[detail.user_id]?.nombre || '—'}</p></div>
               <div><span className="text-ink/35">Créditos</span><p className="font-semibold text-ink">+{detail.monto}</p></div>
-              <div><span className="text-ink/35">Precio</span><p className="font-semibold text-emerald-600">{formatMoney(detail.precio_usd)}</p></div>
+              <div><span className="text-ink/35">Precio</span><p className="font-semibold text-moss">{formatMoney(detail.precio_usd)}</p></div>
               <div><span className="text-ink/35">Método</span><p className="font-semibold">{detail.metodo_pago || '—'}</p></div>
               <div><span className="text-ink/35">Estado</span><Badge tone={detail.estado === 'aprobado' ? 'green' : detail.estado === 'pendiente' ? 'yellow' : 'red'}>{detail.estado}</Badge></div>
               <div><span className="text-ink/35">ID</span><p className="break-all text-xs">{detail.id}</p></div>
             </div>
-            {detail.comprobante_url && <a href={`/api/admin/comprobante?url=${encodeURIComponent(detail.comprobante_url)}`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-xl border border-line px-4 py-2.5 text-sm font-semibold text-blue-600 hover:bg-blue-50"><Eye size={15} /> Abrir comprobante</a>}
+            {detail.comprobante_url && <a href={`/api/admin/comprobante?url=${encodeURIComponent(detail.comprobante_url)}`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-xl border border-line px-4 py-2.5 text-sm font-semibold text-ink hover:bg-blue-50"><Eye size={15} /> Abrir comprobante</a>}
             {detail.estado === 'pendiente' && <div className="flex gap-2"><Button variant="success" onClick={() => { aprobar(detail); setDetail(null) }} disabled={busyId === detail.id}><Check size={14} /> Aprobar</Button><Button variant="danger" onClick={() => { rechazar(detail.id); setDetail(null) }} disabled={busyId === detail.id}><X size={14} /> Rechazar</Button></div>}
           </div>
         )}

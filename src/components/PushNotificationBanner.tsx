@@ -167,10 +167,10 @@ export default function PushNotificationBanner() {
 
   return (
     <div className="fixed bottom-20 left-4 right-4 md:bottom-8 md:left-auto md:right-8 md:w-96 z-40">
-      <div className="bg-white rounded-2xl shadow-2xl border border-gray-200 p-5 relative">
+      <div className="bg-[#FBFAF5] rounded-2xl shadow-2xl border border-line p-5 relative">
         <button
           onClick={handleDismiss}
-          className="absolute top-3 right-3 p-1 rounded-full hover:bg-gray-100 text-gray-500 transition"
+          className="absolute top-3 right-3 p-1 rounded-full hover:bg-paper-2 text-muted transition"
         >
           <X size={16} />
         </button>
@@ -181,25 +181,25 @@ export default function PushNotificationBanner() {
           </div>
 
           <div className="flex-1">
-            <p className="font-bold text-gray-900 text-sm">No te pierdas nada</p>
-            <p className="text-xs text-gray-500 mt-0.5 mb-3">
+            <p className="font-bold text-ink text-sm">No te pierdas nada</p>
+            <p className="text-xs text-muted mt-0.5 mb-3">
               Recibe notificaciones cuando te escriban, guardes un producto o aparezca algo que buscas.
             </p>
 
             <button
               onClick={handleEnable}
               disabled={loading}
-              className="w-full bg-brand-primary text-white py-2.5 rounded-xl font-bold text-sm hover:bg-brand-dark transition flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full bg-brand-primary text-paper py-2.5 rounded-xl font-bold text-sm hover:bg-brand-dark transition flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <Bell size={14} />
               {loading ? 'Activando...' : 'Activar notificaciones'}
             </button>
 
             {error && (
-              <p className="text-xs text-red-500 mt-2 text-center">{error}</p>
+              <p className="text-xs text-clay mt-2 text-center">{error}</p>
             )}
 
-            <p className="text-[10px] text-gray-500 text-center mt-2">
+            <p className="text-[10px] text-muted text-center mt-2">
               Puedes desactivarlas cuando quieras
             </p>
           </div>

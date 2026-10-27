@@ -487,7 +487,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
                     </label>
 
                     <div className="grid grid-cols-2 gap-4">
-                      <label className="select-wrap block">
+                      <label className="block">
                         <span className="t-label text-ink/50">{t('home.hero.filterType')}</span>
                         <select
                           name="subcategoria"
@@ -511,7 +511,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
                         </select>
                       </label>
 
-                      <label className="select-wrap block">
+                      <label className="block">
                         <span className="t-label text-ink/50">{t('home.hero.filterProvince')}</span>
                         <select name="ciudad" className="field pr-5 font-medium" aria-label={t('home.hero.filterProvince')}>
                           <option value="">{t('home.hero.allProvinces')}</option>

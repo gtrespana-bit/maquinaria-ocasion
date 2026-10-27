@@ -111,7 +111,7 @@ export default function VendedorClient({
                   <a
                     href={enlaceWhatsApp(vendedor.telefono || '')}
                     target="_blank"
-                    className="btn btn-sm justify-center bg-[#1FA855] text-white hover:bg-[#188646]"
+                    className="btn btn-sm justify-center bg-[#1FA855] text-paper hover:bg-[#188646]"
                   >
                     WhatsApp
                   </a>

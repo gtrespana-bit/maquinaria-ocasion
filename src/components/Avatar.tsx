@@ -59,7 +59,7 @@ export default function Avatar({ nombre, fotoUrl, size = 'md', className = '' }:
           target.style.display = 'none'
           const parent = target.parentElement
           if (parent) {
-            parent.classList.add(bgColor, 'text-white', 'flex', 'items-center', 'justify-center', 'font-bold', s.text)
+            parent.classList.add(bgColor, 'text-paper', 'flex', 'items-center', 'justify-center', 'font-bold', s.text)
             parent.innerHTML = initials
           }
         }}

@@ -188,7 +188,7 @@ export default function TabPlan({ onRefresh }: { onRefresh?: () => void }) {
 
   if (!estado) {
     return (
-      <div className="rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-800">
+      <div className="rounded-2xl border border-clay/30 bg-clay/[0.07] p-4 text-sm text-clay">
         {error || 'No se pudo cargar tu plan.'}
       </div>
     )
@@ -315,16 +315,16 @@ export default function TabPlan({ onRefresh }: { onRefresh?: () => void }) {
       </section>
 
       {error && (
-        <div className="rounded-xl border border-red-200 bg-red-50 p-3 text-sm text-red-800">{error}</div>
+        <div className="rounded-xl border border-clay/30 bg-clay/[0.07] p-3 text-sm text-clay">{error}</div>
       )}
       {aviso && (
-        <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-3 text-sm text-emerald-800">{aviso}</div>
+        <div className="rounded-xl border border-moss/30 bg-moss/10 p-3 text-sm text-moss">{aviso}</div>
       )}
 
       {estado.pagoFallido && (
-        <section className="rounded-2xl border border-red-200 bg-red-50 p-5">
+        <section className="rounded-2xl border border-clay/30 bg-clay/[0.07] p-5">
           <h3 className="text-[15px] font-semibold tracking-[-0.015em] text-red-900">No hemos podido cobrar tu plan</h3>
-          <p className="mt-1 text-sm text-red-800">
+          <p className="mt-1 text-sm text-clay">
             Tu tarjeta ha fallado{estado.pagoPendienteDesde ? ` desde el ${fecha(estado.pagoPendienteDesde)}` : ''}.
             Mantenemos tu plan y tus anuncios activos, pero actualiza el método de pago para que no se pause nada.
             {estado.planHasta ? ` El acceso está garantizado hasta el ${fecha(estado.planHasta)}.` : ''}
@@ -343,7 +343,7 @@ export default function TabPlan({ onRefresh }: { onRefresh?: () => void }) {
             )}
             <LocalLink
               href="/para-profesionales"
-              className="inline-flex items-center gap-1.5 rounded-xl border border-red-300 bg-[#FBFAF5] px-4 py-2 text-sm font-semibold text-red-800 hover:bg-red-100"
+              className="inline-flex items-center gap-1.5 rounded-xl border border-clay/40 bg-[#FBFAF5] px-4 py-2 text-sm font-semibold text-clay hover:bg-clay/10"
             >
               Ver planes
             </LocalLink>
@@ -370,14 +370,14 @@ export default function TabPlan({ onRefresh }: { onRefresh?: () => void }) {
       )}
 
       {estado.trialElegible && (
-        <section className="rounded-2xl border border-emerald-200 bg-emerald-50 p-5">
+        <section className="rounded-2xl border border-moss/30 bg-moss/10 p-5">
           <h3 className="text-[15px] font-semibold tracking-[-0.015em] text-emerald-900">Prueba {defPrueba.nombre} 30 días, gratis</h3>
-          <p className="mt-1 text-sm text-emerald-800">
+          <p className="mt-1 text-sm text-moss">
             {defPrueba.cupo} anuncios, {defPrueba.destacadosMes} destacados al mes, escaparate, vídeo y{' '}
             {defPrueba.fotos} fotos por anuncio. Sin tarjeta y sin cobro automático. Al terminar tienes
             7 días de gracia y no se borra ningún anuncio.
             {estado.tipo === 'particular' && (
-              <span className="mt-1 block text-xs text-emerald-700">
+              <span className="mt-1 block text-xs text-moss">
                 Al empezar, tu cuenta pasa a «profesional» (la identidad es gratis) para que recibas
                 el cupo del plan {defPrueba.nombre}.
               </span>
@@ -474,7 +474,7 @@ export default function TabPlan({ onRefresh }: { onRefresh?: () => void }) {
             </div>
             <p className="mt-2 t-display t-num text-[1.75rem] leading-none text-ink">{estado.creditos}</p>
             <p className="mt-2 text-[11.5px] text-ink/45">Para subir al nº 1 o destacar fuera del plan.</p>
-            <LocalLink href="/creditos" className="mt-2 inline-flex items-center gap-1 text-xs font-semibold text-brand-accent hover:underline">
+            <LocalLink href="/creditos" className="mt-2 inline-flex items-center gap-1 text-xs font-semibold text-ink hover:underline">
               Comprar créditos <ArrowRight size={12} />
             </LocalLink>
           </div>
@@ -483,10 +483,10 @@ export default function TabPlan({ onRefresh }: { onRefresh?: () => void }) {
 
       {/* Upsell contextual */}
       {siguiente && (
-        <section className="rounded-2xl border border-emerald-200 bg-emerald-50/60 p-5">
+        <section className="rounded-2xl border border-moss/30 bg-moss/10/60 p-5">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <p className="text-xs font-semibold uppercase tracking-wide text-emerald-700">Siguiente paso</p>
+              <p className="text-xs font-semibold uppercase tracking-wide text-moss">Siguiente paso</p>
               <h3 className="mt-1 text-[15px] font-semibold tracking-[-0.015em] text-ink">{tituloSiguiente}</h3>
               <p className="mt-1 text-[12.5px] text-ink/55">
                 {siguiente.cupo == null
@@ -504,7 +504,7 @@ export default function TabPlan({ onRefresh }: { onRefresh?: () => void }) {
           <ul className="mt-3 grid gap-1.5 text-sm text-ink sm:grid-cols-3">
             {siguiente.incluido.slice(0, 3).map(item => (
               <li key={item} className="flex items-start gap-1.5">
-                <Check size={14} className="mt-0.5 shrink-0 text-emerald-600" aria-hidden="true" />
+                <Check size={14} className="mt-0.5 shrink-0 text-moss" aria-hidden="true" />
                 {item}
               </li>
             ))}
