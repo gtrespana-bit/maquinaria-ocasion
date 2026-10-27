@@ -83,10 +83,11 @@ export const CatalogFilters = ({
   );
 
   return (
-    // En escritorio la columna de filtros es sticky: al crecer con los bloques
-    // técnicos se le da scroll propio para que el pie (limpiar filtros) siga
-    // siendo alcanzable sin perder la posición en el listado.
-    <div className="lg:sticky lg:top-[var(--header-offset)] lg:z-10 lg:max-h-[calc(100dvh-var(--header-offset)-1rem)] lg:overflow-y-auto">
+    // El sticky NO va aquí: en /catalogo este bloque comparte columna con el
+    // selector de ubicación, y si la caja de filtros se pega sola acaba pintada
+    // encima de «Ubicación en España». El ancestro (CatalogoPage) es quien fija
+    // la columna completa y le da scroll propio.
+    <div>
       <div className="mb-5 flex items-center justify-between border-b border-ink pb-2">
         <h2 className="t-eyebrow text-ink">{t('catalog.filtersTitle')}</h2>
         {hasActiveFilters && (
